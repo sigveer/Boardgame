@@ -1,4 +1,4 @@
-package com.gruppe24.BoardGame;
+package com.gruppe24.BoardGames.LadderGame;
 
 import com.gruppe24.Utils.Validators;
 
