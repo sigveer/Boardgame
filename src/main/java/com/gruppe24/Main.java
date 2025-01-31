@@ -1,6 +1,6 @@
 package com.gruppe24;
 
-import com.gruppe24.BoardGames.LadderGame.MainMenu;
+import com.gruppe24.BoardGames.MainMenu;
 
 public class Main {
 
