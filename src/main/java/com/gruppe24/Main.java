@@ -1,8 +1,11 @@
 package com.gruppe24;
 
+import com.gruppe24.BoardGame.MainMenu;
+
 public class Main {
 
   public static void main(String[] args) {
-    System.out.println("Hello, World!");
+    MainMenu menu = new MainMenu();
+    menu.start();
   }
 }
