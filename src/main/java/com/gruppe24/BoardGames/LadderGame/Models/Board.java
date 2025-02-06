@@ -1,5 +1,6 @@
 package com.gruppe24.BoardGames.LadderGame.Models;
 
+import com.gruppe24.BoardGames.LadderGame.Tile;
 import java.util.HashMap;
 
 public class Board {
@@ -40,5 +41,4 @@ public class Board {
   public HashMap<Integer, Integer> getBoard(){
     return board;
   }
-
 }

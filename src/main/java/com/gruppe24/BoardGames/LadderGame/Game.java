@@ -4,8 +4,11 @@ import com.gruppe24.BoardGames.LadderGame.Models.Board;
 import com.gruppe24.BoardGames.LadderGame.Models.Dice;
 import com.gruppe24.BoardGames.LadderGame.Models.Player;
 import java.util.List;
+import java.util.Scanner;
 
-public class Game implements TileAction{
+public class Game {
+
+  Scanner myScanner = new Scanner(System.in);
 
   //attributes
   private final Board board;
@@ -20,12 +23,25 @@ public class Game implements TileAction{
   }
 
   //methods
+  public void playerSetUp () {
+    int numberOfPlayers = 0;
+    while (numberOfPlayers < 1 || numberOfPlayers > 4) {
+      System.out.println("How many players? (1-4)");
+      numberOfPlayers = myScanner.nextInt();
+      if (numberOfPlayers < 1 || numberOfPlayers > 4) {
+        System.out.println("ERROR: Number of players must be between 1 and 4.");
+      }
+    }
 
+    myScanner.nextLine();
+    for (int i = 1; i <= numberOfPlayers; i++) {
+      System.out.println("Name of player " + i + ": ");
+      String name = myScanner.nextLine();
+      players.add(new Player(name));
+    }
 
-
-
-  @Override
-  public void perform(Player player){
-
+    System.out.println("Players are ready to play!");
   }
+
+
 }
