@@ -1,35 +1,34 @@
 package com.gruppe24.BoardGames;
 
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
+import com.gruppe24.BoardGames.LadderGame.Game;
+import com.gruppe24.Utils.Validators;
 
 public class MainMenu {
 
-  public void start(Stage stage) {
-    Button ladderGameButton = new Button("Ladder Game");
-    Button exampleGameButton = new Button("Example Game");
-    Button exitButton = new Button("Exit");
+  public void start() {
+    boolean isRunning = true;
+    while (isRunning) {
+      System.out.println("BoardGames!");
+      System.out.println("[1] Ladder Game");
+      System.out.println("[2] Example Game");
+      System.out.println("[3] Exit");
 
-    ladderGameButton.setOnAction(e -> {
-      System.out.println("Starting Ladder Game..."); // replace with method that starts Ladder Game
-    });
+      int choice = Validators.promptInt("");
 
-    exampleGameButton.setOnAction(e -> {
-      System.out.println("Starting Example Game..."); // replace with method that starts Example Game
-    });
+      switch (choice) {
+        case 1 -> {
+          System.out.println("Starting Ladder Game...");
+          Game game = new Game();
+          game.setUp();
+          game.play();
+        }
 
-    exitButton.setOnAction(e -> {
-      System.out.println("Exiting...");
-      stage.close();
-    });
-
-    VBox vbox = new VBox(20, ladderGameButton, exampleGameButton, exitButton);
-
-    Scene scene = new Scene(vbox, 1000, 600);
-    stage.setTitle("Board Games Menu");
-    stage.setScene(scene);
-    stage.show();
+        case 2 -> System.out.println("Starting Example Game..."); //Example, remove later with display method
+        case 3 -> {
+          System.out.println("Exiting...");
+          isRunning = false;
+        }
+      }
+    }
   }
 }

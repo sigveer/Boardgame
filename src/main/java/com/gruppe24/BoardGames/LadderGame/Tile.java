@@ -1,25 +1,17 @@
 package com.gruppe24.BoardGames.LadderGame;
 
-public class Tile {
+import com.gruppe24.BoardGames.LadderGame.Models.Player;
 
-  //attributes
-  private Tile nextTile;
-  private int tileID;
-  private TileAction landAction;
+public abstract class Tile implements TileAction {
 
-  public Tile(int tileID){
-    this.tileID = tileID;
+  protected int position;
+
+  public Tile(int position) {
+    this.position = position;
   }
 
-  //methods
-  public void landPlayer(Player player){
-  }
+  @Override
+  public void perform(Player player){
 
-  public void leavePlayer(Player player){
   }
-
-  public void setNextTile(Tile nextTile){
-    this.nextTile = nextTile;
-  }
-
 }

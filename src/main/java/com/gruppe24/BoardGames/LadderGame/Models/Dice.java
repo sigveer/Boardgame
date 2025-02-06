@@ -1,5 +1,6 @@
-package com.gruppe24.BoardGames.LadderGame;
+package com.gruppe24.BoardGames.LadderGame.Models;
 
+import com.gruppe24.BoardGames.LadderGame.Die;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,7 +8,7 @@ public class Dice {
 
   //attributes
   /**
-   * Edited by: Sigveer
+   * @Author Sigveer
    * Version: 1.0
    * Date: 04.02.2025
    * List of dice objects.
@@ -16,7 +17,7 @@ public class Dice {
 
 
   /**
-   * Edited by: Sigveer
+   * @Author Sigveer
    * Version: 1.0
    * Date: 04.02.2025
    * The value of the last rolled die.
@@ -35,14 +36,14 @@ public class Dice {
 
   //methods
   /**
-   * Edited by: Sigveer
+   * @Author Sigveer, Ingve
    * Version: 1.0
-   * Date: 04.02.2025
+   * Date: 06.02.2025
    * Rolls all dice and returns the sum of the values.
    *
    * @return The sum of the values of all dice after rolling.
    */
-  public int roll(){
+  public int rollSum(){
     int sum = 0;
     for (Die die : dice) {
       sum += die.roll();
@@ -52,7 +53,7 @@ public class Dice {
 
 
   /**
-   * Edited by: Sigveer
+   * @Author Sigveer
    * Version: 1.0
    * Date: 04.02.2025
    * Returns the value of a specific die.
