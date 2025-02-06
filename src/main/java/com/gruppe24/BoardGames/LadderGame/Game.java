@@ -8,6 +8,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+
+/**
+ * Class that represents the game as a whole
+ *
+ * @author Ingve V., Sigve W.
+ * @version 1.0.0
+ * @since 1.0.0
+ */
 public class Game {
 
   Scanner myScanner = new Scanner(System.in);
@@ -17,7 +25,11 @@ public class Game {
   private final Dice dice;
   private final List<Player> players;
 
-
+  /**
+   * Constructor that initializes board, dice and player.
+   * @author Ingve
+   * @date 06.02.2025
+   */
   public Game() {
     this.board = new Board();
     this.dice = new Dice(2);
@@ -25,6 +37,11 @@ public class Game {
   }
 
   //methods
+  /**
+   * Method that sets up how many and who the players are.
+   * @author Ingve
+   * @date 06.02.2025
+   */
   public void setUp() {
     int numberOfPlayers = 0;
     while (numberOfPlayers < 1 || numberOfPlayers > 4) {
@@ -46,6 +63,13 @@ public class Game {
   }
 
 
+  /**
+   * @Author Sigve
+   * Version: 1.0
+   * Date: 06.02.2025
+   * Starts the game.
+   * The game is played in turns where each player rolls the dice and moves their token accordingly.
+   */
   public void play() {
 
     boolean gameOver = false;

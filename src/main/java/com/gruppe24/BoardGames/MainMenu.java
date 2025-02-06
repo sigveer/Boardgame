@@ -3,8 +3,15 @@ package com.gruppe24.BoardGames;
 import com.gruppe24.BoardGames.LadderGame.Game;
 import com.gruppe24.Utils.Validators;
 
+/**
+ * Main menu for the game
+ */
 public class MainMenu {
 
+
+  /**
+   * Starts the main menu
+   */
   public void start() {
     boolean isRunning = true;
     while (isRunning) {

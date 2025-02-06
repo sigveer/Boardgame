@@ -1,18 +1,14 @@
 package com.gruppe24.BoardGames.LadderGame.Models;
 
-import com.gruppe24.BoardGames.LadderGame.Die;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Class representing a set of dice.
+ */
 public class Dice {
 
   //attributes
-  /**
-   * @Author Sigveer
-   * Version: 1.0
-   * Date: 04.02.2025
-   * List of dice objects.
-   */
   private final List<Die> dice;
 
 

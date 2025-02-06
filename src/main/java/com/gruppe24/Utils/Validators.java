@@ -2,6 +2,9 @@ package com.gruppe24.Utils;
 
 import java.util.Scanner;
 
+/**
+ * Class containing utility methods for validating user input.
+ */
 public class Validators {
 
   private static Scanner scanner;

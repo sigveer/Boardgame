@@ -2,6 +2,7 @@ package com.gruppe24.BoardGames.LadderGame;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import com.gruppe24.BoardGames.LadderGame.Models.Die;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
