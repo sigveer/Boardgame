@@ -14,14 +14,6 @@ public class Die {
    * The value of the last rolled die.
    */
   private int lastRolledValue;
-
-
-  /**
-   * Edited by: Sigveer
-   * Version: 1.0
-   * Date: 04.02.2025
-   * Random object used to generate random numbers.
-   */
   private final Random random;
 
 
