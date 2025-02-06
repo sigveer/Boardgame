@@ -8,6 +8,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+
+/**
+ * Class representing a game of Ladder.
+ */
 public class Game {
 
   Scanner myScanner = new Scanner(System.in);
@@ -46,6 +50,13 @@ public class Game {
   }
 
 
+  /**
+   * @Author Sigve
+   * Version: 1.0
+   * Date: 06.02.2025
+   * Starts the game.
+   * The game is played in turns where each player rolls the dice and moves their token accordingly.
+   */
   public void play() {
 
     boolean gameOver = false;

@@ -2,6 +2,7 @@ package com.gruppe24.BoardGames.LadderGame;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import com.gruppe24.BoardGames.LadderGame.Models.Dice;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -29,7 +30,7 @@ class DiceTest {
   @Test
   void roll() {
     for (int i = 0; i < 10; i++) {
-      int value = dice.roll();
+      int value = dice.rollSum();
       assertTrue(value >= 3 && value <= 18);
       System.out.println("Rolled: " + value);
     }
@@ -41,17 +42,17 @@ class DiceTest {
    */
   @Test
   void getDie() {
-    dice.roll();
+    dice.rollSum();
     int value1 = dice.getDie(0);
     assertTrue(value1 >= 1 && value1 <= 6);
     System.out.println("Dice1: " + value1 + " which is between 1 and 6");
 
-    dice.roll();
+    dice.rollSum();
     int value2 = dice.getDie(1);
     assertTrue(value2 >= 1 && value2 <= 6);
     System.out.println("Dice2: " + value2 + " which is between 1 and 6");
 
-    dice.roll();
+    dice.rollSum();
     int value3 = dice.getDie(2);
     assertTrue(value3 >= 1 && value3 <= 6);
     System.out.println("Dice3: " + value3 + " which is between 1 and 6");
@@ -73,7 +74,7 @@ class DiceTest {
    */
   @Test
   void InvalidDieNumber() {
-    dice.roll();
+    dice.rollSum();
     assertThrows(IllegalArgumentException.class, () -> dice.getDie(3));
     System.out.println("Invalid die number");
   }

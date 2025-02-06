@@ -1,18 +1,14 @@
-package com.gruppe24.BoardGames.LadderGame;
+package com.gruppe24.BoardGames.LadderGame.Models;
 
 import java.util.Random;
 
-
+/**
+ * Class representing a die.
+ */
 public class Die {
 
 
   //attributes
-  /**
-   * Edited by: Sigveer
-   * Version: 1.0
-   * Date: 04.02.2025
-   * The value of the last rolled die.
-   */
   private int lastRolledValue;
   private final Random random;
 
