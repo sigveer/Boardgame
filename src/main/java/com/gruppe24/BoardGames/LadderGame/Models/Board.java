@@ -8,8 +8,6 @@ public class Board {
   //Attributes
   Player player;
   private final HashMap<Integer,Integer> board = new HashMap<>(100);
-
-  private final int boardSize = 100;
   private final HashMap<Integer, Integer> ladders;
   private final HashMap<Integer, Integer> snakes;
 
@@ -21,15 +19,15 @@ public class Board {
   }
 
   //methods
-  private void initializeLadders(){
-    ladders.put(1, 38);
-    ladders.put(4, 14);
-    ladders.put(21, 42);
-    ladders.put(36, 44);
-    ladders.put(80, 98);
+  public void initializeLadders(){
+    ladders.put(2, 39);
+    ladders.put(3, 11);
+    ladders.put(21, 49);
+    ladders.put(30, 60);
+    ladders.put(83, 85);
   }
 
-  private void initializeSnakes(){
+  public void initializeSnakes(){
     snakes.put(98, 80);
     snakes.put(44, 36);
     snakes.put(42, 21);
@@ -37,8 +35,19 @@ public class Board {
     snakes.put(38, 1);
   }
 
+  public Tile getTile(int position) {
+    if (ladders.containsKey(position)) {
+      return new LadderTile(position, ladders.get(position));
+    } else if (snakes.containsKey(position)) {
+      return new SnakeTile(position, snakes.get(position));
+    }
+    return null;
+  }
 
+  //accessor-methods
   public HashMap<Integer, Integer> getBoard(){
     return board;
   }
+
+
 }

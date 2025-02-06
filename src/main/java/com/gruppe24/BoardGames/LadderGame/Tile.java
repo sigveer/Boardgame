@@ -2,16 +2,16 @@ package com.gruppe24.BoardGames.LadderGame;
 
 import com.gruppe24.BoardGames.LadderGame.Models.Player;
 
-public abstract class Tile {
+public abstract class Tile implements TileAction {
+
   protected int position;
 
   public Tile(int position) {
     this.position = position;
   }
 
-  public int getPosition() {
-    return position;
-  }
+  @Override
+  public void perform(Player player){
 
-  public abstract void perform(Player player);
+  }
 }

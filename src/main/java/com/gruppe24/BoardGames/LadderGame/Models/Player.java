@@ -44,8 +44,4 @@ public class Player {
     this.position = position;
   }
 
-
-  public void move(int steps) {
-    this.position += steps;
-  }
 }
