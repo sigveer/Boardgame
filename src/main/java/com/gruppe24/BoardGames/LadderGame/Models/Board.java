@@ -1,7 +1,6 @@
-package com.gruppe24.BoardGames.LadderGame;
+package com.gruppe24.BoardGames.LadderGame.Models;
 
 import java.util.HashMap;
-import java.util.Map;
 
 public class Board {
 

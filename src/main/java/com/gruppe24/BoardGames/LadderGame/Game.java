@@ -1,5 +1,8 @@
 package com.gruppe24.BoardGames.LadderGame;
 
+import com.gruppe24.BoardGames.LadderGame.Models.Board;
+import com.gruppe24.BoardGames.LadderGame.Models.Dice;
+import com.gruppe24.BoardGames.LadderGame.Models.Player;
 import java.util.List;
 
 public class Game implements TileAction{
@@ -17,7 +20,8 @@ public class Game implements TileAction{
   }
 
   //methods
-  
+
+
 
 
   @Override
