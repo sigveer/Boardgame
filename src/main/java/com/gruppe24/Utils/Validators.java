@@ -7,6 +7,9 @@ public class Validators {
   private static Scanner scanner;
 
   /**
+   * Edited by: Sigveer
+   * Version: 1.0
+   * Date: 31.01.2025
    * Method for getting the scanner object
    *
    * @return the scanner object
@@ -20,6 +23,9 @@ public class Validators {
 
 
   /**
+   * Edited by: Sigveer
+   * Version: 1.0
+   * Date: 31.01.2025
    * Method for ensuring that value is a double
    *
    * @param prompt display the message to user for what to input
@@ -42,7 +48,10 @@ public class Validators {
 
 
   /**
-   * Method for ensuring that value is a int
+   * Edited by: Sigveer
+   * Version: 1.0
+   * Date: 31.01.2025
+   * Method for ensuring that value is an int
    *
    * @param prompt display the message to user for what to input
    * @return the entered int value

@@ -1,4 +1,4 @@
-package com.gruppe24.BoardGames.LadderGame.Models;
+package com.gruppe24.BoardGames.LadderGame;
 
 import java.util.Random;
 
@@ -8,7 +8,7 @@ public class Die {
 
   //attributes
   /**
-   * @Author Sigveer
+   * Edited by: Sigveer
    * Version: 1.0
    * Date: 04.02.2025
    * The value of the last rolled die.
@@ -17,7 +17,7 @@ public class Die {
 
 
   /**
-   * @Author Sigveer
+   * Edited by: Sigveer
    * Version: 1.0
    * Date: 04.02.2025
    * Random object used to generate random numbers.
@@ -26,7 +26,7 @@ public class Die {
 
 
   /**
-   * @Author Sigveer
+   * Edited by: Sigveer
    * Version: 1.0
    * Date: 04.02.2025
    * Constructor for the Die class.
@@ -39,7 +39,7 @@ public class Die {
 
   //methods
   /**
-   * @Author Sigveer
+   * Edited by: Sigveer
    * Version: 1.0
    * Date: 04.02.2025
    * Rolls the die and returns the value.
@@ -53,7 +53,7 @@ public class Die {
 
 
   /**
-   * @Author Sigveer
+   * Edited by: Sigveer
    * Version: 1.0
    * Date: 04.02.2025
    *

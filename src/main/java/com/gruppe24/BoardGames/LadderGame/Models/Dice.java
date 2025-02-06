@@ -1,5 +1,6 @@
 package com.gruppe24.BoardGames.LadderGame.Models;
 
+import com.gruppe24.BoardGames.LadderGame.Die;
 import java.util.ArrayList;
 import java.util.List;
 
