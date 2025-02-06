@@ -13,11 +13,11 @@ public class MainMenu {
     Button exitButton = new Button("Exit");
 
     ladderGameButton.setOnAction(e -> {
-      System.out.println("Starting Ladder Game..."); // Erstatt med metoden som starter Ladder Game
+      System.out.println("Starting Ladder Game..."); // replace with method that starts Ladder Game
     });
 
     exampleGameButton.setOnAction(e -> {
-      System.out.println("Starting Example Game..."); // Erstatt med metoden som starter Example Game
+      System.out.println("Starting Example Game..."); // replace with method that starts Example Game
     });
 
     exitButton.setOnAction(e -> {
