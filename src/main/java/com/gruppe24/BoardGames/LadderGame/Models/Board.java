@@ -3,6 +3,13 @@ package com.gruppe24.BoardGames.LadderGame.Models;
 import com.gruppe24.BoardGames.LadderGame.Tile;
 import java.util.HashMap;
 
+/**
+ * Represets Snakes and Ladder board.
+ *
+ * @author Ingve V., Sigve W.
+ * @version 1.0.0
+ * @since 1.0.0
+ */
 public class Board {
 
   //Attributes
@@ -11,6 +18,11 @@ public class Board {
   private final HashMap<Integer, Integer> ladders;
   private final HashMap<Integer, Integer> snakes;
 
+  /**
+   * Constructor that initializes the ladders and snakes.
+   * @author Ingve
+   * @date 06.02.2025
+   */
   public Board(){
     ladders = new HashMap<>();
     snakes = new HashMap<>();
@@ -19,6 +31,12 @@ public class Board {
   }
 
   //methods
+
+  /**
+   * Method that puts ladders at certain indexes in ladders-hashMap.
+   * @author Ingve
+   * @date 06.02.2025
+   */
   public void initializeLadders(){
     ladders.put(2, 39);
     ladders.put(3, 11);
@@ -27,6 +45,11 @@ public class Board {
     ladders.put(83, 85);
   }
 
+  /**
+   * Method that puts snakes at certain indexes in ladders-hashMap.
+   * @author Ingve
+   * @date 06.02.2025
+   */
   public void initializeSnakes(){
     snakes.put(98, 80);
     snakes.put(44, 36);
@@ -35,6 +58,15 @@ public class Board {
     snakes.put(38, 1);
   }
 
+  /**
+   * Method that
+   *
+   * @param position of the tile
+   * @return
+   *
+   * @author Ingve
+   *  @date 06.02.2025
+   */
   public Tile getTile(int position) {
     if (ladders.containsKey(position)) {
       return new LadderTile(position, ladders.get(position));
@@ -45,6 +77,12 @@ public class Board {
   }
 
   //accessor-methods
+  /**
+   * Getter-method
+   * @return attribute board
+   * @author Ingve
+   * @date 06.02.2025
+   */
   public HashMap<Integer, Integer> getBoard(){
     return board;
   }
