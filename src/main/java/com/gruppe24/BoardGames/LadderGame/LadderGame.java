@@ -3,6 +3,8 @@ package com.gruppe24.BoardGames.LadderGame;
 import com.gruppe24.BoardGames.LadderGame.Models.Board;
 import com.gruppe24.BoardGames.LadderGame.Models.Dice;
 import com.gruppe24.BoardGames.LadderGame.Models.Player;
+import com.gruppe24.BoardGames.LadderGame.Core.Tile;
+import com.gruppe24.BoardGames.LadderGame.Core.TileAction;
 import com.gruppe24.Utils.Steps;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +18,7 @@ import java.util.Scanner;
  * @date 06.02.2025
  * @version 1.0.0
  */
-public class Game {
+public class LadderGame {
 
   Scanner myScanner = new Scanner(System.in);
 
@@ -26,7 +28,7 @@ public class Game {
   private final List<Player> players;
 
   //constructor
-  public Game() {
+  public LadderGame() {
     this.board = new Board();
     this.dice = new Dice(2);
     this.players = new ArrayList<>();
@@ -85,8 +87,8 @@ public class Game {
         p.setPosition(newPosition);
 
         Tile currentTile = board.getTile(newPosition);
-        if (currentTile != null) {
-          currentTile.perform(p);
+        if (currentTile instanceof TileAction) {
+          ((TileAction) currentTile).perform(p);
         }
 
         if (newPosition >= 100) {

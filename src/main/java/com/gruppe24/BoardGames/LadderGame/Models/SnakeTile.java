@@ -1,12 +1,11 @@
 package com.gruppe24.BoardGames.LadderGame.Models;
 
-import com.gruppe24.BoardGames.LadderGame.Tile;
-import com.gruppe24.BoardGames.LadderGame.TileAction;
+import com.gruppe24.BoardGames.LadderGame.Core.SpecialTile;
 
 /**
  * Class representing a tile that is a snake.
  */
-public class SnakeTile extends Tile implements TileAction {
+public class SnakeTile extends SpecialTile {
 
   //attributes
   private final int slideDown;
@@ -45,5 +44,4 @@ public class SnakeTile extends Tile implements TileAction {
     System.out.println(player.getName() + " Oh no a snake!! Slided down to tile " + slideDown);
     player.setPosition(slideDown);
   }
-
 }
