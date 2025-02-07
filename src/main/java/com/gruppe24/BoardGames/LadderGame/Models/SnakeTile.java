@@ -14,13 +14,14 @@ public class SnakeTile extends Tile implements TileAction {
   //constructor
 
   /**
-   * @Author Sigve
-   * Version: 1.0
-   * Date: 06.02.2025
-   * Creates a new snake tile.
+   * Constructor that initializes the snake tile.
    *
    * @param position The position of the tile.
    * @param SlideDown The position to slide down to.
+   *
+   * @Author Sigveer
+   * @Date: 06.02.2025
+   * @Version: 1.0
    */
   public SnakeTile(int position, int SlideDown){
     super(position);
@@ -31,12 +32,13 @@ public class SnakeTile extends Tile implements TileAction {
   //methods
 
   /**
-   * @Author Sigve
-   * Version: 1.0
-   * Date: 06.02.2025
-   * Moves the player to the bottom of the snake.
+   * Method that performs the action of the tile.
    *
-   * @param player The player to move.
+   * @param player The player that lands on the tile.
+   *
+   * @Author Sigveer
+   * @Date: 06.02.2025
+   * @Version: 1.0
    */
   @Override
   public void perform(Player player){

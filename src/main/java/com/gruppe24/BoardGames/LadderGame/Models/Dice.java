@@ -13,12 +13,12 @@ public class Dice {
 
 
   /**
-   * @Author Sigveer
-   * Version: 1.0
-   * Date: 04.02.2025
    * The value of the last rolled die.
-   *
    * @param numberOfDice The number of dice to be created.
+   *
+   * @Author Sigveer
+   * @Date: 04.02.2025
+   * @Version: 1.0
    */
   public Dice(int numberOfDice){
     if (numberOfDice < 1) {
@@ -32,12 +32,12 @@ public class Dice {
 
   //methods
   /**
-   * @Author Sigveer, Ingve
-   * Version: 1.0
-   * Date: 06.02.2025
-   * Rolls all dice and returns the sum of the values.
+   *Rolls all dice and returns the sum of the values.
+   @return The sum of the values of all dice after rolling.
    *
-   * @return The sum of the values of all dice after rolling.
+   * @Author Sigveer, Ingve
+   * Date: 06.02.2025
+   * Version: 1.0
    */
   public int rollSum(){
     int sum = 0;
@@ -49,14 +49,12 @@ public class Dice {
 
 
   /**
-   * @Author Sigveer
-   * Version: 1.0
-   * Date: 04.02.2025
-   * Returns the value of a specific die.
+   *Rolls all dice and returns the values of each die.
+   @return The values of all dice after rolling.
    *
-   * @param dieNumber The number of the die to get the value of.
-   * @return The value of the die.
-   * @throws IllegalArgumentException if the die number is out of bounds.
+   * @Author Sigveer
+   * Date: 06.02.2025
+   * Version: 1.0
    */
   public int getDie(int dieNumber){
     if (dieNumber < 0 || dieNumber >= dice.size()) {

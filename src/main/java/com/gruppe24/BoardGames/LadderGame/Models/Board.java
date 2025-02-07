@@ -6,9 +6,9 @@ import java.util.HashMap;
 /**
  * Represets Snakes and Ladder board.
  *
- * @author Ingve V., Sigve W.
+ * @author Ingve, Sigveer.
+ * @date 06.02.2025
  * @version 1.0.0
- * @since 1.0.0
  */
 public class Board {
 
@@ -20,7 +20,9 @@ public class Board {
 
   /**
    * Constructor that initializes the ladders and snakes.
-   * @author Ingve
+   *
+   * @author Ingve, Sigveer
+   * @version 1.0.0
    * @date 06.02.2025
    */
   public Board(){
@@ -34,7 +36,9 @@ public class Board {
 
   /**
    * Method that puts ladders at certain indexes in ladders-hashMap.
-   * @author Ingve
+   *
+   * @author Ingve, Sigveer
+   * @version 1.0.0
    * @date 06.02.2025
    */
   public void initializeLadders(){
@@ -47,7 +51,9 @@ public class Board {
 
   /**
    * Method that puts snakes at certain indexes in ladders-hashMap.
-   * @author Ingve
+   *
+   * @author Ingve, Sigveer
+   * @version 1.0.0
    * @date 06.02.2025
    */
   public void initializeSnakes(){
@@ -59,13 +65,14 @@ public class Board {
   }
 
   /**
-   * Method that
+   * Method that returns the tile at a certain position.
    *
    * @param position of the tile
-   * @return
+   * @return the tile at the position
    *
    * @author Ingve
-   *  @date 06.02.2025
+   * @Version 1.0.0
+   * @date 06.02.2025
    */
   public Tile getTile(int position) {
     if (ladders.containsKey(position)) {
@@ -78,10 +85,13 @@ public class Board {
 
   //accessor-methods
   /**
-   * Getter-method
+   * Method that returns the board.
    * @return attribute board
+   *
    * @author Ingve
    * @date 06.02.2025
+   * @version 1.0.0
+   *
    */
   public HashMap<Integer, Integer> getBoard(){
     return board;

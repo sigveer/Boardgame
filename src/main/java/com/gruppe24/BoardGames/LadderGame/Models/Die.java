@@ -14,10 +14,11 @@ public class Die {
 
 
   /**
-   * Edited by: Sigveer
-   * Version: 1.0
-   * Date: 04.02.2025
-   * Constructor for the Die class.
+   * Constructor that initializes the die.
+   *
+   * @Author Sigveer
+   * @Date: 04.02.2025
+   * @Version: 1.0
    */
   public Die(){
     this.random = new Random();
@@ -27,12 +28,13 @@ public class Die {
 
   //methods
   /**
-   * Edited by: Sigveer
-   * Version: 1.0
-   * Date: 04.02.2025
    * Rolls the die and returns the value.
    *
    * @return The value of the die after rolling.
+   *
+   * @Author Sigveer
+   * @Date: 04.02.2025
+   * @Version: 1.0
    */
   public int roll(){
     lastRolledValue = random.nextInt(6) + 1;
@@ -41,11 +43,13 @@ public class Die {
 
 
   /**
-   * Edited by: Sigveer
-   * Version: 1.0
-   * Date: 04.02.2025
+   * Returns the value of the last rolled die.
    *
    * @return The value of the last rolled die.
+   *
+   * @Author Sigveer
+   * @Date: 04.02.2025
+   * @Version: 1.0
    */
   public int getValue(){
     return lastRolledValue;

@@ -15,13 +15,14 @@ public class LadderTile extends Tile implements TileAction {
   //constructor
 
   /**
-   * @Author Sigve
-   * Version: 1.0
-   * Date: 06.02.2025
-   * Creates a new ladder tile.
+   * Constructor that initializes the ladder tile.
    *
    * @param position The position of the tile.
    * @param climbUp The position to climb up to.
+   *
+   * @Author Sigveer
+   * @Date: 06.02.2025
+   * @Version: 1.0
    */
   public LadderTile(int position, int climbUp){
     super(position);
@@ -31,12 +32,13 @@ public class LadderTile extends Tile implements TileAction {
   //methods
 
   /**
-   * @Author Sigve
-   * Version: 1.0
-   * Date: 06.02.2025
-   * Moves the player to the top of the ladder.
+   * Method that performs the action of the tile.
    *
-   * @param player The player to move.
+   * @param player The player that lands on the tile.
+   *
+   * @Author Sigveer
+   * @Date: 06.02.2025
+   * @Version: 1.0
    */
   @Override
   public void perform(Player player){

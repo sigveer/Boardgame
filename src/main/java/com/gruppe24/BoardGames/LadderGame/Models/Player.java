@@ -4,11 +4,7 @@ import com.gruppe24.BoardGames.LadderGame.TileAction;
 
 /**
  * Class that represents players
- *
- * @author Ingve V., Sigve W.
- * @version 1.0.0
- * @since 1.0.0
- */
+  */
 public class Player {
 
   //attributes
@@ -17,11 +13,7 @@ public class Player {
   public int position;
   public TileAction action;
 
-  /**
-   * Constructor that initializes name, position and ID of player.
-   * @author Ingve
-   * @date 06.02.2025
-   */
+  //constructor
   public Player(String name){
     this.name = name;
     this.position = 0;
@@ -31,9 +23,13 @@ public class Player {
 
   //methods
   /**
-   * Method that performs an action for chosen player.
-   * @author Ingve
-   * @date 06.02.2025
+   * Method that activates the action of the tile.
+   *
+   * @param player The player that lands on the tile.
+   *
+   * @Author Sigveer, Ingve
+   * @Date: 06.02.2025
+   * @Version: 1.0
    */
   public void activate(Player player) {
     if (action != null) {
@@ -42,47 +38,69 @@ public class Player {
   }
 
   /**
-   * Getter-method
+   * Getter-method for Name
+   *
    * @return name-variable
-   * @author Ingve
-   * @date 06.02.2025
+   *
+   * @Author Ingve
+   * @Date: 06.02.2025
+   * @Version: 1.0
    */
   public String getName(){
     return name;
   }
 
+
   /**
-   * Getter-method
+   * Getter-method for ID
+   *
    * @return ID-variable
-   * @author Ingve
-   * @date 06.02.2025
+   *
+   * @Author Ingve
+   * @Date: 06.02.2025
+   * @Version: 1.0
    */
   public int getID(){
     return ID;
   }
 
+
   /**
-   * Getter-method
+   * Getter-method for Position
+   *
    * @return position-variable
-   * @author Ingve
-   * @date 06.02.2025
+   *
+   * @Author Ingve
+   * @Date: 06.02.2025
+   * @Version: 1.0
    */
   public int getPosition(){
     return position;
   }
 
+
   /**
-   * Setter-method setting the position-variable
+   * Setter-method for Position
    *
-   * @param position of the player
+   * @param position-variable
+   *
+   * @Author Ingve
+   * @Date: 06.02.2025
+   * @Version: 1.0
    */
   public void setPosition(int position){
     this.position = position;
   }
 
+
   /**
-   * Setter-method setting the action-variable
-   * @param action of the player
+   * Setter-method for Action
+   *
+   * @param action-variable
+   *
+   * @Author Ingve
+   * @Date: 06.02.2025
+   * @Version: 1.0
    */
   public void setAction(TileAction action) {
     this.action = action;
