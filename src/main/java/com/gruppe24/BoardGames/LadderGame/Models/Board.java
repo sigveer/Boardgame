@@ -2,6 +2,7 @@ package com.gruppe24.BoardGames.LadderGame.Models;
 
 import com.gruppe24.BoardGames.LadderGame.Core.NormalTile;
 import com.gruppe24.BoardGames.LadderGame.Core.Tile;
+import com.gruppe24.BoardGames.LadderGame.Core.TileAction;
 import com.gruppe24.Utils.Steps;
 import java.util.HashMap;
 
@@ -82,6 +83,36 @@ public class Board {
   }
 
 
+  /**
+   * Method that handles the action of a tile.
+   *
+   * @param player the player
+   * @param newPosition the new position of the player
+   *
+   * @Author Sigveer, Ingve
+   * @Date: 12.02.2025
+   * @Version: 1.0
+   */
+  public static void handleTileAction(Player player, int newPosition) {
+    Board board = new Board(); // new board instance to access non-static methods
+    Tile currentTile = board.getTile(newPosition);
+    if (currentTile instanceof TileAction) {
+      ((TileAction) currentTile).perform(player);
+    }
+  }
+
+
+  /**
+   * Method that checks if a player has won the game.
+   *
+   * @param p the player
+   * @param newPosition the new position of the player
+   * @return true if the player has won, false otherwise
+   *
+   * @Author Sigveer, Ingve
+   * @Date: 12.02.2025
+   * @Version: 1.0
+   */
   public boolean checkAndHandleWin(Player p, int newPosition) {
     if (newPosition > 100) {
       int overshoot = newPosition - 100;
@@ -96,5 +127,6 @@ public class Board {
     }
     return false;
   }
+
 
 }

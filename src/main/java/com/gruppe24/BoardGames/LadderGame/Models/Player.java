@@ -2,6 +2,8 @@ package com.gruppe24.BoardGames.LadderGame.Models;
 
 import com.gruppe24.BoardGames.LadderGame.Core.Tile;
 import com.gruppe24.BoardGames.LadderGame.Core.TileAction;
+import com.gruppe24.BoardGames.LadderGame.LadderGame;
+import com.gruppe24.Utils.Steps;
 
 /**
  * Class that represents players
@@ -11,13 +13,14 @@ public class Player {
   //attributes
   private final String name;
   private final int ID;
+  private static int nextID = 1;
   public int position;
+  private static final Dice dice = new Dice(2);
 
   //constructor
   public Player(String name){
     this.name = name;
     this.position = 0;
-    int nextID = 1;
     this.ID = nextID++; //Is this working?
   }
 
@@ -28,6 +31,43 @@ public class Player {
       actionTile.perform(this);
     }
   }
+
+  /**
+   * Method that handles the player's turn.
+   *
+   * @param p Player
+   *
+   * @Author Sigveer, Ingve
+   * @Date: 06.02.2025
+   * @Version: 1.0
+   */
+  public void handlePlayerTurn(Player p) {
+    System.out.println(p.getName() + " is on tile " + p.getPosition());
+
+    Steps.pressEnterToContinue();
+
+    int sumDice = dice.rollSum();
+    System.out.println(p.getName() + " rolled " + sumDice);
+    movePlayer(p, sumDice);
+  }
+
+
+  /**
+   * Method that moves the player.
+   *
+   * @param p Player
+   * @param sumDice the sum of the dice
+   *
+   * @Author Sigveer, Ingve
+   * @Date: 06.02.2025
+   * @Version: 1.0
+   */
+  private void movePlayer(Player p, int sumDice) {
+    int newPosition = p.getPosition() + sumDice;
+    p.setPosition(newPosition);
+    Board.handleTileAction(this, newPosition);
+  }
+
 
   /**
    * Getter-method for Name
