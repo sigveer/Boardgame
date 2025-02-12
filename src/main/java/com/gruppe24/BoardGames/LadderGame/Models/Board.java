@@ -23,8 +23,8 @@ public class Board {
    * Constructor that initializes the ladders and snakes.
    *
    * @author Ingve, Sigveer
-   * @Version 1.0.0
    * @date 06.02.2025
+   * @Version 1.0
    */
   public Board(){
     initializeLadders();
@@ -37,8 +37,8 @@ public class Board {
    * Method that puts ladders at certain indexes in ladders-hashMap.
    *
    * @author Ingve, Sigveer
-   * @Version 1.0.0
    * @date 06.02.2025
+   * @Version 1.0
    */
   public void initializeLadders(){
     ladders.put(2, 39);
@@ -52,8 +52,8 @@ public class Board {
    * Method that puts snakes at certain indexes in ladders-hashMap.
    *
    * @author Ingve, Sigveer
-   * @Version 1.0.0
    * @date 06.02.2025
+   * @Version 1.0
    */
   public void initializeSnakes(){
     snakes.put(98, 80);
@@ -70,8 +70,8 @@ public class Board {
    * @return the tile at the position
    *
    * @author Ingve
-   * @Version 1.0.0
    * @date 06.02.2025
+   * @Version 1.0
    */
   public Tile getTile(int position) {
     if (ladders.containsKey(position)) {

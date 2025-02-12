@@ -57,6 +57,12 @@ public class LadderGame {
     System.out.println("Players are ready to play!");
   }
 
+  public void showPlayerPosition() {
+    for (Player player : players) {
+      System.out.println(player.getName() + " is on tile " + player.getPosition());
+    }
+  }
+
 
   /**
    * Method that starts the game.
@@ -67,6 +73,8 @@ public class LadderGame {
    */
   public void play() {
     boolean gameOver = false;
+
+    showPlayerPosition();
 
     while (!gameOver) {
       for (Player p : players) {

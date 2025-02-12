@@ -2,7 +2,6 @@ package com.gruppe24.BoardGames.LadderGame.Models;
 
 import com.gruppe24.BoardGames.LadderGame.Core.Tile;
 import com.gruppe24.BoardGames.LadderGame.Core.TileAction;
-import com.gruppe24.BoardGames.LadderGame.LadderGame;
 import com.gruppe24.Utils.Steps;
 
 /**
@@ -42,13 +41,11 @@ public class Player {
    * @Version: 1.0
    */
   public void handlePlayerTurn(Player p) {
-    System.out.println(p.getName() + " is on tile " + p.getPosition());
-
     Steps.pressEnterToContinue();
-
     int sumDice = dice.rollSum();
     System.out.println(p.getName() + " rolled " + sumDice);
     movePlayer(p, sumDice);
+    System.out.println(p.getName() + " is now on tile " + p.getPosition());
   }
 
 
