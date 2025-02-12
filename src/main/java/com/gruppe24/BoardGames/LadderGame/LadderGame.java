@@ -1,11 +1,7 @@
 package com.gruppe24.BoardGames.LadderGame;
 
 import com.gruppe24.BoardGames.LadderGame.Models.Board;
-import com.gruppe24.BoardGames.LadderGame.Models.Dice;
 import com.gruppe24.BoardGames.LadderGame.Models.Player;
-import com.gruppe24.BoardGames.LadderGame.Core.Tile;
-import com.gruppe24.BoardGames.LadderGame.Core.TileAction;
-import com.gruppe24.Utils.Steps;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -23,14 +19,12 @@ public class LadderGame {
   Scanner myScanner = new Scanner(System.in);
 
   //attributes
-  private final Board board;
-  private final Dice dice;
+  private static Board board;
   private final List<Player> players;
 
   //constructor
   public LadderGame() {
-    this.board = new Board();
-    this.dice = new Dice(2);
+    board = new Board();
     this.players = new ArrayList<>();
   }
 
@@ -43,7 +37,7 @@ public class LadderGame {
    * @Date: 06.02.2025
    * @Version: 1.0
    */
-  public void setUp() {
+  public void setUpPlayers() {
     int numberOfPlayers = 0;
     while (numberOfPlayers < 1 || numberOfPlayers > 4) {
       System.out.println("How many players? (1-4)");
@@ -63,7 +57,6 @@ public class LadderGame {
     System.out.println("Players are ready to play!");
   }
 
-
   /**
    * Method that starts the game.
    *
@@ -72,30 +65,12 @@ public class LadderGame {
    * @Version: 1.0
    */
   public void play() {
-
     boolean gameOver = false;
-
     while (!gameOver) {
-      for (Player p : players) {
-        System.out.println(p.getName() + " is on tile " + p.getPosition());
-
-        Steps.pressEnterToContinue();
-
-        int sumDice = dice.rollSum();
-        System.out.println(p.getName() + " rolled " + sumDice);
-        int newPosition = p.getPosition() + sumDice;
-        p.setPosition(newPosition);
-
-        Tile currentTile = board.getTile(newPosition);
-        if (currentTile instanceof TileAction) {
-          ((TileAction) currentTile).perform(p);
-        }
-
-        if (newPosition >= 100) {
+      for (Player player : players) {
+        player.handlePlayerTurn();
+        if (board.checkAndHandleWin(player, player.getPosition())) {
           gameOver = true;
-          System.out.println(p.getName() + " won the game!");
-
-          Steps.pressEnterToContinue();
           break;
         }
       }

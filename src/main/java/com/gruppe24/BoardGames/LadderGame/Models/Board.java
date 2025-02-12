@@ -2,6 +2,8 @@ package com.gruppe24.BoardGames.LadderGame.Models;
 
 import com.gruppe24.BoardGames.LadderGame.Core.NormalTile;
 import com.gruppe24.BoardGames.LadderGame.Core.Tile;
+import com.gruppe24.BoardGames.LadderGame.Core.TileAction;
+import com.gruppe24.Utils.Steps;
 import java.util.HashMap;
 
 /**
@@ -21,8 +23,8 @@ public class Board {
    * Constructor that initializes the ladders and snakes.
    *
    * @author Ingve, Sigveer
-   * @Version 1.0.0
    * @date 06.02.2025
+   * @Version 1.0
    */
   public Board(){
     initializeLadders();
@@ -35,8 +37,8 @@ public class Board {
    * Method that puts ladders at certain indexes in ladders-hashMap.
    *
    * @author Ingve, Sigveer
-   * @Version 1.0.0
    * @date 06.02.2025
+   * @Version 1.0
    */
   public void initializeLadders(){
     ladders.put(2, 39);
@@ -50,8 +52,8 @@ public class Board {
    * Method that puts snakes at certain indexes in ladders-hashMap.
    *
    * @author Ingve, Sigveer
-   * @Version 1.0.0
    * @date 06.02.2025
+   * @Version 1.0
    */
   public void initializeSnakes(){
     snakes.put(98, 80);
@@ -68,8 +70,8 @@ public class Board {
    * @return the tile at the position
    *
    * @author Ingve
-   * @Version 1.0.0
    * @date 06.02.2025
+   * @Version 1.0
    */
   public Tile getTile(int position) {
     if (ladders.containsKey(position)) {
@@ -79,4 +81,52 @@ public class Board {
     }
     return new NormalTile(position);
   }
+
+
+  /**
+   * Method that handles the action of a tile.
+   *
+   * @param player the player
+   * @param newPosition the new position of the player
+   *
+   * @Author Sigveer, Ingve
+   * @Date: 12.02.2025
+   * @Version: 1.0
+   */
+  public static void handleTileAction(Player player, int newPosition) {
+    Board board = new Board(); // new board instance to access non-static methods
+    Tile currentTile = board.getTile(newPosition);
+    if (currentTile instanceof TileAction) {
+      ((TileAction) currentTile).perform(player);
+    }
+  }
+
+
+  /**
+   * Method that checks if a player has won the game.
+   *
+   * @param p the player
+   * @param newPosition the new position of the player
+   * @return true if the player has won, false otherwise
+   *
+   * @Author Sigveer, Ingve
+   * @Date: 12.02.2025
+   * @Version: 1.0
+   */
+  public boolean checkAndHandleWin(Player p, int newPosition) {
+    if (newPosition > 100) {
+      int overshoot = newPosition - 100;
+      newPosition = 100 - overshoot;
+      p.setPosition(newPosition);
+    }
+
+    if (newPosition == 100) {
+      System.out.println(p.getName() + " won the game!");
+      Steps.pressEnterToContinue();
+      return true;
+    }
+    return false;
+  }
+
+
 }
