@@ -37,7 +37,7 @@ public class LadderGame {
    * @Date: 06.02.2025
    * @Version: 1.0
    */
-  public void setUp() {
+  public void setUpPlayers() {
     int numberOfPlayers = 0;
     while (numberOfPlayers < 1 || numberOfPlayers > 4) {
       System.out.println("How many players? (1-4)");
@@ -57,13 +57,6 @@ public class LadderGame {
     System.out.println("Players are ready to play!");
   }
 
-  public void showPlayerPosition() {
-    for (Player player : players) {
-      System.out.println(player.getName() + " is on tile " + player.getPosition());
-    }
-  }
-
-
   /**
    * Method that starts the game.
    *
@@ -73,13 +66,10 @@ public class LadderGame {
    */
   public void play() {
     boolean gameOver = false;
-
-    showPlayerPosition();
-
     while (!gameOver) {
-      for (Player p : players) {
-        p.handlePlayerTurn(p);
-        if (board.checkAndHandleWin(p, p.getPosition())) {
+      for (Player player : players) {
+        player.handlePlayerTurn();
+        if (board.checkAndHandleWin(player, player.getPosition())) {
           gameOver = true;
           break;
         }

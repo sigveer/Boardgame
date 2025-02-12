@@ -26,7 +26,7 @@ public class MainMenu {
         case 1 -> {
           System.out.println("Starting Ladder Game...");
           LadderGame ladderGame = new LadderGame();
-          ladderGame.setUp();
+          ladderGame.setUpPlayers();
           ladderGame.play();
         }
 

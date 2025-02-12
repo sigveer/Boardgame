@@ -14,13 +14,14 @@ public class Player {
   private final int ID;
   private static int nextID = 1;
   public int position;
-  private static final Dice dice = new Dice(2);
+  private final Dice dice;
 
   //constructor
   public Player(String name){
     this.name = name;
     this.position = 0;
     this.ID = nextID++; //Is this working?
+    this.dice = new Dice(2);
   }
 
 
@@ -34,34 +35,31 @@ public class Player {
   /**
    * Method that handles the player's turn.
    *
-   * @param p Player
-   *
    * @Author Sigveer, Ingve
    * @Date: 06.02.2025
    * @Version: 1.0
    */
-  public void handlePlayerTurn(Player p) {
+  public void handlePlayerTurn() {
     Steps.pressEnterToContinue();
     int sumDice = dice.rollSum();
-    System.out.println(p.getName() + " rolled " + sumDice);
-    movePlayer(p, sumDice);
-    System.out.println(p.getName() + " is now on tile " + p.getPosition());
+    System.out.println(this.getName() + " rolled " + sumDice);
+    movePlayer(sumDice);
+    System.out.println(this.getName() + " is now on tile " + this.getPosition());
   }
 
 
   /**
    * Method that moves the player.
    *
-   * @param p Player
    * @param sumDice the sum of the dice
    *
    * @Author Sigveer, Ingve
    * @Date: 06.02.2025
    * @Version: 1.0
    */
-  private void movePlayer(Player p, int sumDice) {
-    int newPosition = p.getPosition() + sumDice;
-    p.setPosition(newPosition);
+  private void movePlayer(int sumDice) {
+    int newPosition = this.getPosition() + sumDice;
+    this.setPosition(newPosition);
     Board.handleTileAction(this, newPosition);
   }
 
