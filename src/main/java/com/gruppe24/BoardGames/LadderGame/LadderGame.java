@@ -91,11 +91,8 @@ public class LadderGame {
           ((TileAction) currentTile).perform(p);
         }
 
-        if (newPosition >= 100) {
+        if (board.checkAndHandleWin(p, newPosition)) {
           gameOver = true;
-          System.out.println(p.getName() + " won the game!");
-
-          Steps.pressEnterToContinue();
           break;
         }
       }

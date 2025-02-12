@@ -2,6 +2,7 @@ package com.gruppe24.BoardGames.LadderGame.Models;
 
 import com.gruppe24.BoardGames.LadderGame.Core.NormalTile;
 import com.gruppe24.BoardGames.LadderGame.Core.Tile;
+import com.gruppe24.Utils.Steps;
 import java.util.HashMap;
 
 /**
@@ -79,4 +80,21 @@ public class Board {
     }
     return new NormalTile(position);
   }
+
+
+  public boolean checkAndHandleWin(Player p, int newPosition) {
+    if (newPosition > 100) {
+      int overshoot = newPosition - 100;
+      newPosition = 100 - overshoot;
+      p.setPosition(newPosition);
+    }
+
+    if (newPosition == 100) {
+      System.out.println(p.getName() + " won the game!");
+      Steps.pressEnterToContinue();
+      return true;
+    }
+    return false;
+  }
+
 }
