@@ -1,6 +1,7 @@
 package com.gruppe24.BoardGames.LadderGame.Models;
 
-import com.gruppe24.BoardGames.LadderGame.TileAction;
+import com.gruppe24.BoardGames.LadderGame.Core.Tile;
+import com.gruppe24.BoardGames.LadderGame.Core.TileAction;
 
 /**
  * Class that represents players
@@ -8,32 +9,23 @@ import com.gruppe24.BoardGames.LadderGame.TileAction;
 public class Player {
 
   //attributes
-  private String name;
-  private int ID;
+  private final String name;
+  private final int ID;
   public int position;
-  public TileAction action;
 
   //constructor
   public Player(String name){
     this.name = name;
     this.position = 0;
-    this.ID++; //Is this working?
+    int nextID = 1;
+    this.ID = nextID++; //Is this working?
   }
 
 
   //methods
-  /**
-   * Method that activates the action of the tile.
-   *
-   * @param player The player that lands on the tile.
-   *
-   * @Author Sigveer, Ingve
-   * @Date: 06.02.2025
-   * @Version: 1.0
-   */
-  public void activate(Player player) {
-    if (action != null) {
-      action.perform(player);
+  public void landOnTile(Tile tile) {
+    if (tile instanceof TileAction actionTile) {
+      actionTile.perform(this);
     }
   }
 
@@ -91,19 +83,4 @@ public class Player {
   public void setPosition(int position){
     this.position = position;
   }
-
-
-  /**
-   * Setter-method for Action
-   *
-   * @param action-variable
-   *
-   * @Author Ingve
-   * @Date: 06.02.2025
-   * @Version: 1.0
-   */
-  public void setAction(TileAction action) {
-    this.action = action;
-  }
-
 }

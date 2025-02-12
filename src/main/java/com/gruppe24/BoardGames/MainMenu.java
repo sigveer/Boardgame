@@ -1,6 +1,6 @@
 package com.gruppe24.BoardGames;
 
-import com.gruppe24.BoardGames.LadderGame.Game;
+import com.gruppe24.BoardGames.LadderGame.LadderGame;
 import com.gruppe24.Utils.Validators;
 
 /**
@@ -25,9 +25,9 @@ public class MainMenu {
       switch (choice) {
         case 1 -> {
           System.out.println("Starting Ladder Game...");
-          Game game = new Game();
-          game.setUp();
-          game.play();
+          LadderGame ladderGame = new LadderGame();
+          ladderGame.setUp();
+          ladderGame.play();
         }
 
         case 2 -> System.out.println("Starting Example Game..."); //Example, remove later with display method
