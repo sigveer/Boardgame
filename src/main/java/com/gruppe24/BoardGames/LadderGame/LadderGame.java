@@ -2,6 +2,7 @@ package com.gruppe24.BoardGames.LadderGame;
 
 import com.gruppe24.BoardGames.LadderGame.Models.Board;
 import com.gruppe24.BoardGames.LadderGame.Models.Player;
+import com.gruppe24.Utils.Validators;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -41,13 +42,12 @@ public class LadderGame {
     int numberOfPlayers = 0;
     while (numberOfPlayers < 1 || numberOfPlayers > 4) {
       System.out.println("How many players? (1-4)");
-      numberOfPlayers = myScanner.nextInt();
+      numberOfPlayers = Validators.promptInt("");
       if (numberOfPlayers < 1 || numberOfPlayers > 4) {
         System.out.println("ERROR: Number of players must be between 1 and 4.");
       }
     }
 
-    myScanner.nextLine();
     for (int i = 1; i <= numberOfPlayers; i++) {
       System.out.println("Name of player " + i + ": ");
       String name = myScanner.nextLine();

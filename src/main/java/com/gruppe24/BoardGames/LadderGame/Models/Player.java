@@ -9,6 +9,8 @@ import com.gruppe24.Utils.Steps;
   */
 public class Player {
 
+  Board board = new Board();
+
   //attributes
   private final String name;
   private final int ID;
@@ -42,11 +44,12 @@ public class Player {
   public void handlePlayerTurn() {
     Steps.pressEnterToContinue();
     int sumDice = dice.rollSum();
-    System.out.println(this.getName() + " rolled " + sumDice);
+
     movePlayer(sumDice);
+
+    System.out.println(this.getName() + " rolled " + sumDice);
     System.out.println(this.getName() + " is now on tile " + this.getPosition());
   }
-
 
   /**
    * Method that moves the player.
@@ -59,8 +62,9 @@ public class Player {
    */
   private void movePlayer(int sumDice) {
     int newPosition = this.getPosition() + sumDice;
+    newPosition = board.handleOvershoot(newPosition);
     this.setPosition(newPosition);
-    Board.handleTileAction(this, newPosition);
+    board.handleTileAction(this, newPosition);
   }
 
 
@@ -102,7 +106,7 @@ public class Player {
    * @Version: 1.0
    */
   public int getPosition(){
-    return position;
+    return this.position;
   }
 
 
