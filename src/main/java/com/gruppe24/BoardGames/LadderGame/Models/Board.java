@@ -42,10 +42,13 @@ public class Board {
    */
   public void initializeLadders(){
     ladders.put(2, 39);
-    ladders.put(3, 11);
-    ladders.put(21, 49);
-    ladders.put(30, 60);
-    ladders.put(83, 85);
+    ladders.put(5, 25);
+    ladders.put(12, 28);
+    ladders.put(22, 77);
+    ladders.put(35, 55);
+    ladders.put(45, 90);
+    ladders.put(50, 70);
+    ladders.put(65, 85);
   }
 
   /**
@@ -56,11 +59,15 @@ public class Board {
    * @Version 1.0
    */
   public void initializeSnakes(){
-    snakes.put(98, 80);
-    snakes.put(44, 36);
+    snakes.put(16, 6);
+    snakes.put(33, 20);
     snakes.put(42, 21);
-    snakes.put(14, 4);
-    snakes.put(38, 1);
+    snakes.put(47, 30);
+    snakes.put(60, 10);
+    snakes.put(68, 52);
+    snakes.put(75, 25);
+    snakes.put(88, 72);
+    snakes.put(99, 40);
   }
 
   /**
@@ -83,6 +90,8 @@ public class Board {
   }
 
 
+  // FOLLOWING CLASSES COMPRISE OF GAME-RULES
+
   /**
    * Method that handles the action of a tile.
    *
@@ -93,7 +102,7 @@ public class Board {
    * @Date: 12.02.2025
    * @Version: 1.0
    */
-  public static void handleTileAction(Player player, int newPosition) {
+  public void handleTileAction(Player player, int newPosition) {
     Board board = new Board(); // new board instance to access non-static methods
     Tile currentTile = board.getTile(newPosition);
     if (currentTile instanceof TileAction) {
@@ -114,12 +123,6 @@ public class Board {
    * @Version: 1.0
    */
   public boolean checkAndHandleWin(Player p, int newPosition) {
-    if (newPosition > 100) {
-      int overshoot = newPosition - 100;
-      newPosition = 100 - overshoot;
-      p.setPosition(newPosition);
-    }
-
     if (newPosition == 100) {
       System.out.println(p.getName() + " won the game!");
       Steps.pressEnterToContinue();
@@ -127,6 +130,15 @@ public class Board {
     }
     return false;
   }
+
+  public int handleOvershoot(int newPosition) {
+    if (newPosition > 100) {
+      int overshoot = newPosition - 100;
+      newPosition = 100 - overshoot;
+    }
+    return newPosition;
+  }
+
 
 
 }
