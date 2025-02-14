@@ -125,12 +125,22 @@ public class Board {
   public boolean checkAndHandleWin(Player p, int newPosition) {
     if (newPosition == 100) {
       System.out.println(p.getName() + " won the game!");
-      Steps.pressEnterToContinue();
       return true;
     }
     return false;
   }
 
+
+  /**
+   * Method that handles overshoot of the player.
+   *
+   * @param newPosition the new position of the player
+   * @return the new position of the player
+   *
+   * @Author Sigveer
+   * @Date: 12.02.2025
+   * @Version: 1.0
+   */
   public int handleOvershoot(int newPosition) {
     if (newPosition > 100) {
       int overshoot = newPosition - 100;
