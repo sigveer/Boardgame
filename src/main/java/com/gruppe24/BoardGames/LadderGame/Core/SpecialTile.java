@@ -24,9 +24,4 @@ public abstract class SpecialTile implements TileAction {
     this.position = position;
   }
 
-  public int getPosition() {
-    return position;
-  }
-
-
 }

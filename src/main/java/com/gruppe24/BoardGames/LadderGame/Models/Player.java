@@ -28,12 +28,6 @@ public class Player {
 
 
   //methods
-  public void landOnTile(NormalTile normalTile) {
-    if (normalTile instanceof TileAction actionTile) {
-      actionTile.perform(this);
-    }
-  }
-
   /**
    * Method that handles the player's turn.
    *
@@ -60,7 +54,7 @@ public class Player {
    * @Date: 06.02.2025
    * @Version: 1.0
    */
-  private void movePlayer(int sumDice) {
+  public void movePlayer(int sumDice) {
     int newPosition = this.getPosition() + sumDice;
     newPosition = board.handleOvershoot(newPosition);
     this.setPosition(newPosition);

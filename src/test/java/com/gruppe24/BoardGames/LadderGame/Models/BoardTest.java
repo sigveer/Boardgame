@@ -2,8 +2,6 @@ package com.gruppe24.BoardGames.LadderGame.Models;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import com.gruppe24.BoardGames.LadderGame.Core.NormalTile;
-import com.gruppe24.BoardGames.LadderGame.Core.Tile;
 import com.gruppe24.BoardGames.LadderGame.Core.TileAction;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -34,10 +32,8 @@ class BoardTest {
    */
   @Test
   void getNormalTile() {
-    Tile tile = board.getTile(1);
-    assertNotNull(tile);
-    assertInstanceOf(NormalTile.class, tile);
-    assertEquals(1, tile.getPosition());
+    TileAction tile = board.checkTileTypeAtPosition(1);
+    assertInstanceOf(Tile.class, tile);
   }
 
 
@@ -46,10 +42,8 @@ class BoardTest {
    */
   @Test
   void getLadderTile() {
-  Tile tile = board.getTile(2);
-  assertNotNull(tile);
-  assertInstanceOf(TileAction.class, tile);
-  assertEquals(2, tile.getPosition());
+    TileAction tile = board.checkTileTypeAtPosition(2);
+    assertInstanceOf(LadderTile.class, tile);
   }
 
 
@@ -58,10 +52,8 @@ class BoardTest {
    */
   @Test
   void getSnakeTile() {
-  Tile tile = board.getTile(16);
-  assertNotNull(tile);
-  assertInstanceOf(TileAction.class, tile);
-  assertEquals(16, tile.getPosition());
+    TileAction tile = board.checkTileTypeAtPosition(16);
+    assertInstanceOf(SnakeTile.class, tile);
   }
 
 
