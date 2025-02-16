@@ -1,7 +1,5 @@
 package com.gruppe24.BoardGames.LadderGame.Models;
 
-import com.gruppe24.BoardGames.LadderGame.Core.Tile;
-import com.gruppe24.BoardGames.LadderGame.Core.TileAction;
 import com.gruppe24.Utils.Steps;
 
 /**
@@ -54,7 +52,7 @@ public class Player {
    * @Date: 06.02.2025
    * @Version: 1.0
    */
-  private void movePlayer(int sumDice) {
+  public void movePlayer(int sumDice) {
     int newPosition = this.getPosition() + sumDice;
     newPosition = board.handleOvershoot(newPosition);
     this.setPosition(newPosition);
