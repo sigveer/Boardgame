@@ -69,7 +69,17 @@ public class Board {
   }
 
 
-
+  /**
+   * Method that checks the tile type at a certain position.
+   *
+   *
+   * @param position the position to check
+   * @return the tile action at the position
+   *
+   * @Author Ingve, Sigveer
+   * @Date: 16.02.2025
+   * @Version: 1.0
+   */
   public TileAction checkTileTypeAtPosition(int position) {
     if (ladders.containsKey(position)) {
       return new LadderTile(position, ladders.get(position));
@@ -81,6 +91,16 @@ public class Board {
   }
 
 
+  /**
+   * Method that handles the action of a tile.
+   *
+   * @param player the player
+   * @param newPosition the new position of the player
+   *
+   * @Author Sigveer, Ingve
+   * @Date: 16.02.2025
+   * @Version: 1.0
+   */
   public void handleTileAction(Player player, int newPosition) {
    TileAction tile = checkTileTypeAtPosition(newPosition);
    tile.perform(player);

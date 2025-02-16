@@ -1,11 +1,11 @@
 package com.gruppe24;
 
-import com.gruppe24.BoardGames.MainMenu;
+import com.gruppe24.BoardGames.Menu;
 
 
 public class Main{
   public static void main(String[] args) {
-    MainMenu menu = new MainMenu();
+    Menu menu = new Menu();
     menu.start();
   }
 }

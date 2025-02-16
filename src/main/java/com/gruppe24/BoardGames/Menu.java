@@ -6,7 +6,7 @@ import com.gruppe24.Utils.Validators;
 /**
  * Main menu for the game
  */
-public class MainMenu {
+public class Menu {
 
 
   /**
