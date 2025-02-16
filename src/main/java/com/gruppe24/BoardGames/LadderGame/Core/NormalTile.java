@@ -22,5 +22,9 @@ public abstract class NormalTile implements TileAction {
   public NormalTile(int position){
     this.position = position;
   }
+
+  public int getPosition() {
+    return position;
+  }
 }
 

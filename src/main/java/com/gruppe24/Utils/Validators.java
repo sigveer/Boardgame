@@ -24,32 +24,6 @@ public class Validators {
     return scanner;
   }
 
-
-  /**
-   * Edited by: Sigveer
-   * Version: 1.0
-   * Date: 31.01.2025
-   * Method for ensuring that value is a double
-   *
-   * @param prompt display the message to user for what to input
-   * @return the entered double value
-   */
-  public static double promptDouble(String prompt) {
-    double value;
-    while (true) {
-      System.out.print(prompt);
-      String input = getScanner().nextLine().trim();
-      try {
-        value = Double.parseDouble(input);
-        break;
-      } catch (NumberFormatException e) {
-        System.out.println("Invalid input. Please enter a valid number.");
-      }
-    }
-    return value;
-  }
-
-
   /**
    * Edited by: Sigveer
    * Version: 1.0

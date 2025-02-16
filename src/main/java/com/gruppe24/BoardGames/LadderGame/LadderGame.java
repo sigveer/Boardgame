@@ -2,6 +2,7 @@ package com.gruppe24.BoardGames.LadderGame;
 
 import com.gruppe24.BoardGames.LadderGame.Models.Board;
 import com.gruppe24.BoardGames.LadderGame.Models.Player;
+import com.gruppe24.Utils.Steps;
 import com.gruppe24.Utils.Validators;
 import java.util.ArrayList;
 import java.util.List;
@@ -71,6 +72,7 @@ public class LadderGame {
         player.handlePlayerTurn();
         if (board.checkAndHandleWin(player, player.getPosition())) {
           gameOver = true;
+          Steps.pressEnterToContinue();
           break;
         }
       }
