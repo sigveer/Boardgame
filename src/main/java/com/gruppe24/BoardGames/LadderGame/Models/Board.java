@@ -1,7 +1,6 @@
 package com.gruppe24.BoardGames.LadderGame.Models;
 
 import com.gruppe24.BoardGames.LadderGame.Core.TileAction;
-import com.gruppe24.Utils.Steps;
 import java.util.HashMap;
 
 /**

@@ -13,7 +13,7 @@ public abstract class NormalTile implements TileAction {
   /**
    * Constructor that initializes the normal tile.
    *
-   * @param position
+   * @param position The position of the tile on the board.
    *
    * @Author Sigveer, Ingve
    * @Date: 16.02.2025

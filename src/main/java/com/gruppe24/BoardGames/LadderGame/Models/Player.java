@@ -1,7 +1,5 @@
 package com.gruppe24.BoardGames.LadderGame.Models;
 
-import com.gruppe24.BoardGames.LadderGame.Core.NormalTile;
-import com.gruppe24.BoardGames.LadderGame.Core.TileAction;
 import com.gruppe24.Utils.Steps;
 
 /**
@@ -13,8 +11,6 @@ public class Player {
 
   //attributes
   private final String name;
-  private final int ID;
-  private static int nextID = 1;
   public int position;
   private final Dice dice;
 
@@ -22,7 +18,6 @@ public class Player {
   public Player(String name){
     this.name = name;
     this.position = 0;
-    this.ID = nextID++; //Is this working?
     this.dice = new Dice(2);
   }
 
