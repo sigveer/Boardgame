@@ -16,8 +16,8 @@ public abstract class SpecialTile implements TileAction {
    *
    * @param position The position of the tile.
    *
-   * @Author Sigveer
-   * @Date: 07.02.2025
+   * @Author Sigveer, Ingve
+   * @Date: 16.02.2025
    * @Version: 1.0
    */
   public SpecialTile(int position) {

@@ -125,6 +125,4 @@ public class Board {
     return newPosition;
   }
 
-
-
 }

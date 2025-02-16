@@ -28,6 +28,7 @@ public class Player {
 
 
   //methods
+
   /**
    * Method that handles the player's turn.
    *
