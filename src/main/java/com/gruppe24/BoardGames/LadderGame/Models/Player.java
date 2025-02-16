@@ -28,12 +28,6 @@ public class Player {
 
 
   //methods
-  public void landOnTile(Tile tile) {
-    if (tile instanceof TileAction actionTile) {
-      actionTile.perform(this);
-    }
-  }
-
   /**
    * Method that handles the player's turn.
    *
