@@ -1,7 +1,5 @@
 package com.gruppe24.BoardGames.LadderGame.Models;
 
-import com.gruppe24.BoardGames.LadderGame.Core.NormalTile;
-import com.gruppe24.BoardGames.LadderGame.Core.Tile;
 import com.gruppe24.BoardGames.LadderGame.Core.TileAction;
 import com.gruppe24.Utils.Steps;
 import java.util.HashMap;
@@ -70,44 +68,22 @@ public class Board {
     snakes.put(99, 40);
   }
 
-  /**
-   * Method that returns the tile at a certain position.
-   *
-   * @param position of the tile
-   * @return the tile at the position
-   *
-   * @author Ingve
-   * @date 06.02.2025
-   * @Version 1.0
-   */
-  public Tile getTile(int position) {
+
+
+  public TileAction checkTileTypeAtPosition(int position) {
     if (ladders.containsKey(position)) {
       return new LadderTile(position, ladders.get(position));
     } else if (snakes.containsKey(position)) {
       return new SnakeTile(position, snakes.get(position));
+    } else {
+      return new Tile(position); // Normal tile
     }
-    return new NormalTile(position);
   }
 
 
-  // FOLLOWING CLASSES COMPRISE OF GAME-RULES
-
-  /**
-   * Method that handles the action of a tile.
-   *
-   * @param player the player
-   * @param newPosition the new position of the player
-   *
-   * @Author Sigveer, Ingve
-   * @Date: 12.02.2025
-   * @Version: 1.0
-   */
   public void handleTileAction(Player player, int newPosition) {
-    Board board = new Board(); // new board instance to access non-static methods
-    Tile currentTile = board.getTile(newPosition);
-    if (currentTile instanceof TileAction) {
-      ((TileAction) currentTile).perform(player);
-    }
+   TileAction tile = checkTileTypeAtPosition(newPosition);
+   tile.perform(player);
   }
 
 

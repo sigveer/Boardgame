@@ -1,6 +1,6 @@
 package com.gruppe24.BoardGames.LadderGame.Models;
 
-import com.gruppe24.BoardGames.LadderGame.Core.Tile;
+import com.gruppe24.BoardGames.LadderGame.Core.NormalTile;
 import com.gruppe24.BoardGames.LadderGame.Core.TileAction;
 import com.gruppe24.Utils.Steps;
 
@@ -28,8 +28,8 @@ public class Player {
 
 
   //methods
-  public void landOnTile(Tile tile) {
-    if (tile instanceof TileAction actionTile) {
+  public void landOnTile(NormalTile normalTile) {
+    if (normalTile instanceof TileAction actionTile) {
       actionTile.perform(this);
     }
   }
@@ -81,19 +81,6 @@ public class Player {
     return name;
   }
 
-
-  /**
-   * Getter-method for ID
-   *
-   * @return ID-variable
-   *
-   * @Author Ingve
-   * @Date: 06.02.2025
-   * @Version: 1.0
-   */
-  public int getID(){
-    return ID;
-  }
 
 
   /**
