@@ -1,6 +1,5 @@
 package com.gruppe24.BoardGames.LadderGame.Models;
 
-import com.gruppe24.BoardGames.LadderGame.Core.TileAction;
 import java.util.HashMap;
 
 /**
@@ -67,81 +66,13 @@ public class Board {
     snakes.put(99, 40);
   }
 
-
-  /**
-   * Method that checks the tile type at a certain position.
-   *
-   *
-   * @param position the position to check
-   * @return the tile action at the position
-   *
-   * @Author Ingve, Sigveer
-   * @Date: 16.02.2025
-   * @Version: 1.0
-   */
-  public TileAction checkTileTypeAtPosition(int position) {
-    if (ladders.containsKey(position)) {
-      return new LadderTile(position, ladders.get(position));
-    } else if (snakes.containsKey(position)) {
-      return new SnakeTile(position, snakes.get(position));
-    } else {
-      return new Tile(position); // Normal tile
-    }
+  //--accessor-methods
+  public HashMap<Integer, Integer> getLadder(){
+    return this.ladders;
   }
 
-
-  /**
-   * Method that handles the action of a tile.
-   *
-   * @param player the player
-   * @param newPosition the new position of the player
-   *
-   * @Author Sigveer, Ingve
-   * @Date: 16.02.2025
-   * @Version: 1.0
-   */
-  public void handleTileAction(Player player, int newPosition) {
-   TileAction tile = checkTileTypeAtPosition(newPosition);
-   tile.perform(player);
-  }
-
-
-  /**
-   * Method that checks if a player has won the game.
-   *
-   * @param p the player
-   * @param newPosition the new position of the player
-   * @return true if the player has won, false otherwise
-   *
-   * @Author Sigveer, Ingve
-   * @Date: 12.02.2025
-   * @Version: 1.0
-   */
-  public boolean checkAndHandleWin(Player p, int newPosition) {
-    if (newPosition == 100) {
-      System.out.println(p.getName() + " won the game!");
-      return true;
-    }
-    return false;
-  }
-
-
-  /**
-   * Method that handles overshoot of the player.
-   *
-   * @param newPosition the new position of the player
-   * @return the new position of the player
-   *
-   * @Author Sigveer
-   * @Date: 12.02.2025
-   * @Version: 1.0
-   */
-  public int handleOvershoot(int newPosition) {
-    if (newPosition > 100) {
-      int overshoot = newPosition - 100;
-      newPosition = 100 - overshoot;
-    }
-    return newPosition;
+  public HashMap<Integer,Integer> getSnakes(){
+    return this.snakes;
   }
 
 }

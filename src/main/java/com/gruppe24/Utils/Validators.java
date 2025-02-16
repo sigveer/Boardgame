@@ -6,7 +6,6 @@ import java.util.Scanner;
  * Class containing utility methods for validating user input.
  */
 public class Validators {
-
   private static Scanner scanner;
 
   /**
@@ -22,6 +21,15 @@ public class Validators {
       scanner = new Scanner(System.in);
     }
     return scanner;
+  }
+
+  /**
+   * Scanner for string
+   *
+   * @return string
+   */
+  public static String scannerString(){
+    return scanner.nextLine();
   }
 
   /**
