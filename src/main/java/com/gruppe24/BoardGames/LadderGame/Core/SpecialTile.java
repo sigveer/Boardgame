@@ -1,9 +1,15 @@
 package com.gruppe24.BoardGames.LadderGame.Core;
 
+
 /**
  * Class representing a special tile.
  */
-public abstract class SpecialTile extends Tile implements TileAction {
+public abstract class SpecialTile implements TileAction {
+
+  // extended from Tile-superclass: Tile()
+  // implemented from TileAction-interface: perform()
+
+  private int position;
 
   /**
    * Constructor that initializes the special tile.
@@ -15,6 +21,12 @@ public abstract class SpecialTile extends Tile implements TileAction {
    * @Version: 1.0
    */
   public SpecialTile(int position) {
-    super(position);
+    this.position = position;
   }
+
+  public int getPosition() {
+    return position;
+  }
+
+
 }
