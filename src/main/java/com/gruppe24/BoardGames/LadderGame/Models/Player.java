@@ -1,5 +1,7 @@
 package com.gruppe24.BoardGames.LadderGame.Models;
 
+import com.gruppe24.BoardGames.LadderGame.Core.NormalTile;
+import com.gruppe24.BoardGames.LadderGame.Core.TileAction;
 import com.gruppe24.Utils.Steps;
 
 /**
@@ -26,6 +28,12 @@ public class Player {
 
 
   //methods
+  public void landOnTile(NormalTile normalTile) {
+    if (normalTile instanceof TileAction actionTile) {
+      actionTile.perform(this);
+    }
+  }
+
   /**
    * Method that handles the player's turn.
    *
@@ -52,7 +60,7 @@ public class Player {
    * @Date: 06.02.2025
    * @Version: 1.0
    */
-  public void movePlayer(int sumDice) {
+  private void movePlayer(int sumDice) {
     int newPosition = this.getPosition() + sumDice;
     newPosition = board.handleOvershoot(newPosition);
     this.setPosition(newPosition);
@@ -73,19 +81,6 @@ public class Player {
     return name;
   }
 
-
-  /**
-   * Getter-method for ID
-   *
-   * @return ID-variable
-   *
-   * @Author Ingve
-   * @Date: 06.02.2025
-   * @Version: 1.0
-   */
-  public int getID(){
-    return ID;
-  }
 
 
   /**
