@@ -1,4 +1,4 @@
-package com.gruppe24.BoardGames.LadderGame.Models;
+package com.gruppe24.BoardGames.LadderGame.Board;
 
 import java.util.HashMap;
 

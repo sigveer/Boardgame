@@ -1,6 +1,6 @@
-package com.gruppe24.BoardGames.LadderGame.Models;
+package com.gruppe24.BoardGames.LadderGame.Models.Tile;
 
-import com.gruppe24.BoardGames.LadderGame.Core.SpecialTile;
+import com.gruppe24.BoardGames.LadderGame.Models.Player;
 
 /**
  * Class representing a tile that is a ladder.

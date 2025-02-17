@@ -5,7 +5,7 @@ import java.util.Random;
 /**
  * Class representing a die.
  */
-public class Die {
+public class Die { //kan abstraktiseres
 
 
   //attributes

@@ -1,4 +1,4 @@
-package com.gruppe24.BoardGames.LadderGame.Core;
+package com.gruppe24.BoardGames.LadderGame.Models.Tile;
 
 /**
  * Abstract class representing a tile on the board.

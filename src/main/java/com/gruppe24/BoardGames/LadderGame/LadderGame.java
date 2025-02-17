@@ -1,6 +1,7 @@
 package com.gruppe24.BoardGames.LadderGame;
 
 import com.gruppe24.BoardGames.LadderGame.Models.Player;
+import com.gruppe24.BoardGames.LadderGame.Controllers.Controller;
 import com.gruppe24.Utils.Steps;
 import com.gruppe24.Utils.Validators;
 import java.util.ArrayList;

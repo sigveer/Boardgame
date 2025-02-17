@@ -1,12 +1,12 @@
-package com.gruppe24.BoardGames.LadderGame;
+package com.gruppe24.BoardGames.LadderGame.Controllers;
 
-import com.gruppe24.BoardGames.LadderGame.Core.TileAction;
-import com.gruppe24.BoardGames.LadderGame.Models.Board;
+import com.gruppe24.BoardGames.LadderGame.Models.Tile.TileAction;
+import com.gruppe24.BoardGames.LadderGame.Board.Board;
 import com.gruppe24.BoardGames.LadderGame.Models.Dice;
-import com.gruppe24.BoardGames.LadderGame.Models.LadderTile;
+import com.gruppe24.BoardGames.LadderGame.Models.Tile.LadderTile;
 import com.gruppe24.BoardGames.LadderGame.Models.Player;
-import com.gruppe24.BoardGames.LadderGame.Models.SnakeTile;
-import com.gruppe24.BoardGames.LadderGame.Models.Tile;
+import com.gruppe24.BoardGames.LadderGame.Models.Tile.SnakeTile;
+import com.gruppe24.BoardGames.LadderGame.Models.Tile.Tile;
 import com.gruppe24.Utils.Steps;
 
 public class Controller {
