@@ -1,10 +1,12 @@
 package com.gruppe24.BoardGames.LadderGame;
 
+import com.gruppe24.BoardGames.LadderGame.Models.Dice;
 import com.gruppe24.BoardGames.LadderGame.Models.Player;
 import com.gruppe24.BoardGames.LadderGame.Models.Tile.LadderTile;
 import com.gruppe24.BoardGames.LadderGame.Models.Tile.SnakeTile;
 import com.gruppe24.BoardGames.LadderGame.Models.Tile.Tile;
 import com.gruppe24.BoardGames.LadderGame.Models.Tile.TileAction;
+import com.gruppe24.Utils.Steps;
 import java.util.HashMap;
 
 /**
@@ -19,6 +21,11 @@ public class Board {
   //Attributes
   private final HashMap<Integer, Integer> ladders = new HashMap<>();
   private final HashMap<Integer, Integer> snakes = new HashMap<>();
+  private static final int WinCondition = 90;
+  private static final int Columns = 10;
+  private static final int Rows = 9;
+  private TileAction[] tiles;
+  private final Dice dice;
 
   /**
    * Constructor that initializes the ladders and snakes.
@@ -28,8 +35,9 @@ public class Board {
    * @Version 1.0
    */
   public Board(){
-    initializeLadders();
-    initializeSnakes();
+    this.dice = new Dice(2);
+    initializeLaddersAndSnake();
+    initializeTiles();
   }
 
   //methods
@@ -41,35 +49,43 @@ public class Board {
    * @date 06.02.2025
    * @Version 1.0
    */
-  public void initializeLadders(){
-    ladders.put(2, 39);
-    ladders.put(5, 25);
-    ladders.put(12, 28);
-    ladders.put(22, 77);
-    ladders.put(35, 55);
-    ladders.put(45, 90);
-    ladders.put(50, 70);
-    ladders.put(65, 85);
+  public void initializeLaddersAndSnake(){
+    ladders.put(3, 22);
+    ladders.put(8, 30);
+    ladders.put(28, 84);
+    ladders.put(58, 77);
+    ladders.put(75, 86);
+
+    snakes.put(17, 7);
+    snakes.put(54, 34);
+    snakes.put(62, 19);
+    snakes.put(64, 60);
+    snakes.put(87, 24);
   }
 
+
+
   /**
-   * Method that puts snakes at certain indexes in ladders-hashMap.
+   * Method that initializes the tiles.
    *
-   * @author Ingve, Sigveer
-   * @date 06.02.2025
-   * @Version 1.0
+   * @Author Sigveer, Ingve
+   * @Date: 19.02.2025
+   * @Version: 1.0
    */
-  public void initializeSnakes(){
-    snakes.put(16, 6);
-    snakes.put(33, 20);
-    snakes.put(42, 21);
-    snakes.put(47, 30);
-    snakes.put(60, 10);
-    snakes.put(68, 52);
-    snakes.put(75, 25);
-    snakes.put(88, 72);
-    snakes.put(99, 40);
+  private void initializeTiles() {
+    tiles = new TileAction[Columns * Rows];
+
+    for (int i = 1; i < Columns * Rows; i++) {
+      if (ladders.containsKey(i)) {
+        tiles[i] = new LadderTile(i, ladders.get(i));
+      } else if (snakes.containsKey(i)) {
+        tiles[i] = new SnakeTile(i, snakes.get(i));
+      } else {
+        tiles[i] = new Tile(i);
+      }
+    }
   }
+
 
   /**
    * Method that checks the tile type at a certain position.
@@ -83,10 +99,10 @@ public class Board {
    * @Version: 1.0
    */
   public TileAction checkTileTypeAtPosition(int position) {
-    if (getLadder().containsKey(position)) {
-      return new LadderTile(position, getLadder().get(position));
-    } else if (getSnakes().containsKey(position)) {
-      return new SnakeTile(position, getSnakes().get(position));
+    if (ladders.containsKey(position)) {
+      return new LadderTile(position, ladders.get(position));
+    } else if (snakes.containsKey(position)) {
+      return new SnakeTile(position, snakes.get(position));
     } else {
       return new Tile(position); // Normal tile
     }
@@ -104,8 +120,8 @@ public class Board {
    * @Version: 1.0
    */
   public void handleTileAction(Player player, int newPosition) {
-    TileAction tile = checkTileTypeAtPosition(newPosition);
-    tile.perform(player);
+    TileAction tileAction = checkTileTypeAtPosition(newPosition);
+    tileAction.perform(player);
   }
 
 
@@ -121,7 +137,7 @@ public class Board {
    * @Version: 1.0
    */
   public boolean checkAndHandleWin(Player p, int newPosition) {
-    if (newPosition == 100) {
+    if (newPosition == WinCondition) {
       System.out.println(p.getName() + " won the game!");
       return true;
     }
@@ -140,21 +156,46 @@ public class Board {
    * @Version: 1.0
    */
   public int handleOvershoot(int newPosition) {
-    if (newPosition > 100) {
-      int overshoot = newPosition - 100;
-      newPosition = 100 - overshoot;
+    if (newPosition > WinCondition) {
+      int overshoot = newPosition - WinCondition;
+      newPosition = WinCondition - overshoot;
     }
     return newPosition;
   }
 
 
-  //--accessor-methods
-  public HashMap<Integer, Integer> getLadder(){
-    return this.ladders;
+  /**
+   * Method that handles the player's turn.
+   *
+   * @Author Sigveer, Ingve
+   * @Date: 06.02.2025
+   * @Version: 1.0
+   */
+  public void handlePlayerTurn(Player player) {
+    Steps.pressEnterToContinue();
+    int sumDice = dice.rollSum();
+
+    movePlayer(player, sumDice);
+
+    System.out.println(player.getName() + " rolled " + sumDice);
+    System.out.println(player.getName() + " is now on tile " + player.getPosition());
   }
 
-  public HashMap<Integer,Integer> getSnakes(){
-    return this.snakes;
+  /**
+   * Method that moves the player.
+   *
+   * @param sumDice the sum of the dice
+   *
+   * @Author Sigveer, Ingve
+   * @Date: 06.02.2025
+   * @Version: 1.0
+   */
+  public void movePlayer(Player player, int sumDice) {
+    int newPosition = player.getPosition() + sumDice;
+    newPosition = handleOvershoot(newPosition);
+    player.setPosition(newPosition);
+    handleTileAction(player, newPosition);
   }
+
 
 }
