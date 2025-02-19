@@ -1,7 +1,7 @@
 package com.gruppe24.BoardGames.LadderGame;
 
+import com.gruppe24.BoardGames.LadderGame.Controllers.PlayerController;
 import com.gruppe24.BoardGames.LadderGame.Models.Player;
-import com.gruppe24.BoardGames.LadderGame.Controllers.Controller;
 import com.gruppe24.Utils.Steps;
 import com.gruppe24.Utils.Validators;
 import java.util.ArrayList;
@@ -19,12 +19,14 @@ public class LadderGame {
 
   //attributes
   private final List<Player> players;
-  private final Controller controller;
+  private final PlayerController playerController;
+  private final Board board;
 
   //constructor
   public LadderGame() {
     this.players = new ArrayList<>();
-    this.controller = new Controller();
+    this.playerController = new PlayerController();
+    this.board = new Board();
   }
 
   /**
@@ -64,8 +66,8 @@ public class LadderGame {
     boolean gameOver = false;
     while (!gameOver) {
       for (Player player : players) {
-        controller.handlePlayerTurn(player);
-        if (controller.checkAndHandleWin(player, player.getPosition())) {
+        playerController.handlePlayerTurn(player);
+        if (board.checkAndHandleWin(player, player.getPosition())) {
           gameOver = true;
           Steps.pressEnterToContinue();
           break;

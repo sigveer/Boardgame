@@ -6,7 +6,7 @@ import com.gruppe24.BoardGames.LadderGame.Models.Tile.LadderTile;
 import com.gruppe24.BoardGames.LadderGame.Models.Tile.SnakeTile;
 import com.gruppe24.BoardGames.LadderGame.Models.Tile.Tile;
 import com.gruppe24.BoardGames.LadderGame.Models.Tile.TileAction;
-import com.gruppe24.BoardGames.LadderGame.Board.Board;
+import com.gruppe24.BoardGames.LadderGame.Board;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
