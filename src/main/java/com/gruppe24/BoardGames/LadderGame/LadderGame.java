@@ -1,12 +1,10 @@
 package com.gruppe24.BoardGames.LadderGame;
 
-import com.gruppe24.BoardGames.LadderGame.Models.Board;
 import com.gruppe24.BoardGames.LadderGame.Models.Player;
 import com.gruppe24.Utils.Steps;
 import com.gruppe24.Utils.Validators;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 
 /**
@@ -18,19 +16,15 @@ import java.util.Scanner;
  */
 public class LadderGame {
 
-  Scanner myScanner = new Scanner(System.in);
-
   //attributes
-  private static Board board;
   private final List<Player> players;
+  private final Board board;
 
   //constructor
   public LadderGame() {
-    board = new Board();
     this.players = new ArrayList<>();
+    this.board = new Board();
   }
-
-  //methods
 
   /**
    * Method that sets up the game.
@@ -51,7 +45,7 @@ public class LadderGame {
 
     for (int i = 1; i <= numberOfPlayers; i++) {
       System.out.println("Name of player " + i + ": ");
-      String name = myScanner.nextLine();
+      String name = Validators.scannerString();
       players.add(new Player(name)); //AI-assisted
     }
 
@@ -69,7 +63,7 @@ public class LadderGame {
     boolean gameOver = false;
     while (!gameOver) {
       for (Player player : players) {
-        player.handlePlayerTurn();
+        board.handlePlayerTurn(player);
         if (board.checkAndHandleWin(player, player.getPosition())) {
           gameOver = true;
           Steps.pressEnterToContinue();
