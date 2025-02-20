@@ -1,11 +1,11 @@
 package com.gruppe24;
 
-import com.gruppe24.BoardGames.LadderGame.GUI.GUI;
+import com.gruppe24.BoardGames.LadderGame.GUI.MenuGUI;
 
 public class Main {
 
   public static void main(String[] args) {
-    GUI.launch(GUI.class,args);
+    MenuGUI.launch(MenuGUI.class,args);
   }
 }
 
