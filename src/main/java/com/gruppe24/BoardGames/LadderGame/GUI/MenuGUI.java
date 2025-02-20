@@ -93,6 +93,4 @@ public class MenuGUI extends Application {
     button.setOnMouseReleased(e -> button.setStyle(hoverStyle));
   }
 
-
-
 }
