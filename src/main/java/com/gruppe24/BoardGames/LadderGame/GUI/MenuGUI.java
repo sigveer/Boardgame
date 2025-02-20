@@ -1,6 +1,6 @@
 package com.gruppe24.BoardGames.LadderGame.GUI;
 
-import static com.gruppe24.Utils.StyleButtonsGUI.styleButton;
+import static com.gruppe24.Utils.JavaFX_GUI.styleButton;
 
 import javafx.application.Application;
 import javafx.geometry.Pos;
