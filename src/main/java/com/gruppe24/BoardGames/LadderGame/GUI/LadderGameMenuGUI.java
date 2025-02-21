@@ -12,10 +12,10 @@ import javafx.stage.Stage;
 
 public class LadderGameMenuGUI extends Application {
 
-  public void start(Stage ladderGameMenuStage) {
-    ladderGameMenuStage.setTitle("Ladder game");
-    ladderGameMenuStage.setX(250);
-    ladderGameMenuStage.setY(100);
+  public void start(Stage primaryStage) {
+    primaryStage.setTitle("Ladder game");
+    primaryStage.setX(250);
+    primaryStage.setY(100);
 
     GridPane gridPane = new GridPane();
     Scene scene = new Scene(gridPane, 1000, 700);
@@ -37,7 +37,7 @@ public class LadderGameMenuGUI extends Application {
     styleButton(game2Button);
 
     Button backToMenu = new Button("Back to menu");
-    backToMenu.setOnAction(event -> new MenuGUI().start(ladderGameMenuStage));
+    backToMenu.setOnAction(event -> new MenuGUI().start(primaryStage));
     styleButton(backToMenu);
 
     gridPane.add(title, 0, 0);
@@ -45,8 +45,8 @@ public class LadderGameMenuGUI extends Application {
     gridPane.add(game2Button, 0, 2);
     gridPane.add(backToMenu, 0, 3);
 
-    ladderGameMenuStage.setScene(scene);
-    ladderGameMenuStage.show();
+    primaryStage.setScene(scene);
+    primaryStage.show();
 
   }
 
