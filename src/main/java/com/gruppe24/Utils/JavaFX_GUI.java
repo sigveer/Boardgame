@@ -30,7 +30,7 @@ public class JavaFX_GUI {
         "-fx-background-color: linear-gradient(to top, #283a60, #3a5590); " +
             "-fx-text-fill: white; " +
             "-fx-font-size: 16px; " +
-            "-fx-padding: 12px 20px 8px 20px; " + // Endrer padding for å simulere dybde
+            "-fx-padding: 12px 20px 8px 20px; " +
             "-fx-border-radius: 5px; " +
             "-fx-background-radius: 5px; " +
             "-fx-border-color: #1f2a44; " +

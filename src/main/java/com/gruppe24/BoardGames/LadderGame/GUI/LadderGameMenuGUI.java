@@ -10,12 +10,12 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
-public class LadderGameGUI extends Application {
+public class LadderGameMenuGUI extends Application {
 
-  public void start(Stage primaryStage) {
-    primaryStage.setTitle("Ladder game");
-    primaryStage.setX(250);
-    primaryStage.setY(100);
+  public void start(Stage ladderGameMenuStage) {
+    ladderGameMenuStage.setTitle("Ladder game");
+    ladderGameMenuStage.setX(250);
+    ladderGameMenuStage.setY(100);
 
     GridPane gridPane = new GridPane();
     Scene scene = new Scene(gridPane, 1000, 700);
@@ -36,17 +36,17 @@ public class LadderGameGUI extends Application {
     game2Button.setOnAction(event -> System.out.println("Crazy Dice"));
     styleButton(game2Button);
 
-    Button game3Button = new Button("Another Game");
-    game3Button.setOnAction(event -> System.out.println("Another Game"));
-    styleButton(game3Button);
+    Button backToMenu = new Button("Back to menu");
+    backToMenu.setOnAction(event -> new MenuGUI().start(ladderGameMenuStage));
+    styleButton(backToMenu);
 
     gridPane.add(title, 0, 0);
     gridPane.add(ladderButton, 0, 1);
     gridPane.add(game2Button, 0, 2);
-    gridPane.add(game3Button, 0, 3);
+    gridPane.add(backToMenu, 0, 3);
 
-    primaryStage.setScene(scene);
-    primaryStage.show();
+    ladderGameMenuStage.setScene(scene);
+    ladderGameMenuStage.show();
 
   }
 

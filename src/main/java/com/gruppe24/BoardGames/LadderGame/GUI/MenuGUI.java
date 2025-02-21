@@ -32,7 +32,7 @@ public class MenuGUI extends Application {
 
     //Buttons
     Button ladderButton = new Button("LadderGame");
-    ladderButton.setOnAction(event -> new LadderGameGUI().start(primaryStage));
+    ladderButton.setOnAction(event -> new LadderGameMenuGUI().start(primaryStage));
     styleButton(ladderButton);
 
     Button game2Button = new Button("Different game");
