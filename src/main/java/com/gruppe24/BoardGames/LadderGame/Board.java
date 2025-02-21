@@ -90,27 +90,16 @@ public class Board {
   }
 
 
-//  /**
-//   * Method that checks the tile type at a certain position.
-//   *
-//   *
-//   * @param position the position to check
-//   * @return the tile action at the position
-//   *
-//   * @Author Ingve, Sigveer
-//   * @Date: 16.02.2025
-//   * @Version: 1.0
-//   */
-//  public TileAction checkTileTypeAtPosition(int position) {
-//    if (ladders.containsKey(position)) {
-//      return new LadderTile(position, ladders.get(position));
-//    } else if (snakes.containsKey(position)) {
-//      return new SnakeTile(position, snakes.get(position));
-//    } else {
-//      return new Tile(position); // Normal tile
-//    }
-//  }
-
+/**
+   * Method that gets the tile.
+   *
+   * @param position the position of the tile
+   * @return the tile
+   *
+   * @Author Sigveer, Ingve
+   * @Date: 20.02.2025
+   * @Version: 1.0
+   */
   public TileAction getTile(int position) {
     if (position >= 0 && position < tiles.length) {
       return tiles[position];
