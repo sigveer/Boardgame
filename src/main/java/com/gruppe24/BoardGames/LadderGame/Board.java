@@ -22,8 +22,8 @@ public class Board {
   private final HashMap<Integer, Integer> ladders = new HashMap<>();
   private final HashMap<Integer, Integer> snakes = new HashMap<>();
   private static final int WinCondition = 90;
-  private static final int Columns = 10;
-  private static final int Rows = 9;
+  private static final int Columns = 9;
+  private static final int Rows = 10;
   private TileAction[] tiles;
   private final Dice dice;
 
@@ -35,7 +35,7 @@ public class Board {
    * @Version 1.0
    */
   public Board(){
-    this.dice = new Dice(2);
+    this.dice = new Dice(1);
     initializeLaddersAndSnake();
     initializeTiles();
   }
@@ -50,17 +50,21 @@ public class Board {
    * @Version 1.0
    */
   public void initializeLaddersAndSnake(){
-    ladders.put(3, 22);
-    ladders.put(8, 30);
-    ladders.put(28, 84);
-    ladders.put(58, 77);
-    ladders.put(75, 86);
+    ladders.put(1, 40);
+    ladders.put(8, 10);
+    ladders.put(36, 52);
+    ladders.put(43, 62);
+    ladders.put(49, 79);
+    ladders.put(65, 82);
+    ladders.put(68, 85);
 
-    snakes.put(17, 7);
-    snakes.put(54, 34);
-    snakes.put(62, 19);
-    snakes.put(64, 60);
-    snakes.put(87, 24);
+    snakes.put(24, 5);
+    snakes.put(33, 3);
+    snakes.put(42, 30);
+    snakes.put(56, 37);
+    snakes.put(64, 27);
+    snakes.put(74, 12);
+    snakes.put(87, 70);
   }
 
 
@@ -74,8 +78,7 @@ public class Board {
    */
   private void initializeTiles() {
     tiles = new TileAction[Columns * Rows];
-
-    for (int i = 1; i < Columns * Rows; i++) {
+    for (int i = 0; i < Columns * Rows; i++) {
       if (ladders.containsKey(i)) {
         tiles[i] = new LadderTile(i, ladders.get(i));
       } else if (snakes.containsKey(i)) {
@@ -87,27 +90,22 @@ public class Board {
   }
 
 
-  /**
-   * Method that checks the tile type at a certain position.
+/**
+   * Method that gets the tile.
    *
+   * @param position the position of the tile
+   * @return the tile
    *
-   * @param position the position to check
-   * @return the tile action at the position
-   *
-   * @Author Ingve, Sigveer
-   * @Date: 16.02.2025
+   * @Author Sigveer, Ingve
+   * @Date: 20.02.2025
    * @Version: 1.0
    */
-  public TileAction checkTileTypeAtPosition(int position) {
-    if (ladders.containsKey(position)) {
-      return new LadderTile(position, ladders.get(position));
-    } else if (snakes.containsKey(position)) {
-      return new SnakeTile(position, snakes.get(position));
-    } else {
-      return new Tile(position); // Normal tile
+  public TileAction getTile(int position) {
+    if (position >= 0 && position < tiles.length) {
+      return tiles[position];
     }
+    return new Tile(position);
   }
-
 
   /**
    * Method that handles the action of a tile.
@@ -120,8 +118,8 @@ public class Board {
    * @Version: 1.0
    */
   public void handleTileAction(Player player, int newPosition) {
-    TileAction tileAction = checkTileTypeAtPosition(newPosition);
-    tileAction.perform(player);
+    TileAction tile = getTile(newPosition);
+    tile.perform(player);
   }
 
 
