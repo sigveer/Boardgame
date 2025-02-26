@@ -1,12 +1,13 @@
-package com.gruppe24.BoardGames.LadderGame.Models;
+package com.gruppe24.BoardGames.LadderGame.Controller;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import com.gruppe24.BoardGames.LadderGame.Models.Player;
 import com.gruppe24.BoardGames.LadderGame.Models.Tile.LadderTile;
 import com.gruppe24.BoardGames.LadderGame.Models.Tile.SnakeTile;
 import com.gruppe24.BoardGames.LadderGame.Models.Tile.Tile;
 import com.gruppe24.BoardGames.LadderGame.Models.Tile.TileAction;
-import com.gruppe24.BoardGames.LadderGame.Controller.Board;
+import java.io.ByteArrayInputStream;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -15,7 +16,6 @@ import org.junit.jupiter.api.Test;
  * {@code BoardTest} is a test class for the {@code Board} class.
  */
 class BoardTest {
-
 
   private Board board;
   private Player testPlayer;
@@ -32,11 +32,26 @@ class BoardTest {
 
 
   /**
+   * Tests the {@code handleTileAction} method in the {@code Board} class.
+   */
+  @Test
+  void handleTileAction() {
+    testPlayer.setPosition(1);
+    board.handleTileAction(testPlayer, 1);
+    assertEquals(40, testPlayer.getPosition());
+
+    testPlayer.setPosition(24);
+    board.handleTileAction(testPlayer, 24);
+    assertEquals(5, testPlayer.getPosition());
+  }
+
+
+  /**
    * Tests the {@code getTile} method on a normal tile in the {@code Board} class.
    */
   @Test
   void getNormalTile() {
-    TileAction tile = board.getTile(1);
+    TileAction tile = board.getTile(2);
     assertInstanceOf(Tile.class, tile);
   }
 
@@ -46,7 +61,7 @@ class BoardTest {
    */
   @Test
   void getLadderTile() {
-    TileAction tile = board.getTile(2);
+    TileAction tile = board.getTile(1);
     assertInstanceOf(LadderTile.class, tile);
   }
 
@@ -56,7 +71,7 @@ class BoardTest {
    */
   @Test
   void getSnakeTile() {
-    TileAction tile = board.getTile(16);
+    TileAction tile = board.getTile(24);
     assertInstanceOf(SnakeTile.class, tile);
   }
 
@@ -67,9 +82,9 @@ class BoardTest {
   @Test
   void testHandleLadderTileAction() {
     int oldPosition = testPlayer.getPosition();
-    board.handleTileAction(testPlayer, 2);
+    board.handleTileAction(testPlayer, 1);
     assertNotEquals(oldPosition, testPlayer.getPosition());
-    assertEquals(39, testPlayer.getPosition());
+    assertEquals(40, testPlayer.getPosition());
   }
 
 
@@ -79,9 +94,9 @@ class BoardTest {
   @Test
   void testHandleSnakeTileAction() {
     int oldPosition = testPlayer.getPosition();
-    board.handleTileAction(testPlayer, 16);
+    board.handleTileAction(testPlayer, 24);
     assertNotEquals(oldPosition, testPlayer.getPosition());
-    assertEquals(6, testPlayer.getPosition());
+    assertEquals(5, testPlayer.getPosition());
   }
 
 
@@ -90,8 +105,8 @@ class BoardTest {
    */
   @Test
   void testCheckAndHandleWin_Win() {
-    testPlayer.setPosition(100);
-    assertTrue(board.checkAndHandleWin(testPlayer, 100));
+    testPlayer.setPosition(90);
+    assertTrue(board.checkAndHandleWin(testPlayer, 90));
   }
 
 
@@ -100,8 +115,8 @@ class BoardTest {
    */
   @Test
   void testCheckAndHandleWin_NotWin() {
-    testPlayer.setPosition(99);
-    assertFalse(board.checkAndHandleWin(testPlayer, 99));
+    testPlayer.setPosition(89);
+    assertFalse(board.checkAndHandleWin(testPlayer, 89));
   }
 
 
@@ -110,8 +125,8 @@ class BoardTest {
    */
   @Test
   void testHandleOvershoot_Overshoot() {
-    int newPosition = board.handleOvershoot(105);
-    assertEquals(95, newPosition);
+    int newPosition = board.handleOvershoot(95);
+    assertEquals(85, newPosition);
   }
 
 
@@ -121,6 +136,30 @@ class BoardTest {
   @Test
   void testHandleOvershoot_NotOvershoot() {
     int newPosition = board.handleOvershoot(95);
-    assertEquals(95, newPosition);
+    assertEquals(85, newPosition);
+  }
+
+
+  /**
+   * Tests the {@code handlePlayerTurn} method in the {@code Board} class.
+   */
+  @Test
+  void handlePlayerTurn() {
+    System.setIn(new ByteArrayInputStream("\n".getBytes()));
+    int initialPosition = testPlayer.getPosition();
+    board.handlePlayerTurn(testPlayer);
+    assertTrue(testPlayer.getPosition() > initialPosition);
+  }
+
+
+  /**
+   * Tests the {@code movePlayer} method in the {@code Board} class.
+   */
+  @Test
+  void movePlayer() {
+    testPlayer.setPosition(5);
+    int sumDice = 2;
+    board.movePlayer(testPlayer, sumDice);
+    assertEquals(7, testPlayer.getPosition());
   }
 }
