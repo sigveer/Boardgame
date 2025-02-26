@@ -1,4 +1,4 @@
-package com.gruppe24.BoardGames.LadderGame.GUI;
+package com.gruppe24.BoardGames.GUI;
 
 import static com.gruppe24.Utils.JavaFX_GUI.styleButton;
 
@@ -15,7 +15,7 @@ public class MenuGUI extends Application {
   @Override
   public void start(Stage primaryStage) {
 
-    primaryStage.setTitle("Game Meny");
+    primaryStage.setTitle("GameMenu");
     primaryStage.setX(250);
     primaryStage.setY(100);
 
@@ -26,7 +26,7 @@ public class MenuGUI extends Application {
     gridPane.setHgap(20);
     gridPane.setStyle("-fx-background-color: #0a1b5e;");
 
-    Label title = new Label("GameMenu");
+    Label title = new Label("Board Games!");
     title.setStyle("-fx-font-size: 40px; -fx-text-fill: #ffffff; -fx-font-weight: bold;");
 
 
