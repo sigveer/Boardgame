@@ -1,6 +1,6 @@
 package com.gruppe24;
 
-import com.gruppe24.BoardGames.GUI.MenuGUI;
+import com.gruppe24.BoardGames.MenuGUI;
 
 public class Main {
 

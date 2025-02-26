@@ -1,0 +1,88 @@
+@startuml
+interface TileAction{
+    + perform(Player player) : void
+}
+
+abstract class Tile {
+    + perform(Player player) : void
+}
+
+abstract class NormalTile {
+    - int position
+    + NormalTile(int position)
+}
+
+abstract class SpecialTile {
+    + SpecialTile(int position)
+}
+
+class LadderTile {
+    - int climbUp
+    + LadderTile(int position, int climbUp)
+    + perform(Player player) : void
+}
+
+class SnakeTile {
+    - int slideDown
+    + SnakeTile(int position, int slideDown)
+    + perform(Player player) : void
+}
+
+class Board {
+    - HashMap<Integer, Integer> ladders
+    - HashMap<Integer, Integer> snakes
+    - static final int WinCondition
+    - TileAction[] tiles
+    - final Dice dice
+    + initializeLaddersAndSnake() : void
+    + initializeTiles() : void
+    + getTile(int position) : TileAction
+    + movePlayer(Player player, int sumDice) : void
+}
+
+class Die {
+    - final Random random
+    + Die()
+    + roll() : int
+    + getValue() : int
+}
+
+class Dice {
+    - List<Die> dice
+    + Dice(int numberOfDice)
+    + rollSum() : int
+    + getDie(int dieNumber) : int
+}
+
+class Player {
+    - String name
+    - int position
+    + getName()
+    + getPosition()
+    + setPosition()
+}
+
+class LadderGame {
+    - List<Player> players
+    - Board board
+    + setUpPlayers()
+    + play()
+}
+
+
+TileAction <|.. Tile
+Tile <|-- NormalTile
+Tile <|-- SpecialTile
+SpecialTile <|-- LadderTile
+SpecialTile <|-- SnakeTile
+
+Board o-- Tile
+Board o-- Player
+Board o-- Dice
+
+Die <|-- Dice
+
+LadderGame o-- Board
+LadderGame o-- Player
+
+@enduml
