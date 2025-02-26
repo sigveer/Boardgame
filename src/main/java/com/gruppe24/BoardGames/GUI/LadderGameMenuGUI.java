@@ -11,7 +11,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
-public class LadderGameGUI extends Application {
+public class LadderGameMenuGUI extends Application {
 
   public void start(Stage primaryStage) {
 
@@ -38,14 +38,14 @@ public class LadderGameGUI extends Application {
     game2Button.setOnAction(event -> System.out.println("Crazy Dice"));
     styleButton(game2Button);
 
-    Button game3Button = new Button("Another Game");
-    game3Button.setOnAction(event -> System.out.println("Another Game"));
-    styleButton(game3Button);
+    Button backToMenu = new Button("Back to menu");
+    backToMenu.setOnAction(event -> new MenuGUI().start(primaryStage));
+    styleButton(backToMenu);
 
     gridPane.add(title, 0, 0);
     gridPane.add(ladderButton, 0, 1);
     gridPane.add(game2Button, 0, 2);
-    gridPane.add(game3Button, 0, 3);
+    gridPane.add(backToMenu, 0, 3);
 
     primaryStage.setScene(scene);
     primaryStage.show();

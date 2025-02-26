@@ -12,7 +12,7 @@ public class Menu {
   /**
    * Starts the main menu
    */
-  public void start() {
+  public static void start() {
     boolean isRunning = true;
     while (isRunning) {
       System.out.println("BoardGames!");
