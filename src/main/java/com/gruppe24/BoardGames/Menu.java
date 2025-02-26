@@ -1,6 +1,6 @@
 package com.gruppe24.BoardGames;
 
-import com.gruppe24.BoardGames.LadderGame.LadderGame;
+import com.gruppe24.BoardGames.LadderGame.Controller.LadderGame;
 import com.gruppe24.Utils.Validators;
 
 /**

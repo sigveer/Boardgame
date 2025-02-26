@@ -1,4 +1,4 @@
-package com.gruppe24.BoardGames.LadderGame;
+package com.gruppe24.BoardGames.LadderGame.Controller;
 
 import com.gruppe24.BoardGames.LadderGame.Models.Dice;
 import com.gruppe24.BoardGames.LadderGame.Models.Player;

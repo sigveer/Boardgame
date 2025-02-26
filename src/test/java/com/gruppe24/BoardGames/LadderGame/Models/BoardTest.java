@@ -6,7 +6,7 @@ import com.gruppe24.BoardGames.LadderGame.Models.Tile.LadderTile;
 import com.gruppe24.BoardGames.LadderGame.Models.Tile.SnakeTile;
 import com.gruppe24.BoardGames.LadderGame.Models.Tile.Tile;
 import com.gruppe24.BoardGames.LadderGame.Models.Tile.TileAction;
-import com.gruppe24.BoardGames.LadderGame.Board;
+import com.gruppe24.BoardGames.LadderGame.Controller.Board;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -36,7 +36,7 @@ class BoardTest {
    */
   @Test
   void getNormalTile() {
-    TileAction tile = board.checkTileTypeAtPosition(1);
+    TileAction tile = board.getTile(1);
     assertInstanceOf(Tile.class, tile);
   }
 
@@ -46,7 +46,7 @@ class BoardTest {
    */
   @Test
   void getLadderTile() {
-    TileAction tile = board.checkTileTypeAtPosition(2);
+    TileAction tile = board.getTile(2);
     assertInstanceOf(LadderTile.class, tile);
   }
 
@@ -56,7 +56,7 @@ class BoardTest {
    */
   @Test
   void getSnakeTile() {
-    TileAction tile = board.checkTileTypeAtPosition(16);
+    TileAction tile = board.getTile(16);
     assertInstanceOf(SnakeTile.class, tile);
   }
 
