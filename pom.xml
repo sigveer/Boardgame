@@ -30,7 +30,7 @@
     <dependency>
       <groupId>org.openjfx</groupId>
       <artifactId>javafx-controls</artifactId>
-      <version>23.0.1</version> <!-- Updated to match the version specified in properties -->
+      <version>23.0.1</version>
     </dependency>
   </dependencies>
 
@@ -54,7 +54,7 @@
       <plugin>
         <groupId>org.openjfx</groupId>
         <artifactId>javafx-maven-plugin</artifactId>
-        <version>0.0.8</version> <!-- Updated to newer version -->
+        <version>0.0.8</version>
         <configuration>
           <!-- Main class -->
           <mainClass>com.gruppe24.Main</mainClass>

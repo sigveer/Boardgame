@@ -68,7 +68,6 @@ public class Board {
   }
 
 
-
   /**
    * Method that initializes the tiles.
    *
@@ -106,6 +105,7 @@ public class Board {
     }
     return new Tile(position);
   }
+
 
   /**
    * Method that handles the action of a tile.
@@ -179,6 +179,7 @@ public class Board {
     System.out.println(player.getName() + " is now on tile " + player.getPosition());
   }
 
+
   /**
    * Method that moves the player.
    *
@@ -194,6 +195,4 @@ public class Board {
     player.setPosition(newPosition);
     handleTileAction(player, newPosition);
   }
-
-
 }

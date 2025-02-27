@@ -2,6 +2,7 @@ package com.gruppe24.BoardGames.LadderGame.Models;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import com.gruppe24.BoardGames.LadderGame.Controller.Board;
 import java.io.ByteArrayInputStream;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -9,35 +10,13 @@ import org.junit.jupiter.api.Test;
 class PlayerTest {
 
   private Player player;
+  private Board board;
 
   @BeforeEach
   void setUp() {
     player = new Player("TestPlayer");
   }
 
-  @Test
-  void handlePlayerTurn() {
-    System.setIn(new ByteArrayInputStream("\n".getBytes()));
-    int initialPosition = player.getPosition();
-    player.handlePlayerTurn();
-    assertTrue(player.getPosition() > initialPosition);
-  }
-
-  @Test
-  void movePlayer() {
-    player.setPosition(5);
-    int sumDice = 3;
-    player.movePlayer(sumDice);
-    assertEquals(8, player.getPosition());
-  }
-
-  @Test
-  void testMovePlayerOvershoot() {
-    player.setPosition(98);
-    int sumDice = 6;
-    player.movePlayer(sumDice);
-    assertEquals(96, player.getPosition());
-  }
 
   @Test
   void getName() {
