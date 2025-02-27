@@ -1,0 +1,15 @@
+@startuml
+:User: as User
+
+User --> (Menu)
+(Menu) --> (Ladder Game)
+(Menu) --> (Another Game)
+(Menu) --> (Exit)
+
+(Ladder Game) --> (Classic)
+(Ladder Game) --> (Special Tiles)
+(Ladder Game) --> (Back to Menu)
+
+(Back to Menu) ---> (Menu)
+
+@enduml
