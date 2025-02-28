@@ -1,6 +1,6 @@
-package com.gruppe24.BoardGames.LadderGame.Controller;
+package com.gruppe24.BoardGames.LadderGame.View;
 
-import com.gruppe24.BoardGames.LadderGame.Models.Board;
+import com.gruppe24.BoardGames.LadderGame.Controller.GameController;
 import com.gruppe24.BoardGames.LadderGame.Models.Player;
 import com.gruppe24.Utils.Steps;
 import com.gruppe24.Utils.Validators;
@@ -15,14 +15,12 @@ import java.util.List;
  * @date 06.02.2025
  * @version 1.0.0
  */
-public class LadderGame {
+public class LadderGameText {
   private final List<Player> players;
-  private final Board board;
   private final GameController GM;
 
-  public LadderGame() {
+  public LadderGameText() {
     this.players = new ArrayList<>();
-    this.board = new Board();
     this.GM = new GameController();
   }
 
