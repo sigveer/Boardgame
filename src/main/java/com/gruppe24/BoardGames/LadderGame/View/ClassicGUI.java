@@ -62,7 +62,7 @@ public class ClassicGUI extends Application {
 
     VBox setupPane = createSetupPane(primaryStage, mainLayout);
 
-    Scene scene = new Scene(setupPane, 900, 700);
+    Scene scene = new Scene(setupPane, 1000, 850);
     primaryStage.setScene(scene);
     primaryStage.show();
   }
@@ -139,13 +139,13 @@ public class ClassicGUI extends Application {
         players.add(new Player(name));
       }
 
-      Scene gameScene = new Scene(gameLayout, 900, 700);
+      Scene gameScene = new Scene(gameLayout, 1000, 850);
       primaryStage.setScene(gameScene);
     });
 
     nameSetupPane.getChildren().add(startButton);
 
-    Scene nameScene = new Scene(nameSetupPane, 900, 700);
+    Scene nameScene = new Scene(nameSetupPane, 1000, 850);
     primaryStage.setScene(nameScene);
   }
 
@@ -177,7 +177,7 @@ public class ClassicGUI extends Application {
     boardGrid.setHgap(0);
     boardGrid.setVgap(0);
 
-    int tileSize = 60;
+    int tileSize = 80;
     for (int row = 0; row < 10; row++) {
       for (int col = 0; col < 9; col++) {
 
