@@ -26,13 +26,7 @@ import javafx.stage.Stage;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * The main GUI class for the Snakes and Ladders game
- *
- * @author Refactored by Claude
- * @date 28.02.2025
- * @version 2.0
- */
+
 public class LadderGameSetUpGUI extends Application {
 
   private final List<Player> players = new ArrayList<>();
