@@ -22,7 +22,7 @@ public class LadderTile extends SpecialTile {
    * @Version: 1.0
    */
   public LadderTile(int position, int climbUp){
-    super(position);
+    super(position, climbUp);
     this.climbUp = climbUp;
   }
 
@@ -38,9 +38,8 @@ public class LadderTile extends SpecialTile {
    * @Version: 1.0
    */
   @Override
-  public void perform(Player player){
-    System.out.println(player.getName() + " Oh a ladder!! Climbed up to tile " + climbUp);
-    player.setPosition(climbUp);
+  public void perform(Player player) {
+    player.setPosition(getDestination());
   }
 
 }

@@ -4,12 +4,8 @@ package com.gruppe24.BoardGames.LadderGame.Models.Tile;
 /**
  * Class representing a special tile.
  */
-public abstract class SpecialTile implements TileAction {
-
-  // extended from Tile-superclass: Tile()
-  // implemented from TileAction-interface: perform()
-
-  private int position;
+public abstract class SpecialTile extends AbstractTile {
+  private int destination;
 
   /**
    * Constructor that initializes the special tile.
@@ -20,8 +16,12 @@ public abstract class SpecialTile implements TileAction {
    * @Date: 16.02.2025
    * @Version: 1.0
    */
-  public SpecialTile(int position) {
-    this.position = position;
+  public SpecialTile(int position, int destination) {
+    super(position);
+    this.destination = destination;
   }
 
+  public int getDestination() {
+    return destination;
+  }
 }

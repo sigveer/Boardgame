@@ -2,8 +2,6 @@ package com.gruppe24.BoardGames.LadderGame.Models;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import com.gruppe24.BoardGames.LadderGame.Controller.Board;
-import java.io.ByteArrayInputStream;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

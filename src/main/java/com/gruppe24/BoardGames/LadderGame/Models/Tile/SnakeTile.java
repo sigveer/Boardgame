@@ -6,11 +6,7 @@ import com.gruppe24.BoardGames.LadderGame.Models.Player;
  * Class representing a tile that is a snake.
  */
 public class SnakeTile extends SpecialTile {
-
-  //attributes
   private final int slideDown;
-
-  //constructor
 
   /**
    * Constructor that initializes the snake tile.
@@ -23,7 +19,7 @@ public class SnakeTile extends SpecialTile {
    * @Version: 1.0
    */
   public SnakeTile(int position, int SlideDown){
-    super(position);
+    super(position, SlideDown);
     this.slideDown = SlideDown;
   }
 
@@ -40,8 +36,7 @@ public class SnakeTile extends SpecialTile {
    * @Version: 1.0
    */
   @Override
-  public void perform(Player player){
-    System.out.println(player.getName() + " Oh no a snake!! Slided down to tile " + slideDown);
-    player.setPosition(slideDown);
+  public void perform(Player player) {
+    player.setPosition(getDestination());
   }
 }
