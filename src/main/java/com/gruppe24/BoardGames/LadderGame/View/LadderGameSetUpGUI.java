@@ -44,8 +44,6 @@ public class LadderGameSetUpGUI extends Application {
   private GridPane boardGrid;
   private Button rollButton;
 
-  private final Map<Player, Circle> playerTokens = new HashMap<>();
-
   @Override
   public void start(Stage primaryStage) {
     primaryStage.setTitle("Snakes and Ladders");
