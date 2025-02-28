@@ -31,8 +31,8 @@ public class LadderGameMenuGUI extends Application {
 
     Button classicButton = new Button("Classic Mode");
     classicButton.setOnAction(event -> {
-      ClassicGUI classicGUI = new ClassicGUI();
-      classicGUI.start(primaryStage);
+      LadderGameSetUpGUI ladderGameSetUpGUI = new LadderGameSetUpGUI();
+      ladderGameSetUpGUI.start(primaryStage);
     });
     styleButton(classicButton);
 

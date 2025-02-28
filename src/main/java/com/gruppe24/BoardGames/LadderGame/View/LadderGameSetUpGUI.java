@@ -36,7 +36,7 @@ import java.util.Map;
  * @date 28.02.2025
  * @version 2.0
  */
-public class ClassicGUI extends Application {
+public class LadderGameSetUpGUI extends Application {
 
   private final List<Player> players = new ArrayList<>();
   private final Board gameBoard = new Board();
