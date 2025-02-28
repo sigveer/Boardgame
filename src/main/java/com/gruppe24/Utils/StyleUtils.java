@@ -2,7 +2,7 @@ package com.gruppe24.Utils;
 
 import javafx.scene.control.Button;
 
-public class JavaFX_GUI {
+public class StyleUtils {
   public static void styleButton(Button button) {
     String normalStyle =
         "-fx-background-color: linear-gradient(to bottom, #4a6cd4, #283a60); " +

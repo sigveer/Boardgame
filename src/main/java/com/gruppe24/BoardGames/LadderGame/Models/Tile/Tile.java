@@ -1,31 +1,26 @@
 package com.gruppe24.BoardGames.LadderGame.Models.Tile;
 
-import com.gruppe24.BoardGames.LadderGame.Models.Player;
-
 /**
- * Class representing a normal tile.
+ * Abstract class representing a tile on the board.
  */
-public class Tile extends NormalTile {
-
-  //Implemented from TileAction: perform()
-  //Extended from NormalTile: position
+public abstract class Tile implements TileAction {
+  private int position;
 
   /**
-   * Constructor that initializes the snake tile.
+   * Constructor that initializes the normal tile.
    *
-   * @param position The position of the tile.
+   * @param position The position of the tile on the board.
    *
-   * @Author Sigveer
-   * @Date: 06.02.2025
+   * @Author Sigveer, Ingve
+   * @Date: 16.02.2025
    * @Version: 1.0
    */
-  public Tile(int position) {
-    super(position);
+  public Tile(int position){
+    this.position = position;
   }
 
-  @Override
-  public void perform(Player player) {
-    //Filler for interface
+  public int getPosition() {
+    return position;
   }
-
 }
+

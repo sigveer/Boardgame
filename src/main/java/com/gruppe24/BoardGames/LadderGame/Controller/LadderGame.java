@@ -1,5 +1,6 @@
 package com.gruppe24.BoardGames.LadderGame.Controller;
 
+import com.gruppe24.BoardGames.LadderGame.Models.Board;
 import com.gruppe24.BoardGames.LadderGame.Models.Player;
 import com.gruppe24.Utils.Steps;
 import com.gruppe24.Utils.Validators;
@@ -15,15 +16,14 @@ import java.util.List;
  * @version 1.0.0
  */
 public class LadderGame {
-
-  //attributes
   private final List<Player> players;
   private final Board board;
+  private final GameController GM;
 
-  //constructor
   public LadderGame() {
     this.players = new ArrayList<>();
     this.board = new Board();
+    this.GM = new GameController();
   }
 
   /**
@@ -63,8 +63,8 @@ public class LadderGame {
     boolean gameOver = false;
     while (!gameOver) {
       for (Player player : players) {
-        board.handlePlayerTurn(player);
-        if (board.checkAndHandleWin(player, player.getPosition())) {
+        GM.handlePlayerTurn(player);
+        if (GM.checkAndHandleWin(player, player.getPosition())) {
           gameOver = true;
           Steps.pressEnterToContinue();
           break;
