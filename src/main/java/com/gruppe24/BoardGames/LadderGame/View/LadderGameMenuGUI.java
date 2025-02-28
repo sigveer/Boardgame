@@ -1,6 +1,6 @@
 package com.gruppe24.BoardGames.LadderGame.View;
 
-import static com.gruppe24.Utils.JavaFX_GUI.styleButton;
+import static com.gruppe24.Utils.StyleUtils.styleButton;
 
 import com.gruppe24.BoardGames.LadderGame.Controller.LadderGame;
 import com.gruppe24.BoardGames.MenuGUI;
@@ -14,9 +14,9 @@ import javafx.stage.Stage;
 
 public class LadderGameMenuGUI extends Application {
 
+  @Override
   public void start(Stage primaryStage) {
-
-    primaryStage.setTitle("Ladder game");
+    primaryStage.setTitle("Ladder Game");
     primaryStage.setX(250);
     primaryStage.setY(100);
 
@@ -27,37 +27,39 @@ public class LadderGameMenuGUI extends Application {
     gridPane.setHgap(20);
     gridPane.setStyle("-fx-background-color: #2e49ae;");
 
-    Label title = new Label("LadderGame");
+    Label title = new Label("Snakes and Ladders");
     title.setStyle("-fx-font-size: 40px; -fx-text-fill: #ffffff; -fx-font-weight: bold;");
 
-    //Buttons
-    Button ladderButton = new Button("Classic");
-    ladderButton.setOnAction(event -> LadderGame());
-    styleButton(ladderButton);
+    Button classicButton = new Button("Classic Mode");
+    classicButton.setOnAction(event -> {});
+    styleButton(classicButton);
 
-    Button game2Button = new Button("Crazy Dice");
-    game2Button.setOnAction(event -> System.out.println("Crazy Dice"));
-    styleButton(game2Button);
+    Button specialTile = new Button("Special Tile Mode");
+    styleButton(specialTile);
 
-    Button backToMenu = new Button("Back to menu");
+    Button textModeButton = new Button("Text Mode");
+    textModeButton.setOnAction(event -> startTextGame());
+    styleButton(textModeButton);
+
+    Button backToMenu = new Button("Back to Menu");
     backToMenu.setOnAction(event -> new MenuGUI().start(primaryStage));
     styleButton(backToMenu);
 
     gridPane.add(title, 0, 0);
-    gridPane.add(ladderButton, 0, 1);
-    gridPane.add(game2Button, 0, 2);
+    gridPane.add(classicButton, 0, 1);
+    gridPane.add(textModeButton, 0, 2);
     gridPane.add(backToMenu, 0, 3);
 
     primaryStage.setScene(scene);
     primaryStage.show();
-
   }
 
-
-  public void LadderGame(){
-    LadderGame game = new LadderGame();
-    game.setUpPlayers();
-    game.play();
+  /**
+   * Starts the text-based version of the game
+   */
+  private void startTextGame() {
+    final LadderGame LadderGame = new LadderGame();
+    LadderGame.setUpPlayers();
+    LadderGame.play();
   }
-
 }

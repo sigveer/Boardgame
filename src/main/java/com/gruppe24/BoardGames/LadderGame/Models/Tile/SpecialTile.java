@@ -4,7 +4,7 @@ package com.gruppe24.BoardGames.LadderGame.Models.Tile;
 /**
  * Class representing a special tile.
  */
-public abstract class SpecialTile extends AbstractTile {
+public abstract class SpecialTile extends Tile {
   private int destination;
 
   /**

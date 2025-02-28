@@ -3,7 +3,7 @@ package com.gruppe24.BoardGames.LadderGame.Models.Tile;
 /**
  * Abstract class representing a tile on the board.
  */
-public abstract class AbstractTile implements TileAction {
+public abstract class Tile implements TileAction {
   private int position;
 
   /**
@@ -15,7 +15,7 @@ public abstract class AbstractTile implements TileAction {
    * @Date: 16.02.2025
    * @Version: 1.0
    */
-  public AbstractTile(int position){
+  public Tile(int position){
     this.position = position;
   }
 

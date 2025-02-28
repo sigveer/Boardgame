@@ -5,7 +5,7 @@ import com.gruppe24.BoardGames.LadderGame.Models.Player;
 /**
  * Class representing a normal tile.
  */
-public class NormalTile extends AbstractTile {
+public class NormalTile extends Tile {
 
   /**
    * Constructor that initializes the snake tile.
