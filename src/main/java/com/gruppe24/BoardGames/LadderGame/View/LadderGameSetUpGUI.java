@@ -20,14 +20,11 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * The main GUI class for the Snakes and Ladders game
@@ -43,8 +40,6 @@ public class LadderGameSetUpGUI extends Application {
 
   private GridPane boardGrid;
   private Button rollButton;
-
-  private final Map<Player, Circle> playerTokens = new HashMap<>();
 
   @Override
   public void start(Stage primaryStage) {
