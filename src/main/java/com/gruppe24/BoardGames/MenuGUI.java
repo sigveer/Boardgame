@@ -42,7 +42,7 @@ public class MenuGUI extends Application {
     styleButton(game2Button);
 
     Button TicTacToe = new Button("TicTacToe");
-    ladderButton.setOnAction(event -> new TicTacToeApp().start(primaryStage));
+    TicTacToe.setOnAction(event -> new TicTacToeApp().start(primaryStage));
     styleButton(TicTacToe);
 
 
