@@ -8,12 +8,27 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 
 
+/**
+ * Class to represent the Tic Tac Toe application
+ *
+ * @Author Sigveer
+ * @Date: 15.03.2025
+ * @Version: 1.0
+ */
 public class TicTacToeApp extends Application {
   private Button[][] board = new Button[3][3];
   private boolean xTurn = true;
   private boolean gameOver = false;
 
 
+  /**
+   * Method to start the application
+   *
+   * @param primaryStage is the stage to be shown
+   * @Author Sigveer
+   * @Date: 15.03.2025
+   * @Version: 1.0
+   */
   @Override
   public void start(javafx.stage.Stage primaryStage) {
     GridPane grid = new GridPane();
@@ -39,6 +54,16 @@ public class TicTacToeApp extends Application {
     primaryStage.show();
   }
 
+
+  /**
+   * Method to handle the click event on the board
+   *
+   * @param row is the row of the button
+   * @param col is the column of the button
+   * @Author Sigveer
+   * @Date: 15.03.2025
+   * @Version: 1.0
+   */
   public void handleClick(int row, int col) {
     if (gameOver || !board[row][col].getText().isEmpty()) {
       return;
@@ -57,6 +82,17 @@ public class TicTacToeApp extends Application {
     }
   }
 
+
+  /**
+   * Method to check if the game is won
+   *
+   * @param row is the row of the button
+   * @param col is the column of the button
+   * @return true if the game is won, false otherwise
+   * @Author Sigveer
+   * @Date: 15.03.2025
+   * @Version: 1.0
+   */
   private boolean checkWin(int row, int col) {
     String symbol = xTurn ? "X" : "O";
 
@@ -64,14 +100,14 @@ public class TicTacToeApp extends Application {
     if(board[row][0].getText().equals(symbol) &&
         board[row][1].getText().equals(symbol) &&
         board[row][2].getText().equals(symbol)) {
-      gameOver = true;
+      return true;
     }
 
     //Check columns
     if(board[0][col].getText().equals(symbol) &&
         board[1][col].getText().equals(symbol) &&
         board[2][col].getText().equals(symbol)) {
-      gameOver = true;
+      return true;
     }
 
     //Check diagonals
@@ -79,19 +115,27 @@ public class TicTacToeApp extends Application {
         board[0][0].getText().equals(symbol) &&
         board[1][1].getText().equals(symbol) &&
         board[2][2].getText().equals(symbol)) {
-      gameOver = true;
+      return true;
     }
 
-    if(row + col == 2 &&
+    if (row + col == 2 &&
         board[0][2].getText().equals(symbol) &&
         board[1][1].getText().equals(symbol) &&
         board[2][0].getText().equals(symbol)) {
-      gameOver = true;
+      return true;
     }
     return false;
   }
 
 
+  /**
+   * Method to check if the game is a draw
+   *
+   * @return true if the game is a draw, false otherwise
+   * @Author Sigveer
+   * @Date: 15.03.2025
+   * @Version: 1.0
+   */
   private boolean checkDraw() {
     for (int row = 0; row < 3; row++) {
       for (int col = 0; col < 3; col++) {
@@ -104,6 +148,14 @@ public class TicTacToeApp extends Application {
   }
 
 
+  /**
+   * Method to show an alert
+   *
+   * @param message is the message to be shown in the alert
+   * @Author Sigveer
+   * @Date: 15.03.2025
+   * @Version: 1.0
+   */
   private void showAlert(String message) {
     Alert alert = new Alert(AlertType.INFORMATION);
     alert.setTitle("Game Over");
@@ -112,6 +164,15 @@ public class TicTacToeApp extends Application {
     alert.showAndWait();
   }
 
+
+  /**
+   * Main method to launch the application
+   *
+   * @param args is the command line arguments
+   * @Author Sigveer
+   * @Date: 15.03.2025
+   * @Version: 1.0
+   */
   public static void main(String[] args) {
     launch(args);
   }
