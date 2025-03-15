@@ -3,7 +3,6 @@ package com.gruppe24.BoardGames.TicTacToe.Controller;
 import com.gruppe24.BoardGames.TicTacToe.Model.Cell;
 import com.gruppe24.BoardGames.TicTacToe.Model.GameLogic;
 import com.gruppe24.BoardGames.TicTacToe.View.BoardView;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 
@@ -18,10 +17,18 @@ public class GameController {
   private GameLogic gameLogic;
   private BoardView boardView;
 
+
+  /**
+   * The constructor initializes the Tic Tac Toe game.
+   */
   public GameController() {
     initalizeGame();
   }
 
+
+  /**
+   * The initalizeGame method initializes the Tic Tac Toe game.
+   */
   private void initalizeGame() {
     this.board = new Cell[BOARD_SIZE][BOARD_SIZE];
     for (int row = 0; row < BOARD_SIZE; row++) {
@@ -31,6 +38,7 @@ public class GameController {
 
     }
   }
+
 
   /**
    * The startGame method starts the Tic Tac Toe game.
@@ -48,4 +56,20 @@ public class GameController {
   }
 
 
+  private void resetGame() {
+    initalizeGame();
+    this.boardView.rebuildBoard();
+  }
+
+  public Cell[][] getBoard() {
+    return board;
+  }
+
+  public int getBoardSize() {
+    return BOARD_SIZE;
+  }
+
+  public int getCellSize() {
+    return CELL_SIZE;
+  }
 }
