@@ -1,6 +1,7 @@
 package com.gruppe24.BoardGames.TicTacToe;
 
 import javafx.application.Application;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -16,7 +17,7 @@ import javafx.scene.layout.GridPane;
  * @Version: 1.0
  */
 public class TicTacToeApp extends Application {
-  private Button[][] board = new Button[3][3];
+  private final Button[][] board = new Button[3][3];
   private boolean xTurn = true;
   private boolean gameOver = false;
 
@@ -31,7 +32,14 @@ public class TicTacToeApp extends Application {
    */
   @Override
   public void start(javafx.stage.Stage primaryStage) {
-    GridPane grid = new GridPane();
+    GridPane background = new GridPane();
+    background.setAlignment(Pos.CENTER);
+    background.setVgap(25);
+    background.setHgap(20);
+    background.setStyle("-fx-background-color: #2e49ae;");
+
+    GridPane boardgrid = new GridPane();
+    boardgrid.setAlignment(Pos.CENTER);
 
     for (int row = 0; row < 3; row++) {
       for (int col = 0; col < 3; col++) {
@@ -44,11 +52,13 @@ public class TicTacToeApp extends Application {
 
         board[row][col].setOnAction(e -> handleClick(finalRow, finalCol));
 
-        grid.add(board[row][col], col, row);
+        boardgrid.add(board[row][col], col, row);
       }
     }
 
-    Scene scene = new Scene(grid);
+    background.add(boardgrid, 0, 0);
+
+    Scene scene = new Scene(background, 1000, 700);
     primaryStage.setScene(scene);
     primaryStage.setTitle("Tic Tac Toe");
     primaryStage.show();
@@ -118,13 +128,10 @@ public class TicTacToeApp extends Application {
       return true;
     }
 
-    if (row + col == 2 &&
+    return row + col == 2 &&
         board[0][2].getText().equals(symbol) &&
         board[1][1].getText().equals(symbol) &&
-        board[2][0].getText().equals(symbol)) {
-      return true;
-    }
-    return false;
+        board[2][0].getText().equals(symbol);
   }
 
 
