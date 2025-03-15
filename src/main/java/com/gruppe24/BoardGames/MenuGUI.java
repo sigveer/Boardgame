@@ -1,6 +1,6 @@
 package com.gruppe24.BoardGames;
 
-import static com.gruppe24.Utils.StyleUtils.styleButton;
+import static com.gruppe24.Utils.StyleUtils.styleNormalButton;
 
 import com.gruppe24.BoardGames.LadderGame.View.LadderGameMenuGUI;
 import com.gruppe24.BoardGames.TicTacToe.TicTacToeApp;
@@ -35,15 +35,15 @@ public class MenuGUI extends Application {
     //Buttons
     Button ladderButton = new Button("LadderGame");
     ladderButton.setOnAction(event -> new LadderGameMenuGUI().start(primaryStage));
-    styleButton(ladderButton);
+    styleNormalButton(ladderButton);
 
     Button game2Button = new Button("Different game");
     game2Button.setOnAction(event -> System.out.println("Game2!"));
-    styleButton(game2Button);
+    styleNormalButton(game2Button);
 
     Button TicTacToeApp = new Button("TicTacToe");
     TicTacToeApp.setOnAction(event -> new TicTacToeApp().start(primaryStage));
-    styleButton(TicTacToeApp);
+    styleNormalButton(TicTacToeApp);
 
 
     gridPane.add(title, 0, 0);

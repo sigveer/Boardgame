@@ -1,5 +1,6 @@
 package com.gruppe24.BoardGames.TicTacToe;
 
+import com.gruppe24.Utils.StyleUtils;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -46,6 +47,8 @@ public class TicTacToeApp extends Application {
         board[row][col] = new Button();
         board[row][col].setPrefSize(200, 200);
         board[row][col].setStyle("-fx-font-size: 50px;");
+
+        StyleUtils.styleTTTButton(board[row][col]);
 
         final int finalRow = row;
         final int finalCol = col;
