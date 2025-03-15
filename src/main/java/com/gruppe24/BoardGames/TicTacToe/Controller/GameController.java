@@ -3,6 +3,7 @@ package com.gruppe24.BoardGames.TicTacToe.Controller;
 import com.gruppe24.BoardGames.TicTacToe.Model.Cell;
 import com.gruppe24.BoardGames.TicTacToe.Model.GameLogic;
 import com.gruppe24.BoardGames.TicTacToe.View.BoardView;
+import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 
 
@@ -55,11 +56,45 @@ public class GameController {
     stage.show();
   }
 
+  private boolean checkGameState() {
+    boolean hasEmpty = this.gameLogic.hasEmptyCells();
+    if (!hasEmpty) {
+      showAlert("All cells filled! Start a new game!");
+    }
+    return hasEmpty;
+  }
 
+  private void checkWinner() {
+    if (this.gameLogic.isWinnerX()) {
+      showAlert("X wins! Start a new game!");
+    } else if (this.gameLogic.isWinnerO()) {
+      showAlert("O wins! Start a new game!");
+    }
+  }
+
+
+  /**
+   * Method for showing an alert message.
+   *
+   * @param message the message to show
+   */
+  private void showAlert(String message) {
+    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+    alert.setTitle("Game Status");
+    alert.setHeaderText(null);
+    alert.setContentText(message);
+    alert.showAndWait();
+  }
+
+
+  /**
+   * Method for resetting the game.
+   */
   private void resetGame() {
     initalizeGame();
     this.boardView.rebuildBoard();
   }
+
 
   public Cell[][] getBoard() {
     return board;

@@ -33,7 +33,6 @@ public class BoardView {
         Cell cell = board[row][col];
         UIFactory.configureCellUI(cell, col, row, cellSize);
         panel.getChildren().add(cell);
-        cell.setOnMouseClicked();
         }
       }
     return panel;
