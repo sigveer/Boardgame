@@ -3,6 +3,7 @@ package com.gruppe24.BoardGames;
 import static com.gruppe24.Utils.StyleUtils.styleButton;
 
 import com.gruppe24.BoardGames.LadderGame.View.LadderGameMenuGUI;
+import com.gruppe24.BoardGames.TicTacToe.TicTacToeApp;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -40,15 +41,15 @@ public class MenuGUI extends Application {
     game2Button.setOnAction(event -> System.out.println("Game2!"));
     styleButton(game2Button);
 
-    Button game3Button = new Button("Another Game");
-    game3Button.setOnAction(event -> System.out.println("Game3!"));
-    styleButton(game3Button);
+    Button TicTacToeApp = new Button("TicTacToe");
+    TicTacToeApp.setOnAction(event -> new TicTacToeApp().start(primaryStage));
+    styleButton(TicTacToeApp);
 
 
     gridPane.add(title, 0, 0);
     gridPane.add(ladderButton, 0, 1);
     gridPane.add(game2Button, 0, 2);
-    gridPane.add(game3Button, 0, 3);
+    gridPane.add(TicTacToeApp, 0, 3);
 
     primaryStage.setScene(scene);
     primaryStage.show();
