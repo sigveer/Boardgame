@@ -9,7 +9,7 @@ package com.gruppe24.BoardGames.TicTacToe;
  * @Version: 1.0
  */
 public class Model {
-  private String[][] board;
+  private final String[][] board;
   private boolean xTurn;
   private boolean gameOver;
 

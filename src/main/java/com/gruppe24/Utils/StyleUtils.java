@@ -67,7 +67,7 @@ public class StyleUtils {
         "-fx-background-color: white; " +
             "-fx-border-color: #cccccc; " +
             "-fx-border-width: 1px; " +
-            "-fx-font-size: 50px; " +
+            "-fx-font-size: 75px; " +
             "-fx-text-fill: black;";
 
     tttButton.setStyle(normalStyle);

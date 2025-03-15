@@ -9,7 +9,7 @@ package com.gruppe24.BoardGames.TicTacToe;
  * @Version: 1.0
  */
 public class Controller {
-  private Model model;
+  private final Model model;
   private View view;
 
 

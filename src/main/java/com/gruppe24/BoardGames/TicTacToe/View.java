@@ -19,10 +19,10 @@ import javafx.stage.Stage;
  * @Version: 1.0
  */
 public class View {
-  private Stage primaryStage;
-  private Button[][] boardButtons = new Button[3][3];
-  private Model model;
-  private Controller controller;
+  private final Stage primaryStage;
+  private final Button[][] boardButtons = new Button[3][3];
+  private final Model model;
+  private final Controller controller;
 
 
   /**
