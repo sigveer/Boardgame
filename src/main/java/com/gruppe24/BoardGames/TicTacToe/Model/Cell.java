@@ -11,6 +11,10 @@ public class Cell extends Rectangle {
     this.isO = isO;
   }
 
+  public Cell() {
+
+  }
+
   public void mark(boolean asX) {
     this.isX = asX;
     this.isO = !asX;
