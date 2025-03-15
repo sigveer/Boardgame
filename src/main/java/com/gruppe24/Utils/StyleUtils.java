@@ -2,6 +2,14 @@ package com.gruppe24.Utils;
 
 import javafx.scene.control.Button;
 
+
+/**
+ * {@code StyleUtils} is a utility class for styling buttons.
+ *
+ * @Author Ingve, Sigveer
+ * @Date: 15.03.2025
+ * @Version: 1.0
+ */
 public class StyleUtils {
   public static void styleNormalButton(Button normalButton) {
     String normalStyle =
@@ -45,6 +53,15 @@ public class StyleUtils {
     normalButton.setOnMouseReleased(e -> normalButton.setStyle(hoverStyle));
   }
 
+
+  /**
+   * Method to style the Tic Tac Toe button
+   *
+   * @param tttButton is the button to be styled
+   * @Author Sigveer
+   * @Date: 15.03.2025
+   * @Version: 1.0
+   */
   public static void styleTTTButton(Button tttButton) {
     String normalStyle =
         "-fx-background-color: white; " +
