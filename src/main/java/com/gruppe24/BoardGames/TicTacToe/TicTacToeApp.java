@@ -1,5 +1,6 @@
 package com.gruppe24.BoardGames.TicTacToe;
 
+import com.gruppe24.BoardGames.MenuGUI;
 import com.gruppe24.Utils.StyleUtils;
 import javafx.application.Application;
 import javafx.geometry.Pos;
@@ -59,7 +60,23 @@ public class TicTacToeApp extends Application {
       }
     }
 
+    GridPane menuPanel = new GridPane();
+    menuPanel.setAlignment(Pos.CENTER);
+    menuPanel.setVgap(20);
+
+    Button restartButton = new Button("Restart");
+    StyleUtils.styleNormalButton(restartButton);
+    restartButton.setOnAction(e -> restartGame());
+
+    Button quitButton = new Button("Quit");
+    StyleUtils.styleNormalButton(quitButton);
+    quitButton.setOnAction(e -> new MenuGUI().start(primaryStage));
+
+    menuPanel.add(restartButton, 0, 0);
+    menuPanel.add(quitButton, 0, 1);
+
     background.add(boardgrid, 0, 0);
+    background.add(menuPanel, 1, 0);
 
     Scene scene = new Scene(background, 1000, 700);
     primaryStage.setScene(scene);
@@ -172,6 +189,25 @@ public class TicTacToeApp extends Application {
     alert.setHeaderText(null);
     alert.setContentText(message);
     alert.showAndWait();
+  }
+
+
+  /**
+   * Method to restart the game
+   *
+   * @Author Sigveer
+   * @Date: 15.03.2025
+   * @Version: 1.0
+   */
+  private void restartGame() {
+    for (int row = 0; row < 3; row++) {
+      for (int col = 0; col < 3; col++) {
+        board[row][col].setText("");
+        StyleUtils.styleTTTButton(board[row][col]);
+      }
+    }
+    xTurn = true;
+    gameOver = false;
   }
 
 
