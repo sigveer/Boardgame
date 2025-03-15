@@ -1,9 +1,9 @@
 package com.gruppe24.BoardGames;
 
-import static com.gruppe24.Utils.StyleUtils.styleButton;
+import static com.gruppe24.Utils.StyleUtils.styleNormalButton;
 
 import com.gruppe24.BoardGames.LadderGame.View.LadderGameMenuGUI;
-import com.gruppe24.BoardGames.TicTacToe.App.TicTacToeApp;
+import com.gruppe24.BoardGames.TicTacToe.TicTacToeApp;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -35,21 +35,21 @@ public class MenuGUI extends Application {
     //Buttons
     Button ladderButton = new Button("LadderGame");
     ladderButton.setOnAction(event -> new LadderGameMenuGUI().start(primaryStage));
-    styleButton(ladderButton);
+    styleNormalButton(ladderButton);
 
     Button game2Button = new Button("Different game");
     game2Button.setOnAction(event -> System.out.println("Game2!"));
-    styleButton(game2Button);
+    styleNormalButton(game2Button);
 
-    Button TicTacToe = new Button("TicTacToe");
-    TicTacToe.setOnAction(event -> new TicTacToeApp().start(primaryStage));
-    styleButton(TicTacToe);
+    Button TicTacToeApp = new Button("TicTacToe");
+    TicTacToeApp.setOnAction(event -> new TicTacToeApp().start(primaryStage));
+    styleNormalButton(TicTacToeApp);
 
 
     gridPane.add(title, 0, 0);
     gridPane.add(ladderButton, 0, 1);
     gridPane.add(game2Button, 0, 2);
-    gridPane.add(TicTacToe, 0, 3);
+    gridPane.add(TicTacToeApp, 0, 3);
 
     primaryStage.setScene(scene);
     primaryStage.show();
