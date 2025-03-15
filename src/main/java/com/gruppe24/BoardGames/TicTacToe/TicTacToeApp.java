@@ -2,11 +2,12 @@ package com.gruppe24.BoardGames.TicTacToe;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 
 
-/
 public class TicTacToeApp extends Application {
   private Button[][] board = new Button[3][3];
   private boolean xTurn = true;
@@ -23,7 +24,10 @@ public class TicTacToeApp extends Application {
         board[row][col].setPrefSize(200, 200);
         board[row][col].setStyle("-fx-font-size: 50px;");
 
-        board[row][col].setOnAction(event -> {});
+        final int finalRow = row;
+        final int finalCol = col;
+
+        board[row][col].setOnAction(e -> handleClick(finalRow, finalCol));
 
         grid.add(board[row][col], col, row);
       }
@@ -36,19 +40,24 @@ public class TicTacToeApp extends Application {
   }
 
   public void handleClick(int row, int col) {
-    if (gameOver || board[row][col].getText().isEmpty()) {
+    if (gameOver || !board[row][col].getText().isEmpty()) {
       return;
     }
 
     board[row][col].setText(xTurn ? "X" : "O");
 
-    if () {
-
+    if (checkWin(row, col)) {
+      gameOver = true;
+      showAlert(xTurn ? "X wins!" : "O wins!");
+    } else if (checkDraw()) {
+      gameOver = true;
+      showAlert("It's a draw!");
+    } else {
+      xTurn = !xTurn;
     }
-
   }
 
-  public void checkWin(int row, int col) {
+  private boolean checkWin(int row, int col) {
     String symbol = xTurn ? "X" : "O";
 
     //Check rows
@@ -79,6 +88,7 @@ public class TicTacToeApp extends Application {
         board[2][0].getText().equals(symbol)) {
       gameOver = true;
     }
+    return false;
   }
 
 
@@ -93,6 +103,14 @@ public class TicTacToeApp extends Application {
     return true;
   }
 
+
+  private void showAlert(String message) {
+    Alert alert = new Alert(AlertType.INFORMATION);
+    alert.setTitle("Game Over");
+    alert.setHeaderText(null);
+    alert.setContentText(message);
+    alert.showAndWait();
+  }
 
   public static void main(String[] args) {
     launch(args);
