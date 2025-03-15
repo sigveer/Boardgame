@@ -1,0 +1,55 @@
+@startuml TicTacToe Class Diagram
+
+class Model {
+  - String[][] board
+  - boolean xTurn
+  - boolean gameOver
+  + Model()
+  + resetGame()
+  + String getCell(int row, int col)
+  + void setCell(int row, int col, String value)
+  + void toggleTurn()
+  + boolean isGameOver()
+  + void setGameOver(boolean gameOver)
+  + String getCurrentPlayerSymbol()
+}
+
+class View {
+  - Stage primaryStage
+  - Button[][] boardButtons
+  - Model model
+  - Controller controller
+  + View(Stage primaryStage, Model model, Controller controller)
+  + void initializeView()
+  + void updateBoard()
+  + void showAlert(String message)
+}
+
+class Controller {
+  - Model model
+  - View view
+  + Controller(Model model)
+  + void setView(View view)
+  + void handleClick(int row, int col)
+  + void restartGame()
+  - boolean checkWin(int row, int col)
+  - boolean checkDraw()
+}
+
+class TicTacToeApp {
+  + void start(Stage primaryStage)
+  + void main(String[] args)
+}
+
+TicTacToeApp --> Model : creates
+TicTacToeApp --> Controller : creates
+TicTacToeApp --> View : creates
+
+Controller --> Model : uses
+Controller --> View : references
+View --> Model : references
+View --> Controller : references
+
+TicTacToeApp --|> application.Application
+
+@enduml
