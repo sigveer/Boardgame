@@ -74,7 +74,7 @@ public class Draft extends Application {
         // Check for win
         if (checkWin(row, col)) {
 
-//          disableBoard();
+          disableBoard(); //remove this line
         }
 
         // Switch turn
@@ -135,6 +135,15 @@ public class Draft extends Application {
 
       return false;
     }
+
+  private void disableBoard() {
+    for (int row = 0; row < ROWS; row++) {
+      for (int col = 0; col < COLS; col++) {
+        board[row][col].setOnMouseClicked(null);
+      }
+    }
+  }
+
 
   public static void main(String[] args) {
     launch(args);
