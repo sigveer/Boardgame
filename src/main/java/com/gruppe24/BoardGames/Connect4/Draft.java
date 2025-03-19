@@ -1,7 +1,5 @@
 package com.gruppe24.BoardGames.Connect4;
 
-import static javafx.application.Application.launch;
-
 import com.gruppe24.BoardGames.MenuGUI;
 import com.gruppe24.Utils.StyleUtils;
 import javafx.application.Application;
@@ -136,8 +134,22 @@ public class Draft extends Application {
   }
 
 
+  //Lag funsjoner som erstatter kode her
   public void resetGame() {
-
+    for (int row = 0; row < ROWS; row++) {
+      for (int col = 0; col < COLS; col++) {
+        gameState[row][col] = 0;
+        Pane tile = board[row][col];
+        tile.getChildren().clear();
+        Rectangle rect = new Rectangle(TILE_SIZE, TILE_SIZE);
+        rect.setStyle("-fx-fill: #0000FF;");
+        tile.getChildren().add(rect);
+        Circle circle = new Circle(TILE_SIZE / 2, TILE_SIZE / 2, CIRCLE_RADIUS);
+        circle.setStyle("-fx-fill: #FFFFFF; -fx-stroke: #000000;");
+        tile.getChildren().add(circle);
+      }
+    }
+    redTurn = true;
   }
 
   private void initializeView(Stage primaryStage) {
