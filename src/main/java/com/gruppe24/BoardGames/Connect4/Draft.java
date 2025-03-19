@@ -11,6 +11,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
 public class Draft extends Application {
+
   private static final int ROWS = 6;
   private static final int COLS = 7;
   private static final int TILE_SIZE = 80;
@@ -51,11 +52,12 @@ public class Draft extends Application {
     tile.getChildren().add(rect);
 
     //Circle
-    Circle circle = new Circle(TILE_SIZE/2, TILE_SIZE/2, CIRCLE_RADIUS);
+    Circle circle = new Circle(TILE_SIZE / 2, TILE_SIZE / 2, CIRCLE_RADIUS);
     circle.setStyle("-fx-fill: #FFFFFF; -fx-stroke: #000000;");
     tile.getChildren().add(circle);
 
-    tile.setOnMouseClicked(event -> {});
+    tile.setOnMouseClicked(event -> {dropChip(col);
+    });
 
     return tile;
   }
@@ -67,11 +69,10 @@ public class Draft extends Application {
 
         // Place Chip
         gameState[row][col] = redTurn ? 1 : 2;
-//        showChip(row, col);
+        showChip(row, col);
 
         // Check for win
-//        if (checkWin(row, col)) {
-          System.out.println((redTurn ? "Red" : "Green") + " wins!");
+        if (checkWin(row, col)) {
 
 //          disableBoard();
         }
@@ -81,35 +82,59 @@ public class Draft extends Application {
         return;
       }
     }
+  }
 
-
-    private void showChip(int row, int col) {
-    Circle chip = new Circle(TILE_SIZE/2, TILE_SIZE/2, CIRCLE_RADIUS);
-    chip.setStyle("-fx-fill: " + (redTurn ? "#FF0000;" : "#00FF00;"));
-    board[row][col].getChildren().add(chip);
+    private void showChip ( int row, int col){
+      Circle chip = new Circle(TILE_SIZE / 2, TILE_SIZE / 2, CIRCLE_RADIUS);
+      chip.setStyle("-fx-fill: " + (redTurn ? "#FF0000;" : "#00FF00;"));
+      board[row][col].getChildren().add(chip);
     }
 
-    private boolean checkWin(int row, int col) {
+    private boolean checkWin ( int row, int col){
       int player = gameState[row][col];
 
       // Check horizontal
       int count = 0;
-
-      for (int i = 0; i < COLS; i++) {
-        count = (gameState[row][i] == player) ? count + 1 : 0;
-        if (count == WINNING_LENGTH) {
+      for (int c = 0; c < COLS; c++) {
+        count = (gameState[row][c] == player) ? count + 1 : 0;
+        if (count >= 4)
           return true;
-        }
+      }
 
-        // Check vertical
-        count = 0;
-        for (int j = 0; j < ROWS; j++) {
+      // Check vertical
+      count = 0;
+      for (int r = 0; r < ROWS; r++) {
+        count = (gameState[r][col] == player) ? count + 1 : 0;
+        if (count >= 4)
+          return true;
+      }
 
+      // Check diagonal (down-right)
+      for (int r = 0; r <= ROWS - 4; r++) {
+        for (int c = 0; c <= COLS - 4; c++) {
+          if (gameState[r][c] == player &&
+              gameState[r + 1][c + 1] == player &&
+              gameState[r + 2][c + 2] == player &&
+              gameState[r + 3][c + 3] == player) {
+            return true;
+          }
         }
       }
-  }
-}
 
+      // Check diagonal (up-right)
+      for (int r = 3; r < ROWS; r++) {
+        for (int c = 0; c <= COLS - 4; c++) {
+          if (gameState[r][c] == player &&
+              gameState[r - 1][c + 1] == player &&
+              gameState[r - 2][c + 2] == player &&
+              gameState[r - 3][c + 3] == player) {
+            return true;
+          }
+        }
+      }
+
+      return false;
+    }
 
   public static void main(String[] args) {
     launch(args);
