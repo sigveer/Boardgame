@@ -2,8 +2,14 @@ package com.gruppe24.BoardGames.Connect4;
 
 import static javafx.application.Application.launch;
 
+import com.gruppe24.BoardGames.MenuGUI;
+import com.gruppe24.Utils.StyleUtils;
 import javafx.application.Application;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Circle;
@@ -23,23 +29,8 @@ public class Draft extends Application {
   private boolean redTurn = true;
 
   @Override
-  public void start(Stage stage) {
-    GridPane grid = new GridPane();
-
-    // Create the game board
-    for (int row = 0; row < ROWS; row++) {
-      for (int col = 0; col < COLS; col++) {
-        Pane tile = createTile(row, col);
-        board[row][col] = tile;
-        grid.add(tile, col, row);
-      }
-    }
-
-    Scene scene = new Scene(grid);
-    stage.setTitle("Connect4");
-    stage.setScene(scene);
-    stage.setResizable(false);
-    stage.show();
+  public void start(Stage primaryStage) {
+    initializeView(primaryStage);
   }
 
   private Pane createTile(int row, int col) {
@@ -73,7 +64,7 @@ public class Draft extends Application {
 
         // Check for win
         if (checkWin(row, col)) {
-
+          showAlert((redTurn ? "Red" : "Green") + " wins!");
           disableBoard(); //remove this line
         }
 
@@ -97,7 +88,7 @@ public class Draft extends Application {
       int count = 0;
       for (int c = 0; c < COLS; c++) {
         count = (gameState[row][c] == player) ? count + 1 : 0;
-        if (count >= 4)
+      if (count >= WINNING_LENGTH)
           return true;
       }
 
@@ -105,13 +96,13 @@ public class Draft extends Application {
       count = 0;
       for (int r = 0; r < ROWS; r++) {
         count = (gameState[r][col] == player) ? count + 1 : 0;
-        if (count >= 4)
+        if (count >= WINNING_LENGTH)
           return true;
       }
 
       // Check diagonal (down-right)
-      for (int r = 0; r <= ROWS - 4; r++) {
-        for (int c = 0; c <= COLS - 4; c++) {
+      for (int r = 0; r <= ROWS - WINNING_LENGTH; r++) {
+        for (int c = 0; c <= COLS - WINNING_LENGTH; c++) {
           if (gameState[r][c] == player &&
               gameState[r + 1][c + 1] == player &&
               gameState[r + 2][c + 2] == player &&
@@ -123,7 +114,7 @@ public class Draft extends Application {
 
       // Check diagonal (up-right)
       for (int r = 3; r < ROWS; r++) {
-        for (int c = 0; c <= COLS - 4; c++) {
+        for (int c = 0; c <= COLS - WINNING_LENGTH; c++) {
           if (gameState[r][c] == player &&
               gameState[r - 1][c + 1] == player &&
               gameState[r - 2][c + 2] == player &&
@@ -144,6 +135,62 @@ public class Draft extends Application {
     }
   }
 
+
+  public void resetGame() {
+
+  }
+
+  private void initializeView(Stage primaryStage) {
+    GridPane background = new GridPane();
+    background.setAlignment(Pos.CENTER);
+    background.setVgap(25);
+    background.setHgap(20);
+    background.setStyle("-fx-background-color: #2e49ae;");
+
+    GridPane boardgrid = new GridPane();
+    boardgrid.setAlignment(Pos.CENTER);
+
+    // Create the game board
+    for (int row = 0; row < ROWS; row++) {
+      for (int col = 0; col < COLS; col++) {
+        Pane tile = createTile(row, col);
+        board[row][col] = tile;
+        boardgrid.add(tile, col, row);
+      }
+    }
+
+    GridPane menuPanel = new GridPane();
+    menuPanel.setAlignment(Pos.CENTER);
+    menuPanel.setVgap(20);
+
+    Button restartButton = new Button("Restart");
+    StyleUtils.styleNormalButton(restartButton);
+    restartButton.setOnAction(e -> {resetGame();});
+
+    Button quitButton = new Button("Quit");
+    StyleUtils.styleNormalButton(quitButton);
+    quitButton.setOnAction(e -> new MenuGUI().start(primaryStage));
+
+    menuPanel.add(restartButton, 0, 0);
+    menuPanel.add(quitButton, 0, 1);
+
+    background.add(boardgrid, 0, 0);
+    background.add(menuPanel, 1, 0);
+
+    Scene scene = new Scene(background);
+    primaryStage.setTitle("Connect4");
+    primaryStage.setScene(scene);
+    primaryStage.setResizable(false);
+    primaryStage.show();
+  }
+
+  public void showAlert(String message) {
+    Alert alert = new Alert(AlertType.INFORMATION);
+    alert.setTitle("Game Over");
+    alert.setHeaderText(null);
+    alert.setContentText(message);
+    alert.showAndWait();
+  }
 
   public static void main(String[] args) {
     launch(args);
