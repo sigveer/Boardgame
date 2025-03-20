@@ -2,8 +2,16 @@ package com.gruppe24.Utils;
 
 import javafx.scene.control.Button;
 
+
+/**
+ * {@code StyleUtils} is a utility class for styling buttons.
+ *
+ * @Author Ingve, Sigveer
+ * @Date: 15.03.2025
+ * @Version: 1.0
+ */
 public class StyleUtils {
-  public static void styleButton(Button button) {
+  public static void styleNormalButton(Button normalButton) {
     String normalStyle =
         "-fx-background-color: linear-gradient(to bottom, #4a6cd4, #283a60); " +
             "-fx-text-fill: white; " +
@@ -37,11 +45,31 @@ public class StyleUtils {
             "-fx-border-width: 2px; " +
             "-fx-effect: innershadow(gaussian, rgba(0,0,0,0.7), 5, 0, 0, 0);";
 
-    button.setStyle(normalStyle);
+    normalButton.setStyle(normalStyle);
 
-    button.setOnMouseEntered(e -> button.setStyle(hoverStyle));
-    button.setOnMouseExited(e -> button.setStyle(normalStyle));
-    button.setOnMousePressed(e -> button.setStyle(pressedStyle));
-    button.setOnMouseReleased(e -> button.setStyle(hoverStyle));
+    normalButton.setOnMouseEntered(e -> normalButton.setStyle(hoverStyle));
+    normalButton.setOnMouseExited(e -> normalButton.setStyle(normalStyle));
+    normalButton.setOnMousePressed(e -> normalButton.setStyle(pressedStyle));
+    normalButton.setOnMouseReleased(e -> normalButton.setStyle(hoverStyle));
+  }
+
+
+  /**
+   * Method to style the Tic Tac Toe button
+   *
+   * @param tttButton is the button to be styled
+   * @Author Sigveer
+   * @Date: 15.03.2025
+   * @Version: 1.0
+   */
+  public static void styleTTTButton(Button tttButton) {
+    String normalStyle =
+        "-fx-background-color: white; " +
+            "-fx-border-color: #cccccc; " +
+            "-fx-border-width: 1px; " +
+            "-fx-font-size: 75px; " +
+            "-fx-text-fill: black;";
+
+    tttButton.setStyle(normalStyle);
   }
 }

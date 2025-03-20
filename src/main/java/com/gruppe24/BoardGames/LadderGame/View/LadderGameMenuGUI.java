@@ -1,6 +1,6 @@
 package com.gruppe24.BoardGames.LadderGame.View;
 
-import static com.gruppe24.Utils.StyleUtils.styleButton;
+import static com.gruppe24.Utils.StyleUtils.styleNormalButton;
 
 import com.gruppe24.BoardGames.MenuGUI;
 import javafx.application.Application;
@@ -20,7 +20,7 @@ public class LadderGameMenuGUI extends Application {
     primaryStage.setY(100);
 
     GridPane gridPane = new GridPane();
-    Scene scene = new Scene(gridPane, 1000, 850);
+    Scene scene = new Scene(gridPane, 1000, 700);
     gridPane.setAlignment(Pos.CENTER);
     gridPane.setVgap(25);
     gridPane.setHgap(20);
@@ -34,18 +34,18 @@ public class LadderGameMenuGUI extends Application {
       LadderGameSetUpGUI ladderGameSetUpGUI = new LadderGameSetUpGUI();
       ladderGameSetUpGUI.start(primaryStage);
     });
-    styleButton(classicButton);
+    styleNormalButton(classicButton);
 
     Button specialTile = new Button("Special Tile Mode");
-    styleButton(specialTile);
+    styleNormalButton(specialTile);
 
     Button textModeButton = new Button("Text Mode");
     textModeButton.setOnAction(event -> startTextGame());
-    styleButton(textModeButton);
+    styleNormalButton(textModeButton);
 
     Button backToMenu = new Button("Back to Menu");
     backToMenu.setOnAction(event -> new MenuGUI().start(primaryStage));
-    styleButton(backToMenu);
+    styleNormalButton(backToMenu);
 
     gridPane.add(title, 0, 0);
     gridPane.add(classicButton, 0, 1);
