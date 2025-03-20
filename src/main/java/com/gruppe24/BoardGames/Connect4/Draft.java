@@ -63,7 +63,7 @@ public class Draft extends Application {
         // Check for win
         if (checkWin(row, col)) {
           showAlert((redTurn ? "Red" : "Green") + " wins!");
-          disableBoard(); //remove this line
+          disableBoard();
         }
 
         // Switch turn
@@ -79,10 +79,10 @@ public class Draft extends Application {
       board[row][col].getChildren().add(chip);
     }
 
-    private boolean checkWin ( int row, int col){
+    private boolean checkWin (int row, int col){
       int player = gameState[row][col];
 
-      // Check horizontal
+      // Check vertical
       int count = 0;
       for (int c = 0; c < COLS; c++) {
         count = (gameState[row][c] == player) ? count + 1 : 0;
@@ -90,7 +90,7 @@ public class Draft extends Application {
           return true;
       }
 
-      // Check vertical
+      // Check horizontal
       count = 0;
       for (int r = 0; r < ROWS; r++) {
         count = (gameState[r][col] == player) ? count + 1 : 0;
