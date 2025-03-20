@@ -75,13 +75,13 @@ public class LadderGameSetUpGUI extends Application {
     for (int i = 1; i <= 4; i++) {
       final int playerCount = i;
       Button countButton = new Button(String.valueOf(i));
-      StyleUtils.styleButton(countButton);
+      StyleUtils.styleNormalButton(countButton);
       countButton.setOnAction(e -> showPlayerNameSetup(primaryStage, gameLayout, playerCount));
       playerCountBox.getChildren().add(countButton);
     }
 
     Button backButton = new Button("Back to Menu");
-    StyleUtils.styleButton(backButton);
+    StyleUtils.styleNormalButton(backButton);
     backButton.setOnAction(e -> new MenuGUI().start(primaryStage));
 
     setupPane.getChildren().addAll(titleLabel, promptLabel, playerCountBox, backButton);
@@ -116,7 +116,7 @@ public class LadderGameSetUpGUI extends Application {
     }
 
     Button startButton = new Button("Start Game");
-    StyleUtils.styleButton(startButton);
+    StyleUtils.styleNormalButton(startButton);
     startButton.setOnAction(e -> {
 
       players.clear();
@@ -146,10 +146,10 @@ public class LadderGameSetUpGUI extends Application {
     controlsPane.setPrefWidth(250);
 
     rollButton = new Button("Roll Dice");
-    StyleUtils.styleButton(rollButton);
+    StyleUtils.styleNormalButton(rollButton);
 
     Button quitButton = new Button("Quit");
-    StyleUtils.styleButton(quitButton);
+    StyleUtils.styleNormalButton(quitButton);
     quitButton.setOnAction(e -> {
       Stage stage = (Stage) quitButton.getScene().getWindow();
       new MenuGUI().start(stage);

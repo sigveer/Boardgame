@@ -3,6 +3,7 @@ package com.gruppe24.BoardGames.LadderGame.View;
 import static com.gruppe24.Utils.StyleUtils.styleNormalButton;
 
 import com.gruppe24.BoardGames.MenuGUI;
+import com.gruppe24.BoardGames.LadderGame.LadderGameText.LadderGameText;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
