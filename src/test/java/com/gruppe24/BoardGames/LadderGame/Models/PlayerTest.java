@@ -18,7 +18,7 @@ class PlayerTest {
 
   @Test
   void getName() {
-    assertEquals("TestPlayer", player.getName());
+    assertEquals("TestPlayer", player.getColoredName());
   }
 
   @Test

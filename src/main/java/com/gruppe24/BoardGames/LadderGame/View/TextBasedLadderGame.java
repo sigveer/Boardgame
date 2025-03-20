@@ -1,11 +1,12 @@
-package com.gruppe24.BoardGames.LadderGame.Controller;
+package com.gruppe24.BoardGames.LadderGame.View;
 
-import com.gruppe24.BoardGames.LadderGame.Models.Board;
+import com.gruppe24.BoardGames.LadderGame.Controller.GameController;
 import com.gruppe24.BoardGames.LadderGame.Models.Player;
 import com.gruppe24.Utils.Steps;
 import com.gruppe24.Utils.Validators;
 import java.util.ArrayList;
 import java.util.List;
+import javafx.scene.paint.Color;
 
 
 /**
@@ -15,14 +16,12 @@ import java.util.List;
  * @date 06.02.2025
  * @version 1.0.0
  */
-public class LadderGame {
+public class TextBasedLadderGame {
   private final List<Player> players;
-  private final Board board;
   private final GameController GM;
 
-  public LadderGame() {
+  public TextBasedLadderGame() {
     this.players = new ArrayList<>();
-    this.board = new Board();
     this.GM = new GameController();
   }
 
@@ -46,10 +45,14 @@ public class LadderGame {
     for (int i = 1; i <= numberOfPlayers; i++) {
       System.out.println("Name of player " + i + ": ");
       String name = Validators.scannerString();
-      players.add(new Player(name)); //AI-assisted
+      System.out.println("Color of player" + i + "\n(R = Red, B = blue, G = green)\n:");
+      Color color = Validators.colorChoice(Validators.scannerString());
+      players.add(new Player(name,color)); //AI-assisted
     }
 
     System.out.println("Players are ready to play!");
+
+    play();
   }
 
   /**
@@ -63,8 +66,8 @@ public class LadderGame {
     boolean gameOver = false;
     while (!gameOver) {
       for (Player player : players) {
-        GM.handlePlayerTurn(player);
-        if (GM.checkAndHandleWin(player, player.getPosition())) {
+        GM.textBasedHandlePlayerTurn(player);
+        if (GM.textBasedCheckAndHandleWin(player, player.getPosition())) {
           gameOver = true;
           Steps.pressEnterToContinue();
           break;

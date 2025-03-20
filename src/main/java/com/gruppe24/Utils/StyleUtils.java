@@ -72,4 +72,46 @@ public class StyleUtils {
 
     tttButton.setStyle(normalStyle);
   }
+
+
+
+  //--------Colour---------
+
+  public static String textRED() {
+    return "\u001B[31m";
+  }
+
+  public static String textBLUE() {
+    return "\u001B[34m";
+  }
+
+  public static String textGREEN() {
+    return "\u001B[32m";
+  }
+
+  public static String textRESET() {
+    return "\u001B[0m";
+  }
+
+  public static String textROSE() {
+    return textRED() + """
+        
+            _,--._.-,
+           /\\_r-,\\_ )
+        .-.) _;='_/ (.;
+         \\ \\'     \\/S )
+          L.'-. _.'|-'
+         <_`-'\\'_.'/
+           `'-._( \\
+        """ + textGREEN() +
+        """
+                ___   \\\\,      ___
+                \\ .'-. \\\\   .-'_. /
+                 '._' '.\\\\/.-'_.'
+                    '--``\\('--'
+                          \\\\
+                          `\\\\,
+                            \\|⠀⠀⠀⠀⠀⠀⠀
+            """ + textRESET();
+  }
 }

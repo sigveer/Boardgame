@@ -1,6 +1,7 @@
 package com.gruppe24.Utils;
 
 import java.util.Scanner;
+import javafx.scene.paint.Color;
 
 /**
  * Class containing utility methods for validating user input.
@@ -54,6 +55,23 @@ public class Validators {
       }
     }
     return value;
+  }
+
+  public static Color colorChoice(String prompt){
+    while(true){
+      switch (prompt) {
+        case "R" -> {
+          return Color.RED;
+        }
+        case "B" -> {
+          return Color.BLUE;
+        }
+        case "G" -> {
+          return Color.GREEN;
+        }
+      }
+
+    }
   }
 }
 
