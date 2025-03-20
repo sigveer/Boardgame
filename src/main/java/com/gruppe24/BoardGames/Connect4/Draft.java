@@ -18,8 +18,8 @@ public class Draft extends Application {
 
   private static final int ROWS = 6;
   private static final int COLS = 7;
-  private static final int TILE_SIZE = 80;
-  private static final int CIRCLE_RADIUS = 30;
+  private static final int TILE_SIZE = 120;
+  private static final int CIRCLE_RADIUS = 45;
   private static final int WINNING_LENGTH = 4;
 
   private final Pane[][] board = new Pane[ROWS][COLS];
@@ -133,6 +133,15 @@ public class Draft extends Application {
     }
   }
 
+  public void enableBoard() {
+    for (int row = 0; row < ROWS; row++) {
+      for (int col = 0; col < COLS; col++) {
+        final int finalCol = col;
+        board[row][col].setOnMouseClicked(event -> dropChip(finalCol));
+      }
+    }
+  }
+
 
   //Lag funsjoner som erstatter kode her
   public void resetGame() {
@@ -147,6 +156,7 @@ public class Draft extends Application {
         Circle circle = new Circle(TILE_SIZE / 2, TILE_SIZE / 2, CIRCLE_RADIUS);
         circle.setStyle("-fx-fill: #FFFFFF; -fx-stroke: #000000;");
         tile.getChildren().add(circle);
+        enableBoard();
       }
     }
     redTurn = true;
