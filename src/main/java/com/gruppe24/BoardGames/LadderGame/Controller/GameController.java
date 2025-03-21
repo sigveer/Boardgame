@@ -29,7 +29,6 @@ public class GameController {
    */
   public void handlePlayerTurn(Player player) {
     int sumDice = dice.rollSum();
-    System.out.println("SUMDICE:"+sumDice); //TEST TEST TEST---------------------
     movePlayer(player, sumDice);
   }
 

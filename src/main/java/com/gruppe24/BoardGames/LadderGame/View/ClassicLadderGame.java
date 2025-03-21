@@ -84,44 +84,18 @@ public class ClassicLadderGame extends Application {
   //AI-based method
   public void drawPlayer(GridPane gridPane, List<Player> players, Stage primaryStage){
     for(Player player : players){
-      int oldRow = player.getPosition() / 9;
-      int oldCol = player.getPosition() % 9;
-
       gameController.handlePlayerTurn(player);
-      System.out.println(player.getPosition()); //TEST TEST TEST -----------------------
-      int newRow = player.getPosition() / 9;
-      int newCol = player.getPosition() % 9;
+      int xPos = player.getPosition() / 9;
+      int yPos = player.getPosition() % 9;
 
-      //Check winner after player-position updated
       if (gameController.checkAndHandleWin(player.getPosition())) {
         new ClassicWinnerScreen(player).start(primaryStage);
         return;
       }
 
-      //converting grid coordinates to pixel values (for animation)
-      double startX = oldCol * tileSize;
-      double startY = (9 - oldRow) * tileSize;
-      double endX = newCol * tileSize;
-      double endY = (9 - newRow) * tileSize;
+      gridPane.getChildren().remove(player.getPlayerPiece());
+      gridPane.add((player.getPlayerPiece()),yPos,9-xPos);
 
-      //startposition for playerpiece in animation
-      player.getPlayerPiece().setTranslateX(startX);
-      player.getPlayerPiece().setTranslateY(startY);
-
-      //the animation
-      TranslateTransition transition = new TranslateTransition(Duration.millis(500),player.getPlayerPiece());
-      transition.setToX(endX);
-      transition.setToY(endY);
-      transition.setCycleCount(1);
-      transition.setOnFinished(event -> {
-        player.getPlayerPiece().setTranslateX(0);
-        player.getPlayerPiece().setTranslateY(0);
-        gridPane.getChildren().remove(player.getPlayerPiece());
-        //The exact end-coordinate:
-        gridPane.add((player.getPlayerPiece()),newCol,9-newRow);
-      });
-
-      transition.play();
     }
   }
 
