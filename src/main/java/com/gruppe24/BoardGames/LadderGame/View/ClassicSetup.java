@@ -80,6 +80,9 @@ public class ClassicSetup extends Application {
     colorComboBox4.setValue("Yellow"); //default
     gridPane.add(colorComboBox4,1,8);
 
+    //Collection of names and colours
+    List<TextField> names = Arrays.asList(nameTextField1,nameTextField2,nameTextField3,nameTextField4);
+    List<ComboBox<String>> colors = Arrays.asList(colorComboBox1,colorComboBox2,colorComboBox3,colorComboBox4);
 
     //calculating amount of players
     final int[] AmountPlayers = {0};
@@ -87,22 +90,19 @@ public class ClassicSetup extends Application {
     nextButton.setOnAction(event -> {
       int tempAmountPlayers = countPlayers(nameTextField1,nameTextField2,nameTextField3,nameTextField4);
       AmountPlayers[0] = tempAmountPlayers;
+
+      //getting players
+      players.clear();
+
+      for(int i = 0; i < AmountPlayers[0]; i++){
+        String name = names.get(i).getText();
+        Color color = getColorFromString(colors.get(i).getValue());
+        players.add(new Player(name,color));
+      }
     });
     gridPane.add(nextButton,9,8);
 
 
-    //getting players
-    List<TextField> names = Arrays.asList(nameTextField1,nameTextField2,nameTextField3,nameTextField4);
-    List<ComboBox<String>> colors = Arrays.asList(colorComboBox1,colorComboBox2,colorComboBox3,colorComboBox4);
-
-    players.clear();
-
-    for(int i = 0; i < AmountPlayers[0]; i++){
-      String name = names.get(i).getText();
-      Color color = getColorFromString(colors.get(i).getValue());
-
-      players.add(new Player(name,color));
-    }
 
     //Go to game
     Button toGame = new Button("NEXT");
