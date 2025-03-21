@@ -24,10 +24,10 @@ public class ClassicLadderGame extends Application {
   private List<Player> players;
   private static final int tileSize = 50;
 
-  public ClassicLadderGame(){
+  public ClassicLadderGame(List<Player> players){
     this.gameController = new GameController();
     this.board = new Board();
-    this.players = new ArrayList<>();
+    this.players = players;
   }
 
   @Override
