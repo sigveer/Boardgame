@@ -5,6 +5,9 @@ import com.gruppe24.BoardGames.LadderGame.Models.Board;
 import com.gruppe24.BoardGames.LadderGame.Models.Player;
 import com.gruppe24.BoardGames.LadderGame.Models.Tile.LadderTile;
 import com.gruppe24.BoardGames.LadderGame.Models.Tile.SnakeTile;
+import java.util.ArrayList;
+import java.util.List;
+import javafx.scene.control.Button;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.paint.Color;
 import javafx.application.Application;
@@ -17,14 +20,14 @@ import javafx.stage.Stage;
 public class ClassicLadderGame extends Application {
 
   private final Board board;
-  private GameController gameController;
-  private Player player;
+  private final GameController gameController;
+  private List<Player> players;
   private static final int tileSize = 50;
 
   public ClassicLadderGame(){
     this.gameController = new GameController();
     this.board = new Board();
-    this.player = new Player("Joe",Color.RED);
+    this.players = new ArrayList<>();
   }
 
   @Override
@@ -44,11 +47,18 @@ public class ClassicLadderGame extends Application {
     title.setStyle("-fx-font-size: 40px; -fx-text-fill: #ffffff; -fx-font-weight: bold;");
 
     drawBoard(gridPane);
-    drawPlayer(gridPane);
+    drawPlayer(gridPane,players);
+
+    //Dice button
+    Button diceRoll = new Button("Roll Dice");
+    diceRoll.setOnAction(event -> drawPlayer(gridPane,players));
+    gridPane.add(diceRoll,11,0);
 
     primaryStage.setScene(scene);
     primaryStage.show();
   }
+
+
 
   //AI-basert for metoden
   public void drawBoard(GridPane gridPane){
@@ -71,10 +81,12 @@ public class ClassicLadderGame extends Application {
     }
   }
   //AI-støtte for metoden
-  public void drawPlayer(GridPane gridPane){
-    gameController.handlePlayerTurn(player);
-
-    gridPane.getChildren().add((player.getPlayerPiece()));
+  public void drawPlayer(GridPane gridPane, List<Player> players){
+    for(Player player : players){
+      gameController.handlePlayerTurn(player);
+      gridPane.getChildren().remove(player.getPlayerPiece());
+      gridPane.getChildren().add((player.getPlayerPiece()));
+    }
   }
 
 }

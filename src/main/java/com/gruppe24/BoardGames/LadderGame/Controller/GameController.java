@@ -19,35 +19,33 @@ public class GameController {
 
 
 
+
   /**
-   * Method that handles the action of a tile.
-   *
-   * @param player the player
-   * @param newPosition the new position of the player
+   * Method that handles the player's turn.
    *
    * @Author Sigveer, Ingve
-   * @Date: 16.02.2025
+   * @Date: 06.02.2025
    * @Version: 1.0
    */
-  public void handleTileAction(Player player, int newPosition) {
-    TileAction tile = board.getTile(newPosition);
-    tile.perform(player);
+  public void handlePlayerTurn(Player player) {
+    int sumDice = dice.rollSum();
+    movePlayer(player, sumDice);
   }
 
-
-
   /**
-   * Method that checks if a player has won the game.
+   * Method that moves the player.
    *
-   * @param newPosition the new position of the player
-   * @return true if the player has won, false otherwise
+   * @param sumDice the sum of the dice
    *
    * @Author Sigveer, Ingve
-   * @Date: 12.02.2025
+   * @Date: 06.02.2025
    * @Version: 1.0
    */
-  public boolean checkAndHandleWin(int newPosition) {
-    return newPosition == WinCondition;
+  public void movePlayer(Player player, int sumDice) {
+    int newPosition = player.getPosition() + sumDice;
+    newPosition = handleOvershoot(newPosition);
+    player.setPosition(newPosition);
+    handleTileAction(player, newPosition);
   }
 
 
@@ -70,36 +68,37 @@ public class GameController {
 
 
   /**
-   * Method that handles the player's turn.
+   * Method that handles the action of a tile.
+   *
+   * @param player the player
+   * @param newPosition the new position of the player
    *
    * @Author Sigveer, Ingve
-   * @Date: 06.02.2025
+   * @Date: 16.02.2025
    * @Version: 1.0
    */
-  public void handlePlayerTurn(Player player) {
-    int sumDice = dice.rollSum();
-    movePlayer(player, sumDice);
+  public void handleTileAction(Player player, int newPosition) {
+    TileAction tile = board.getTile(newPosition);
+    tile.perform(player);
   }
 
 
   /**
-   * Method that moves the player.
+   * Method that checks if a player has won the game.
    *
-   * @param sumDice the sum of the dice
+   * @param newPosition the new position of the player
+   * @return true if the player has won, false otherwise
    *
    * @Author Sigveer, Ingve
-   * @Date: 06.02.2025
+   * @Date: 12.02.2025
    * @Version: 1.0
    */
-  public void movePlayer(Player player, int sumDice) {
-    int newPosition = player.getPosition() + sumDice;
-    newPosition = handleOvershoot(newPosition);
-    player.setPosition(newPosition);
-    handleTileAction(player, newPosition);
+  public boolean checkAndHandleWin(int newPosition) {
+    return newPosition == WinCondition;
   }
 
 
-
+  //----------------CONTROLLERS FOR TEXTBASED LADDERGAME--------------------
   /**
    * Method that checks if a player has won the game.
    *

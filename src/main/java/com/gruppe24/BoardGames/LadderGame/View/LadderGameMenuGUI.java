@@ -31,7 +31,7 @@ public class LadderGameMenuGUI extends Application {
     title.setStyle("-fx-font-size: 40px; -fx-text-fill: #ffffff; -fx-font-weight: bold;");
 
     Button classicButton = new Button("Classic Mode");
-    classicButton.setOnAction(event -> new ClassicLadderGame().start(primaryStage));
+    classicButton.setOnAction(event -> new ClassicSetup().start(primaryStage));
     styleNormalButton(classicButton);
 
     Button specialTile = new Button("Special Tile Mode");
