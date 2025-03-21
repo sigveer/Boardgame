@@ -5,7 +5,6 @@ import com.gruppe24.BoardGames.LadderGame.Models.Board;
 import com.gruppe24.BoardGames.LadderGame.Models.Player;
 import com.gruppe24.BoardGames.LadderGame.Models.Tile.LadderTile;
 import com.gruppe24.BoardGames.LadderGame.Models.Tile.SnakeTile;
-import java.util.ArrayList;
 import java.util.List;
 import javafx.animation.TranslateTransition;
 import javafx.scene.control.Button;
@@ -52,7 +51,7 @@ public class ClassicLadderGame extends Application {
 
     //Dice button
     Button diceRoll = new Button("Roll Dice");
-    diceRoll.setOnAction(event -> drawPlayer(gridPane,players));
+    diceRoll.setOnAction(event -> drawPlayer(gridPane,players,primaryStage));
     gridPane.add(diceRoll,11,0);
 
 
@@ -83,15 +82,21 @@ public class ClassicLadderGame extends Application {
     }
   }
   //AI-based method
-  public void drawPlayer(GridPane gridPane, List<Player> players){
+  public void drawPlayer(GridPane gridPane, List<Player> players, Stage primaryStage){
     for(Player player : players){
-      //gridPane.getChildren().remove(player.getPlayerPiece());
       int oldRow = player.getPosition() / 9;
       int oldCol = player.getPosition() % 9;
 
       gameController.handlePlayerTurn(player);
+      System.out.println(player.getPosition()); //TEST TEST TEST -----------------------
       int newRow = player.getPosition() / 9;
       int newCol = player.getPosition() % 9;
+
+      //Check winner after player-position updated
+      if (gameController.checkAndHandleWin(player.getPosition())) {
+        new ClassicWinnerScreen(player).start(primaryStage);
+        return;
+      }
 
       //converting grid coordinates to pixel values (for animation)
       double startX = oldCol * tileSize;
