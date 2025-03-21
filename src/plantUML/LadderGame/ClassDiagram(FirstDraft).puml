@@ -1,88 +1,83 @@
 @startuml
-interface TileAction{
-    + perform(Player player) : void
-}
-
-abstract class Tile {
-    + perform(Player player) : void
-}
-
-abstract class NormalTile {
-    - int position
-    + NormalTile(int position)
-}
-
-abstract class SpecialTile {
-    + SpecialTile(int position)
-}
-
-class LadderTile {
-    - int climbUp
-    + LadderTile(int position, int climbUp)
-    + perform(Player player) : void
-}
-
-class SnakeTile {
-    - int slideDown
-    + SnakeTile(int position, int slideDown)
-    + perform(Player player) : void
-}
-
-class Board {
+  class Board {
     - HashMap<Integer, Integer> ladders
     - HashMap<Integer, Integer> snakes
-    - static final int WinCondition
+    - static final int Columns
+    - static final int Rows
     - TileAction[] tiles
-    - final Dice dice
+    + Board()
     + initializeLaddersAndSnake() : void
     + initializeTiles() : void
     + getTile(int position) : TileAction
-    + movePlayer(Player player, int sumDice) : void
-}
+  }
 
-class Die {
-    - final Random random
-    + Die()
-    + roll() : int
-    + getValue() : int
-}
-
-class Dice {
+  class Dice {
     - List<Die> dice
     + Dice(int numberOfDice)
     + rollSum() : int
     + getDie(int dieNumber) : int
-}
+  }
 
-class Player {
+  class Die {
+    - int lastRolledValue
+    - Random random
+    + Die()
+    + roll() : int
+    + getValue() : int
+  }
+
+  class Player {
     - String name
     - int position
-    + getName()
-    + getPosition()
-    + setPosition()
+    + Player(String name)
+    + getName() : String
+    + getPosition() : int
+    + setPosition(int position) : void
+  }
+
+  interface TileAction {
+    + perform(Player player) : void
+  }
+
+  abstract class Tile implements TileAction {
+    - int position
+    + Tile(int position)
+    + getPosition() : int
+  }
+
+  class NormalTile extends Tile {
+    + NormalTile(int position)
+    + perform(Player player) : void
+  }
+
+  abstract class SpecialTile extends Tile {
+    - int destination
+    + SpecialTile(int position, int destination)
+    + getDestination() : int
+  }
+
+  class LadderTile extends SpecialTile {
+    - int climbUp
+    + LadderTile(int position, int climbUp)
+    + perform(Player player) : void
+  }
+
+  class SnakeTile extends SpecialTile {
+    - int slideDown
+    + SnakeTile(int position, int slideDown)
+    + perform(Player player) : void
+  }
+class GameController {
+ - Board board
+    - Dice dice
+    + checkAndHandleWin(Player p, int newPosition) : boolean
+    + movePlayer(Player player, int sumDice) : void
 }
 
-class LadderGame {
-    - List<Player> players
-    - Board board
-    + setUpPlayers()
-    + play()
-}
-
-
-TileAction <|.. Tile
-Tile <|-- NormalTile
-Tile <|-- SpecialTile
-SpecialTile <|-- LadderTile
-SpecialTile <|-- SnakeTile
-
-Board o-- Tile
-Board o-- Player
-Board o-- Dice
-
-Die <|-- Dice
-
-LadderGame o-- Board
-LadderGame o-- Player
+Board <-- TileAction
+Dice <-- Die
+GameController <-- Board
+GameController <-- Dice
+GameController <-- Player
 
 @enduml

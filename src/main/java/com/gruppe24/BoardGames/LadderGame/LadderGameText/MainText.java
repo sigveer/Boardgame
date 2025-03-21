@@ -1,7 +1,5 @@
-package com.gruppe24;
+package com.gruppe24.BoardGames.LadderGame.LadderGameText;
 
-
-import com.gruppe24.BoardGames.Menu;
 
 public class MainText {
 

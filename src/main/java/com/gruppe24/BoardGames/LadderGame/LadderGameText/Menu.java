@@ -1,6 +1,5 @@
-package com.gruppe24.BoardGames;
+package com.gruppe24.BoardGames.LadderGame.LadderGameText;
 
-import com.gruppe24.BoardGames.LadderGame.Controller.LadderGame;
 import com.gruppe24.Utils.Validators;
 
 /**
@@ -25,7 +24,7 @@ public class Menu {
       switch (choice) {
         case 1 -> {
           System.out.println("Starting Ladder Game...");
-          LadderGame ladderGame = new LadderGame();
+          LadderGameText ladderGame = new LadderGameText();
           ladderGame.setUpPlayers();
           ladderGame.play();
         }

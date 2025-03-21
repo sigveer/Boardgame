@@ -2,8 +2,8 @@ package com.gruppe24.BoardGames.LadderGame.View;
 
 import static com.gruppe24.Utils.StyleUtils.styleNormalButton;
 
-import com.gruppe24.BoardGames.LadderGame.Controller.LadderGame;
 import com.gruppe24.BoardGames.MenuGUI;
+import com.gruppe24.BoardGames.LadderGame.LadderGameText.LadderGameText;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -31,7 +31,10 @@ public class LadderGameMenuGUI extends Application {
     title.setStyle("-fx-font-size: 40px; -fx-text-fill: #ffffff; -fx-font-weight: bold;");
 
     Button classicButton = new Button("Classic Mode");
-    classicButton.setOnAction(event -> {});
+    classicButton.setOnAction(event -> {
+      LadderGameSetUpGUI ladderGameSetUpGUI = new LadderGameSetUpGUI();
+      ladderGameSetUpGUI.start(primaryStage);
+    });
     styleNormalButton(classicButton);
 
     Button specialTile = new Button("Special Tile Mode");
@@ -58,8 +61,8 @@ public class LadderGameMenuGUI extends Application {
    * Starts the text-based version of the game
    */
   private void startTextGame() {
-    final LadderGame LadderGame = new LadderGame();
-    LadderGame.setUpPlayers();
-    LadderGame.play();
+    final LadderGameText LadderGameText = new LadderGameText();
+    LadderGameText.setUpPlayers();
+    LadderGameText.play();
   }
 }
