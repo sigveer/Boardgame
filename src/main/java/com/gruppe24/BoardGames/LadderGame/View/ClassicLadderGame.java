@@ -58,16 +58,20 @@ public class ClassicLadderGame extends Application {
     currentPlayerLabel = new Label("Current Player: " + players.get(currentPlayerIndex).getName());
     currentPlayerLabel.setStyle("-fx-font-size: 16px; -fx-text-fill: white;");
 
-    diceResultLabel = new Label("Roll the dice to start the game!");
+    diceResultLabel = new Label("Roll the dice!");
     diceResultLabel.setStyle("-fx-font-size: 16px; -fx-text-fill: white;");
 
     Button diceRoll = new Button("Roll Dice");
     diceRoll.setOnAction(event -> rollDiceAndMove(gridPane, primaryStage));
     StyleUtils.styleNormalButton(diceRoll);
 
+    Button backToMenu = new Button("Back to Menu");
+    backToMenu.setOnAction(event -> {new LadderGameMenuGUI().start(primaryStage);});
+    StyleUtils.styleNormalButton(backToMenu);
+
     VBox controlPanel = new VBox(10);
     controlPanel.setAlignment(Pos.CENTER);
-    controlPanel.getChildren().addAll(currentPlayerLabel, diceResultLabel, diceRoll);
+    controlPanel.getChildren().addAll(currentPlayerLabel, diceResultLabel, diceRoll, backToMenu);
 
     gridPane.add(controlPanel, 11, 0, 1, 5);
 
