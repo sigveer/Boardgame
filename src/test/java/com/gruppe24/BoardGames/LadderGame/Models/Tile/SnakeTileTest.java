@@ -3,6 +3,7 @@ package com.gruppe24.BoardGames.LadderGame.Models.Tile;
 import static org.junit.jupiter.api.Assertions.*;
 
 import com.gruppe24.BoardGames.LadderGame.Models.Player;
+import javafx.scene.paint.Color;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -22,7 +23,7 @@ class SnakeTileTest {
   @BeforeEach
   void setUp() {
     snakeTile = new SnakeTile(10, 5);
-    player = new Player("TestPlayer");
+    player = new Player("TestPlayer", Color.BLUE);
     player.setPosition(10);
   }
 

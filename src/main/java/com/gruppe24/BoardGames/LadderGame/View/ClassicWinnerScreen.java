@@ -1,9 +1,11 @@
 package com.gruppe24.BoardGames.LadderGame.View;
 
 import com.gruppe24.BoardGames.LadderGame.Models.Player;
+import com.gruppe24.Utils.StyleUtils;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
@@ -35,6 +37,11 @@ public class ClassicWinnerScreen extends Application {
     winnerLabel.setFont(new Font("Arial",40));
     winnerLabel.setTextFill(Color.WHITE);
     gridPane.add(winnerLabel,1,1);
+
+    Button exitButton = new Button("Exit");
+    StyleUtils.styleNormalButton(exitButton);
+    exitButton.setOnAction(event -> new LadderGameMenuGUI().start(primaryStage));
+    gridPane.add(exitButton,1,2);
 
     primaryStage.setScene(scene);
     primaryStage.show();

@@ -24,12 +24,11 @@ public class GameController {
    * Method that handles the player's turn.
    *
    * @Author Sigveer, Ingve
-   * @Date: 06.02.2025
+   * @Date: 26.03.2025
    * @Version: 1.0
    */
-  public void handlePlayerTurn(Player player) {
-    int sumDice = dice.rollSum();
-    movePlayer(player, sumDice);
+  public void handlePlayerTurn(Player player, int diceValue) {
+    movePlayer(player, diceValue);
   }
 
   /**

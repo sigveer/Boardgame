@@ -1,6 +1,7 @@
 package com.gruppe24.BoardGames.LadderGame.View;
 
 import com.gruppe24.BoardGames.LadderGame.Models.Player;
+import com.gruppe24.Utils.StyleUtils;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -87,6 +88,7 @@ public class ClassicSetup extends Application {
     //calculating amount of players
     final int[] AmountPlayers = {0};
     Button nextButton = new Button("SUBMIT");
+    StyleUtils.styleNormalButton(nextButton);
     nextButton.setOnAction(event -> {
       int tempAmountPlayers = countPlayers(nameTextField1,nameTextField2,nameTextField3,nameTextField4);
       AmountPlayers[0] = tempAmountPlayers;
@@ -106,6 +108,7 @@ public class ClassicSetup extends Application {
 
     //Go to game
     Button toGame = new Button("NEXT");
+    StyleUtils.styleNormalButton(toGame);
     toGame.setOnAction(event -> new ClassicLadderGame(players).start(primaryStage));
     gridPane.add(toGame,11,11);
 
