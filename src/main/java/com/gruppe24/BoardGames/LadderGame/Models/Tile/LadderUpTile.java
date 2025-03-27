@@ -5,7 +5,7 @@ import com.gruppe24.BoardGames.LadderGame.Models.Player;
 /**
  * Class representing a tile that is a ladder.
  */
-public class LadderTile extends SpecialTile {
+public class LadderUpTile extends SpecialTile {
 
   //attributes
   private final int climbUp;
@@ -21,7 +21,7 @@ public class LadderTile extends SpecialTile {
    * @Date: 06.02.2025
    * @Version: 1.0
    */
-  public LadderTile(int position, int climbUp){
+  public LadderUpTile(int position, int climbUp){
     super(position, climbUp);
     this.climbUp = climbUp;
   }

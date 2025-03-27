@@ -4,8 +4,8 @@ import com.gruppe24.BoardGames.LadderGame.Controller.GameController;
 import com.gruppe24.BoardGames.LadderGame.Models.Board;
 import com.gruppe24.BoardGames.LadderGame.Models.Dice;
 import com.gruppe24.BoardGames.LadderGame.Models.Player;
-import com.gruppe24.BoardGames.LadderGame.Models.Tile.LadderTile;
-import com.gruppe24.BoardGames.LadderGame.Models.Tile.SnakeTile;
+import com.gruppe24.BoardGames.LadderGame.Models.Tile.LadderUpTile;
+import com.gruppe24.BoardGames.LadderGame.Models.Tile.LadderDownTile;
 import com.gruppe24.Utils.StyleUtils;
 import java.util.List;
 import javafx.scene.control.Button;
@@ -16,7 +16,6 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -144,9 +143,9 @@ public class ClassicLadderGame extends Application {
         tile.setStroke(Color.BLACK);
         tile.setStrokeWidth(1);
 
-        if (board.getTile(tileNumber) instanceof LadderTile) {
+        if (board.getTile(tileNumber) instanceof LadderUpTile) {
           tile.setFill(Color.GREEN);
-        } else if (board.getTile(tileNumber) instanceof SnakeTile) {
+        } else if (board.getTile(tileNumber) instanceof LadderDownTile) {
           tile.setFill(Color.RED);
         } else {
           tile.setFill(Color.WHITE);

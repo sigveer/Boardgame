@@ -4,12 +4,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import com.gruppe24.BoardGames.LadderGame.Models.Board;
 import com.gruppe24.BoardGames.LadderGame.Models.Player;
-import com.gruppe24.BoardGames.LadderGame.Models.Tile.LadderTile;
-import com.gruppe24.BoardGames.LadderGame.Models.Tile.SnakeTile;
+import com.gruppe24.BoardGames.LadderGame.Models.Tile.LadderUpTile;
+import com.gruppe24.BoardGames.LadderGame.Models.Tile.LadderDownTile;
 import com.gruppe24.BoardGames.LadderGame.Models.Tile.Tile;
 import com.gruppe24.BoardGames.LadderGame.Models.Tile.TileAction;
-import java.io.ByteArrayInputStream;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 
@@ -37,7 +35,7 @@ class BoardTest {
   @Test
   void getLadderTile() {
     TileAction tile = board.getTile(1);
-    assertInstanceOf(LadderTile.class, tile);
+    assertInstanceOf(LadderUpTile.class, tile);
   }
 
 
@@ -47,7 +45,7 @@ class BoardTest {
   @Test
   void getSnakeTile() {
     TileAction tile = board.getTile(24);
-    assertInstanceOf(SnakeTile.class, tile);
+    assertInstanceOf(LadderDownTile.class, tile);
   }
 
 

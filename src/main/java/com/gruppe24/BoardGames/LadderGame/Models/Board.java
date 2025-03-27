@@ -1,8 +1,8 @@
 package com.gruppe24.BoardGames.LadderGame.Models;
 
-import com.gruppe24.BoardGames.LadderGame.Models.Tile.LadderTile;
+import com.gruppe24.BoardGames.LadderGame.Models.Tile.LadderUpTile;
 import com.gruppe24.BoardGames.LadderGame.Models.Tile.NormalTile;
-import com.gruppe24.BoardGames.LadderGame.Models.Tile.SnakeTile;
+import com.gruppe24.BoardGames.LadderGame.Models.Tile.LadderDownTile;
 import com.gruppe24.BoardGames.LadderGame.Models.Tile.TileAction;
 import java.util.HashMap;
 
@@ -16,8 +16,8 @@ import java.util.HashMap;
 public class Board {
 
   //Attributes
-  private final HashMap<Integer, Integer> ladders = new HashMap<>();
-  private final HashMap<Integer, Integer> snakes = new HashMap<>();
+  private final HashMap<Integer, Integer> ladderUp = new HashMap<>();
+  private final HashMap<Integer, Integer> ladderDown = new HashMap<>();
   private static final int Columns = 9;
   private static final int Rows = 10;
   private TileAction[] tiles;
@@ -44,21 +44,21 @@ public class Board {
    * @Version 1.0
    */
   public void initializeLaddersAndSnake(){
-    ladders.put(1, 40);
-    ladders.put(8, 10);
-    ladders.put(36, 52);
-    ladders.put(43, 62);
-    ladders.put(49, 79);
-    ladders.put(65, 82);
-    ladders.put(68, 85);
+    ladderUp.put(1, 40);
+    ladderUp.put(8, 10);
+    ladderUp.put(36, 52);
+    ladderUp.put(43, 62);
+    ladderUp.put(49, 79);
+    ladderUp.put(65, 82);
+    ladderUp.put(68, 85);
 
-    snakes.put(24, 5);
-    snakes.put(33, 3);
-    snakes.put(42, 30);
-    snakes.put(56, 37);
-    snakes.put(64, 27);
-    snakes.put(74, 12);
-    snakes.put(87, 70);
+    ladderDown.put(24, 5);
+    ladderDown.put(33, 3);
+    ladderDown.put(42, 30);
+    ladderDown.put(56, 37);
+    ladderDown.put(64, 27);
+    ladderDown.put(74, 12);
+    ladderDown.put(87, 70);
   }
 
 
@@ -72,10 +72,10 @@ public class Board {
   private void initializeTiles() {
     tiles = new TileAction[Columns * Rows];
     for (int i = 0; i < Columns * Rows; i++) {
-      if (ladders.containsKey(i)) {
-        tiles[i] = new LadderTile(i, ladders.get(i));
-      } else if (snakes.containsKey(i)) {
-        tiles[i] = new SnakeTile(i, snakes.get(i));
+      if (ladderUp.containsKey(i)) {
+        tiles[i] = new LadderUpTile(i, ladderUp.get(i));
+      } else if (ladderDown.containsKey(i)) {
+        tiles[i] = new LadderDownTile(i, ladderDown.get(i));
       } else {
         tiles[i] = new NormalTile(i);
       }

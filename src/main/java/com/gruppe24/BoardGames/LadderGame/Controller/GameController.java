@@ -97,7 +97,7 @@ public class GameController {
   }
 
 
-  //----------------CONTROLLERS FOR TEXTBASED LADDERGAME--------------------
+  //----------------CONTROLLERS FOR TEXTBASED LADDERGAME--------------------//
   /**
    * Method that checks if a player has won the game.
    *
