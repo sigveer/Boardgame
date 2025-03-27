@@ -22,7 +22,7 @@ public class MenuGUI extends Application {
     primaryStage.setY(100);
 
     GridPane gridPane = new GridPane();
-    Scene scene = new Scene(gridPane,1000,700);
+    Scene scene = new Scene(gridPane,1000,850);
     gridPane.setAlignment(Pos.CENTER);
     gridPane.setVgap(25);
     gridPane.setHgap(20);
