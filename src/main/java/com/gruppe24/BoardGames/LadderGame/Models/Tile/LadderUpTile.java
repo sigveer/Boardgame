@@ -40,6 +40,7 @@ public class LadderUpTile extends SpecialTile {
   @Override
   public void perform(Player player) {
     player.setPosition(getDestination());
+    checkTileType = 1;
   }
 
 }
