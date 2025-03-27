@@ -7,7 +7,6 @@ import com.gruppe24.BoardGames.LadderGame.Models.Player;
 import com.gruppe24.BoardGames.LadderGame.Models.Tile.LadderUpTile;
 import com.gruppe24.BoardGames.LadderGame.Models.Tile.LadderDownTile;
 import com.gruppe24.BoardGames.LadderGame.Models.Tile.Tile;
-import com.gruppe24.BoardGames.LadderGame.Models.Tile.TileAction;
 import org.junit.jupiter.api.Test;
 
 

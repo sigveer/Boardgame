@@ -3,7 +3,7 @@ package com.gruppe24.BoardGames.LadderGame.Models;
 import com.gruppe24.BoardGames.LadderGame.Models.Tile.LadderUpTile;
 import com.gruppe24.BoardGames.LadderGame.Models.Tile.NormalTile;
 import com.gruppe24.BoardGames.LadderGame.Models.Tile.LadderDownTile;
-import com.gruppe24.BoardGames.LadderGame.Models.Tile.TileAction;
+import com.gruppe24.BoardGames.LadderGame.Models.Tile.Tile;
 import java.util.HashMap;
 
 /**
@@ -20,7 +20,7 @@ public class Board {
   private final HashMap<Integer, Integer> ladderDown = new HashMap<>();
   private static final int Columns = 9;
   private static final int Rows = 10;
-  private TileAction[] tiles;
+  private Tile[] tiles;
 
   /**
    * Constructor that initializes the ladders and snakes.
@@ -70,7 +70,7 @@ public class Board {
    * @Version: 1.0
    */
   private void initializeTiles() {
-    tiles = new TileAction[Columns * Rows];
+    tiles = new Tile[Columns * Rows];
     for (int i = 0; i < Columns * Rows; i++) {
       if (ladderUp.containsKey(i)) {
         tiles[i] = new LadderUpTile(i, ladderUp.get(i));
@@ -93,7 +93,7 @@ public class Board {
    * @Date: 20.02.2025
    * @Version: 1.0
    */
-  public TileAction getTile(int position) {
+  public Tile getTile(int position) {
     if (position >= 0 && position < tiles.length) {
       return tiles[position];
     }

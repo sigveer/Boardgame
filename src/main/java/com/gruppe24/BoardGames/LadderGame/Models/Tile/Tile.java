@@ -1,9 +1,11 @@
 package com.gruppe24.BoardGames.LadderGame.Models.Tile;
 
+import com.gruppe24.BoardGames.LadderGame.Models.Player;
+
 /**
  * Abstract class representing a tile on the board.
  */
-public abstract class Tile implements TileAction {
+public abstract class Tile {
   private int position;
 
   /**
@@ -22,5 +24,7 @@ public abstract class Tile implements TileAction {
   public int getPosition() {
     return position;
   }
+
+  public void perform(Player player){}
 }
 

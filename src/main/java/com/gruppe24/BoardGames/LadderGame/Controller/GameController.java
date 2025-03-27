@@ -3,7 +3,7 @@ package com.gruppe24.BoardGames.LadderGame.Controller;
 import com.gruppe24.BoardGames.LadderGame.Models.Board;
 import com.gruppe24.BoardGames.LadderGame.Models.Dice;
 import com.gruppe24.BoardGames.LadderGame.Models.Player;
-import com.gruppe24.BoardGames.LadderGame.Models.Tile.TileAction;
+import com.gruppe24.BoardGames.LadderGame.Models.Tile.Tile;
 import com.gruppe24.Utils.Steps;
 
 public class GameController {
@@ -77,7 +77,7 @@ public class GameController {
    * @Version: 1.0
    */
   public void handleTileAction(Player player, int newPosition) {
-    TileAction tile = board.getTile(newPosition);
+    Tile tile = board.getTile(newPosition);
     tile.perform(player);
   }
 

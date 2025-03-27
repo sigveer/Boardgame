@@ -1,7 +1,5 @@
 package com.gruppe24.BoardGames.LadderGame.Models.Tile;
 
-import com.gruppe24.BoardGames.LadderGame.Models.Player;
-
 /**
  * Class representing a normal tile.
  */
@@ -18,9 +16,5 @@ public class NormalTile extends Tile {
    */
   public NormalTile(int position) {
     super(position);
-  }
-
-  @Override
-  public void perform(Player player) {
   }
 }
