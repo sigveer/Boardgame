@@ -2,6 +2,7 @@ package com.gruppe24.BoardGames.LadderGame.Models;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import javafx.scene.paint.Color;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -12,13 +13,13 @@ class PlayerTest {
 
   @BeforeEach
   void setUp() {
-    player = new Player("TestPlayer");
+    player = new Player("TestPlayer", Color.RED);
   }
 
 
   @Test
   void getName() {
-    assertEquals("TestPlayer", player.getName());
+    assertEquals("TestPlayer", player.getColoredName());
   }
 
   @Test

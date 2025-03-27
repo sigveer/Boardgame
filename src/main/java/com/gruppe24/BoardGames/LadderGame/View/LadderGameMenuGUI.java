@@ -3,8 +3,8 @@ package com.gruppe24.BoardGames.LadderGame.View;
 import static com.gruppe24.Utils.StyleUtils.styleNormalButton;
 
 import com.gruppe24.BoardGames.MenuGUI;
-import com.gruppe24.BoardGames.LadderGame.LadderGameText.LadderGameText;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -31,17 +31,17 @@ public class LadderGameMenuGUI extends Application {
     title.setStyle("-fx-font-size: 40px; -fx-text-fill: #ffffff; -fx-font-weight: bold;");
 
     Button classicButton = new Button("Classic Mode");
-    classicButton.setOnAction(event -> {
-      LadderGameSetUpGUI ladderGameSetUpGUI = new LadderGameSetUpGUI();
-      ladderGameSetUpGUI.start(primaryStage);
-    });
+    classicButton.setOnAction(event -> new ClassicSetup().start(primaryStage));
     styleNormalButton(classicButton);
 
     Button specialTile = new Button("Special Tile Mode");
     styleNormalButton(specialTile);
 
     Button textModeButton = new Button("Text Mode");
-    textModeButton.setOnAction(event -> startTextGame());
+    textModeButton.setOnAction(event -> {
+      new Thread(() -> new TextBasedLadderGame().setUpPlayers()).start(); //AI-based
+      Platform.exit();
+    });
     styleNormalButton(textModeButton);
 
     Button backToMenu = new Button("Back to Menu");
@@ -57,12 +57,5 @@ public class LadderGameMenuGUI extends Application {
     primaryStage.show();
   }
 
-  /**
-   * Starts the text-based version of the game
-   */
-  private void startTextGame() {
-    final LadderGameText LadderGameText = new LadderGameText();
-    LadderGameText.setUpPlayers();
-    LadderGameText.play();
-  }
+
 }

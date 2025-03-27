@@ -3,6 +3,7 @@ package com.gruppe24.BoardGames.LadderGame.Models.Tile;
 import static org.junit.jupiter.api.Assertions.*;
 
 import com.gruppe24.BoardGames.LadderGame.Models.Player;
+import javafx.scene.paint.Color;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -10,9 +11,9 @@ import org.junit.jupiter.api.Test;
 /**
  * {@code LadderTileTest} is a test class for the {@code LadderTile} class.
  */
-class LadderTileTest {
+class LadderUpTileTest {
 
-  private LadderTile ladderTile;
+  private LadderUpTile ladderUpTile;
   private Player player;
 
 
@@ -21,8 +22,8 @@ class LadderTileTest {
    */
   @BeforeEach
   void setUp() {
-    ladderTile = new LadderTile(5, 10);
-    player = new Player("TestPlayer");
+    ladderUpTile = new LadderUpTile(5, 10);
+    player = new Player("TestPlayer", Color.BLUE);
     player.setPosition(5);
   }
 
@@ -32,7 +33,7 @@ class LadderTileTest {
    */
   @Test
   void perform() {
-    ladderTile.perform(player);
+    ladderUpTile.perform(player);
     assertEquals(10, player.getPosition());
   }
 }
