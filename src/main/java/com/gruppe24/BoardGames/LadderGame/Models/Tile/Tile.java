@@ -7,6 +7,7 @@ import com.gruppe24.BoardGames.LadderGame.Models.Player;
  */
 public abstract class Tile {
   private int position;
+  public int checkTileType = 0;
 
   /**
    * Constructor that initializes the normal tile.
@@ -21,10 +22,9 @@ public abstract class Tile {
     this.position = position;
   }
 
-  public int getPosition() {
-    return position;
-  }
 
-  public void perform(Player player){}
+  public void perform(Player player){
+    checkTileType = 0;
+  }
 }
 

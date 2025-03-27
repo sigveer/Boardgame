@@ -89,29 +89,21 @@ public class ClassicSetup extends Application {
     final int[] AmountPlayers = {0};
     Button nextButton = new Button("SUBMIT");
     StyleUtils.styleNormalButton(nextButton);
+    gridPane.add(nextButton,9,8);
     nextButton.setOnAction(event -> {
       int tempAmountPlayers = countPlayers(nameTextField1,nameTextField2,nameTextField3,nameTextField4);
       AmountPlayers[0] = tempAmountPlayers;
 
       //getting players
-      players.clear();
-
+      players.clear(); //removing potential static
       for(int i = 0; i < AmountPlayers[0]; i++){
         String name = names.get(i).getText();
         Color color = getColorFromString(colors.get(i).getValue());
         players.add(new Player(name,color));
       }
+
+      new ClassicLadderGame(players).start(primaryStage);
     });
-    gridPane.add(nextButton,9,8);
-
-
-
-    //Go to game
-    Button toGame = new Button("NEXT");
-    StyleUtils.styleNormalButton(toGame);
-    toGame.setOnAction(event -> new ClassicLadderGame(players).start(primaryStage));
-    gridPane.add(toGame,11,11);
-
 
 
     primaryStage.setScene(scene);

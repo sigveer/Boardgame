@@ -11,6 +11,7 @@ public class GameController {
   private Board board;
   private final Dice dice;
   private static final int WinCondition = 90;
+  private int checkTileType = 0;
 
   public GameController() {
     this.board = new Board();
@@ -67,7 +68,8 @@ public class GameController {
 
 
   /**
-   * Method that handles the action of a tile.
+   * Method that handles the action of a tile. Indirectly takes value checkTileType
+   * from abstract class Tile.
    *
    * @param player the player
    * @param newPosition the new position of the player
@@ -79,6 +81,7 @@ public class GameController {
   public void handleTileAction(Player player, int newPosition) {
     Tile tile = board.getTile(newPosition);
     tile.perform(player);
+    checkTileType = tile.checkTileType;
   }
 
 
@@ -94,6 +97,10 @@ public class GameController {
    */
   public boolean checkAndHandleWin(int newPosition) {
     return newPosition == WinCondition;
+  }
+
+  public int getCheckTileType(){
+    return checkTileType;
   }
 
 
@@ -131,6 +138,12 @@ public class GameController {
     movePlayer(player, sumDice);
 
     System.out.println(player.getColoredName() + " rolled " + sumDice);
+    if(getCheckTileType() == 1){
+      System.out.println("A ladder!");
+    }
+    else if(getCheckTileType() == 2){
+      System.out.println("A snake...");
+    }
     System.out.println(player.getColoredName() + " is now on tile " + player.getPosition());
   }
 

@@ -45,7 +45,7 @@ public class TextBasedLadderGame {
     for (int i = 1; i <= numberOfPlayers; i++) {
       System.out.println("Name of player " + i + ": ");
       String name = Validators.scannerString();
-      System.out.println("Color of player" + i + "\n(R = Red, B = blue, G = green)\n:");
+      System.out.println("Color of player" + i + "\n(R = Red, B = blue, G = green):");
       Color color = Validators.colorChoice(Validators.scannerString());
       players.add(new Player(name,color)); //AI-assisted
     }

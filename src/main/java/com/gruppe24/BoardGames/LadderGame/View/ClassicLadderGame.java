@@ -9,6 +9,7 @@ import com.gruppe24.BoardGames.LadderGame.Models.Tile.LadderDownTile;
 import com.gruppe24.Utils.StyleUtils;
 import java.util.List;
 import javafx.scene.control.Button;
+import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.paint.Color;
 import javafx.application.Application;
@@ -28,6 +29,7 @@ public class ClassicLadderGame extends Application {
   private int currentPlayerIndex = 0;
   private Label diceResultLabel;
   private Label currentPlayerLabel;
+  private Label snakeOrLadderCheck;
   private final Dice dice = new Dice(1);
 
   public ClassicLadderGame(List<Player> players) {
@@ -52,13 +54,16 @@ public class ClassicLadderGame extends Application {
     Label title = new Label("Board Games!");
     title.setStyle("-fx-font-size: 40px; -fx-text-fill: #ffffff; -fx-font-weight: bold;");
 
-    drawBoard(gridPane);
+    drawBoard(gridPane); //drawing the board
 
     currentPlayerLabel = new Label("Current Player: " + players.get(currentPlayerIndex).getName());
     currentPlayerLabel.setStyle("-fx-font-size: 16px; -fx-text-fill: white;");
 
     diceResultLabel = new Label("Roll the dice!");
     diceResultLabel.setStyle("-fx-font-size: 16px; -fx-text-fill: white;");
+
+    snakeOrLadderCheck = new Label("");
+    snakeOrLadderCheck.setStyle("-fx-font-size: 16px; -fx-text-fill: white;");
 
     Button diceRoll = new Button("Roll Dice");
     diceRoll.setOnAction(event -> rollDiceAndMove(gridPane, primaryStage));
@@ -70,7 +75,7 @@ public class ClassicLadderGame extends Application {
 
     VBox controlPanel = new VBox(10);
     controlPanel.setAlignment(Pos.CENTER);
-    controlPanel.getChildren().addAll(currentPlayerLabel, diceResultLabel, diceRoll, backToMenu);
+    controlPanel.getChildren().addAll(currentPlayerLabel, diceResultLabel, snakeOrLadderCheck, diceRoll, backToMenu);
 
     gridPane.add(controlPanel, 11, 0, 1, 5);
 
@@ -123,6 +128,15 @@ public class ClassicLadderGame extends Application {
         col = 8 - (position - 1) % 9;
       }
 
+      if(gameController.getCheckTileType() == 0){
+        snakeOrLadderCheck.setText("");
+      }
+      else if(gameController.getCheckTileType() == 1){
+        snakeOrLadderCheck.setText("Ladder!");
+      }
+      else if(gameController.getCheckTileType() == 2){
+        snakeOrLadderCheck.setText("Snake...");
+      }
       gridPane.getChildren().remove(player.getPlayerPiece());
       gridPane.add(player.getPlayerPiece(), col, row);
     }
@@ -138,7 +152,7 @@ public class ClassicLadderGame extends Application {
           tileNumber = (9 - row + 1) * 9 - col;
         }
 
-        javafx.scene.layout.StackPane tilePane = new javafx.scene.layout.StackPane();
+        StackPane stackPane = new StackPane();
         Rectangle tile = new Rectangle(tileSize, tileSize);
         tile.setStroke(Color.BLACK);
         tile.setStrokeWidth(1);
@@ -153,13 +167,13 @@ public class ClassicLadderGame extends Application {
 
         Label numberLabel = new Label(Integer.toString(tileNumber));
         numberLabel.setStyle("-fx-font-weight: bold;");
-        numberLabel.setTranslateX(5);
-        numberLabel.setTranslateY(5);
+        numberLabel.setTranslateX(26);
+        numberLabel.setTranslateY(30);
 
-        tilePane.getChildren().addAll(tile, numberLabel);
-        tilePane.setAlignment(Pos.CENTER);
+        stackPane.getChildren().addAll(tile, numberLabel);
+        stackPane.setAlignment(Pos.CENTER);
 
-        gridPane.add(tilePane, col, row);
+        gridPane.add(stackPane, col, row);
       }
     }
   }
