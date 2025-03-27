@@ -1,4 +1,4 @@
-package com.gruppe24.BoardGames.FileHandling;
+package com.gruppe24.FileHandling;
 
 import java.io.IOException;
 

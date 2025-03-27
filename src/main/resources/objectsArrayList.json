@@ -1,0 +1,20 @@
+[{
+  "name":"Arne",
+  "age":20,
+  "isAlive": true
+},
+  {
+    "name":"Fleskvig",
+    "age":45,
+    "isAlive": false
+  },
+  {
+    "name":"Dante",
+    "age":12,
+    "isAlive": false
+  },
+  {
+    "name":"Alahgarah",
+    "age":105,
+    "isAlive": true
+  }]
