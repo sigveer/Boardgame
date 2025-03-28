@@ -28,11 +28,9 @@ public class ClassicSetup extends Application {
   @Override
   public void start(Stage primaryStage) {
     primaryStage.setTitle("Laddergame setup...");
-    primaryStage.setX(250);
-    primaryStage.setY(100);
 
     GridPane gridPane = new GridPane();
-    Scene scene = new Scene(gridPane, 1000, 700);
+    Scene scene = new Scene(gridPane, 1000, 850);
     gridPane.setAlignment(Pos.CENTER);
     gridPane.setVgap(25);
     gridPane.setHgap(20);
