@@ -44,8 +44,6 @@ public class ClassicLadderGame extends Application {
   @Override
   public void start(Stage primaryStage) {
     primaryStage.setTitle("Laddergame Classic");
-    primaryStage.setX(250);
-    primaryStage.setY(100);
 
     //GridPane for tiles
     GridPane gridPane = new GridPane();
@@ -59,7 +57,7 @@ public class ClassicLadderGame extends Application {
     ladderSnakeP.setMouseTransparent(true);
 
     //Scene
-    Scene scene = new Scene(new StackPane(gridPane,ladderSnakeP), 1000, 800); //AI-suggestion
+    Scene scene = new Scene(new StackPane(gridPane,ladderSnakeP), 1000, 850); //AI-suggestion
 
     //Title Label
     Label title = new Label("Board Games!");
@@ -96,6 +94,7 @@ public class ClassicLadderGame extends Application {
     initializePlayerPositions(gridPane);
 
     primaryStage.setScene(scene);
+    primaryStage.setResizable(false); // can not resize the window. A temporary fix?
     primaryStage.show();
   }
 
