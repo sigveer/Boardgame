@@ -1,9 +1,9 @@
 package com.gruppe24.BoardGames.LadderGame.Controller;
 
-import com.gruppe24.BoardGames.LadderGame.Models.Board;
+import com.gruppe24.BoardGames.LadderGame.Models.Board.Board;
 import com.gruppe24.BoardGames.LadderGame.Models.Dice;
 import com.gruppe24.BoardGames.LadderGame.Models.Player;
-import com.gruppe24.BoardGames.LadderGame.Models.Tile.Tile;
+import com.gruppe24.BoardGames.LadderGame.Models.Board.Tile.Tile;
 import com.gruppe24.Utils.Steps;
 
 public class GameController {
@@ -19,8 +19,6 @@ public class GameController {
   }
 
 
-
-
   /**
    * Method that handles the player's turn.
    *
@@ -32,6 +30,27 @@ public class GameController {
     movePlayer(player, diceValue);
   }
 
+
+  /**
+   * Method that checks if a player has won the game.
+   *
+   * @param newPosition the new position of the player
+   * @return true if the player has won, false otherwise
+   *
+   * @Author Sigveer, Ingve
+   * @Date: 12.02.2025
+   * @Version: 1.0
+   */
+  public boolean checkAndHandleWin(int newPosition) {
+    return newPosition == WinCondition;
+  }
+
+  public int getCheckTileType(){
+    return checkTileType;
+  }
+
+
+  //----------------CONTROLLERS FOR TEXTBASED LADDERGAME--------------------//
   /**
    * Method that moves the player.
    *
@@ -84,27 +103,6 @@ public class GameController {
     checkTileType = tile.checkTileType;
   }
 
-
-  /**
-   * Method that checks if a player has won the game.
-   *
-   * @param newPosition the new position of the player
-   * @return true if the player has won, false otherwise
-   *
-   * @Author Sigveer, Ingve
-   * @Date: 12.02.2025
-   * @Version: 1.0
-   */
-  public boolean checkAndHandleWin(int newPosition) {
-    return newPosition == WinCondition;
-  }
-
-  public int getCheckTileType(){
-    return checkTileType;
-  }
-
-
-  //----------------CONTROLLERS FOR TEXTBASED LADDERGAME--------------------//
   /**
    * Method that checks if a player has won the game.
    *

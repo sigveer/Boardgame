@@ -1,11 +1,11 @@
 package com.gruppe24.BoardGames.LadderGame.View;
 
 import com.gruppe24.BoardGames.LadderGame.Controller.GameController;
-import com.gruppe24.BoardGames.LadderGame.Models.Board;
+import com.gruppe24.BoardGames.LadderGame.Models.Board.Board;
 import com.gruppe24.BoardGames.LadderGame.Models.Dice;
 import com.gruppe24.BoardGames.LadderGame.Models.Player;
-import com.gruppe24.BoardGames.LadderGame.Models.Tile.LadderUpTile;
-import com.gruppe24.BoardGames.LadderGame.Models.Tile.LadderDownTile;
+import com.gruppe24.BoardGames.LadderGame.Models.Board.Tile.LadderUpTile;
+import com.gruppe24.BoardGames.LadderGame.Models.Board.Tile.LadderDownTile;
 import com.gruppe24.Utils.StyleUtils;
 import java.util.List;
 import javafx.scene.control.Button;
@@ -170,7 +170,9 @@ public class ClassicLadderGame extends Application {
         tile.setStroke(Color.BLACK);
         tile.setStrokeWidth(1);
 
-        if (board.getTile(tileNumber) instanceof LadderUpTile) {
+        if (tileNumber == 90) {
+          tile.setFill(Color.YELLOW);
+        } else if (board.getTile(tileNumber) instanceof LadderUpTile) {
           tile.setFill(Color.GREEN);
         } else if (board.getTile(tileNumber) instanceof LadderDownTile) {
           tile.setFill(Color.RED);
@@ -297,8 +299,5 @@ public class ClassicLadderGame extends Application {
     snakeView7.setRotate(-60);
 
     ladderSnakePane.getChildren().addAll(snakeView1,snakeView2,snakeView3,snakeView4,snakeView5,snakeView6,snakeView7);
-
-
   }
-
 }

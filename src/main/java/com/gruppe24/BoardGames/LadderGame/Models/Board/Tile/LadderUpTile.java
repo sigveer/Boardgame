@@ -1,28 +1,30 @@
-package com.gruppe24.BoardGames.LadderGame.Models.Tile;
+package com.gruppe24.BoardGames.LadderGame.Models.Board.Tile;
 
 import com.gruppe24.BoardGames.LadderGame.Models.Player;
 
 /**
- * Class representing a tile that is a snake.
+ * Class representing a tile that is a ladder.
  */
-public class LadderDownTile extends SpecialTile {
-  private final int slideDown;
+public class LadderUpTile extends SpecialTile {
 
+  //attributes
+  private final int climbUp;
+
+  //constructor
   /**
-   * Constructor that initializes the snake tile.
+   * Constructor that initializes the ladder tile.
    *
    * @param position The position of the tile.
-   * @param SlideDown The position to slide down to.
+   * @param climbUp The position to climb up to.
    *
    * @Author Sigveer
    * @Date: 06.02.2025
    * @Version: 1.0
    */
-  public LadderDownTile(int position, int SlideDown){
-    super(position, SlideDown);
-    this.slideDown = SlideDown;
+  public LadderUpTile(int position, int climbUp){
+    super(position, climbUp);
+    this.climbUp = climbUp;
   }
-
 
   //methods
 
@@ -38,6 +40,7 @@ public class LadderDownTile extends SpecialTile {
   @Override
   public void perform(Player player) {
     player.setPosition(getDestination());
-    checkTileType = 2;
+    checkTileType = 1;
   }
+
 }

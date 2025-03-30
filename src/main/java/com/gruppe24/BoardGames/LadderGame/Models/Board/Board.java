@@ -1,9 +1,9 @@
-package com.gruppe24.BoardGames.LadderGame.Models;
+package com.gruppe24.BoardGames.LadderGame.Models.Board;
 
-import com.gruppe24.BoardGames.LadderGame.Models.Tile.LadderUpTile;
-import com.gruppe24.BoardGames.LadderGame.Models.Tile.NormalTile;
-import com.gruppe24.BoardGames.LadderGame.Models.Tile.LadderDownTile;
-import com.gruppe24.BoardGames.LadderGame.Models.Tile.Tile;
+import com.gruppe24.BoardGames.LadderGame.Models.Board.Tile.LadderUpTile;
+import com.gruppe24.BoardGames.LadderGame.Models.Board.Tile.NormalTile;
+import com.gruppe24.BoardGames.LadderGame.Models.Board.Tile.LadderDownTile;
+import com.gruppe24.BoardGames.LadderGame.Models.Board.Tile.Tile;
 import java.util.HashMap;
 
 /**
