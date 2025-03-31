@@ -104,77 +104,81 @@ public class ClassicLadderGame extends Application {
   private void initializePlayerPositions(GridPane gridPane) {
     for (Player player : players) {
       if (player.getPosition() > 0) {
-        animateAndMove(gridPane, player);
+        int position = player.getPosition();
+        int row = 9 - (position - 1) / 9;
+        int col;
+        if ((9 - row) % 2 == 0) {
+          col = (position - 1) % 9;
+        } else {
+          col = 8 - (position - 1) % 9;
+        }
+        gridPane.add(player.getPlayerPiece(), col, row);
       }
     }
   }
 
   private void rollDiceAndMove(GridPane gridPane, Stage primaryStage) {
     Player currentPlayer = players.get(currentPlayerIndex);
+    int previousPosition = currentPlayer.getPosition();
 
     int diceValue = dice.rollSum();
-
     diceResultLabel.setText(currentPlayer.getName() + " rolled: " + diceValue);
 
     gameController.handlePlayerTurn(currentPlayer, diceValue);
-    int position = currentPlayer.getPosition();
+    int newPosition = currentPlayer.getPosition();
 
-    if (gameController.checkAndHandleWin(position)) {
+    if (gameController.checkAndHandleWin(newPosition)) {
       new ClassicWinnerScreen(currentPlayer).start(primaryStage);
       return;
     }
 
-    animateAndMove(gridPane, currentPlayer);
+    animateAndMove(gridPane, currentPlayer, previousPosition, newPosition);
 
     currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
 
     currentPlayerLabel.setText("Current Player: " + players.get(currentPlayerIndex).getName());
   }
 
-  private void animateAndMove(GridPane gridPane, Player player) {
-    int startPos = player.getPosition();
-    int totalSteps = startPos - 1;
+  private void animateAndMove(GridPane gridPane, Player player, int fromPosition, int toPosition) {
+    int steps = toPosition - fromPosition;
 
     Timeline timeline = new Timeline();
-    timeline.setCycleCount(1); //running animation 1 time
+    timeline.setCycleCount(1);
 
-    int currentPosition = startPos;
+    int currentPosition = fromPosition;
 
-    for(int i = 1; i <= totalSteps; i++){
-      int row = 9 - (currentPosition - 1) / 9;
+    for (int i = 0; i < steps; i++) {
+      final int stepPosition = currentPosition + 1;
+      int row = 9 - (stepPosition - 1) / 9;
       int col;
-
       if ((9 - row) % 2 == 0) {
-        col = (currentPosition - 1) % 9;
+        col = (stepPosition - 1) % 9;
       } else {
-        col = 8 - (currentPosition - 1) % 9;
+        col = 8 - (stepPosition - 1) % 9;
       }
 
       KeyFrame keyFrame = new KeyFrame(
-          Duration.seconds(i * 3.0 / totalSteps),
+          Duration.seconds((i + 1) * 0.3), // Speed up animation a bit
           event -> {
-              //At same time, update the gridpane:
-              gridPane.getChildren().remove(player.getPlayerPiece());
-              gridPane.add(player.getPlayerPiece(), col, row);
-      });
-
+            gridPane.getChildren().remove(player.getPlayerPiece());
+            gridPane.add(player.getPlayerPiece(), col, row);
+          }
+      );
       timeline.getKeyFrames().add(keyFrame);
       currentPosition++;
     }
 
-    timeline.play();
-
-
-
-      if(gameController.getCheckTileType() == 0){
+    timeline.setOnFinished(event -> {
+      if (gameController.getCheckTileType() == 0) {
         snakeOrLadderCheck.setText("");
-      }
-      else if(gameController.getCheckTileType() == 1){
+      } else if (gameController.getCheckTileType() == 1) {
         snakeOrLadderCheck.setText("Ladder!");
-      }
-      else if(gameController.getCheckTileType() == 2){
+      } else if (gameController.getCheckTileType() == 2) {
         snakeOrLadderCheck.setText("Snake...");
       }
+    });
+
+    timeline.play();
   }
 
 
