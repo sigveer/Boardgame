@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Test;
 class PlayerTest {
 
   private Player player;
-  private Board board;
 
   @BeforeEach
   void setUp() {
