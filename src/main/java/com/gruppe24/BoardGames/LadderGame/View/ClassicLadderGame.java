@@ -256,7 +256,7 @@ public class ClassicLadderGame extends Application {
   /**
    * These next two methods; {@link #rollDiceAndMove(GridPane, Stage)},
    * {@link #animateAndMove(GridPane, Player, int, int)}, are intervoven and works to a high degree
-   * together. animateAndMove-method is heavely assisted by AI - CoPilot.
+   * together. animateAndMove method is heavely assisted by AI - ChatGPT-free and Grok 3.
    * <p>1/2 method</p>
    * @param gridPane
    */
@@ -292,7 +292,6 @@ public class ClassicLadderGame extends Application {
       snakesLadderTL.setCycleCount(1);
 
       int specialTileStartPosition = gameController.getSpecialTilePosition();
-
       int stepsToSpecial = specialTileStartPosition - fromPosition;
       boolean isForward = stepsToSpecial > 0; //check if ladder or snake
 
@@ -305,7 +304,7 @@ public class ClassicLadderGame extends Application {
       int currentPosition = fromPosition;
 
       int absSteps = Math.abs(stepsToSpecial);
-      for (int i = 0; i < absSteps; i++) {
+      for (int i = 0; i <= absSteps; i++) {
         currentPosition = fromPosition + (isForward ? i : -i); //So it does not matter if it goes backward or forwards
         // Calculate the current position coordinates
         int row = 9 - (currentPosition - 1) / 9;
