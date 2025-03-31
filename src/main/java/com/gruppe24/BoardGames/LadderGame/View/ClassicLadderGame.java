@@ -1,13 +1,16 @@
 package com.gruppe24.BoardGames.LadderGame.View;
 
 import com.gruppe24.BoardGames.LadderGame.Controller.GameController;
-import com.gruppe24.BoardGames.LadderGame.Models.Board.Board;
+import com.gruppe24.BoardGames.LadderGame.Models.Board;
 import com.gruppe24.BoardGames.LadderGame.Models.Dice;
 import com.gruppe24.BoardGames.LadderGame.Models.Player;
-import com.gruppe24.BoardGames.LadderGame.Models.Board.Tile.LadderUpTile;
-import com.gruppe24.BoardGames.LadderGame.Models.Board.Tile.LadderDownTile;
+import com.gruppe24.BoardGames.LadderGame.Models.Tile.LadderUpTile;
+import com.gruppe24.BoardGames.LadderGame.Models.Tile.SnakeDownTile;
 import com.gruppe24.Utils.StyleUtils;
+import java.util.ArrayList;
 import java.util.List;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -22,6 +25,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 public class ClassicLadderGame extends Application {
 
@@ -91,70 +95,17 @@ public class ClassicLadderGame extends Application {
     controlPanel.getChildren().addAll(currentPlayerLabel, diceResultLabel, snakeOrLadderCheck, diceRoll, backToMenu);
     gridPane.add(controlPanel, 11, 0, 1, 5);
 
-    initializePlayerPositions(gridPane);
 
     primaryStage.setScene(scene);
-    primaryStage.setResizable(false); // can not resize the window. A temporary fix?
+    primaryStage.setFullScreen(false); // can not resize the window. A temporary fix?
     primaryStage.show();
   }
 
-  private void initializePlayerPositions(GridPane gridPane) {
-    for (Player player : players) {
-      if (player.getPosition() > 0) {
-        updatePlayerPosition(gridPane, player);
-      }
-    }
-  }
-
-  private void rollDiceAndMove(GridPane gridPane, Stage primaryStage) {
-    Player currentPlayer = players.get(currentPlayerIndex);
-
-    int diceValue = dice.rollSum();
-
-    diceResultLabel.setText(currentPlayer.getName() + " rolled: " + diceValue);
-
-    gameController.handlePlayerTurn(currentPlayer, diceValue);
-    int position = currentPlayer.getPosition();
-
-    if (gameController.checkAndHandleWin(position)) {
-      new ClassicWinnerScreen(currentPlayer).start(primaryStage);
-      return;
-    }
-
-    updatePlayerPosition(gridPane, currentPlayer);
-
-    currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
-
-    currentPlayerLabel.setText("Current Player: " + players.get(currentPlayerIndex).getName());
-  }
-
-  private void updatePlayerPosition(GridPane gridPane, Player player) {
-    int position = player.getPosition();
-
-    if (position > 0) {
-      int row = 9 - (position - 1) / 9;
-      int col;
-
-      if ((9 - row) % 2 == 0) {
-        col = (position - 1) % 9;
-      } else {
-        col = 8 - (position - 1) % 9;
-      }
-
-      if(gameController.getCheckTileType() == 0){
-        snakeOrLadderCheck.setText("");
-      }
-      else if(gameController.getCheckTileType() == 1){
-        snakeOrLadderCheck.setText("Ladder!");
-      }
-      else if(gameController.getCheckTileType() == 2){
-        snakeOrLadderCheck.setText("Snake...");
-      }
-      gridPane.getChildren().remove(player.getPlayerPiece());
-      gridPane.add(player.getPlayerPiece(), col, row);
-    }
-  }
-
+  /**
+   * Draws the board, hardcoded with snakes and ladders
+   * @param gridPane
+   * @param ladderSnakePane
+   */
   public void drawBoard(GridPane gridPane, Pane ladderSnakePane) {
     for (int row = 9; row >= 0; row--) {
       for (int col = 0; col < 9; col++) {
@@ -170,11 +121,9 @@ public class ClassicLadderGame extends Application {
         tile.setStroke(Color.BLACK);
         tile.setStrokeWidth(1);
 
-        if (tileNumber == 90) {
-          tile.setFill(Color.YELLOW);
-        } else if (board.getTile(tileNumber) instanceof LadderUpTile) {
+        if (board.getTile(tileNumber) instanceof LadderUpTile) {
           tile.setFill(Color.GREEN);
-        } else if (board.getTile(tileNumber) instanceof LadderDownTile) {
+        } else if (board.getTile(tileNumber) instanceof SnakeDownTile) {
           tile.setFill(Color.RED);
         } else {
           tile.setFill(Color.WHITE);
@@ -299,5 +248,119 @@ public class ClassicLadderGame extends Application {
     snakeView7.setRotate(-60);
 
     ladderSnakePane.getChildren().addAll(snakeView1,snakeView2,snakeView3,snakeView4,snakeView5,snakeView6,snakeView7);
+
+
   }
+
+
+  /**
+   * These next two methods; {@link #rollDiceAndMove(GridPane, Stage)},
+   * {@link #animateAndMove(GridPane, Player, int, int)}, are intervoven and works to a high degree
+   * together. animateAndMove method is heavely assisted by AI - ChatGPT-free and Grok 3.
+   * <p>1/2 method</p>
+   * @param gridPane
+   */
+  private void rollDiceAndMove(GridPane gridPane, Stage primaryStage) {
+    Player currentPlayer = players.get(currentPlayerIndex);
+    //Get the original position; for animation
+    int previousPosition = currentPlayer.getPosition();
+
+    //Update the gamle-logic with dice
+    int diceValue = dice.rollSum();
+    diceResultLabel.setText(currentPlayer.getName() + " rolled: " + diceValue);
+    gameController.handlePlayerTurn(currentPlayer, diceValue);
+
+    //Update animation with the new position
+    int newPosition = currentPlayer.getPosition();
+    animateAndMove(gridPane, currentPlayer, previousPosition, newPosition);
+
+    //Check winner
+    if (gameController.checkAndHandleWin(newPosition)) {
+      new ClassicWinnerScreen(currentPlayer).start(primaryStage);
+      return;
+    }
+
+    //Display which player is to move
+    currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
+    currentPlayerLabel.setText("Current Player: " + players.get(currentPlayerIndex).getName());
+  }
+  private void animateAndMove(GridPane gridPane, Player player, int fromPosition, int toPosition) {
+    int tileType = gameController.getCheckTileType();
+    // ------------ Special Tiles -------------
+    if (tileType == 1 || tileType == 2) {
+      Timeline snakesLadderTL = new Timeline();
+      snakesLadderTL.setCycleCount(1);
+
+      int specialTileStartPosition = gameController.getSpecialTilePosition();
+      int stepsToSpecial = specialTileStartPosition - fromPosition;
+      boolean isForward = stepsToSpecial > 0; //check if ladder or snake
+
+
+      // Feedback upon hitting ladders or snakes
+      snakeOrLadderCheck.setText(tileType == 1 ? "Ladder!" : "Snake...");
+
+      // Create a list of keyframes
+      List<KeyFrame> keyFrames = new ArrayList<>();
+      int currentPosition = fromPosition;
+
+      int absSteps = Math.abs(stepsToSpecial);
+      for (int i = 0; i <= absSteps; i++) {
+        currentPosition = fromPosition + (isForward ? i : -i); //So it does not matter if it goes backward or forwards
+        // Calculate the current position coordinates
+        int row = 9 - (currentPosition - 1) / 9;
+        int col = ((9 - row) % 2 == 0) ? (currentPosition - 1) % 9 : 8 - (currentPosition - 1) % 9;
+
+        // Add a keyframe for current step
+        KeyFrame keyFrame = new KeyFrame(
+            Duration.seconds((i + 1) * 0.3),
+            event -> {
+              gridPane.getChildren().remove(player.getPlayerPiece());
+              gridPane.add(player.getPlayerPiece(), col, row);
+            }
+        );
+        keyFrames.add(keyFrame);
+      }
+      snakesLadderTL.getKeyFrames().addAll(keyFrames);
+
+      // After animation, teleport to final destination
+      snakesLadderTL.setOnFinished(event -> {
+        int finalRow = 9 - (toPosition - 1) / 9;
+        int finalCol = (9 - finalRow) % 2 == 0 ? (toPosition - 1) % 9 : 8 - (toPosition - 1) % 9;
+
+        gridPane.getChildren().remove(player.getPlayerPiece());
+        gridPane.add(player.getPlayerPiece(), finalCol, finalRow);
+      });
+
+      snakesLadderTL.play();
+      return;
+    }
+
+
+
+    // ------------ Normal tiles --------------
+    Timeline timeline = new Timeline();
+    timeline.setCycleCount(1);
+
+    int steps = toPosition - fromPosition;
+    int currentPosition = fromPosition;
+    snakeOrLadderCheck.setText("");
+
+    for (int i = 0; i < steps; i++) {
+      currentPosition++;
+      // Calculate into coordinates
+      int row = 9 - (currentPosition - 1) / 9;
+      int col = (9 - row) % 2 == 0 ? (currentPosition - 1) % 9 : 8 - (currentPosition - 1) % 9;
+
+      KeyFrame keyFrame = new KeyFrame(
+          Duration.seconds((i + 1) * 0.3),
+          event -> {
+            gridPane.getChildren().remove(player.getPlayerPiece());
+            gridPane.add(player.getPlayerPiece(), col, row);
+          }
+      );
+      timeline.getKeyFrames().add(keyFrame);
+    }
+    timeline.play();
+  }
+
 }

@@ -1,13 +1,12 @@
-package com.gruppe24.BoardGames.LadderGame.Models;
+package com.gruppe24.BoardGames.LadderGame.Controller;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import com.gruppe24.BoardGames.LadderGame.Models.Board.Board;
-import com.gruppe24.BoardGames.LadderGame.Models.Board.Tile.LadderUpTile;
-import com.gruppe24.BoardGames.LadderGame.Models.Board.Tile.LadderDownTile;
-import com.gruppe24.BoardGames.LadderGame.Models.Board.Tile.Tile;
-import javafx.scene.paint.Color;
-import org.junit.jupiter.api.BeforeEach;
+import com.gruppe24.BoardGames.LadderGame.Models.Board;
+import com.gruppe24.BoardGames.LadderGame.Models.Player;
+import com.gruppe24.BoardGames.LadderGame.Models.Tile.LadderUpTile;
+import com.gruppe24.BoardGames.LadderGame.Models.Tile.SnakeDownTile;
+import com.gruppe24.BoardGames.LadderGame.Models.Tile.Tile;
 import org.junit.jupiter.api.Test;
 
 
@@ -17,19 +16,14 @@ import org.junit.jupiter.api.Test;
 class BoardTest {
 
   private Board board;
-
-  @BeforeEach
-  void setUp() {
-    board = new Board();
-    Player testPlayer = new Player("TestPlayer", Color.RED);
-  }
+  private Player testPlayer;
 
   /**
    * Tests the {@code getTile} method on a normal tile in the {@code Board} class.
    */
   @Test
   void getNormalTile() {
-    Tile tile = board.getTile(2);
+    TileAction tile = board.getTile(2);
     assertInstanceOf(Tile.class, tile);
   }
 
@@ -39,7 +33,7 @@ class BoardTest {
    */
   @Test
   void getLadderTile() {
-    Tile tile = board.getTile(1);
+    TileAction tile = board.getTile(1);
     assertInstanceOf(LadderUpTile.class, tile);
   }
 
@@ -49,7 +43,9 @@ class BoardTest {
    */
   @Test
   void getSnakeTile() {
-    Tile tile = board.getTile(24);
-    assertInstanceOf(LadderDownTile.class, tile);
+    TileAction tile = board.getTile(24);
+    assertInstanceOf(SnakeDownTile.class, tile);
   }
+
+
 }
