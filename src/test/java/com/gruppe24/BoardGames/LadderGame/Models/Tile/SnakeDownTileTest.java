@@ -11,9 +11,9 @@ import org.junit.jupiter.api.Test;
 /**
  * {@code SnakeTileTest} is a test class for the {@code SnakeTile} class.
  */
-class LadderDownTileTest {
+class SnakeDownTileTest {
 
-  private LadderDownTile ladderDownTile;
+  private SnakeDownTile snakeDownTile;
   private Player player;
 
 
@@ -22,7 +22,7 @@ class LadderDownTileTest {
    */
   @BeforeEach
   void setUp() {
-    ladderDownTile = new LadderDownTile(10, 5);
+    snakeDownTile = new SnakeDownTile(10, 5);
     player = new Player("TestPlayer", Color.BLUE);
     player.setPosition(10);
   }
@@ -33,7 +33,7 @@ class LadderDownTileTest {
    */
   @Test
   void perform() {
-    ladderDownTile.perform(player);
+    snakeDownTile.perform(player);
     assertEquals(5, player.getPosition());
   }
 }

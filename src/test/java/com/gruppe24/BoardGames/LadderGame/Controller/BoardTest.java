@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import com.gruppe24.BoardGames.LadderGame.Models.Board;
 import com.gruppe24.BoardGames.LadderGame.Models.Player;
 import com.gruppe24.BoardGames.LadderGame.Models.Tile.LadderUpTile;
-import com.gruppe24.BoardGames.LadderGame.Models.Tile.LadderDownTile;
+import com.gruppe24.BoardGames.LadderGame.Models.Tile.SnakeDownTile;
 import com.gruppe24.BoardGames.LadderGame.Models.Tile.Tile;
 import org.junit.jupiter.api.Test;
 
@@ -44,7 +44,7 @@ class BoardTest {
   @Test
   void getSnakeTile() {
     TileAction tile = board.getTile(24);
-    assertInstanceOf(LadderDownTile.class, tile);
+    assertInstanceOf(SnakeDownTile.class, tile);
   }
 
 

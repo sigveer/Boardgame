@@ -5,7 +5,7 @@ import com.gruppe24.BoardGames.LadderGame.Models.Player;
 /**
  * Class representing a tile that is a snake.
  */
-public class LadderDownTile extends SpecialTile {
+public class SnakeDownTile extends SpecialTile {
   private final int slideDown;
 
   /**
@@ -18,7 +18,7 @@ public class LadderDownTile extends SpecialTile {
    * @Date: 06.02.2025
    * @Version: 1.0
    */
-  public LadderDownTile(int position, int SlideDown){
+  public SnakeDownTile(int position, int SlideDown){
     super(position, SlideDown);
     this.slideDown = SlideDown;
   }

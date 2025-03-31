@@ -12,6 +12,7 @@ public class GameController {
   private final Dice dice;
   private static final int WinCondition = 90;
   private int checkTileType = 0;
+  private int specialTilePosition;
 
   public GameController() {
     this.board = new Board();
@@ -82,6 +83,7 @@ public class GameController {
     Tile tile = board.getTile(newPosition);
     tile.perform(player);
     checkTileType = tile.checkTileType;
+    specialTilePosition = tile.getPosition();
   }
 
 
@@ -103,6 +105,9 @@ public class GameController {
     return checkTileType;
   }
 
+  public int getSpecialTilePosition(){
+    return specialTilePosition;
+  }
 
   //----------------CONTROLLERS FOR TEXTBASED LADDERGAME--------------------//
   /**

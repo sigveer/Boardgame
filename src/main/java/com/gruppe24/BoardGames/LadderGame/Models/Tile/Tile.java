@@ -26,5 +26,9 @@ public abstract class Tile {
   public void perform(Player player){
     checkTileType = 0;
   }
+
+  public int getPosition(){
+    return position;
+  }
 }
 
