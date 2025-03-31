@@ -8,6 +8,8 @@ import com.gruppe24.BoardGames.LadderGame.Models.Tile.LadderUpTile;
 import com.gruppe24.BoardGames.LadderGame.Models.Tile.LadderDownTile;
 import com.gruppe24.Utils.StyleUtils;
 import java.util.List;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -22,6 +24,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 public class ClassicLadderGame extends Application {
 
@@ -101,7 +104,7 @@ public class ClassicLadderGame extends Application {
   private void initializePlayerPositions(GridPane gridPane) {
     for (Player player : players) {
       if (player.getPosition() > 0) {
-        updatePlayerPosition(gridPane, player);
+        animateAndMove(gridPane, player);
       }
     }
   }
@@ -121,25 +124,47 @@ public class ClassicLadderGame extends Application {
       return;
     }
 
-    updatePlayerPosition(gridPane, currentPlayer);
+    animateAndMove(gridPane, currentPlayer);
 
     currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
 
     currentPlayerLabel.setText("Current Player: " + players.get(currentPlayerIndex).getName());
   }
 
-  private void updatePlayerPosition(GridPane gridPane, Player player) {
-    int position = player.getPosition();
+  private void animateAndMove(GridPane gridPane, Player player) {
+    int startPos = player.getPosition();
+    int totalSteps = startPos - 1;
 
-    if (position > 0) {
-      int row = 9 - (position - 1) / 9;
+    Timeline timeline = new Timeline();
+    timeline.setCycleCount(1); //running animation 1 time
+
+    int currentPosition = startPos;
+
+    for(int i = 1; i <= totalSteps; i++){
+      int row = 9 - (currentPosition - 1) / 9;
       int col;
 
       if ((9 - row) % 2 == 0) {
-        col = (position - 1) % 9;
+        col = (currentPosition - 1) % 9;
       } else {
-        col = 8 - (position - 1) % 9;
+        col = 8 - (currentPosition - 1) % 9;
       }
+
+      KeyFrame keyFrame = new KeyFrame(
+          Duration.seconds(i * 3.0 / totalSteps),
+          event -> {
+              //At same time, update the gridpane:
+              gridPane.getChildren().remove(player.getPlayerPiece());
+              gridPane.add(player.getPlayerPiece(), col, row);
+      });
+
+      timeline.getKeyFrames().add(keyFrame);
+      currentPosition++;
+    }
+
+    timeline.play();
+
+
 
       if(gameController.getCheckTileType() == 0){
         snakeOrLadderCheck.setText("");
@@ -150,10 +175,9 @@ public class ClassicLadderGame extends Application {
       else if(gameController.getCheckTileType() == 2){
         snakeOrLadderCheck.setText("Snake...");
       }
-      gridPane.getChildren().remove(player.getPlayerPiece());
-      gridPane.add(player.getPlayerPiece(), col, row);
-    }
   }
+
+
 
   public void drawBoard(GridPane gridPane, Pane ladderSnakePane) {
     for (int row = 9; row >= 0; row--) {
