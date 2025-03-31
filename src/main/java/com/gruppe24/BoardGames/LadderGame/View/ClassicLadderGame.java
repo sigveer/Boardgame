@@ -7,6 +7,7 @@ import com.gruppe24.BoardGames.LadderGame.Models.Player;
 import com.gruppe24.BoardGames.LadderGame.Models.Tile.LadderUpTile;
 import com.gruppe24.BoardGames.LadderGame.Models.Tile.LadderDownTile;
 import com.gruppe24.Utils.StyleUtils;
+import java.util.ArrayList;
 import java.util.List;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -284,27 +285,61 @@ public class ClassicLadderGame extends Application {
     currentPlayerLabel.setText("Current Player: " + players.get(currentPlayerIndex).getName());
   }
   private void animateAndMove(GridPane gridPane, Player player, int fromPosition, int toPosition) {
-    //Feedback text on ladder or snake
+    //Check first if player has stepped on snake or ladder
     if (gameController.getCheckTileType() == 1 || gameController.getCheckTileType() == 2) {
-      //Directly move to target-tile
-      int row = 9 - (toPosition - 1) / 9;
-      int col;
-      if ((9 - row) % 2 == 0) {
-        col = (toPosition - 1) % 9;
-      } else {
-        col = 8 - (toPosition - 1) % 9;
-      }
+      Timeline snakesLadderTL = new Timeline();
+      snakesLadderTL.setCycleCount(1);
 
-      if(gameController.getCheckTileType() == 1){
+      int steps = toPosition - fromPosition;
+
+      // Feedback upon hitting ladders or snakes
+      if (gameController.getCheckTileType() == 1) {
         snakeOrLadderCheck.setText("Ladder!");
-      }
-      else{
+      } else {
         snakeOrLadderCheck.setText("Snake...");
       }
 
-      gridPane.getChildren().remove(player.getPlayerPiece());
-      gridPane.add(player.getPlayerPiece(), col, row);
+      // Create a list of keyframes
+      List<KeyFrame> keyFrames = new ArrayList<>();
 
+      for (int i = 0; i < steps; i++) {
+        // Calculate the current position coordinates
+        int row = 9 - (fromPosition - 1) / 9;
+        int col;
+        if ((9 - row) % 2 == 0) {
+          col = (fromPosition - 1) % 9;
+        } else {
+          col = 8 - (fromPosition - 1) % 9;
+        }
+
+        // Add a keyframe for current step
+        KeyFrame keyFrame = new KeyFrame(
+            Duration.seconds((i + 1) * 0.3),
+            event -> {
+              gridPane.getChildren().remove(player.getPlayerPiece());
+              gridPane.add(player.getPlayerPiece(), col, row);
+            }
+        );
+        keyFrames.add(keyFrame);
+        fromPosition++; // Move to next position for the next frame
+      }
+      snakesLadderTL.getKeyFrames().addAll(keyFrames);
+
+      // After animation, move directly to final destination
+      snakesLadderTL.setOnFinished(event -> {
+        int finalRow = 9 - (toPosition - 1) / 9;
+        int finalCol;
+        if ((9 - finalRow) % 2 == 0) {
+          finalCol = (toPosition - 1) % 9;
+        } else {
+          finalCol = 8 - (toPosition - 1) % 9;
+        }
+
+        gridPane.getChildren().remove(player.getPlayerPiece());
+        gridPane.add(player.getPlayerPiece(), finalCol, finalRow);
+      });
+
+      snakesLadderTL.play();
       return;
     }
 
