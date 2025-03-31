@@ -94,10 +94,9 @@ public class ClassicLadderGame extends Application {
     controlPanel.getChildren().addAll(currentPlayerLabel, diceResultLabel, snakeOrLadderCheck, diceRoll, backToMenu);
     gridPane.add(controlPanel, 11, 0, 1, 5);
 
-    initializePlayerPositions(gridPane);
 
     primaryStage.setScene(scene);
-    primaryStage.setFullScreen(true); // can not resize the window. A temporary fix?
+    primaryStage.setFullScreen(false); // can not resize the window. A temporary fix?
     primaryStage.show();
   }
 
@@ -252,28 +251,6 @@ public class ClassicLadderGame extends Application {
 
   }
 
-  /**
-   * This method is somewhat related to the next two, as it initializes the player position
-   * on the board.
-   * @param gridPane
-   */
-  private void initializePlayerPositions(GridPane gridPane) {
-    for (Player player : players) {
-      if (player.getPosition() > 0) {
-        int position = player.getPosition();
-        int row = 9 - (position - 1) / 9;
-        int col;
-
-        if ((9 - row) % 2 == 0) {
-          col = (position - 1) % 9;
-        } else {
-          col = 8 - (position - 1) % 9;
-        }
-
-        gridPane.add(player.getPlayerPiece(), col, row);
-      }
-    }
-  }
 
   /**
    * These next two methods; {@link #rollDiceAndMove(GridPane, Stage)},
@@ -284,39 +261,65 @@ public class ClassicLadderGame extends Application {
    */
   private void rollDiceAndMove(GridPane gridPane, Stage primaryStage) {
     Player currentPlayer = players.get(currentPlayerIndex);
-    //Get the original position
+    //Get the original position; for animation
     int previousPosition = currentPlayer.getPosition();
 
-    //Handle the player with dice
+    //Update the gamle-logic with dice
     int diceValue = dice.rollSum();
     diceResultLabel.setText(currentPlayer.getName() + " rolled: " + diceValue);
     gameController.handlePlayerTurn(currentPlayer, diceValue);
 
-    //Get the new position
+    //Update animation with the new position
     int newPosition = currentPlayer.getPosition();
+    animateAndMove(gridPane, currentPlayer, previousPosition, newPosition);
 
+    //Check winner
     if (gameController.checkAndHandleWin(newPosition)) {
       new ClassicWinnerScreen(currentPlayer).start(primaryStage);
       return;
     }
-
-    animateAndMove(gridPane, currentPlayer, previousPosition, newPosition);
 
     //Display which player is to move
     currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
     currentPlayerLabel.setText("Current Player: " + players.get(currentPlayerIndex).getName());
   }
   private void animateAndMove(GridPane gridPane, Player player, int fromPosition, int toPosition) {
-    int steps = toPosition - fromPosition;
+    //Feedback text on ladder or snake
+    if (gameController.getCheckTileType() == 1 || gameController.getCheckTileType() == 2) {
+      //Directly move to target-tile
+      int row = 9 - (toPosition - 1) / 9;
+      int col;
+      if ((9 - row) % 2 == 0) {
+        col = (toPosition - 1) % 9;
+      } else {
+        col = 8 - (toPosition - 1) % 9;
+      }
+
+      if(gameController.getCheckTileType() == 1){
+        snakeOrLadderCheck.setText("Ladder!");
+      }
+      else{
+        snakeOrLadderCheck.setText("Snake...");
+      }
+
+      gridPane.getChildren().remove(player.getPlayerPiece());
+      gridPane.add(player.getPlayerPiece(), col, row);
+
+      return;
+    }
 
     Timeline timeline = new Timeline();
     timeline.setCycleCount(1);
 
+    int steps = toPosition - fromPosition;
     int currentPosition = fromPosition;
 
-    for (int i = 0; i < steps; i++) {
-      final int stepPosition = currentPosition + 1;
+    //Default feedback upon normal tiles
+    snakeOrLadderCheck.setText("");
 
+    for (int i = 0; i < steps; i++) {
+      //calculate into coordinates
+      final int stepPosition = currentPosition + 1;
       int row = 9 - (stepPosition - 1) / 9;
       int col;
       if ((9 - row) % 2 == 0) {
@@ -336,18 +339,6 @@ public class ClassicLadderGame extends Application {
       currentPosition++;
     }
 
-    timeline.setOnFinished(event -> {
-      if (gameController.getCheckTileType() == 0) {
-        snakeOrLadderCheck.setText("");
-      } else if (gameController.getCheckTileType() == 1) {
-        snakeOrLadderCheck.setText("Ladder!");
-      } else if (gameController.getCheckTileType() == 2) {
-        snakeOrLadderCheck.setText("Snake...");
-      }
-    });
-
     timeline.play();
   }
-
-
 }
