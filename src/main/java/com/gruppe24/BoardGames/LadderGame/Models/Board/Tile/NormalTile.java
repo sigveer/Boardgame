@@ -1,4 +1,4 @@
-package com.gruppe24.BoardGames.LadderGame.Models.Tile;
+package com.gruppe24.BoardGames.LadderGame.Models.Board.Tile;
 
 /**
  * Class representing a normal tile.
