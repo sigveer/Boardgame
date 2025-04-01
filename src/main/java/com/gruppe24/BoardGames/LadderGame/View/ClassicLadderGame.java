@@ -37,6 +37,8 @@ public class ClassicLadderGame extends Application {
   private Label diceResultLabel;
   private Label currentPlayerLabel;
   private Label snakeOrLadderCheck;
+  private Label isFrozenLabel;
+  boolean unfreeze = false;
   private final Dice dice = new Dice(2);
 
   public ClassicLadderGame(List<Player> players) {
@@ -82,6 +84,9 @@ public class ClassicLadderGame extends Application {
     snakeOrLadderCheck = new Label("");
     snakeOrLadderCheck.setStyle("-fx-font-size: 16px; -fx-text-fill: white;");
 
+    isFrozenLabel = new Label("");
+    isFrozenLabel.setStyle("-fx-font-size: 16px; -fx-text-fill: white;");
+
     //Buttons
     Button diceRoll = new Button("Roll Dice");
     diceRoll.setOnAction(event -> rollDiceAndMove(gridPane, primaryStage, diceP));
@@ -94,7 +99,7 @@ public class ClassicLadderGame extends Application {
     //Vertical Box for control panel
     VBox controlPanel = new VBox(10);
     controlPanel.setAlignment(Pos.CENTER);
-    controlPanel.getChildren().addAll(currentPlayerLabel, diceResultLabel, snakeOrLadderCheck, diceRoll, backToMenu);
+    controlPanel.getChildren().addAll(currentPlayerLabel, diceResultLabel, snakeOrLadderCheck, isFrozenLabel, diceRoll, backToMenu);
     gridPane.add(controlPanel, 11, 0, 1, 5);
 
 
@@ -120,6 +125,8 @@ public class ClassicLadderGame extends Application {
 
         if (tileNumber == 90) {
           tile.setFill(Color.YELLOW);
+        } else if(tileNumber == 32 || tileNumber == 59){
+          tile.setFill(Color.DARKBLUE);
         } else if (board.getTile(tileNumber) instanceof LadderUpTile) {
           tile.setFill(Color.GREEN);
         } else if (board.getTile(tileNumber) instanceof SnakeDownTile) {
@@ -302,6 +309,14 @@ public class ClassicLadderGame extends Application {
     diceP.getChildren().clear(); //removes old dice
     diceP.getChildren().addAll(dice1IV,dice2IV);
 
+
+    if(gameController.isFrozen(currentPlayer.getPosition()) && !unfreeze){ //check the frozen tile
+      unfreeze = true;
+      currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
+      isFrozenLabel.setText("Player Frozen!");
+      return;
+    } isFrozenLabel.setText("");
+
     gameController.handlePlayerTurn(currentPlayer, diceValue);
 
     //Update animation with the new position
@@ -314,7 +329,7 @@ public class ClassicLadderGame extends Application {
       return;
     }
 
-    //Display which player is to move
+    //Switch player
     currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
     currentPlayerLabel.setText("Current Player: " + players.get(currentPlayerIndex).getName());
   }
@@ -345,7 +360,7 @@ public class ClassicLadderGame extends Application {
         int col = ((9 - row) % 2 == 0) ? (currentPosition - 1) % 9 : 8 - (currentPosition - 1) % 9;
 
         if(col == -1){
-          break; //if 1 at first tile, ignore everything and just teleport
+          break; //if rolled 1, ignore everything and just teleport
         }
         // Add a keyframe for current step
         KeyFrame keyFrame = new KeyFrame(
@@ -367,12 +382,9 @@ public class ClassicLadderGame extends Application {
         gridPane.getChildren().remove(player.getPlayerPiece());
         gridPane.add(player.getPlayerPiece(), finalCol, finalRow);
       });
-
       snakesLadderTL.play();
       return;
     }
-
-
 
     // ------------ Normal tiles --------------
     Timeline timeline = new Timeline();

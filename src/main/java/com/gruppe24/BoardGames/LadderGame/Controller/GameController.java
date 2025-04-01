@@ -86,6 +86,15 @@ public class GameController {
     specialTilePosition = tile.getPosition();
   }
 
+  /**
+   * Check if player has stepped on a frozen tile
+   * @param tile
+   * @return
+   */
+  public boolean isFrozen(int tile){
+    return tile == 32 || tile == 59;
+  }
+
 
   /**
    * Method that checks if a player has won the game.
