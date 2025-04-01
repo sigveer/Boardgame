@@ -2,7 +2,6 @@ package com.gruppe24.BoardGames.LadderGame.View;
 
 import com.gruppe24.BoardGames.LadderGame.Models.Player;
 import com.gruppe24.Utils.StyleUtils;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -91,20 +90,19 @@ public class ClassicSetup extends Application {
     List<ComboBox<String>> colors = Arrays.asList(colorComboBox1,colorComboBox2,colorComboBox3,colorComboBox4,colorComboBox5);
 
     //calculating amount of players
-    final int[] AmountPlayers = {0};
     Button nextButton = new Button("SUBMIT");
     StyleUtils.styleNormalButton(nextButton);
     gridPane.add(nextButton,9,8);
     nextButton.setOnAction(event -> {
-      int tempAmountPlayers = countPlayers(nameTextField1,nameTextField2,nameTextField3,nameTextField4,nameTextField5);
-      AmountPlayers[0] = tempAmountPlayers;
-
       //getting players
       players.clear(); //removing potential static
-      for(int i = 0; i < AmountPlayers[0]; i++){
+
+      for(int i = 0; i < names.size(); i++){
         String name = names.get(i).getText();
-        Color color = getColorFromString(colors.get(i).getValue());
-        players.add(new Player(name,color));
+        if(!name.isEmpty()){
+          Color color = getColorFromString(colors.get(i).getValue());
+          players.add(new Player(name,color));
+        }
       }
 
       new ClassicLadderGame(players).start(primaryStage);
@@ -121,27 +119,12 @@ public class ClassicSetup extends Application {
     return switch (colorName.toLowerCase()) {
       case "red" -> Color.DARKRED;
       case "blue" -> Color.BLUE;
-      case "green" -> Color.GREEN;
+      case "green" -> Color.DARKGREEN;
       case "yellow" -> Color.YELLOW;
       case "purple" -> Color.PURPLE;
       default ->
           Color.RED; // If the input doesn't match any known color, return Color.RED by default
     };
   }
-
-  /**
-   * TextField... is the equivelent to TextField[], saying it is an array. The difference is that
-   * with ... it is unnessessary to put the textFields inside a package i.e example[] = {a,b,c,...},
-   * and just put a,b,c in the parameter
-   * @param textField
-   * @return
-   */
-  public int countPlayers(TextField... textField){ //AI-based
-    int playerCount = 0;
-    for(TextField text : textField){
-      if(!text.getText().isEmpty()){
-        playerCount++;
-      }
-    } return playerCount;
-  }
 }
+
