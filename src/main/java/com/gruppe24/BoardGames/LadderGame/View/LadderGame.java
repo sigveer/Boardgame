@@ -1,11 +1,13 @@
 package com.gruppe24.BoardGames.LadderGame.View;
 
 import com.gruppe24.BoardGames.LadderGame.Controller.GameController;
-import com.gruppe24.BoardGames.LadderGame.Models.Board;
+import com.gruppe24.BoardGames.LadderGame.Models.Board.Board;
+import com.gruppe24.BoardGames.LadderGame.Models.Board.BoardType;
+import com.gruppe24.BoardGames.LadderGame.Models.Board.Tile.RandomTeleportTile;
 import com.gruppe24.BoardGames.LadderGame.Models.Dice;
 import com.gruppe24.BoardGames.LadderGame.Models.Player;
-import com.gruppe24.BoardGames.LadderGame.Models.Tile.LadderUpTile;
-import com.gruppe24.BoardGames.LadderGame.Models.Tile.SnakeDownTile;
+import com.gruppe24.BoardGames.LadderGame.Models.Board.Tile.LadderUpTile;
+import com.gruppe24.BoardGames.LadderGame.Models.Board.Tile.SnakeDownTile;
 import com.gruppe24.Utils.StyleUtils;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +29,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-public class ClassicLadderGame extends Application {
+public class LadderGame extends Application {
 
   private final Board board;
   private final GameController gameController;
@@ -39,9 +41,13 @@ public class ClassicLadderGame extends Application {
   private Label snakeOrLadderCheck;
   private final Dice dice = new Dice(1);
 
-  public ClassicLadderGame(List<Player> players) {
-    this.gameController = new GameController();
-    this.board = new Board();
+  public LadderGame(List<Player> players) {
+    this(players, BoardType.CLASSIC);
+  }
+
+  public LadderGame(List<Player> players, BoardType boardType) {
+    this.gameController = new GameController(boardType);
+    this.board = gameController.getBoard();
     this.players = players;
   }
 
@@ -103,8 +109,6 @@ public class ClassicLadderGame extends Application {
 
   /**
    * Draws the board, hardcoded with snakes and ladders
-   * @param gridPane
-   * @param ladderSnakePane
    */
   public void drawBoard(GridPane gridPane, Pane ladderSnakePane) {
     for (int row = 9; row >= 0; row--) {
@@ -123,6 +127,8 @@ public class ClassicLadderGame extends Application {
 
         if (tileNumber == 90) {
           tile.setFill(Color.YELLOW);
+        } else if (board.getTile(tileNumber) instanceof RandomTeleportTile) {
+          tile.setFill(Color.PURPLE);
         } else if (board.getTile(tileNumber) instanceof LadderUpTile) {
           tile.setFill(Color.GREEN);
         } else if (board.getTile(tileNumber) instanceof SnakeDownTile) {
@@ -250,8 +256,6 @@ public class ClassicLadderGame extends Application {
     snakeView7.setRotate(-60);
 
     ladderSnakePane.getChildren().addAll(snakeView1,snakeView2,snakeView3,snakeView4,snakeView5,snakeView6,snakeView7);
-
-
   }
 
 
@@ -278,7 +282,7 @@ public class ClassicLadderGame extends Application {
 
     //Check winner
     if (gameController.checkAndHandleWin(newPosition)) {
-      new ClassicWinnerScreen(currentPlayer).start(primaryStage);
+      new WinnerScreen(currentPlayer).start(primaryStage);
       return;
     }
 
@@ -286,85 +290,99 @@ public class ClassicLadderGame extends Application {
     currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
     currentPlayerLabel.setText("Current Player: " + players.get(currentPlayerIndex).getName());
   }
+
+
   private void animateAndMove(GridPane gridPane, Player player, int fromPosition, int toPosition) {
     int tileType = gameController.getCheckTileType();
-    // ------------ Special Tiles -------------
-    if (tileType == 1 || tileType == 2) {
-      Timeline snakesLadderTL = new Timeline();
-      snakesLadderTL.setCycleCount(1);
+    int specialTilePosition = gameController.getSpecialTilePosition();
 
-      int specialTileStartPosition = gameController.getSpecialTilePosition();
-      int stepsToSpecial = specialTileStartPosition - fromPosition;
-      boolean isForward = stepsToSpecial > 0; //check if ladder or snake
+    // For teleport (type 3), do a direct movement to teleport tile then to destination
+    if (tileType == 3) {
+      // First, directly move to teleport tile position
+      int teleportRow = 9 - (specialTilePosition - 1) / 9;
+      int teleportCol = (9 - teleportRow) % 2 == 0 ? (specialTilePosition - 1) % 9 : 8 - (specialTilePosition - 1) % 9;
 
+      Timeline moveToTeleportTL = new Timeline(new KeyFrame(
+          Duration.seconds(0.3),
+          e -> {
+            gridPane.getChildren().remove(player.getPlayerPiece());
+            gridPane.add(player.getPlayerPiece(), teleportCol, teleportRow);
+            snakeOrLadderCheck.setText("Teleporting...");
+          }
+      ));
 
-      // Feedback upon hitting ladders or snakes
-      snakeOrLadderCheck.setText(tileType == 1 ? "Ladder!" : "Snake...");
+      // After reaching teleport, wait then jump to destination
+      moveToTeleportTL.setOnFinished(e -> {
+        // Wait briefly, then teleport to destination
+        Timeline pauseTL = new Timeline(new KeyFrame(Duration.seconds(0.5)));
+        pauseTL.setOnFinished(event -> {
+          // Move directly to final destination
+          int finalRow = 9 - (toPosition - 1) / 9;
+          int finalCol = (9 - finalRow) % 2 == 0 ? (toPosition - 1) % 9 : 8 - (toPosition - 1) % 9;
 
-      // Create a list of keyframes
-      List<KeyFrame> keyFrames = new ArrayList<>();
-      int currentPosition = fromPosition;
-
-      int absSteps = Math.abs(stepsToSpecial);
-      for (int i = 0; i <= absSteps + 1; i++) {
-        currentPosition = fromPosition + (isForward ? i : -i); //So it does not matter if it goes backward or forwards
-        // Calculate the current position coordinates
-        int row = 9 - (currentPosition - 1) / 9;
-        int col = ((9 - row) % 2 == 0) ? (currentPosition - 1) % 9 : 8 - (currentPosition - 1) % 9;
-
-        if(col == -1){
-          break; //if 1 at first tile, ignore everything and just teleport
-        }
-        // Add a keyframe for current step
-        KeyFrame keyFrame = new KeyFrame(
-            Duration.seconds((i + 1) * 0.3),
-            event -> {
-              gridPane.getChildren().remove(player.getPlayerPiece());
-              gridPane.add(player.getPlayerPiece(), col, row);
-            }
-        );
-        keyFrames.add(keyFrame);
-      }
-      snakesLadderTL.getKeyFrames().addAll(keyFrames);
-
-      // After animation, teleport to final destination
-      snakesLadderTL.setOnFinished(event -> {
-        int finalRow = 9 - (toPosition - 1) / 9;
-        int finalCol = (9 - finalRow) % 2 == 0 ? (toPosition - 1) % 9 : 8 - (toPosition - 1) % 9;
-
-        gridPane.getChildren().remove(player.getPlayerPiece());
-        gridPane.add(player.getPlayerPiece(), finalCol, finalRow);
+          gridPane.getChildren().remove(player.getPlayerPiece());
+          gridPane.add(player.getPlayerPiece(), finalCol, finalRow);
+          snakeOrLadderCheck.setText("Teleported to " + toPosition + "!");
+        });
+        pauseTL.play();
       });
 
-      snakesLadderTL.play();
+      moveToTeleportTL.play();
       return;
     }
 
+    // For ladders and snakes (type 1 and 2)
+    else if (tileType == 1 || tileType == 2) {
+      // First move to ladder/snake position
+      int specialRow = 9 - (specialTilePosition - 1) / 9;
+      int specialCol = (9 - specialRow) % 2 == 0 ? (specialTilePosition - 1) % 9 : 8 - (specialTilePosition - 1) % 9;
 
+      Timeline moveToSpecialTL = new Timeline(new KeyFrame(
+          Duration.seconds(0.3),
+          e -> {
+            gridPane.getChildren().remove(player.getPlayerPiece());
+            gridPane.add(player.getPlayerPiece(), specialCol, specialRow);
+            snakeOrLadderCheck.setText(tileType == 1 ? "Ladder!" : "Snake...");
+          }
+      ));
 
-    // ------------ Normal tiles --------------
+      moveToSpecialTL.setOnFinished(e -> {
+        // Move directly to final destination after a brief delay
+        Timeline pauseTL = new Timeline(new KeyFrame(Duration.seconds(0.5)));
+        pauseTL.setOnFinished(event -> {
+          int finalRow = 9 - (toPosition - 1) / 9;
+          int finalCol = (9 - finalRow) % 2 == 0 ? (toPosition - 1) % 9 : 8 - (toPosition - 1) % 9;
+
+          gridPane.getChildren().remove(player.getPlayerPiece());
+          gridPane.add(player.getPlayerPiece(), finalCol, finalRow);
+        });
+        pauseTL.play();
+      });
+
+      moveToSpecialTL.play();
+      return;
+    }
+
+    // For normal movement (no special tiles)
     Timeline timeline = new Timeline();
-    timeline.setCycleCount(1);
-
     int steps = toPosition - fromPosition;
-    int currentPosition = fromPosition;
-    snakeOrLadderCheck.setText("");
 
-    for (int i = 0; i < steps; i++) {
-      currentPosition++;
-      // Calculate into coordinates
+    for (int i = 1; i <= steps; i++) {
+      final int step = i;
+      int currentPosition = fromPosition + i;
       int row = 9 - (currentPosition - 1) / 9;
       int col = (9 - row) % 2 == 0 ? (currentPosition - 1) % 9 : 8 - (currentPosition - 1) % 9;
 
       KeyFrame keyFrame = new KeyFrame(
-          Duration.seconds((i + 1) * 0.3),
-          event -> {
+          Duration.seconds(step * 0.3),
+          e -> {
             gridPane.getChildren().remove(player.getPlayerPiece());
             gridPane.add(player.getPlayerPiece(), col, row);
           }
       );
       timeline.getKeyFrames().add(keyFrame);
     }
+
     timeline.play();
   }
 
