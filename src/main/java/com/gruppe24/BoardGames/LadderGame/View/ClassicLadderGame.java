@@ -195,8 +195,8 @@ public class ClassicLadderGame extends Application {
 
     ladderSnakePane.getChildren().addAll(ladderView1,ladderView2,ladderView3,ladderView4,ladderView5,ladderView6,ladderView7);
 
-    //Snakes
-    Image snakeImage = new Image("Snake.png");
+    //Downward Ladder
+    Image snakeImage = new Image("Ladder.png");
 
     ImageView snakeView1 = new ImageView(snakeImage);
     snakeView1.setFitWidth(200);
@@ -310,6 +310,9 @@ public class ClassicLadderGame extends Application {
         int row = 9 - (currentPosition - 1) / 9;
         int col = ((9 - row) % 2 == 0) ? (currentPosition - 1) % 9 : 8 - (currentPosition - 1) % 9;
 
+        if(col == -1){
+          break; //if 1 at first tile, ignore everything and just teleport
+        }
         // Add a keyframe for current step
         KeyFrame keyFrame = new KeyFrame(
             Duration.seconds((i + 1) * 0.3),
