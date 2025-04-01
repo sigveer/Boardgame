@@ -357,17 +357,18 @@ public class ClassicLadderGame extends Application {
         currentPosition = fromPosition + (isForward ? i : -i); //So it does not matter if it goes backward or forwards
         // Calculate the current position coordinates
         int row = 9 - (currentPosition - 1) / 9;
-        int col = ((9 - row) % 2 == 0) ? (currentPosition - 1) % 9 : 8 - (currentPosition - 1) % 9;
-
+        int col = (9 - row) % 2 == 0 ? (currentPosition - 1) % 9 :  8 - (currentPosition - 1) % 9;
         if(col == -1){
-          break; //if rolled 1, ignore everything and just teleport
+          col = 0;
         }
+
         // Add a keyframe for current step
+        int finalCol = col;
         KeyFrame keyFrame = new KeyFrame(
             Duration.seconds((i + 1) * 0.3),
             event -> {
               gridPane.getChildren().remove(player.getPlayerPiece());
-              gridPane.add(player.getPlayerPiece(), col, row);
+              gridPane.add(player.getPlayerPiece(), finalCol, row);
             }
         );
         keyFrames.add(keyFrame);
