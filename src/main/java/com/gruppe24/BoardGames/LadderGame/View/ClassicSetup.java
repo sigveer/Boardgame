@@ -112,7 +112,7 @@ public class ClassicSetup extends Application {
   public Color getColorFromString(String colorName) {
     // Convert the input colorName to lowercase to handle case insensitivity
     return switch (colorName.toLowerCase()) {
-      case "red" -> Color.RED;   // If the input is "red", return Color.RED
+      case "red" -> Color.DARKRED;   // If the input is "red", return Color.RED
       case "blue" -> Color.BLUE;  // If the input is "blue", return Color.BLUE
       case "green" -> Color.GREEN; // If the input is "green", return Color.GREEN
       case "yellow" -> Color.YELLOW; // If the input is "yellow", return Color.YELLOW

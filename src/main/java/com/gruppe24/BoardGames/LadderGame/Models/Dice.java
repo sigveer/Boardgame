@@ -60,6 +60,6 @@ public class Dice {
     if (dieNumber < 0 || dieNumber >= dice.size()) {
       throw new IllegalArgumentException("Die number out of bounds");
     }
-    return dice.get(dieNumber).getValue();
+    return dice.get(dieNumber).getLastRoll();
   }
 }

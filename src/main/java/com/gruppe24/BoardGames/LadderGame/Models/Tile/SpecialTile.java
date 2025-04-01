@@ -1,4 +1,4 @@
-package com.gruppe24.BoardGames.LadderGame.Models.Board.Tile;
+package com.gruppe24.BoardGames.LadderGame.Models.Tile;
 
 
 /**

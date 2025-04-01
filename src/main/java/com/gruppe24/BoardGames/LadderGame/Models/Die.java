@@ -51,7 +51,7 @@ public class Die { //kan abstraktiseres
    * @Date: 04.02.2025
    * @Version: 1.0
    */
-  public int getValue(){
+  public int getLastRoll(){
     return lastRolledValue;
   }
 

@@ -1,4 +1,4 @@
-package com.gruppe24.BoardGames.LadderGame.Models.Board.Tile;
+package com.gruppe24.BoardGames.LadderGame.Models.Tile;
 
 import com.gruppe24.BoardGames.LadderGame.Models.Player;
 
@@ -25,6 +25,10 @@ public abstract class Tile {
 
   public void perform(Player player){
     checkTileType = 0;
+  }
+
+  public int getPosition(){
+    return position;
   }
 }
 

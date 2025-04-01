@@ -1,6 +1,7 @@
 package com.gruppe24.Utils;
 
 import java.util.Scanner;
+import java.util.logging.Logger;
 import javafx.scene.paint.Color;
 
 /**
@@ -73,6 +74,11 @@ public class Validators {
 
     }
   }
+
+  public static Logger getLogger(){
+    return Logger.getLogger(Validators.class.getName());
+  }
+
 }
 
 
