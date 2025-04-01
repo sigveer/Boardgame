@@ -121,7 +121,9 @@ public class ClassicLadderGame extends Application {
         tile.setStroke(Color.BLACK);
         tile.setStrokeWidth(1);
 
-        if (board.getTile(tileNumber) instanceof LadderUpTile) {
+        if (tileNumber == 90) {
+          tile.setFill(Color.YELLOW);
+        } else if (board.getTile(tileNumber) instanceof LadderUpTile) {
           tile.setFill(Color.GREEN);
         } else if (board.getTile(tileNumber) instanceof SnakeDownTile) {
           tile.setFill(Color.RED);
