@@ -16,7 +16,7 @@ public class GameController {
 
   public GameController() {
     this.board = new Board();
-    this.dice = new Dice(1);
+    this.dice = new Dice(2);
   }
 
 

@@ -37,7 +37,7 @@ public class ClassicLadderGame extends Application {
   private Label diceResultLabel;
   private Label currentPlayerLabel;
   private Label snakeOrLadderCheck;
-  private final Dice dice = new Dice(1);
+  private final Dice dice = new Dice(2);
 
   public ClassicLadderGame(List<Player> players) {
     this.gameController = new GameController();
@@ -56,12 +56,14 @@ public class ClassicLadderGame extends Application {
     gridPane.setHgap(1);
     gridPane.setStyle("-fx-background-color: #607ee4;");
 
-    //Pane for ladders
+    //Pane for laddersAndSnakes and dices
     Pane ladderSnakeP = new Pane();
     ladderSnakeP.setMouseTransparent(true);
+    Pane diceP = new Pane();
+    diceP.setMouseTransparent(true);
 
     //Scene
-    Scene scene = new Scene(new StackPane(gridPane,ladderSnakeP), 1000, 850); //AI-suggestion
+    Scene scene = new Scene(new StackPane(gridPane,ladderSnakeP, diceP), 1000, 850); //AI-suggestion
 
     //Title Label
     Label title = new Label("Board Games!");
@@ -82,7 +84,7 @@ public class ClassicLadderGame extends Application {
 
     //Buttons
     Button diceRoll = new Button("Roll Dice");
-    diceRoll.setOnAction(event -> rollDiceAndMove(gridPane, primaryStage));
+    diceRoll.setOnAction(event -> rollDiceAndMove(gridPane, primaryStage, diceP));
     StyleUtils.styleNormalButton(diceRoll);
 
     Button backToMenu = new Button("Back to Menu");
@@ -250,26 +252,46 @@ public class ClassicLadderGame extends Application {
     snakeView7.setRotate(-60);
 
     ladderSnakePane.getChildren().addAll(snakeView1,snakeView2,snakeView3,snakeView4,snakeView5,snakeView6,snakeView7);
-
-
   }
 
 
   /**
-   * These next two methods; {@link #rollDiceAndMove(GridPane, Stage)},
+   * These next two methods; {@link #rollDiceAndMove(GridPane, Stage, Pane)},
    * {@link #animateAndMove(GridPane, Player, int, int)}, are intervoven and works to a high degree
    * together. animateAndMove method is heavely assisted by AI - ChatGPT-free and Grok 3.
    * <p>1/2 method</p>
    * @param gridPane
    */
-  private void rollDiceAndMove(GridPane gridPane, Stage primaryStage) {
+  private void rollDiceAndMove(GridPane gridPane, Stage primaryStage, Pane diceP) {
     Player currentPlayer = players.get(currentPlayerIndex);
     //Get the original position; for animation
     int previousPosition = currentPlayer.getPosition();
 
-    //Update the gamle-logic with dice
+    //Update game-logic with dice-roll and display dices
     int diceValue = dice.rollSum();
-    diceResultLabel.setText(currentPlayer.getName() + " rolled: " + diceValue);
+    int diceValue1 = dice.getDie(0);
+    int diceValue2 = dice.getDie(1);
+
+    String dice1Path = dicePath(diceValue1);
+    Image dice1 = new Image(dice1Path);
+    ImageView dice1IV = new ImageView(dice1);
+    dice1IV.setX(830);
+    dice1IV.setY(400);
+    dice1IV.setFitHeight(75);
+    dice1IV.setFitWidth(75);
+
+    String dice2Path = dicePath(diceValue2);
+    Image dice2 = new Image(dice2Path);
+    ImageView dice2IV = new ImageView(dice2);
+    dice2IV.setX(830);
+    dice2IV.setY(480);
+    dice2IV.setFitHeight(75);
+    dice2IV.setFitWidth(75);
+
+    diceResultLabel.setText("Totalsum: "+diceValue);
+    diceP.getChildren().clear(); //removes old dice
+    diceP.getChildren().addAll(dice1IV,dice2IV);
+
     gameController.handlePlayerTurn(currentPlayer, diceValue);
 
     //Update animation with the new position
@@ -366,6 +388,10 @@ public class ClassicLadderGame extends Application {
       timeline.getKeyFrames().add(keyFrame);
     }
     timeline.play();
+  }
+
+  public String dicePath(int dice){
+    return "dice"+dice+".png";
   }
 
 }
