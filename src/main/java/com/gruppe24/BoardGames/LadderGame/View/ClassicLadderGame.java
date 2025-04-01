@@ -306,7 +306,7 @@ public class ClassicLadderGame extends Application {
       int currentPosition = fromPosition;
 
       int absSteps = Math.abs(stepsToSpecial);
-      for (int i = 0; i <= absSteps; i++) {
+      for (int i = 0; i <= absSteps + 1; i++) {
         currentPosition = fromPosition + (isForward ? i : -i); //So it does not matter if it goes backward or forwards
         // Calculate the current position coordinates
         int row = 9 - (currentPosition - 1) / 9;
