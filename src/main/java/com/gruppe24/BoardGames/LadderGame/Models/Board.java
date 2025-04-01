@@ -99,4 +99,12 @@ public class Board {
     }
     return new NormalTile(position);
   }
+
+
+  public HashMap<Integer,Integer> getLadderUp(){
+    return ladderUp;
+  }
+  public HashMap<Integer,Integer> getLadderDown(){
+    return ladderDown;
+  }
 }

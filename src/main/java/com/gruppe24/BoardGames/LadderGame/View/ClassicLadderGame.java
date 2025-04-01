@@ -111,12 +111,7 @@ public class ClassicLadderGame extends Application {
   public void drawBoard(GridPane gridPane, Pane ladderSnakePane) {
     for (int row = 9; row >= 0; row--) {
       for (int col = 0; col < 9; col++) {
-        int tileNumber;
-        if ((9 - row) % 2 == 0) {
-          tileNumber = (9 - row) * 9 + col + 1;
-        } else {
-          tileNumber = (9 - row + 1) * 9 - col;
-        }
+        int tileNumber = (9 - row) % 2 == 0 ? (9 - row) * 9 + col + 1 : (9 - row + 1) * 9 - col;
 
         StackPane stackPane = new StackPane();
         Rectangle tile = new Rectangle(tileSize, tileSize);
@@ -133,6 +128,18 @@ public class ClassicLadderGame extends Application {
           tile.setFill(Color.WHITE);
         }
 
+        //Landing-tile upon special tiles
+        for(Integer value : board.getLadderUp().values()){
+          if(tileNumber == value){
+            tile.setFill(Color.LIGHTCYAN);
+          }
+        }
+        for(Integer value : board.getLadderDown().values()){
+          if(tileNumber == value){
+            tile.setFill(Color.LIGHTPINK);
+          }
+        }
+
         Label numberLabel = new Label(Integer.toString(tileNumber));
         numberLabel.setStyle("-fx-font-weight: bold;");
         numberLabel.setTranslateX(26);
@@ -144,6 +151,9 @@ public class ClassicLadderGame extends Application {
         gridPane.add(stackPane, col, row);
       }
     }
+
+
+
 
     //Ladders
     Image ladderImage = new Image("Ladder.png");
