@@ -60,28 +60,35 @@ public class ClassicSetup extends Application {
     TextField nameTextField4 = new TextField();
     nameTextField4.setPromptText("write name here");
     gridPane.add(nameTextField4,3,8);
+    TextField nameTextField5 = new TextField();
+    nameTextField5.setPromptText("write name here");
+    gridPane.add(nameTextField5,3,9);
 
     //comboxes for colour
     ComboBox<String> colorComboBox1 = new ComboBox<>();
-    colorComboBox1.getItems().addAll("Red","Blue","Green","Yellow");
+    colorComboBox1.getItems().addAll("Red","Blue","Green","Yellow","Purple");
     colorComboBox1.setValue("Red"); //default
     gridPane.add(colorComboBox1,1,5);
     ComboBox<String> colorComboBox2 = new ComboBox<>();
-    colorComboBox2.getItems().addAll("Red","Blue","Green","Yellow");
+    colorComboBox2.getItems().addAll("Red","Blue","Green","Yellow","Purple");
     colorComboBox2.setValue("Blue"); //default
     gridPane.add(colorComboBox2,1,6);
     ComboBox<String> colorComboBox3 = new ComboBox<>();
-    colorComboBox3.getItems().addAll("Red","Blue","Green","Yellow");
+    colorComboBox3.getItems().addAll("Red","Blue","Green","Yellow","Purple");
     colorComboBox3.setValue("Green"); //default
     gridPane.add(colorComboBox3,1,7);
     ComboBox<String> colorComboBox4 = new ComboBox<>();
-    colorComboBox4.getItems().addAll("Red","Blue","Green","Yellow");
+    colorComboBox4.getItems().addAll("Red","Blue","Green","Yellow","Purple");
     colorComboBox4.setValue("Yellow"); //default
     gridPane.add(colorComboBox4,1,8);
+    ComboBox<String> colorComboBox5 = new ComboBox<>();
+    colorComboBox5.getItems().addAll("Red","Blue","Green","Yello","Purple");
+    colorComboBox5.setValue("Purple"); //default
+    gridPane.add(colorComboBox5,1,9);
 
     //Collection of names and colours
-    List<TextField> names = Arrays.asList(nameTextField1,nameTextField2,nameTextField3,nameTextField4);
-    List<ComboBox<String>> colors = Arrays.asList(colorComboBox1,colorComboBox2,colorComboBox3,colorComboBox4);
+    List<TextField> names = Arrays.asList(nameTextField1,nameTextField2,nameTextField3,nameTextField4,nameTextField5);
+    List<ComboBox<String>> colors = Arrays.asList(colorComboBox1,colorComboBox2,colorComboBox3,colorComboBox4,colorComboBox5);
 
     //calculating amount of players
     final int[] AmountPlayers = {0};
@@ -89,7 +96,7 @@ public class ClassicSetup extends Application {
     StyleUtils.styleNormalButton(nextButton);
     gridPane.add(nextButton,9,8);
     nextButton.setOnAction(event -> {
-      int tempAmountPlayers = countPlayers(nameTextField1,nameTextField2,nameTextField3,nameTextField4);
+      int tempAmountPlayers = countPlayers(nameTextField1,nameTextField2,nameTextField3,nameTextField4,nameTextField5);
       AmountPlayers[0] = tempAmountPlayers;
 
       //getting players
@@ -112,10 +119,11 @@ public class ClassicSetup extends Application {
   public Color getColorFromString(String colorName) {
     // Convert the input colorName to lowercase to handle case insensitivity
     return switch (colorName.toLowerCase()) {
-      case "red" -> Color.DARKRED;   // If the input is "red", return Color.RED
-      case "blue" -> Color.BLUE;  // If the input is "blue", return Color.BLUE
-      case "green" -> Color.GREEN; // If the input is "green", return Color.GREEN
-      case "yellow" -> Color.YELLOW; // If the input is "yellow", return Color.YELLOW
+      case "red" -> Color.DARKRED;
+      case "blue" -> Color.BLUE;
+      case "green" -> Color.GREEN;
+      case "yellow" -> Color.YELLOW;
+      case "purple" -> Color.PURPLE;
       default ->
           Color.RED; // If the input doesn't match any known color, return Color.RED by default
     };
