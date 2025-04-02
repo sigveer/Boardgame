@@ -4,6 +4,8 @@ import static com.gruppe24.Utils.StyleUtils.styleNormalButton;
 
 import com.gruppe24.BoardGames.LadderGame.Models.Board.BoardType;
 import com.gruppe24.BoardGames.MenuGUI;
+import com.gruppe24.Utils.Validators;
+import java.util.logging.Level;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Pos;
@@ -17,6 +19,11 @@ public class LadderGameMenuGUI extends Application {
 
   @Override
   public void start(Stage primaryStage) {
+    if(primaryStage == null){
+      throw new IllegalArgumentException("Parameter Stage cannot be empty");
+    }
+    Validators.getLogger().log(Level.INFO,"Ladder Menu started");
+
     primaryStage.setTitle("Ladder Game");
 
     GridPane gridPane = new GridPane();

@@ -10,8 +10,10 @@ import com.gruppe24.BoardGames.LadderGame.Models.Player;
 import com.gruppe24.BoardGames.LadderGame.Models.Board.Tile.LadderUpTile;
 import com.gruppe24.BoardGames.LadderGame.Models.Board.Tile.LadderDownTile;
 import com.gruppe24.Utils.StyleUtils;
+import com.gruppe24.Utils.Validators;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.control.Button;
@@ -48,6 +50,12 @@ public class LadderGame extends Application {
   }
 
   public LadderGame(List<Player> players, BoardType boardType) {
+    if(players == null || players.isEmpty()){
+      throw new IllegalArgumentException("Parameter list of players cannot be empty");
+    }
+    if(boardType == null){
+      throw new IllegalArgumentException("Parameter boardType cannot be empty");
+    }
     this.gameController = new GameController(boardType);
     this.board = gameController.getBoard();
     this.players = players;
@@ -55,6 +63,11 @@ public class LadderGame extends Application {
 
   @Override
   public void start(Stage primaryStage) {
+    if(primaryStage == null){
+      throw new IllegalArgumentException("Parameter Stage cannot be empty");
+    }
+    Validators.getLogger().log(Level.INFO, "LadderGame started");
+
     primaryStage.setTitle("Laddergame Classic");
 
     //GridPane for tiles
