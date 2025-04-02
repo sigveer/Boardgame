@@ -2,7 +2,7 @@ package com.gruppe24.BoardGames.LadderGame.Models.Board;
 
 import com.gruppe24.BoardGames.LadderGame.Models.Board.Tile.LadderUpTile;
 import com.gruppe24.BoardGames.LadderGame.Models.Board.Tile.NormalTile;
-import com.gruppe24.BoardGames.LadderGame.Models.Board.Tile.SnakeDownTile;
+import com.gruppe24.BoardGames.LadderGame.Models.Board.Tile.LadderDownTile;
 import com.gruppe24.BoardGames.LadderGame.Models.Board.Tile.Tile;
 import java.util.HashMap;
 
@@ -61,7 +61,7 @@ public class Board {
       if (ladderUp.containsKey(i)) {
         tiles[i] = new LadderUpTile(i, ladderUp.get(i));
       } else if (ladderDown.containsKey(i)) {
-        tiles[i] = new SnakeDownTile(i, ladderDown.get(i));
+        tiles[i] = new LadderDownTile(i, ladderDown.get(i));
       } else {
         tiles[i] = new NormalTile(i);
       }

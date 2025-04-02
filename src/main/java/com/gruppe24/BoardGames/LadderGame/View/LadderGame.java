@@ -8,7 +8,7 @@ import com.gruppe24.BoardGames.LadderGame.Models.Board.Tile.RandomTeleportTile;
 import com.gruppe24.BoardGames.LadderGame.Models.Dice;
 import com.gruppe24.BoardGames.LadderGame.Models.Player;
 import com.gruppe24.BoardGames.LadderGame.Models.Board.Tile.LadderUpTile;
-import com.gruppe24.BoardGames.LadderGame.Models.Board.Tile.SnakeDownTile;
+import com.gruppe24.BoardGames.LadderGame.Models.Board.Tile.LadderDownTile;
 import com.gruppe24.Utils.StyleUtils;
 import java.util.ArrayList;
 import java.util.List;
@@ -138,7 +138,7 @@ public class LadderGame extends Application {
           tile.setFill(Color.LIGHTBLUE);
         } else if (board.getTile(tileNumber) instanceof LadderUpTile) {
           tile.setFill(Color.GREEN);
-        } else if (board.getTile(tileNumber) instanceof SnakeDownTile) {
+        } else if (board.getTile(tileNumber) instanceof LadderDownTile) {
           tile.setFill(Color.RED);
         } else {
           tile.setFill(Color.WHITE);
