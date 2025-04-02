@@ -1,5 +1,7 @@
 package com.gruppe24.BoardGames.TicTacToe;
 
+import com.gruppe24.Utils.Validators;
+import java.util.logging.Level;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
@@ -22,6 +24,11 @@ public class TicTacToeApp extends Application {
    */
   @Override
   public void start(Stage primaryStage) {
+    if(primaryStage == null){
+      throw new IllegalArgumentException("primaryStage cannot be empty");
+    }
+    Validators.getLogger().log(Level.INFO,"TicTacToe started");
+
     Model model = new Model();
     Controller controller = new Controller(model);
     View view = new View(primaryStage, model, controller);

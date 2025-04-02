@@ -6,6 +6,7 @@ import com.gruppe24.Utils.Steps;
 import com.gruppe24.Utils.Validators;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import javafx.scene.paint.Color;
 
 
@@ -23,6 +24,7 @@ public class TextBasedLadderGame {
   public TextBasedLadderGame() {
     this.players = new ArrayList<>();
     this.GM = new GameController();
+    Validators.getLogger().log(Level.INFO, "Text based ladde game started");
   }
 
   /**

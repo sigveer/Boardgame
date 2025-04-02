@@ -3,9 +3,11 @@ package com.gruppe24.BoardGames.LadderGame.View;
 import com.gruppe24.BoardGames.LadderGame.Models.Board.BoardType;
 import com.gruppe24.BoardGames.LadderGame.Models.Player;
 import com.gruppe24.Utils.StyleUtils;
+import com.gruppe24.Utils.Validators;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Level;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -27,11 +29,19 @@ public class Setup extends Application {
   }
 
   public void setBoardType(BoardType boardType) {
+    if(boardType == null){
+      throw new IllegalArgumentException("Parameter boardType cannot be empty");
+    }
     this.boardType = boardType;
   }
 
   @Override
   public void start(Stage primaryStage) {
+    if(primaryStage == null){
+      throw new IllegalArgumentException("Parameter Stage cannot be empty");
+    }
+    Validators.getLogger().log(Level.INFO, "Setup started");
+
     primaryStage.setTitle("Laddergame setup...");
 
     GridPane gridPane = new GridPane();
