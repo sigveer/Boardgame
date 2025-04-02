@@ -2,7 +2,7 @@ package com.gruppe24.BoardGames.LadderGame.Models.Board.Tile;
 
 import com.gruppe24.BoardGames.LadderGame.Models.Player;
 
-public class FrozenTile extends Tile{
+public class FrozenTile extends SpecialTile{
 
   /**
    * Constructor that initializes the normal tile.
@@ -14,13 +14,11 @@ public class FrozenTile extends Tile{
    */
   public FrozenTile(int position) {
     super(position);
-    this.checkTileType = 4;
   }
 
   @Override
   public void perform(Player player) {
     player.setFrozen(true);
-
     checkTileType = 4;
   }
 }

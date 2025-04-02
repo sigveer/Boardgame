@@ -21,6 +21,9 @@ public class GameController {
   }
 
   public GameController(BoardType boardType) {
+    if(boardType == null){
+      throw new IllegalArgumentException("Parameter boardType cannot be empty");
+    }
     this.board = BoardFactory.createBoard(boardType);
     this.dice = new Dice(2);
   }
