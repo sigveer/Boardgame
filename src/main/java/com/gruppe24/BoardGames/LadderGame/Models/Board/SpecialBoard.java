@@ -36,7 +36,8 @@ class SpecialBoard extends Board {
     super.initializeTiles();
 
     tiles[50] = new RandomTeleportTile(50);
-    tiles[6] = new FrozenTile(6);
-    tiles[2] = new FrozenTile(2);
+
+    tiles[34] = new FrozenTile(34);
+    tiles[78] = new FrozenTile(78);
   }
 }

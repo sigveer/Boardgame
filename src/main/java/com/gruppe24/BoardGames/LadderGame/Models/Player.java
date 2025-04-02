@@ -14,6 +14,7 @@ public class Player {
   public int position;
   private Circle playerPiece;
   private Color color;
+  private boolean frozen;
 
   //constructor
   public Player(String name, Color color){
@@ -22,6 +23,27 @@ public class Player {
     this.color = color;
     this.playerPiece = new Circle(25);
     this.playerPiece.setFill(color);
+    this.frozen = false;
+  }
+
+
+  /**
+   * Check if the player is currently frozen
+   *
+   * @return true if player is frozen, false otherwise
+   */
+  public boolean isFrozen() {
+    return frozen;
+  }
+
+
+  /**
+   * Set the frozen status of the player
+   *
+   * @param frozen true to freeze the player, false to unfreeze
+   */
+  public void setFrozen(boolean frozen) {
+    this.frozen = frozen;
   }
 
 

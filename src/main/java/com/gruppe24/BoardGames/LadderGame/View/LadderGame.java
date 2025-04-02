@@ -111,7 +111,7 @@ public class LadderGame extends Application {
 
 
     primaryStage.setScene(scene);
-    primaryStage.setFullScreen(false); // can not resize the window. A temporary fix?
+    primaryStage.setFullScreen(true); // can not resize the window. A temporary fix?
     primaryStage.show();
   }
 
@@ -135,7 +135,7 @@ public class LadderGame extends Application {
         } else if(board.getTile(tileNumber) instanceof RandomTeleportTile) {
           tile.setFill(Color.PURPLE);
         } else if(board.getTile(tileNumber) instanceof FrozenTile){
-          tile.setFill(Color.DARKBLUE);
+          tile.setFill(Color.LIGHTBLUE);
         } else if (board.getTile(tileNumber) instanceof LadderUpTile) {
           tile.setFill(Color.GREEN);
         } else if (board.getTile(tileNumber) instanceof SnakeDownTile) {
@@ -147,7 +147,7 @@ public class LadderGame extends Application {
         //Landing-tile upon special tiles
         for(Integer value : board.getLadderUp().values()){
           if(tileNumber == value){
-            tile.setFill(Color.LIGHTCYAN);
+            tile.setFill(Color.LIGHTGREEN);
           }
         }
         for(Integer value : board.getLadderDown().values()){
@@ -289,6 +289,16 @@ public class LadderGame extends Application {
    */
   private void rollDiceAndMove(GridPane gridPane, Stage primaryStage, Pane diceP) {
     Player currentPlayer = players.get(currentPlayerIndex);
+
+    if (currentPlayer.isFrozen()) {
+      currentPlayer.setFrozen(false);
+      isFrozenLabel.setText(currentPlayer.getName() + " is frozen and skips this turn!");
+
+      currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
+      currentPlayerLabel.setText("Current Player: " + players.get(currentPlayerIndex).getName());
+      return;
+    }
+
     //Get the original position; for animation
     int previousPosition = currentPlayer.getPosition();
 

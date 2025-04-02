@@ -14,11 +14,13 @@ public class FrozenTile extends Tile{
    */
   public FrozenTile(int position) {
     super(position);
+    this.checkTileType = 4;
   }
 
   @Override
   public void perform(Player player) {
-    super.perform(player);
+    player.setFrozen(true);
+
     checkTileType = 4;
   }
 }
