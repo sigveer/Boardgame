@@ -310,16 +310,16 @@ public class LadderGame extends Application {
     String dice1Path = dicePath(diceValue1);
     Image dice1 = new Image(dice1Path);
     ImageView dice1IV = new ImageView(dice1);
-    dice1IV.setX(830);
-    dice1IV.setY(400);
+    dice1IV.setX(1030);
+    dice1IV.setY(450);
     dice1IV.setFitHeight(75);
     dice1IV.setFitWidth(75);
 
     String dice2Path = dicePath(diceValue2);
     Image dice2 = new Image(dice2Path);
     ImageView dice2IV = new ImageView(dice2);
-    dice2IV.setX(830);
-    dice2IV.setY(480);
+    dice2IV.setX(1030);
+    dice2IV.setY(530);
     dice2IV.setFitHeight(75);
     dice2IV.setFitWidth(75);
 
