@@ -354,8 +354,8 @@ public class LadderGame extends Application {
     }
 
     //Switch player
-    currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
     currentPlayerLabel.setText("Current Player: " + players.get(currentPlayerIndex).getName());
+    currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
   }
   private void animateAndMove(GridPane gridPane, Player player, int fromPosition, int toPosition) {
     int tileType = gameController.getCheckTileType();
