@@ -350,9 +350,7 @@ public class LadderGame extends Application {
     int specialTilePosition = gameController.getSpecialTilePosition();
 
     // --------------- Frozen Tile ---------------------
-    if(tileType == 4 && !unfreeze){
-      //unfreeze = true;
-      currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
+    if(tileType == 4){
       Timeline timeline = new Timeline();
       timeline.setCycleCount(1);
 
