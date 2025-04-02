@@ -169,58 +169,58 @@ public class LadderGame extends Application {
     }
 
     //Ladders
-    Image ladderImage = new Image("Ladder.png");
+    Image ladderUpImage = new Image("Ladder.png");
 
-    ImageView ladderView1 = new ImageView(ladderImage);
-    ladderView1.setFitWidth(200);
-    ladderView1.setFitHeight(500);
-    ladderView1.setX(125);
-    ladderView1.setY(350);
-    ladderView1.setRotate(30);
+    ImageView ladderUpView1 = new ImageView(ladderUpImage);
+    ladderUpView1.setFitWidth(180);
+    ladderUpView1.setFitHeight(480);
+    ladderUpView1.setX(420);
+    ladderUpView1.setY(420);
+    ladderUpView1.setRotate(25);
 
-    ImageView ladderView2 = new ImageView(ladderImage);
-    ladderView2.setFitWidth(150);
-    ladderView2.setFitHeight(150);
-    ladderView2.setX(630);
-    ladderView2.setY(650);
-    ladderView2.setRotate(30);
+    ImageView ladderUpView2 = new ImageView(ladderUpImage);
+    ladderUpView2.setFitWidth(150);
+    ladderUpView2.setFitHeight(150);
+    ladderUpView2.setX(850);
+    ladderUpView2.setY(700);
+    ladderUpView2.setRotate(30);
 
-    ImageView ladderView3 = new ImageView(ladderImage);
-    ladderView3.setFitWidth(200);
-    ladderView3.setFitHeight(250);
-    ladderView3.setX(90);
-    ladderView3.setY(330);
-    ladderView3.setRotate(30);
+    ImageView ladderUpView3 = new ImageView(ladderUpImage);
+    ladderUpView3.setFitWidth(220);
+    ladderUpView3.setFitHeight(270);
+    ladderUpView3.setX(310);
+    ladderUpView3.setY(365);
+    ladderUpView3.setRotate(35);
 
-    ImageView ladderView4 = new ImageView(ladderImage);
-    ladderView4.setFitWidth(200);
-    ladderView4.setFitHeight(250);
-    ladderView4.setX(500);
-    ladderView4.setY(240);
-    ladderView4.setRotate(18);
+    ImageView ladderUpView4 = new ImageView(ladderUpImage);
+    ladderUpView4.setFitWidth(190);
+    ladderUpView4.setFitHeight(240);
+    ladderUpView4.setX(760);
+    ladderUpView4.setY(310);
+    ladderUpView4.setRotate(18);
 
-    ImageView ladderView5 = new ImageView(ladderImage);
-    ladderView5.setFitWidth(200);
-    ladderView5.setFitHeight(300);
-    ladderView5.setX(450);
-    ladderView5.setY(120);
-    ladderView5.setRotate(15);
+    ImageView ladderUpView5 = new ImageView(ladderUpImage);
+    ladderUpView5.setFitWidth(200);
+    ladderUpView5.setFitHeight(300);
+    ladderUpView5.setX(660);
+    ladderUpView5.setY(170);
+    ladderUpView5.setRotate(15);
 
-    ImageView ladderView6 = new ImageView(ladderImage);
-    ladderView6.setFitWidth(200);
-    ladderView6.setFitHeight(230);
-    ladderView6.setX(590);
-    ladderView6.setY(40);
-    ladderView6.setRotate(15);
+    ImageView ladderUpView6 = new ImageView(ladderUpImage);
+    ladderUpView6.setFitWidth(200);
+    ladderUpView6.setFitHeight(230);
+    ladderUpView6.setX(822);
+    ladderUpView6.setY(90);
+    ladderUpView6.setRotate(15);
 
-    ImageView ladderView7 = new ImageView(ladderImage);
-    ladderView7.setFitWidth(200);
-    ladderView7.setFitHeight(230);
-    ladderView7.setX(350);
-    ladderView7.setY(40);
-    ladderView7.setRotate(15);
+    ImageView ladderUpView7 = new ImageView(ladderUpImage);
+    ladderUpView7.setFitWidth(200);
+    ladderUpView7.setFitHeight(230);
+    ladderUpView7.setX(585);
+    ladderUpView7.setY(80);
+    ladderUpView7.setRotate(15);
 
-    ladderSnakePane.getChildren().addAll(ladderView1,ladderView2,ladderView3,ladderView4,ladderView5,ladderView6,ladderView7);
+    ladderSnakePane.getChildren().addAll(ladderUpView1,ladderUpView2,ladderUpView3,ladderUpView4,ladderUpView5,ladderUpView6,ladderUpView7);
 
     //Downward Ladder
     Image snakeImage = new Image("Ladder.png");
