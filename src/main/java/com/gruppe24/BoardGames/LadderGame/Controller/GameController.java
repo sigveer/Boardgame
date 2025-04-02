@@ -22,7 +22,7 @@ public class GameController {
 
   public GameController(BoardType boardType) {
     this.board = BoardFactory.createBoard(boardType);
-    this.dice = new Dice(1);
+    this.dice = new Dice(2);
   }
 
   public Board getBoard() {
@@ -91,6 +91,15 @@ public class GameController {
     tile.perform(player);
     checkTileType = tile.checkTileType;
     specialTilePosition = tile.getPosition();
+  }
+
+  /**
+   * Check if player has stepped on a frozen tile
+   * @param tile
+   * @return
+   */
+  public boolean isFrozen(int tile){
+    return tile == 32 || tile == 59;
   }
 
 
