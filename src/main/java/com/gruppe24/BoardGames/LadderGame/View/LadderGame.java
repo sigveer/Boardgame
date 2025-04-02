@@ -131,6 +131,8 @@ public class LadderGame extends Application {
 
         if (tileNumber == 90) {
           tile.setFill(Color.YELLOW);
+        } else if(board.getTile(tileNumber) instanceof RandomTeleportTile) {
+          tile.setFill(Color.PURPLE);
         } else if(tileNumber == 32 || tileNumber == 59){
           tile.setFill(Color.DARKBLUE);
         } else if (board.getTile(tileNumber) instanceof LadderUpTile) {
