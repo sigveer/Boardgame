@@ -2,6 +2,7 @@ package com.gruppe24.BoardGames.LadderGame.View;
 
 import static com.gruppe24.Utils.StyleUtils.styleNormalButton;
 
+import com.gruppe24.BoardGames.LadderGame.Models.Board.BoardType;
 import com.gruppe24.BoardGames.MenuGUI;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -29,11 +30,20 @@ public class LadderGameMenuGUI extends Application {
     title.setStyle("-fx-font-size: 40px; -fx-text-fill: #ffffff; -fx-font-weight: bold;");
 
     Button classicButton = new Button("Classic Mode");
-    classicButton.setOnAction(event -> new ClassicSetup().start(primaryStage));
+    classicButton.setOnAction(event -> {
+      Setup setup = new Setup();
+      setup.setBoardType(BoardType.CLASSIC);
+      setup.start(primaryStage);
+    });
     styleNormalButton(classicButton);
 
-    Button specialTile = new Button("Special Tile Mode");
-    styleNormalButton(specialTile);
+    Button specialTileButton = new Button("Special Mode");
+    specialTileButton.setOnAction(event -> {
+      Setup setup = new Setup();
+      setup.setBoardType(BoardType.SPECIAL);
+      setup.start(primaryStage);
+    });
+    styleNormalButton(specialTileButton);
 
     Button textModeButton = new Button("Text Mode");
     textModeButton.setOnAction(event -> {
@@ -48,8 +58,9 @@ public class LadderGameMenuGUI extends Application {
 
     gridPane.add(title, 0, 0);
     gridPane.add(classicButton, 0, 1);
-    gridPane.add(textModeButton, 0, 2);
-    gridPane.add(backToMenu, 0, 3);
+    gridPane.add(specialTileButton, 0, 2);
+    gridPane.add(textModeButton, 0, 3);
+    gridPane.add(backToMenu, 0, 4);
 
     primaryStage.setScene(scene);
     primaryStage.show();

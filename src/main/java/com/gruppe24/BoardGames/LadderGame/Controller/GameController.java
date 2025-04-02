@@ -1,9 +1,11 @@
 package com.gruppe24.BoardGames.LadderGame.Controller;
 
-import com.gruppe24.BoardGames.LadderGame.Models.Board;
+import com.gruppe24.BoardGames.LadderGame.Models.Board.Board;
+import com.gruppe24.BoardGames.LadderGame.Models.Board.BoardFactory;
+import com.gruppe24.BoardGames.LadderGame.Models.Board.BoardType;
 import com.gruppe24.BoardGames.LadderGame.Models.Dice;
 import com.gruppe24.BoardGames.LadderGame.Models.Player;
-import com.gruppe24.BoardGames.LadderGame.Models.Tile.Tile;
+import com.gruppe24.BoardGames.LadderGame.Models.Board.Tile.Tile;
 import com.gruppe24.Utils.Steps;
 
 public class GameController {
@@ -15,12 +17,17 @@ public class GameController {
   private int specialTilePosition;
 
   public GameController() {
-    this.board = new Board();
+    this(BoardType.CLASSIC); // Default to classic board
+  }
+
+  public GameController(BoardType boardType) {
+    this.board = BoardFactory.createBoard(boardType);
     this.dice = new Dice(2);
   }
 
-
-
+  public Board getBoard() {
+    return board;
+  }
 
   /**
    * Method that handles the player's turn.

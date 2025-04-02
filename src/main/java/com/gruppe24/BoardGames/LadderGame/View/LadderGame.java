@@ -1,11 +1,13 @@
 package com.gruppe24.BoardGames.LadderGame.View;
 
 import com.gruppe24.BoardGames.LadderGame.Controller.GameController;
-import com.gruppe24.BoardGames.LadderGame.Models.Board;
+import com.gruppe24.BoardGames.LadderGame.Models.Board.Board;
+import com.gruppe24.BoardGames.LadderGame.Models.Board.BoardType;
+import com.gruppe24.BoardGames.LadderGame.Models.Board.Tile.RandomTeleportTile;
 import com.gruppe24.BoardGames.LadderGame.Models.Dice;
 import com.gruppe24.BoardGames.LadderGame.Models.Player;
-import com.gruppe24.BoardGames.LadderGame.Models.Tile.LadderUpTile;
-import com.gruppe24.BoardGames.LadderGame.Models.Tile.SnakeDownTile;
+import com.gruppe24.BoardGames.LadderGame.Models.Board.Tile.LadderUpTile;
+import com.gruppe24.BoardGames.LadderGame.Models.Board.Tile.SnakeDownTile;
 import com.gruppe24.Utils.StyleUtils;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +29,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-public class ClassicLadderGame extends Application {
+public class LadderGame extends Application {
 
   private final Board board;
   private final GameController gameController;
@@ -41,9 +43,13 @@ public class ClassicLadderGame extends Application {
   boolean unfreeze = false;
   private final Dice dice = new Dice(2);
 
-  public ClassicLadderGame(List<Player> players) {
-    this.gameController = new GameController();
-    this.board = new Board();
+  public LadderGame(List<Player> players) {
+    this(players, BoardType.CLASSIC);
+  }
+
+  public LadderGame(List<Player> players, BoardType boardType) {
+    this.gameController = new GameController(boardType);
+    this.board = gameController.getBoard();
     this.players = players;
   }
 
@@ -159,9 +165,6 @@ public class ClassicLadderGame extends Application {
       }
     }
 
-
-
-
     //Ladders
     Image ladderImage = new Image("Ladder.png");
 
@@ -269,6 +272,8 @@ public class ClassicLadderGame extends Application {
     snakeView7.setRotate(-60);
 
     ladderSnakePane.getChildren().addAll(snakeView1,snakeView2,snakeView3,snakeView4,snakeView5,snakeView6,snakeView7);
+
+
   }
 
 
@@ -325,7 +330,7 @@ public class ClassicLadderGame extends Application {
 
     //Check winner
     if (gameController.checkAndHandleWin(newPosition)) {
-      new ClassicWinnerScreen(currentPlayer).start(primaryStage);
+      new WinnerScreen(currentPlayer).start(primaryStage);
       return;
     }
 
@@ -335,8 +340,44 @@ public class ClassicLadderGame extends Application {
   }
   private void animateAndMove(GridPane gridPane, Player player, int fromPosition, int toPosition) {
     int tileType = gameController.getCheckTileType();
-    // ------------ Special Tiles -------------
-    if (tileType == 1 || tileType == 2) {
+    int specialTilePosition = gameController.getSpecialTilePosition();
+
+    // --------------- Teleport Tile ------------------
+    if (tileType == 3) {
+      // First, directly move to teleport tile position
+      int teleportRow = 9 - (specialTilePosition - 1) / 9;
+      int teleportCol = (9 - teleportRow) % 2 == 0 ? (specialTilePosition - 1) % 9 : 8 - (specialTilePosition - 1) % 9;
+
+      Timeline moveToTeleportTL = new Timeline(new KeyFrame(
+          Duration.seconds(0.3),
+          e -> {
+            gridPane.getChildren().remove(player.getPlayerPiece());
+            gridPane.add(player.getPlayerPiece(), teleportCol, teleportRow);
+            snakeOrLadderCheck.setText("Teleporting...");
+          }
+      ));
+      // After reaching teleport, wait then jump to destination
+      moveToTeleportTL.setOnFinished(e -> {
+        // Wait briefly, then teleport to destination
+        Timeline pauseTL = new Timeline(new KeyFrame(Duration.seconds(0.5)));
+        pauseTL.setOnFinished(event -> {
+          // Move directly to final destination
+          int finalRow = 9 - (toPosition - 1) / 9;
+          int finalCol = (9 - finalRow) % 2 == 0 ? (toPosition - 1) % 9 : 8 - (toPosition - 1) % 9;
+
+          gridPane.getChildren().remove(player.getPlayerPiece());
+          gridPane.add(player.getPlayerPiece(), finalCol, finalRow);
+          snakeOrLadderCheck.setText("Teleported to " + toPosition + "!");
+        });
+        pauseTL.play();
+      });
+
+      moveToTeleportTL.play();
+      return;
+    }
+
+    // ---------------- Ladder or Snake -------------------
+    else if (tileType == 1 || tileType == 2) {
       Timeline snakesLadderTL = new Timeline();
       snakesLadderTL.setCycleCount(1);
 
@@ -386,8 +427,7 @@ public class ClassicLadderGame extends Application {
       snakesLadderTL.play();
       return;
     }
-
-    // ------------ Normal tiles --------------
+    // --------------- Normal tiles -----------------
     Timeline timeline = new Timeline();
     timeline.setCycleCount(1);
 

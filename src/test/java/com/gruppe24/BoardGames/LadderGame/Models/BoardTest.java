@@ -2,11 +2,10 @@ package com.gruppe24.BoardGames.LadderGame.Models;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import com.gruppe24.BoardGames.LadderGame.Models.Board;
-import com.gruppe24.BoardGames.LadderGame.Models.Player;
-import com.gruppe24.BoardGames.LadderGame.Models.Tile.LadderUpTile;
-import com.gruppe24.BoardGames.LadderGame.Models.Tile.SnakeDownTile;
-import com.gruppe24.BoardGames.LadderGame.Models.Tile.Tile;
+import com.gruppe24.BoardGames.LadderGame.Models.Board.Board;
+import com.gruppe24.BoardGames.LadderGame.Models.Board.Tile.LadderUpTile;
+import com.gruppe24.BoardGames.LadderGame.Models.Board.Tile.SnakeDownTile;
+import com.gruppe24.BoardGames.LadderGame.Models.Board.Tile.Tile;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -17,7 +16,6 @@ import org.junit.jupiter.api.Test;
 class BoardTest {
 
   private Board board;
-  private Player testPlayer;
 
   @BeforeEach
   public void beforeEach(){

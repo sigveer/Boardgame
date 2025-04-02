@@ -1,5 +1,6 @@
 package com.gruppe24.BoardGames.LadderGame.View;
 
+import com.gruppe24.BoardGames.LadderGame.Models.Board.BoardType;
 import com.gruppe24.BoardGames.LadderGame.Models.Player;
 import com.gruppe24.Utils.StyleUtils;
 import java.util.ArrayList;
@@ -16,12 +17,17 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-public class ClassicSetup extends Application {
+public class Setup extends Application {
 
   private List<Player> players;
+  private BoardType boardType = BoardType.CLASSIC;
 
-  public ClassicSetup(){
+  public Setup(){
     this.players = new ArrayList<>();
+  }
+
+  public void setBoardType(BoardType boardType) {
+    this.boardType = boardType;
   }
 
   @Override
@@ -105,7 +111,7 @@ public class ClassicSetup extends Application {
         }
       }
 
-      new ClassicLadderGame(players).start(primaryStage);
+      new LadderGame(players, boardType).start(primaryStage);
     });
 
 

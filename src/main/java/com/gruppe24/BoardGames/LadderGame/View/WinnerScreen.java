@@ -12,11 +12,11 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
-public class ClassicWinnerScreen extends Application {
+public class WinnerScreen extends Application {
 
   private Player player;
 
-  public ClassicWinnerScreen(Player player){
+  public WinnerScreen(Player player){
     this.player = player;
   }
 
