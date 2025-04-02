@@ -14,7 +14,7 @@ class SpecialBoard extends Board {
 
   @Override
   public void initializeLaddersAndSnake() {
-    ladderUp.put(1, 40);
+    ladderUp.put(2, 40);
     ladderUp.put(8, 10);
     ladderUp.put(36, 52);
     ladderUp.put(43, 62);
