@@ -390,45 +390,85 @@ public class LadderGame extends Application {
 
     // --------------- Teleport Tile ------------------
     if (tileType == 3) {
-      Timeline teleportTL = new Timeline();
-      teleportTL.setCycleCount(1);
-
       int specialTilePosition = gameController.getSpecialTilePosition();
-      int stepsToSpecial = specialTilePosition-fromPosition;
 
-      snakeOrLadderCheck.setText("Teleporting...");
+      // First, directly move to teleport tile position
+      int teleportRow = 9 - (specialTilePosition - 1) / 9;
+      int teleportCol = (9 - teleportRow) % 2 == 0 ? (specialTilePosition - 1) % 9 : 8 - (specialTilePosition - 1) % 9;
 
-      List<KeyFrame> keyFrameList = new ArrayList<>();
-      int currentPosition = fromPosition;
+      Timeline moveToTeleportTL = new Timeline(new KeyFrame(
+          Duration.seconds(0.3),
 
-      int absSteps = Math.abs(stepsToSpecial);
-      for(int i = 0; i <= absSteps; i++){
-        currentPosition = fromPosition + i;
+          e -> {
+            gridPane.getChildren().remove(player.getPlayerPiece());
+            gridPane.add(player.getPlayerPiece(), teleportCol, teleportRow);
+            snakeOrLadderCheck.setText("Teleporting...");
+          }
+      ));
 
-        //calculate coordinates for grid
-        int row = 9 - (currentPosition - 1) / 9;
-        int col = (9 - row) % 2 == 0 ? (currentPosition - 1) % 9 : 8 - (currentPosition - 1) % 9;
+      // After reaching teleport, wait then jump to destination
+      moveToTeleportTL.setOnFinished(e -> {
 
-        KeyFrame keyFrame = new KeyFrame(
-            Duration.seconds((i+1)*0.3),
-            event -> {
-              gridPane.getChildren().remove(player.getPlayerPiece());
-              gridPane.add(player.getPlayerPiece(), col, row);
-            }
-        ); keyFrameList.add(keyFrame);
-      } teleportTL.getKeyFrames().addAll(keyFrameList);
+        // Wait briefly, then teleport to destination
+        Timeline pauseTL = new Timeline(new KeyFrame(Duration.seconds(0.5)));
 
-      teleportTL.setOnFinished(event -> {
-        int finalRow = 9 - (toPosition - 1) / 9;
-        int finalCol = (9 - finalRow) % 2 == 0 ? (toPosition - 1) % 9 : 8 - (toPosition - 1) % 9;
+        pauseTL.setOnFinished(event -> {
+          // Move directly to final destination
+          int finalRow = 9 - (toPosition - 1) / 9;
+          int finalCol = (9 - finalRow) % 2 == 0 ? (toPosition - 1) % 9 : 8 - (toPosition - 1) % 9;
 
-        gridPane.getChildren().remove(player.getPlayerPiece());
-        gridPane.add(player.getPlayerPiece(), finalCol, finalRow);
-        snakeOrLadderCheck.setText("Teleported to " + toPosition + "!");
+
+          gridPane.getChildren().remove(player.getPlayerPiece());
+          gridPane.add(player.getPlayerPiece(), finalCol, finalRow);
+          snakeOrLadderCheck.setText("Teleported to " + toPosition + "!");
+        });
+        pauseTL.play();
       });
-      teleportTL.play();
+      moveToTeleportTL.play();
       return;
     }
+
+
+//    if (tileType == 3) {
+//      Timeline teleportTL = new Timeline();
+//      teleportTL.setCycleCount(1);
+//
+//      int specialTilePosition = gameController.getSpecialTilePosition();
+//      int stepsToSpecial = specialTilePosition-fromPosition;
+//
+//      snakeOrLadderCheck.setText("Teleporting...");
+//
+//      List<KeyFrame> keyFrameList = new ArrayList<>();
+//      int currentPosition = fromPosition;
+//
+//      int absSteps = Math.abs(stepsToSpecial);
+//      for(int i = 0; i <= absSteps; i++){
+//        currentPosition = fromPosition + i;
+//
+//        //calculate coordinates for grid
+//        int row = 9 - (currentPosition - 1) / 9;
+//        int col = (9 - row) % 2 == 0 ? (currentPosition - 1) % 9 : 8 - (currentPosition - 1) % 9;
+//
+//        KeyFrame keyFrame = new KeyFrame(
+//            Duration.seconds((i+1)*0.3),
+//            event -> {
+//              gridPane.getChildren().remove(player.getPlayerPiece());
+//              gridPane.add(player.getPlayerPiece(), col, row);
+//            }
+//        ); keyFrameList.add(keyFrame);
+//      } teleportTL.getKeyFrames().addAll(keyFrameList);
+//
+//      teleportTL.setOnFinished(event -> {
+//        int finalRow = 9 - (toPosition - 1) / 9;
+//        int finalCol = (9 - finalRow) % 2 == 0 ? (toPosition - 1) % 9 : 8 - (toPosition - 1) % 9;
+//
+//        gridPane.getChildren().remove(player.getPlayerPiece());
+//        gridPane.add(player.getPlayerPiece(), finalCol, finalRow);
+//        snakeOrLadderCheck.setText("Teleported to " + toPosition + "!");
+//      });
+//      teleportTL.play();
+//      return;
+//    }
 
     // ---------------- Ladder or Snake -------------------
     else if (tileType == 1 || tileType == 2) {
