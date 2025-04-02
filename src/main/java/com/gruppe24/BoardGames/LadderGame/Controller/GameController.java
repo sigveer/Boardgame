@@ -94,16 +94,6 @@ public class GameController {
   }
 
   /**
-   * Check if player has stepped on a frozen tile
-   * @param tile
-   * @return
-   */
-  public boolean isFrozen(int tile){
-    return tile == 32 || tile == 59;
-  }
-
-
-  /**
    * Method that checks if a player has won the game.
    *
    * @param newPosition the new position of the player

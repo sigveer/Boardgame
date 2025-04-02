@@ -1,5 +1,6 @@
 package com.gruppe24.BoardGames.LadderGame.Models.Board;
 
+import com.gruppe24.BoardGames.LadderGame.Models.Board.Tile.FrozenTile;
 import com.gruppe24.BoardGames.LadderGame.Models.Board.Tile.RandomTeleportTile;
 
 /**
@@ -35,5 +36,7 @@ class SpecialBoard extends Board {
     super.initializeTiles();
 
     tiles[50] = new RandomTeleportTile(50);
+    tiles[6] = new FrozenTile(6);
+    tiles[2] = new FrozenTile(2);
   }
 }

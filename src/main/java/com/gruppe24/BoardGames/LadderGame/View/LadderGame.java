@@ -3,6 +3,7 @@ package com.gruppe24.BoardGames.LadderGame.View;
 import com.gruppe24.BoardGames.LadderGame.Controller.GameController;
 import com.gruppe24.BoardGames.LadderGame.Models.Board.Board;
 import com.gruppe24.BoardGames.LadderGame.Models.Board.BoardType;
+import com.gruppe24.BoardGames.LadderGame.Models.Board.Tile.FrozenTile;
 import com.gruppe24.BoardGames.LadderGame.Models.Board.Tile.RandomTeleportTile;
 import com.gruppe24.BoardGames.LadderGame.Models.Dice;
 import com.gruppe24.BoardGames.LadderGame.Models.Player;
@@ -133,7 +134,7 @@ public class LadderGame extends Application {
           tile.setFill(Color.YELLOW);
         } else if(board.getTile(tileNumber) instanceof RandomTeleportTile) {
           tile.setFill(Color.PURPLE);
-        } else if(tileNumber == 32 || tileNumber == 59){
+        } else if(board.getTile(tileNumber) instanceof FrozenTile){
           tile.setFill(Color.DARKBLUE);
         } else if (board.getTile(tileNumber) instanceof LadderUpTile) {
           tile.setFill(Color.GREEN);
@@ -316,14 +317,6 @@ public class LadderGame extends Application {
     diceP.getChildren().clear(); //removes old dice
     diceP.getChildren().addAll(dice1IV,dice2IV);
 
-
-    if(gameController.isFrozen(currentPlayer.getPosition()) && !unfreeze){ //check the frozen tile
-      unfreeze = true;
-      currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
-      isFrozenLabel.setText("Player Frozen!");
-      return;
-    } isFrozenLabel.setText("");
-
     gameController.handlePlayerTurn(currentPlayer, diceValue);
 
     //Update animation with the new position
@@ -343,6 +336,36 @@ public class LadderGame extends Application {
   private void animateAndMove(GridPane gridPane, Player player, int fromPosition, int toPosition) {
     int tileType = gameController.getCheckTileType();
     int specialTilePosition = gameController.getSpecialTilePosition();
+
+    // --------------- Frozen Tile ---------------------
+    if(tileType == 4 && !unfreeze){
+      //unfreeze = true;
+      currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
+      Timeline timeline = new Timeline();
+      timeline.setCycleCount(1);
+
+      int steps = toPosition - fromPosition;
+      int currentPosition = fromPosition;
+      isFrozenLabel.setText("Player Frozen!");
+
+      for (int i = 0; i < steps; i++) {
+        currentPosition++;
+        // Calculate into coordinates
+        int row = 9 - (currentPosition - 1) / 9;
+        int col = (9 - row) % 2 == 0 ? (currentPosition - 1) % 9 : 8 - (currentPosition - 1) % 9;
+
+        KeyFrame keyFrame = new KeyFrame(
+            Duration.seconds((i + 1) * 0.3),
+            event -> {
+              gridPane.getChildren().remove(player.getPlayerPiece());
+              gridPane.add(player.getPlayerPiece(), col, row);
+            }
+        );
+        timeline.getKeyFrames().add(keyFrame);
+      }
+      timeline.play();
+      return;
+    } isFrozenLabel.setText("");
 
     // --------------- Teleport Tile ------------------
     if (tileType == 3) {
