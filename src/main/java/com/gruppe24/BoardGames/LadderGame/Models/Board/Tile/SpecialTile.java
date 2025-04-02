@@ -7,17 +7,14 @@ package com.gruppe24.BoardGames.LadderGame.Models.Board.Tile;
 public class SpecialTile extends Tile {
   private int destination;
 
-  /**
-   * Constructor that initializes the special tile.
-   *
-   * @param position The position of the tile.
-   *
-   * @Author Sigveer, Ingve
-   * @Date: 16.02.2025
-   * @Version: 1.0
-   */
+  public SpecialTile(int position){
+    super(position);
+  }
   public SpecialTile(int position, int destination) {
     super(position);
+    if(destination < 0){
+      throw new IllegalArgumentException("Parameter destination cannot be less than 0");
+    }
     this.destination = destination;
   }
 

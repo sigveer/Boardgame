@@ -10,21 +10,21 @@ import java.util.Random;
  * @Date: 07.09.2023
  * @Version: 1.0
  */
-public class RandomTeleportTile extends Tile {
+public class RandomTeleportTile extends SpecialTile {
 
   private final Random random = new Random();
-  private final int maxPosition = 89;
-  private final int minPosition = 1;
-  private int destinationPosition;
 
   public RandomTeleportTile(int position) {
     super(position);
-    this.checkTileType = 3;
   }
 
   @Override
   public void perform(Player player) {
-    destinationPosition = random.nextInt(maxPosition - minPosition + 1) + minPosition;
+    this.checkTileType = 3;
+
+    int maxPosition = 89;
+    int minPosition = 1;
+    int destinationPosition = random.nextInt(maxPosition - minPosition + 1) + minPosition;
 
     player.setPosition(destinationPosition);
 

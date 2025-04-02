@@ -19,6 +19,9 @@ public abstract class Tile {
    * @Version: 1.0
    */
   public Tile(int position){
+    if(position < 0){
+      throw new IllegalArgumentException("Parameter position cannot be less than 0");
+    }
     this.position = position;
   }
 

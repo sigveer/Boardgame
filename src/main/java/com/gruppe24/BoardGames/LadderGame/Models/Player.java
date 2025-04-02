@@ -18,6 +18,12 @@ public class Player {
 
   //constructor
   public Player(String name, Color color){
+    if(name == null ||name.trim().isEmpty()){
+      throw new IllegalArgumentException("Parameter name cannot be empty");
+    }
+    if(color == null){
+      throw new IllegalArgumentException("Parameter colour cannot be empty");
+    }
     this.name = name;
     this.position = 0;
     this.color = color;
