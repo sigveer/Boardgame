@@ -173,9 +173,9 @@ public class LadderGame extends Application {
 
     ImageView ladderUpView1 = new ImageView(ladderUpImage);
     ladderUpView1.setFitWidth(180);
-    ladderUpView1.setFitHeight(480);
-    ladderUpView1.setX(420);
-    ladderUpView1.setY(420);
+    ladderUpView1.setFitHeight(425);
+    ladderUpView1.setX(400);
+    ladderUpView1.setY(465);
     ladderUpView1.setRotate(25);
 
     ImageView ladderUpView2 = new ImageView(ladderUpImage);
@@ -268,7 +268,7 @@ public class LadderGame extends Application {
     ladderDownView6.setRotate(20);
 
     ImageView ladderDownView7 = new ImageView(ladderDownImage);
-    ladderDownView7.setFitWidth(150);
+    ladderDownView7.setFitWidth(175);
     ladderDownView7.setFitHeight(800);
     ladderDownView7.setX(535);
     ladderDownView7.setY(100);
