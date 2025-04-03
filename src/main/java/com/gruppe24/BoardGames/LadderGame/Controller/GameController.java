@@ -1,9 +1,11 @@
 package com.gruppe24.BoardGames.LadderGame.Controller;
 
-import com.gruppe24.BoardGames.LadderGame.Models.Board;
+import com.gruppe24.BoardGames.LadderGame.Models.Board.Board;
+import com.gruppe24.BoardGames.LadderGame.Models.Board.BoardFactory;
+import com.gruppe24.BoardGames.LadderGame.Models.Board.BoardType;
 import com.gruppe24.BoardGames.LadderGame.Models.Dice;
 import com.gruppe24.BoardGames.LadderGame.Models.Player;
-import com.gruppe24.BoardGames.LadderGame.Models.Tile.TileAction;
+import com.gruppe24.BoardGames.LadderGame.Models.Board.Tile.Tile;
 import com.gruppe24.Utils.Steps;
 
 public class GameController {
@@ -11,14 +13,24 @@ public class GameController {
   private Board board;
   private final Dice dice;
   private static final int WinCondition = 90;
+  private int checkTileType = 0;
+  private int specialTilePosition;
 
   public GameController() {
-    this.board = new Board();
-    this.dice = new Dice(1);
+    this(BoardType.CLASSIC); // Default to classic board
   }
 
+  public GameController(BoardType boardType) {
+    if(boardType == null){
+      throw new IllegalArgumentException("Parameter boardType cannot be empty");
+    }
+    this.board = BoardFactory.createBoard(boardType);
+    this.dice = new Dice(2);
+  }
 
-
+  public Board getBoard() {
+    return board;
+  }
 
   /**
    * Method that handles the player's turn.
@@ -67,7 +79,8 @@ public class GameController {
 
 
   /**
-   * Method that handles the action of a tile.
+   * Method that handles the action of a tile. Indirectly takes value checkTileType
+   * from abstract class Tile.
    *
    * @param player the player
    * @param newPosition the new position of the player
@@ -77,10 +90,11 @@ public class GameController {
    * @Version: 1.0
    */
   public void handleTileAction(Player player, int newPosition) {
-    TileAction tile = board.getTile(newPosition);
+    Tile tile = board.getTile(newPosition);
     tile.perform(player);
+    checkTileType = tile.checkTileType;
+    specialTilePosition = tile.getPosition();
   }
-
 
   /**
    * Method that checks if a player has won the game.
@@ -96,6 +110,13 @@ public class GameController {
     return newPosition == WinCondition;
   }
 
+  public int getCheckTileType(){
+    return checkTileType;
+  }
+
+  public int getSpecialTilePosition(){
+    return specialTilePosition;
+  }
 
   //----------------CONTROLLERS FOR TEXTBASED LADDERGAME--------------------//
   /**
@@ -131,6 +152,12 @@ public class GameController {
     movePlayer(player, sumDice);
 
     System.out.println(player.getColoredName() + " rolled " + sumDice);
+    if(getCheckTileType() == 1){
+      System.out.println("A ladder!");
+    }
+    else if(getCheckTileType() == 2){
+      System.out.println("A snake...");
+    }
     System.out.println(player.getColoredName() + " is now on tile " + player.getPosition());
   }
 

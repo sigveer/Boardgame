@@ -40,9 +40,9 @@ class DieTest {
    * Tests the {@code getValue} method in the {@code Die} class.
    */
   @Test
-  void getValue() {
+  void getLastRoll() {
     die.roll();
-    int value = die.getValue();
+    int value = die.getLastRoll();
     assertTrue(value >= 1 && value <= 6);
     System.out.println("Value: " + value + " which is between 1 and 6");
   }

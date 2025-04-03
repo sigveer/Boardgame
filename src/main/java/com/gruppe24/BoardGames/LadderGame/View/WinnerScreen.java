@@ -2,6 +2,8 @@ package com.gruppe24.BoardGames.LadderGame.View;
 
 import com.gruppe24.BoardGames.LadderGame.Models.Player;
 import com.gruppe24.Utils.StyleUtils;
+import com.gruppe24.Utils.Validators;
+import java.util.logging.Level;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -12,16 +14,24 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
-public class ClassicWinnerScreen extends Application {
+public class WinnerScreen extends Application {
 
   private Player player;
 
-  public ClassicWinnerScreen(Player player){
+  public WinnerScreen(Player player){
+    if(player == null){
+      throw new IllegalArgumentException("Parameter player cannot be empty");
+    }
     this.player = player;
   }
 
   @Override
   public void start(Stage primaryStage) {
+    if(primaryStage == null){
+      throw new IllegalArgumentException("Parameter Stage cannot be empty");
+    }
+    Validators.getLogger().log(Level.INFO, "Winner screen displayed");
+
     primaryStage.setTitle("Winner!");
     primaryStage.setX(250);
     primaryStage.setY(100);

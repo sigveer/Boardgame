@@ -1,11 +1,13 @@
 package com.gruppe24.BoardGames.LadderGame.View;
 
+import com.gruppe24.BoardGames.LadderGame.Models.Board.BoardType;
 import com.gruppe24.BoardGames.LadderGame.Models.Player;
 import com.gruppe24.Utils.StyleUtils;
-import java.lang.reflect.Array;
+import com.gruppe24.Utils.Validators;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Level;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -17,22 +19,33 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-public class ClassicSetup extends Application {
+public class Setup extends Application {
 
   private List<Player> players;
+  private BoardType boardType = BoardType.CLASSIC;
 
-  public ClassicSetup(){
+  public Setup(){
     this.players = new ArrayList<>();
+  }
+
+  public void setBoardType(BoardType boardType) {
+    if(boardType == null){
+      throw new IllegalArgumentException("Parameter boardType cannot be empty");
+    }
+    this.boardType = boardType;
   }
 
   @Override
   public void start(Stage primaryStage) {
+    if(primaryStage == null){
+      throw new IllegalArgumentException("Parameter Stage cannot be empty");
+    }
+    Validators.getLogger().log(Level.INFO, "Setup started");
+
     primaryStage.setTitle("Laddergame setup...");
-    primaryStage.setX(250);
-    primaryStage.setY(100);
 
     GridPane gridPane = new GridPane();
-    Scene scene = new Scene(gridPane, 1000, 700);
+    Scene scene = new Scene(gridPane, 1000, 850);
     gridPane.setAlignment(Pos.CENTER);
     gridPane.setVgap(25);
     gridPane.setHgap(20);
@@ -62,56 +75,54 @@ public class ClassicSetup extends Application {
     TextField nameTextField4 = new TextField();
     nameTextField4.setPromptText("write name here");
     gridPane.add(nameTextField4,3,8);
+    TextField nameTextField5 = new TextField();
+    nameTextField5.setPromptText("write name here");
+    gridPane.add(nameTextField5,3,9);
 
     //comboxes for colour
     ComboBox<String> colorComboBox1 = new ComboBox<>();
-    colorComboBox1.getItems().addAll("Red","Blue","Green","Yellow");
+    colorComboBox1.getItems().addAll("Red","Blue","Green","Yellow","Purple");
     colorComboBox1.setValue("Red"); //default
     gridPane.add(colorComboBox1,1,5);
     ComboBox<String> colorComboBox2 = new ComboBox<>();
-    colorComboBox2.getItems().addAll("Red","Blue","Green","Yellow");
+    colorComboBox2.getItems().addAll("Red","Blue","Green","Yellow","Purple");
     colorComboBox2.setValue("Blue"); //default
     gridPane.add(colorComboBox2,1,6);
     ComboBox<String> colorComboBox3 = new ComboBox<>();
-    colorComboBox3.getItems().addAll("Red","Blue","Green","Yellow");
+    colorComboBox3.getItems().addAll("Red","Blue","Green","Yellow","Purple");
     colorComboBox3.setValue("Green"); //default
     gridPane.add(colorComboBox3,1,7);
     ComboBox<String> colorComboBox4 = new ComboBox<>();
-    colorComboBox4.getItems().addAll("Red","Blue","Green","Yellow");
+    colorComboBox4.getItems().addAll("Red","Blue","Green","Yellow","Purple");
     colorComboBox4.setValue("Yellow"); //default
     gridPane.add(colorComboBox4,1,8);
+    ComboBox<String> colorComboBox5 = new ComboBox<>();
+    colorComboBox5.getItems().addAll("Red","Blue","Green","Yello","Purple");
+    colorComboBox5.setValue("Purple"); //default
+    gridPane.add(colorComboBox5,1,9);
 
     //Collection of names and colours
-    List<TextField> names = Arrays.asList(nameTextField1,nameTextField2,nameTextField3,nameTextField4);
-    List<ComboBox<String>> colors = Arrays.asList(colorComboBox1,colorComboBox2,colorComboBox3,colorComboBox4);
+    List<TextField> names = Arrays.asList(nameTextField1,nameTextField2,nameTextField3,nameTextField4,nameTextField5);
+    List<ComboBox<String>> colors = Arrays.asList(colorComboBox1,colorComboBox2,colorComboBox3,colorComboBox4,colorComboBox5);
 
     //calculating amount of players
-    final int[] AmountPlayers = {0};
     Button nextButton = new Button("SUBMIT");
     StyleUtils.styleNormalButton(nextButton);
-    nextButton.setOnAction(event -> {
-      int tempAmountPlayers = countPlayers(nameTextField1,nameTextField2,nameTextField3,nameTextField4);
-      AmountPlayers[0] = tempAmountPlayers;
-
-      //getting players
-      players.clear();
-
-      for(int i = 0; i < AmountPlayers[0]; i++){
-        String name = names.get(i).getText();
-        Color color = getColorFromString(colors.get(i).getValue());
-        players.add(new Player(name,color));
-      }
-    });
     gridPane.add(nextButton,9,8);
+    nextButton.setOnAction(event -> {
+      //getting players
+      players.clear(); //removing potential static
 
+      for(int i = 0; i < names.size(); i++){
+        String name = names.get(i).getText();
+        if(!name.isEmpty()){
+          Color color = getColorFromString(colors.get(i).getValue());
+          players.add(new Player(name,color));
+        }
+      }
 
-
-    //Go to game
-    Button toGame = new Button("NEXT");
-    StyleUtils.styleNormalButton(toGame);
-    toGame.setOnAction(event -> new ClassicLadderGame(players).start(primaryStage));
-    gridPane.add(toGame,11,11);
-
+      new LadderGame(players, boardType).start(primaryStage);
+    });
 
 
     primaryStage.setScene(scene);
@@ -122,28 +133,14 @@ public class ClassicSetup extends Application {
   public Color getColorFromString(String colorName) {
     // Convert the input colorName to lowercase to handle case insensitivity
     return switch (colorName.toLowerCase()) {
-      case "red" -> Color.RED;   // If the input is "red", return Color.RED
-      case "blue" -> Color.BLUE;  // If the input is "blue", return Color.BLUE
-      case "green" -> Color.GREEN; // If the input is "green", return Color.GREEN
-      case "yellow" -> Color.YELLOW; // If the input is "yellow", return Color.YELLOW
+      case "red" -> Color.DARKRED;
+      case "blue" -> Color.BLUE;
+      case "green" -> Color.DARKGREEN;
+      case "yellow" -> Color.YELLOW;
+      case "purple" -> Color.PURPLE;
       default ->
           Color.RED; // If the input doesn't match any known color, return Color.RED by default
     };
   }
-
-  /**
-   * TextField... is the equivelent to TextField[], saying it is an array. The difference is that
-   * with ... it is unnessessary to put the textFields inside a package i.e example[] = {a,b,c,...},
-   * and just put a,b,c in the parameter
-   * @param textField
-   * @return
-   */
-  public int countPlayers(TextField... textField){ //AI-based
-    int playerCount = 0;
-    for(TextField text : textField){
-      if(!text.getText().isEmpty()){
-        playerCount++;
-      }
-    } return playerCount;
-  }
 }
+

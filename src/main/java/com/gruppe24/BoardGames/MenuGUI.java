@@ -4,6 +4,8 @@ import static com.gruppe24.Utils.StyleUtils.styleNormalButton;
 
 import com.gruppe24.BoardGames.LadderGame.View.LadderGameMenuGUI;
 import com.gruppe24.BoardGames.TicTacToe.TicTacToeApp;
+import com.gruppe24.Utils.Validators;
+import java.util.logging.Level;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -16,6 +18,10 @@ public class MenuGUI extends Application {
 
   @Override
   public void start(Stage primaryStage) {
+    if(primaryStage == null){
+      throw new IllegalArgumentException("Parameter Stage cannot be empty");
+    }
+    Validators.getLogger().log(Level.INFO,"Menu started");
 
     primaryStage.setTitle("GameMenu");
     primaryStage.setX(250);

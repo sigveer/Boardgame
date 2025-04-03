@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Test;
 class PlayerTest {
 
   private Player player;
-  private Board board;
 
   @BeforeEach
   void setUp() {
@@ -19,7 +18,7 @@ class PlayerTest {
 
   @Test
   void getName() {
-    assertEquals("TestPlayer", player.getColoredName());
+    assertEquals("TestPlayer", player.getName());
   }
 
   @Test

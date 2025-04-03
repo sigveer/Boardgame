@@ -2,7 +2,6 @@ package com.gruppe24.BoardGames.LadderGame.Controller;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import com.gruppe24.BoardGames.LadderGame.Models.Board;
 import com.gruppe24.BoardGames.LadderGame.Models.Player;
 import java.io.ByteArrayInputStream;
 import javafx.scene.paint.Color;
@@ -123,5 +122,46 @@ class GameControllerTest {
     int sumDice = 2;
     GC.movePlayer(testPlayer, sumDice);
     assertEquals(7, testPlayer.getPosition());
+  }
+
+  @Test
+  void testIsFrozen(){
+    assertTrue(GC.isFrozen(32));
+    assertTrue(GC.isFrozen(59));
+    assertFalse(GC.isFrozen(1));
+  }
+
+  @Test
+  public void testGetCheckTile(){
+   //Positive test
+    GC.handlePlayerTurn(testPlayer, 1);
+    assertEquals(1,GC.getCheckTileType()); //1 means ladderUp
+    GC.handlePlayerTurn(testPlayer, 24);
+    assertEquals(2, GC.getCheckTileType()); //2 means ladderDown
+    GC.handlePlayerTurn(testPlayer,3);
+    assertEquals(0, GC.getCheckTileType()); //0 just a normal tile
+
+    //Negativ test
+    assertNotEquals(1, GC.getCheckTileType());
+  }
+
+  @Test
+  public void testGetSpecialTilePosition(){
+    //Positive test
+    GC.handlePlayerTurn(testPlayer,1);
+    assertEquals(1,GC.getSpecialTilePosition());
+    //Negative test
+    assertNotEquals(2,GC.getSpecialTilePosition());
+  }
+
+
+  @Test
+  public void testTextBasedCheckAndHandleWin(){
+    //Positive test
+    int WinCondition = 90;
+    assertTrue(GC.textBasedCheckAndHandleWin(testPlayer,WinCondition));
+    //Negative test
+    WinCondition = 80;
+    assertFalse(GC.textBasedCheckAndHandleWin(testPlayer,WinCondition));
   }
 }

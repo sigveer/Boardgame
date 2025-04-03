@@ -1,4 +1,4 @@
-package com.gruppe24.BoardGames.LadderGame.Models.Tile;
+package com.gruppe24.BoardGames.LadderGame.Models.Board.Tile;
 
 import com.gruppe24.BoardGames.LadderGame.Models.Player;
 
@@ -38,5 +38,6 @@ public class LadderDownTile extends SpecialTile {
   @Override
   public void perform(Player player) {
     player.setPosition(getDestination());
+    checkTileType = 2;
   }
 }
