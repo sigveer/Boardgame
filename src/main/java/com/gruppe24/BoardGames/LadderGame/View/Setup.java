@@ -126,7 +126,7 @@ public class Setup extends Application {
 
     Button savePlayersButton = new Button("Save Players");
     StyleUtils.styleNormalButton(savePlayersButton);
-    gridPane.add(savePlayersButton, 7, 7);
+    gridPane.add(savePlayersButton, 7, 5);
     savePlayersButton.setOnAction(event -> {
       List<Player> playersToSave = new ArrayList<>();
       for (int i = 0; i < names.size(); i++) {
@@ -169,7 +169,7 @@ public class Setup extends Application {
 
     Button loadPlayersButton = new Button("Load Players");
     StyleUtils.styleNormalButton(loadPlayersButton);
-    gridPane.add(loadPlayersButton, 7, 8);
+    gridPane.add(loadPlayersButton, 7, 6);
     loadPlayersButton.setOnAction(event -> {
       FileChooser fileChooser = new FileChooser();
       fileChooser.setTitle("Load Players");
