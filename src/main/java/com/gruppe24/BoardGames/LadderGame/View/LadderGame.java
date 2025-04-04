@@ -191,7 +191,7 @@ public class LadderGame extends Application {
       }
     }
 
-    //Ladders
+    //Upward Ladders
     Image ladderUpImage = new Image("Ladder.png");
 
     ImageView ladderUpView1 = new ImageView(ladderUpImage);

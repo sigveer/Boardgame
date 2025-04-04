@@ -4,6 +4,7 @@ import com.gruppe24.BoardGames.LadderGame.Models.Board.BoardType;
 import com.gruppe24.BoardGames.LadderGame.Models.Player;
 import com.gruppe24.FileHandling.CSVPlayerReader;
 import com.gruppe24.FileHandling.CSVPlayerWriter;
+import com.gruppe24.FileHandling.FileHandler;
 import com.gruppe24.Utils.ColorUtil;
 import com.gruppe24.Utils.StyleUtils;
 import com.gruppe24.Utils.Validators;
@@ -22,13 +23,13 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import javafx.stage.FileChooser;
-import java.io.File;
 
 public class Setup extends Application {
 
   private List<Player> players;
   private BoardType boardType = BoardType.CLASSIC;
+  private List<TextField> nameFields;
+  private List<ComboBox<String>> colorSelections;
 
   public Setup(){
     this.players = new ArrayList<>();
@@ -105,6 +106,9 @@ public class Setup extends Application {
     //Collection of names and colours
     List<TextField> names = Arrays.asList(nameTextField1,nameTextField2,nameTextField3,nameTextField4,nameTextField5);
     List<ComboBox<String>> colors = Arrays.asList(colorComboBox1,colorComboBox2,colorComboBox3,colorComboBox4,colorComboBox5);
+    //setting the fields
+    this.nameFields = names;
+    this.colorSelections = colors;
 
     //calculating amount of players
     Button SubmitButton = new Button("SUBMIT");
@@ -121,6 +125,11 @@ public class Setup extends Application {
         }
       }
 
+      if (players.isEmpty()) {
+        showAlert("You must add at least one player to start the game.");
+        return;
+      }
+
       new LadderGame(players, boardType).start(primaryStage);
     });
 
@@ -128,88 +137,65 @@ public class Setup extends Application {
     StyleUtils.styleNormalButton(savePlayersButton);
     gridPane.add(savePlayersButton, 7, 5);
     savePlayersButton.setOnAction(event -> {
-      List<Player> playersToSave = new ArrayList<>();
-      for (int i = 0; i < names.size(); i++) {
-        String name = names.get(i).getText();
-        if (!name.isEmpty()) {
-          Color color = ColorUtil.getColorFromString(colors.get(i).getValue());
-          playersToSave.add(new Player(name, color));
-        }
-      }
-
+      List<Player> playersToSave = collectPlayersFromFields();
       if (playersToSave.isEmpty()) {
         showAlert("No players to save");
         return;
       }
-
-      // Create file chooser for saving
-      FileChooser fileChooser = new FileChooser();
-      fileChooser.setTitle("Save Players");
-      fileChooser.getExtensionFilters().add(
-          new FileChooser.ExtensionFilter("CSV Files", "*.csv"));
-      fileChooser.setInitialFileName("custom_players.csv");
-      fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
-
-      // Show save dialog
-      File file = fileChooser.showSaveDialog(primaryStage);
-
-      if (file != null) {
-        // Save the players to the selected file
-        CSVPlayerWriter writer = new CSVPlayerWriter();
-        boolean success = writer.writeToFile(playersToSave, file.getAbsolutePath());
-
-        if (success) {
-          showAlert("Players saved successfully");
-        } else {
-          showAlert("Failed to save players");
-        }
+      boolean success = FileHandler.savePlayers(playersToSave, primaryStage);
+      if (success) {
+        showAlert("Players saved successfully");
+      } else {
+        showAlert("Failed to save players");
       }
     });
-
 
     Button loadPlayersButton = new Button("Load Players");
     StyleUtils.styleNormalButton(loadPlayersButton);
     gridPane.add(loadPlayersButton, 7, 6);
     loadPlayersButton.setOnAction(event -> {
-      FileChooser fileChooser = new FileChooser();
-      fileChooser.setTitle("Load Players");
-      fileChooser.getExtensionFilters().add(
-          new FileChooser.ExtensionFilter("CSV Files", "*.csv")
-      );
-      fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
-
-      // Show open dialog
-      File file = fileChooser.showOpenDialog(primaryStage);
-
-      if (file != null) {
-        CSVPlayerReader reader = new CSVPlayerReader();
-        List<Player> loadedPlayers = (List<Player>) reader.readFromFile(file.getAbsolutePath());
-
-        if (loadedPlayers != null && !loadedPlayers.isEmpty()) {
-          // Clear existing fields
-          for (TextField field : names) {
-            field.clear();
-          }
-
-          // Populate fields with loaded players
-          for (int i = 0; i < Math.min(loadedPlayers.size(), names.size()); i++) {
-            Player player = loadedPlayers.get(i);
-            names.get(i).setText(player.getName());
-
-            // Set the correct color in ComboBox
-            String colorName = ColorUtil.getColorName(player.getPlayerPiece().getFill());
-            colors.get(i).setValue(colorName.substring(0, 1).toUpperCase() + colorName.substring(1));
-          }
-
-          showAlert("Players loaded successfully");
-        } else {
-          showAlert("No players found in the file or file format is incorrect");
-        }
+      List<Player> loadedPlayers = FileHandler.loadPlayers(primaryStage);
+      if (loadedPlayers != null && !loadedPlayers.isEmpty()) {
+        populateFieldsWithPlayers(loadedPlayers);
+        showAlert("Players loaded successfully");
+      } else {
+        showAlert("No players loaded");
       }
     });
 
     primaryStage.setScene(scene);
     primaryStage.show();
+  }
+
+  private List<Player> collectPlayersFromFields() {
+    List<Player> collectedPlayers = new ArrayList<>();
+
+    for(int i = 0; i < nameFields.size(); i++) {
+      String name = nameFields.get(i).getText();
+      if(!name.isEmpty()) {
+        Color color = ColorUtil.getColorFromString(colorSelections.get(i).getValue());
+        collectedPlayers.add(new Player(name, color));
+      }
+    }
+
+    return collectedPlayers;
+  }
+
+
+  private void populateFieldsWithPlayers(List<Player> loadedPlayers) {
+    for (TextField field : nameFields) {
+      field.clear();
+    }
+
+    // Populate fields with loaded players
+    for (int i = 0; i < Math.min(loadedPlayers.size(), nameFields.size()); i++) {
+      Player player = loadedPlayers.get(i);
+      nameFields.get(i).setText(player.getName());
+
+      // Set the correct color in ComboBox
+      String colorName = ColorUtil.getColorName(player.getPlayerPiece().getFill());
+      colorSelections.get(i).setValue(colorName.substring(0, 1).toUpperCase() + colorName.substring(1));
+    }
   }
 
   private void showAlert(String message) {
