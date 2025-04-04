@@ -1,0 +1,447 @@
+{
+  "name": "Special Board",
+  "description": "Board with special tiles like frozen and random teleport",
+  "tiles": [
+    {
+      "id": 0,
+      "nextTile": 1
+    },
+    {
+      "id": 1,
+      "nextTile": 2
+    },
+    {
+      "id": 2,
+      "nextTile": 3,
+      "action": {
+        "type": "LadderUpAction",
+        "destinationTileId": 40,
+        "description": "Ladder from 2 to 40"
+      }
+    },
+    {
+      "id": 3,
+      "nextTile": 4
+    },
+    {
+      "id": 4,
+      "nextTile": 5
+    },
+    {
+      "id": 5,
+      "nextTile": 6
+    },
+    {
+      "id": 6,
+      "nextTile": 7
+    },
+    {
+      "id": 7,
+      "nextTile": 8
+    },
+    {
+      "id": 8,
+      "nextTile": 9,
+      "action": {
+        "type": "LadderUpAction",
+        "destinationTileId": 10,
+        "description": "Ladder from 8 to 10"
+      }
+    },
+    {
+      "id": 9,
+      "nextTile": 10
+    },
+    {
+      "id": 10,
+      "nextTile": 11
+    },
+    {
+      "id": 11,
+      "nextTile": 12
+    },
+    {
+      "id": 12,
+      "nextTile": 13
+    },
+    {
+      "id": 13,
+      "nextTile": 14
+    },
+    {
+      "id": 14,
+      "nextTile": 15
+    },
+    {
+      "id": 15,
+      "nextTile": 16
+    },
+    {
+      "id": 16,
+      "nextTile": 17
+    },
+    {
+      "id": 17,
+      "nextTile": 18
+    },
+    {
+      "id": 18,
+      "nextTile": 19
+    },
+    {
+      "id": 19,
+      "nextTile": 20
+    },
+    {
+      "id": 20,
+      "nextTile": 21
+    },
+    {
+      "id": 21,
+      "nextTile": 22
+    },
+    {
+      "id": 22,
+      "nextTile": 23
+    },
+    {
+      "id": 23,
+      "nextTile": 24
+    },
+    {
+      "id": 24,
+      "nextTile": 25,
+      "action": {
+        "type": "LadderDownAction",
+        "destinationTileId": 5,
+        "description": "Ladder from 24 to 5"
+      }
+    },
+    {
+      "id": 25,
+      "nextTile": 26
+    },
+    {
+      "id": 26,
+      "nextTile": 27
+    },
+    {
+      "id": 27,
+      "nextTile": 28
+    },
+    {
+      "id": 28,
+      "nextTile": 29
+    },
+    {
+      "id": 29,
+      "nextTile": 30
+    },
+    {
+      "id": 30,
+      "nextTile": 31
+    },
+    {
+      "id": 31,
+      "nextTile": 32
+    },
+    {
+      "id": 32,
+      "nextTile": 33
+    },
+    {
+      "id": 33,
+      "nextTile": 34,
+      "action": {
+        "type": "LadderDownAction",
+        "destinationTileId": 3,
+        "description": "Ladder from 33 to 3"
+      }
+    },
+    {
+      "id": 34,
+      "nextTile": 35,
+      "action": {
+        "type": "FrozenAction",
+        "description": "Player gets frozen on tile 34 for 1 turn"
+      }
+    },
+    {
+      "id": 35,
+      "nextTile": 36
+    },
+    {
+      "id": 36,
+      "nextTile": 37,
+      "action": {
+        "type": "LadderUpAction",
+        "destinationTileId": 52,
+        "description": "Ladder from 36 to 52"
+      }
+    },
+    {
+      "id": 37,
+      "nextTile": 38
+    },
+    {
+      "id": 38,
+      "nextTile": 39
+    },
+    {
+      "id": 39,
+      "nextTile": 40
+    },
+    {
+      "id": 40,
+      "nextTile": 41
+    },
+    {
+      "id": 41,
+      "nextTile": 42
+    },
+    {
+      "id": 42,
+      "nextTile": 43,
+      "action": {
+        "type": "LadderDownAction",
+        "destinationTileId": 30,
+        "description": "Ladder from 42 to 30"
+      }
+    },
+    {
+      "id": 43,
+      "nextTile": 44,
+      "action": {
+        "type": "LadderUpAction",
+        "destinationTileId": 62,
+        "description": "Ladder from 43 to 62"
+      }
+    },
+    {
+      "id": 44,
+      "nextTile": 45
+    },
+    {
+      "id": 45,
+      "nextTile": 46
+    },
+    {
+      "id": 46,
+      "nextTile": 47
+    },
+    {
+      "id": 47,
+      "nextTile": 48
+    },
+    {
+      "id": 48,
+      "nextTile": 49
+    },
+    {
+      "id": 49,
+      "nextTile": 50,
+      "action": {
+        "type": "LadderUpAction",
+        "destinationTileId": 79,
+        "description": "Ladder from 49 to 79"
+      }
+    },
+    {
+      "id": 50,
+      "nextTile": 51,
+      "action": {
+        "type": "RandomTeleportAction",
+        "description": "Player gets teleported to a random tile from 50"
+      }
+    },
+    {
+      "id": 51,
+      "nextTile": 52
+    },
+    {
+      "id": 52,
+      "nextTile": 53
+    },
+    {
+      "id": 53,
+      "nextTile": 54
+    },
+    {
+      "id": 54,
+      "nextTile": 55
+    },
+    {
+      "id": 55,
+      "nextTile": 56
+    },
+    {
+      "id": 56,
+      "nextTile": 57,
+      "action": {
+        "type": "LadderDownAction",
+        "destinationTileId": 37,
+        "description": "Ladder from 56 to 37"
+      }
+    },
+    {
+      "id": 57,
+      "nextTile": 58
+    },
+    {
+      "id": 58,
+      "nextTile": 59
+    },
+    {
+      "id": 59,
+      "nextTile": 60
+    },
+    {
+      "id": 60,
+      "nextTile": 61
+    },
+    {
+      "id": 61,
+      "nextTile": 62
+    },
+    {
+      "id": 62,
+      "nextTile": 63
+    },
+    {
+      "id": 63,
+      "nextTile": 64
+    },
+    {
+      "id": 64,
+      "nextTile": 65,
+      "action": {
+        "type": "LadderDownAction",
+        "destinationTileId": 27,
+        "description": "Ladder from 64 to 27"
+      }
+    },
+    {
+      "id": 65,
+      "nextTile": 66,
+      "action": {
+        "type": "LadderUpAction",
+        "destinationTileId": 82,
+        "description": "Ladder from 65 to 82"
+      }
+    },
+    {
+      "id": 66,
+      "nextTile": 67
+    },
+    {
+      "id": 67,
+      "nextTile": 68
+    },
+    {
+      "id": 68,
+      "nextTile": 69,
+      "action": {
+        "type": "LadderUpAction",
+        "destinationTileId": 85,
+        "description": "Ladder from 68 to 85"
+      }
+    },
+    {
+      "id": 69,
+      "nextTile": 70
+    },
+    {
+      "id": 70,
+      "nextTile": 71
+    },
+    {
+      "id": 71,
+      "nextTile": 72
+    },
+    {
+      "id": 72,
+      "nextTile": 73
+    },
+    {
+      "id": 73,
+      "nextTile": 74
+    },
+    {
+      "id": 74,
+      "nextTile": 75,
+      "action": {
+        "type": "LadderDownAction",
+        "destinationTileId": 12,
+        "description": "Ladder from 74 to 12"
+      }
+    },
+    {
+      "id": 75,
+      "nextTile": 76
+    },
+    {
+      "id": 76,
+      "nextTile": 77
+    },
+    {
+      "id": 77,
+      "nextTile": 78
+    },
+    {
+      "id": 78,
+      "nextTile": 79,
+      "action": {
+        "type": "FrozenAction",
+        "description": "Player gets frozen on tile 78 for 1 turn"
+      }
+    },
+    {
+      "id": 79,
+      "nextTile": 80
+    },
+    {
+      "id": 80,
+      "nextTile": 81
+    },
+    {
+      "id": 81,
+      "nextTile": 82
+    },
+    {
+      "id": 82,
+      "nextTile": 83
+    },
+    {
+      "id": 83,
+      "nextTile": 84
+    },
+    {
+      "id": 84,
+      "nextTile": 85
+    },
+    {
+      "id": 85,
+      "nextTile": 86
+    },
+    {
+      "id": 86,
+      "nextTile": 87
+    },
+    {
+      "id": 87,
+      "nextTile": 88,
+      "action": {
+        "type": "LadderDownAction",
+        "destinationTileId": 70,
+        "description": "Ladder from 87 to 70"
+      }
+    },
+    {
+      "id": 88,
+      "nextTile": 89
+    },
+    {
+      "id": 89
+    }
+  ]
+}

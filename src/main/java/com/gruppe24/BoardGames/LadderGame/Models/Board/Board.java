@@ -16,11 +16,13 @@ import java.util.HashMap;
 public class Board {
 
   //Attributes
-  protected final HashMap<Integer, Integer> ladderUp = new HashMap<>();
-  protected final HashMap<Integer, Integer> ladderDown = new HashMap<>();
+  protected HashMap<Integer, Integer> ladderUp = new HashMap<>();
+  protected HashMap<Integer, Integer> ladderDown = new HashMap<>();
   private static final int Columns = 9;
   private static final int Rows = 10;
   protected Tile[] tiles;
+  private String name;
+  private String description;
 
   /**
    * Constructor that initializes the ladders and snakes.
@@ -29,8 +31,21 @@ public class Board {
    * @date 06.02.2025
    * @Version 1.0
    */
-  public Board(){
+  public Board() {
+    this.ladderUp = new HashMap<>();
+    this.ladderDown = new HashMap<>();
+    this.name = "Classic LadderGame";
+    this.description = "A classic game of Ladders with 90 tiles.";
     initializeLaddersAndSnake();
+    initializeTiles();
+  }
+
+  public Board(HashMap<Integer, Integer> ladderUp, HashMap<Integer, Integer> ladderDown,
+      String name, String description) {
+    this.ladderUp = ladderUp;
+    this.ladderDown = ladderDown;
+    this.name = name;
+    this.description = description;
     initializeTiles();
   }
 
@@ -92,5 +107,15 @@ public class Board {
   }
   public HashMap<Integer,Integer> getLadderDown(){
     return ladderDown;
+  }
+
+
+  public String getName() {
+    return name;
+  }
+
+
+  public String getDescription() {
+    return description;
   }
 }

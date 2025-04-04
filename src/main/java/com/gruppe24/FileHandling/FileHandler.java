@@ -1,30 +1,132 @@
 package com.gruppe24.FileHandling;
 
-import java.io.IOException;
+import com.gruppe24.BoardGames.LadderGame.Models.Board.Board;
+import com.gruppe24.BoardGames.LadderGame.Models.Player;
+import java.io.File;
+import java.util.List;
 
-/**
- * Interface for saving and loading data to and from a file.
- * @param <T> The type of data to be saved and loaded.
- */
-public interface FileHandler<T> {
+public class FileHandler {
 
-
-  /**
-   * Saves data to a file.
-   *
-   * @param data The data to be saved.
-   * @param filePath The path to the file where the data should be saved.
-   * @throws IOException If an I/O error occurs.
-   */
-  void saveToFile(T data, String filePath) throws IOException;
+  private static final String BOARD_DIRECTORY = "src/main/resources/boards/";
+  private static final String PLAYER_DIRECTORY = "src/main/resources/players/";
 
 
-  /**
-   * Loads data from a file.
-   *
-   * @param filePath The path to the file where the data should be loaded from.
-   * @return The data loaded from the file.
-   * @throws IOException If an I/O error occurs.
-   */
-  T loadFromFile(String filePath) throws IOException;
+  public static boolean saveBoardToJson(Board board, String fileName) {
+    // Create directory if it doesn't exist
+    createDirectory(BOARD_DIRECTORY);
+
+    // Create file path
+    String filePath = BOARD_DIRECTORY + fileName + ".json";
+
+    // Save board to file
+    JSONBoardWriter writer = new JSONBoardWriter();
+    return writer.writeToFile(board, filePath);
+  }
+
+
+  public static Board loadBoardFromJson(String fileName) {
+    // Create file path
+    String filePath = BOARD_DIRECTORY + fileName + ".json";
+
+    // Check if file exists
+    File file = new File(filePath);
+    if (!file.exists()) {
+      System.err.println("Error: File does not exist: " + filePath);
+      return null;
+    }
+
+    // Load board from file
+    JSONBoardReader reader = new JSONBoardReader();
+    Object result = reader.readFromFile(filePath);
+
+    if (result instanceof Board) {
+      return (Board) result;
+    } else {
+      System.err.println("Error: File does not contain a valid board.");
+      return null;
+    }
+  }
+
+
+  public static boolean savePlayersToCSV(List<Player> players, String fileName) {
+    // Create directory if it doesn't exist
+    createDirectory(PLAYER_DIRECTORY);
+
+    // Create file path
+    String filePath = PLAYER_DIRECTORY + fileName + ".csv";
+
+    // Save players to file
+    CSVPlayerWriter writer = new CSVPlayerWriter();
+    return writer.writeToFile(players, filePath);
+  }
+
+
+  @SuppressWarnings("unchecked")
+  public static List<Player> loadPlayersFromCSV(String fileName) {
+    // Create file path
+    String filePath = PLAYER_DIRECTORY + fileName + ".csv";
+
+    // Check if file exists
+    File file = new File(filePath);
+    if (!file.exists()) {
+      System.err.println("Error: File does not exist: " + filePath);
+      return null;
+    }
+
+    // Load players from file
+    CSVPlayerReader reader = new CSVPlayerReader();
+    Object result = reader.readFromFile(filePath);
+
+    if (result instanceof List<?>) {
+      List<?> list = (List<?>) result;
+      if (list.isEmpty() || list.get(0) instanceof Player) {
+        return (List<Player>) list;
+      }
+    }
+
+    System.err.println("Error: File does not contain a valid list of players.");
+    return null;
+  }
+
+
+  public static String[] listBoardFiles() {
+    return listFiles(BOARD_DIRECTORY, ".json");
+  }
+
+
+  public static String[] listPlayerFiles() {
+    return listFiles(PLAYER_DIRECTORY, ".csv");
+  }
+
+
+  private static String[] listFiles(String directory, String extension) {
+    File dir = new File(directory);
+    if (!dir.exists() || !dir.isDirectory()) {
+      return new String[0];
+    }
+
+    File[] files = dir.listFiles((dir1, name) -> name.endsWith(extension));
+    if (files == null || files.length == 0) {
+      return new String[0];
+    }
+
+    String[] fileNames = new String[files.length];
+    for (int i = 0; i < files.length; i++) {
+      String name = files[i].getName();
+      fileNames[i] = name.substring(0, name.length() - extension.length());
+    }
+
+    return fileNames;
+  }
+
+
+  private static void createDirectory(String directory) {
+    File dir = new File(directory);
+    if (!dir.exists()) {
+      boolean created = dir.mkdirs();
+      if (!created) {
+        System.err.println("Error: Could not create directory: " + directory);
+      }
+    }
+  }
 }
