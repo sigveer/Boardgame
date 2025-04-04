@@ -27,7 +27,7 @@ public class CSVPlayerWriter implements com.gruppe24.FileHandling.FileWriter {
 
     try (FileWriter writer = new FileWriter(filePath)) {
       for (Player player : players) {
-        String colorName = getColorName(player.getPlayerPiece().getFill());
+        String colorName = FileHandler.getColorName(player.getPlayerPiece().getFill());
         writer.write(player.getName() + "," + colorName + "\n");
       }
       return true;
@@ -35,14 +35,5 @@ public class CSVPlayerWriter implements com.gruppe24.FileHandling.FileWriter {
       System.err.println("Error writing CSV file: " + e.getMessage());
       return false;
     }
-  }
-
-  private String getColorName(Paint paint) {
-    if (paint.equals(Color.RED)) return "red";
-    if (paint.equals(Color.BLUE)) return "blue";
-    if (paint.equals(Color.GREEN)) return "green";
-    if (paint.equals(Color.YELLOW)) return "yellow";
-    if (paint.equals(Color.PURPLE)) return "purple";
-    return "unknown";
   }
 }

@@ -20,7 +20,7 @@ public class CSVPlayerReader implements FileReader {
         String[] values = line.split(",");
         if (values.length >= 2) {
           String name = values[0];
-          Color color = Color.valueOf(getColorName(Paint.valueOf(values[1])));
+          Color color = Color.valueOf(FileHandler.getColorName(Paint.valueOf(values[1])));
           Player player = new Player(name, color);
 
           players.add(player);
@@ -33,14 +33,5 @@ public class CSVPlayerReader implements FileReader {
       System.err.println("Error reading CSV file: " + e.getMessage());
       return null;
     }
-  }
-
-  private String getColorName(Paint paint) {
-    if (paint.equals(Color.RED)) return "red";
-    if (paint.equals(Color.BLUE)) return "blue";
-    if (paint.equals(Color.GREEN)) return "green";
-    if (paint.equals(Color.YELLOW)) return "yellow";
-    if (paint.equals(Color.PURPLE)) return "purple";
-    return "unknown";
   }
 }

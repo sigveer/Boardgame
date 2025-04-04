@@ -4,6 +4,8 @@ import com.gruppe24.BoardGames.LadderGame.Models.Board.Board;
 import com.gruppe24.BoardGames.LadderGame.Models.Player;
 import java.io.File;
 import java.util.List;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 
 public class FileHandler {
 
@@ -128,5 +130,14 @@ public class FileHandler {
         System.err.println("Error: Could not create directory: " + directory);
       }
     }
+  }
+
+  public static String getColorName(Paint paint) {
+    if (paint.equals(Color.RED)) return "red";
+    if (paint.equals(Color.BLUE)) return "blue";
+    if (paint.equals(Color.GREEN)) return "green";
+    if (paint.equals(Color.YELLOW)) return "yellow";
+    if (paint.equals(Color.PURPLE)) return "purple";
+    return "unknown";
   }
 }
