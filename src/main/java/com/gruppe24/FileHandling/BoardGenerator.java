@@ -3,36 +3,12 @@ package com.gruppe24.FileHandling;
 import com.gruppe24.BoardGames.LadderGame.Models.Board.Board;
 import com.gruppe24.BoardGames.LadderGame.Models.Board.Tile.FrozenTile;
 import com.gruppe24.BoardGames.LadderGame.Models.Board.Tile.RandomTeleportTile;
-import com.gruppe24.BoardGames.LadderGame.Models.Player;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import javafx.scene.paint.Color;
 
 public class BoardGenerator {
   public static void main(String[] args) {
-    createPlayers();
     createClassicBoard();
     createSpecialBoard();
-  }
-
-  private static void createPlayers() {
-    List<Player> players = new ArrayList<>();
-
-    // Create default players with different colors
-    players.add(new Player("Player 1", Color.RED));
-    players.add(new Player("Player 2", Color.BLUE));
-    players.add(new Player("Player 3", Color.GREEN));
-    players.add(new Player("Player 4", Color.YELLOW));
-
-    // Save the players
-    boolean success = FileHandler.savePlayersToCSV(players, "players");
-
-    if (success) {
-      System.out.println("Default players saved to resources/players/players.csv");
-    } else {
-      System.out.println("Failed to save default players");
-    }
   }
 
   private static void createClassicBoard() {

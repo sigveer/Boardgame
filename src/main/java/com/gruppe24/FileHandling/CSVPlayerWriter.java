@@ -1,11 +1,10 @@
 package com.gruppe24.FileHandling;
 
 import com.gruppe24.BoardGames.LadderGame.Models.Player;
+import com.gruppe24.Utils.ColorUtil;
 import java.io.IOException;
 import java.io.FileWriter;
 import java.util.List;
-import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 
 public class CSVPlayerWriter implements com.gruppe24.FileHandling.FileWriter {
 
@@ -27,7 +26,7 @@ public class CSVPlayerWriter implements com.gruppe24.FileHandling.FileWriter {
 
     try (FileWriter writer = new FileWriter(filePath)) {
       for (Player player : players) {
-        String colorName = FileHandler.getColorName(player.getPlayerPiece().getFill());
+        String colorName = ColorUtil.getColorName(player.getPlayerPiece().getFill());
         writer.write(player.getName() + "," + colorName + "\n");
       }
       return true;
