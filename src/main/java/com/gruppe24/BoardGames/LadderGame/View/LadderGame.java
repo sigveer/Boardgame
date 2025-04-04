@@ -192,7 +192,7 @@ public class LadderGame extends Application {
     }
 
     //Upward Ladders
-    Image ladderUpImage = new Image("Ladder.png");
+    Image ladderUpImage = new Image("Pictures/Ladder.png");
 
     ImageView ladderUpView1 = new ImageView(ladderUpImage);
     ladderUpView1.setFitWidth(180);
@@ -246,7 +246,7 @@ public class LadderGame extends Application {
     ladderSnakePane.getChildren().addAll(ladderUpView1,ladderUpView2,ladderUpView3,ladderUpView4,ladderUpView5,ladderUpView6,ladderUpView7);
 
     //Downward Ladder
-    Image ladderDownImage = new Image("Ladder.png");
+    Image ladderDownImage = new Image("Pictures/Ladder.png");
 
     ImageView ladderDownView1 = new ImageView(ladderDownImage);
     ladderDownView1.setFitWidth(200);
@@ -558,7 +558,7 @@ public class LadderGame extends Application {
   }
 
   public String dicePath(int dice){
-    return "dice"+dice+".png";
+    return "Pictures/Dices/dice" + dice + ".png";
   }
 
 }

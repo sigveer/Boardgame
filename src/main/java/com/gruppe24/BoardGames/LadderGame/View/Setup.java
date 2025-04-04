@@ -4,7 +4,6 @@ import com.gruppe24.BoardGames.LadderGame.Models.Board.BoardType;
 import com.gruppe24.BoardGames.LadderGame.Models.Player;
 import com.gruppe24.FileHandling.CSVPlayerReader;
 import com.gruppe24.FileHandling.CSVPlayerWriter;
-import com.gruppe24.FileHandling.FileHandler;
 import com.gruppe24.Utils.ColorUtil;
 import com.gruppe24.Utils.StyleUtils;
 import com.gruppe24.Utils.Validators;
@@ -26,7 +25,7 @@ import javafx.stage.Stage;
 
 public class Setup extends Application {
 
-  private List<Player> players;
+  private final List<Player> players;
   private BoardType boardType = BoardType.CLASSIC;
   private List<TextField> nameFields;
   private List<ComboBox<String>> colorSelections;
@@ -133,6 +132,7 @@ public class Setup extends Application {
       new LadderGame(players, boardType).start(primaryStage);
     });
 
+
     Button savePlayersButton = new Button("Save Players");
     StyleUtils.styleNormalButton(savePlayersButton);
     gridPane.add(savePlayersButton, 7, 5);
@@ -142,7 +142,7 @@ public class Setup extends Application {
         showAlert("No players to save");
         return;
       }
-      boolean success = FileHandler.savePlayers(playersToSave, primaryStage);
+      boolean success = CSVPlayerWriter.savePlayers(playersToSave, primaryStage);
       if (success) {
         showAlert("Players saved successfully");
       } else {
@@ -150,11 +150,12 @@ public class Setup extends Application {
       }
     });
 
+
     Button loadPlayersButton = new Button("Load Players");
     StyleUtils.styleNormalButton(loadPlayersButton);
     gridPane.add(loadPlayersButton, 7, 6);
     loadPlayersButton.setOnAction(event -> {
-      List<Player> loadedPlayers = FileHandler.loadPlayers(primaryStage);
+      List<Player> loadedPlayers = CSVPlayerReader.loadPlayers(primaryStage);
       if (loadedPlayers != null && !loadedPlayers.isEmpty()) {
         populateFieldsWithPlayers(loadedPlayers);
         showAlert("Players loaded successfully");
@@ -166,6 +167,7 @@ public class Setup extends Application {
     primaryStage.setScene(scene);
     primaryStage.show();
   }
+
 
   private List<Player> collectPlayersFromFields() {
     List<Player> collectedPlayers = new ArrayList<>();

@@ -2,9 +2,12 @@ package com.gruppe24.FileHandling;
 
 import com.gruppe24.BoardGames.LadderGame.Models.Player;
 import com.gruppe24.Utils.ColorUtil;
+import java.io.File;
 import java.io.IOException;
 import java.io.FileWriter;
 import java.util.List;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 
 public class CSVPlayerWriter implements com.gruppe24.FileHandling.FileWriter {
 
@@ -34,5 +37,26 @@ public class CSVPlayerWriter implements com.gruppe24.FileHandling.FileWriter {
       System.err.println("Error writing CSV file: " + e.getMessage());
       return false;
     }
+  }
+
+
+  public static boolean savePlayers(List<Player> players, Stage stage) {
+    if (players == null || players.isEmpty() || stage == null) {
+      return false;
+    }
+
+    FileChooser fileChooser = FileHandler.createFileChooser("Save Players", true);
+    File file = fileChooser.showSaveDialog(stage);
+
+    if (file != null) {
+      String filePath = file.getAbsolutePath();
+      if (!filePath.toLowerCase().endsWith(".csv")) {
+        filePath += ".csv";
+      }
+
+      CSVPlayerWriter writer = new CSVPlayerWriter();
+      return writer.writeToFile(players, filePath);
+    }
+    return false;
   }
 }

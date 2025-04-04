@@ -40,17 +40,14 @@ public class JSONBoardWriter implements FileWriter {
     boardJson.addProperty("description", board.getDescription());
 
     JsonArray tilesJsonArray = new JsonArray();
-    // Create tiles based on board size (assuming 90 tiles)
     for (int i = 0; i < 90; i++) {
       JsonObject tileJson = new JsonObject();
       tileJson.addProperty("id", i);
 
-      // Add nextTile for all tiles except the last one
       if (i < 89) {
         tileJson.addProperty("nextTile", i + 1);
       }
 
-      // Add actions for different tile types
       Tile tile = board.getTile(i);
       if (tile instanceof LadderUpTile) {
         LadderUpTile ladderUpTile = (LadderUpTile) tile;

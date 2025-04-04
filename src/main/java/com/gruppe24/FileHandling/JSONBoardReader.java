@@ -6,8 +6,6 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
 import com.gruppe24.BoardGames.LadderGame.Models.Board.Board;
-import com.gruppe24.BoardGames.LadderGame.Models.Board.BoardFactory;
-import com.gruppe24.BoardGames.LadderGame.Models.Board.BoardType;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -15,13 +13,12 @@ import java.util.HashMap;
 
 public class JSONBoardReader implements com.gruppe24.FileHandling.FileReader {
 
+
   @Override
   public Object readFromFile(String filePath) {
     try (FileReader reader = new FileReader(filePath)) {
-      // Parse the JSON file
       JsonObject boardJson = JsonParser.parseReader(reader).getAsJsonObject();
 
-      // Get the board name and description
       if (!boardJson.has("name") || !boardJson.has("description")) {
         System.err.println("Error: Missing required fields (name or description)");
         return null;
@@ -30,22 +27,18 @@ public class JSONBoardReader implements com.gruppe24.FileHandling.FileReader {
       String name = boardJson.get("name").getAsString();
       String description = boardJson.get("description").getAsString();
 
-      // Create hashmaps for different tile types
       HashMap<Integer, Integer> ladderUp = new HashMap<>();
       HashMap<Integer, Integer> ladderDown = new HashMap<>();
       HashMap<Integer, Boolean> frozenTiles = new HashMap<>();
       HashMap<Integer, Boolean> randomTeleportTiles = new HashMap<>();
 
-      // Check if tiles array exists
       if (!boardJson.has("tiles")) {
         System.err.println("Error: Missing tiles array");
         return null;
       }
 
-      // Get the tiles array
       JsonArray tilesJsonArray = boardJson.getAsJsonArray("tiles");
 
-      // Process each tile
       for (JsonElement tileElement : tilesJsonArray) {
         JsonObject tileJson = tileElement.getAsJsonObject();
 
@@ -56,7 +49,6 @@ public class JSONBoardReader implements com.gruppe24.FileHandling.FileReader {
 
         int tileId = tileJson.get("id").getAsInt();
 
-        // Check if tile has an action
         if (tileJson.has("action")) {
           JsonObject actionJson = tileJson.getAsJsonObject("action");
 
@@ -92,14 +84,7 @@ public class JSONBoardReader implements com.gruppe24.FileHandling.FileReader {
         }
       }
 
-      // Determine if this is a special board based on presence of special tiles
-      BoardType boardType = (!frozenTiles.isEmpty() || !randomTeleportTiles.isEmpty())
-          ? BoardType.SPECIAL : BoardType.CLASSIC;
-
-      Board board = BoardFactory.createBoard(boardType);
-
-      // Apply the custom configuration
-      return new Board(ladderUp, ladderDown, name, description);
+      return new Board(ladderUp, ladderDown, frozenTiles, randomTeleportTiles, name, description);
 
     } catch (FileNotFoundException e) {
       System.err.println("Error: File not found: " + e.getMessage());
