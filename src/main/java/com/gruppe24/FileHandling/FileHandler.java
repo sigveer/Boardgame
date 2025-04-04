@@ -10,7 +10,7 @@ public class FileHandler {
 
 
   public static boolean saveBoardToJson(Board board, String fileName) {
-    createDirectory(BOARD_DIRECTORY);
+    createDirectory();
 
     String filePath = BOARD_DIRECTORY + fileName + ".json";
     JSONBoardWriter writer = new JSONBoardWriter();
@@ -34,8 +34,8 @@ public class FileHandler {
   }
 
 
-  private static void createDirectory(String directoryPath) {
-    File directory = new File(directoryPath);
+  private static void createDirectory() {
+    File directory = new File(FileHandler.BOARD_DIRECTORY);
     if (!directory.exists()) {
       directory.mkdirs();
     }
