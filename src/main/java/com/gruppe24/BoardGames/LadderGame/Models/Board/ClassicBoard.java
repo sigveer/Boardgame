@@ -6,12 +6,7 @@ package com.gruppe24.BoardGames.LadderGame.Models.Board;
 class ClassicBoard extends Board {
 
   public ClassicBoard() {
-    super();
-  }
-
-  @Override
-  public void initializeLadders() {
-
-    super.initializeLadders();
+    initializeLadders();
+    initializeTiles();
   }
 }
