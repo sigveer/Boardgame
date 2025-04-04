@@ -13,12 +13,11 @@ public class CSVPlayerWriter implements com.gruppe24.FileHandling.FileWriter {
 
   @Override
   public boolean writeToFile(Object object, String filePath) {
-    if (!(object instanceof List<?>)) {
+    if (!(object instanceof List<?> list)) {
       System.err.println("Error: Object is not a List");
       return false;
     }
 
-    List<?> list = (List<?>) object;
     if (list.isEmpty() || !(list.getFirst() instanceof Player)) {
       System.err.println("Error: List does not contain Player objects");
       return false;

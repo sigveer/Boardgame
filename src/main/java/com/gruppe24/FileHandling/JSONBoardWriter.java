@@ -16,12 +16,11 @@ public class JSONBoardWriter implements FileWriter {
 
   @Override
   public boolean writeToFile(Object object, String filePath) {
-    if (!(object instanceof Board)) {
+    if (!(object instanceof Board board)) {
       System.err.println("Error: Object is not a Board");
       return false;
     }
 
-    Board board = (Board) object;
     JsonObject boardJson = serializeBoard(board);
 
     try (java.io.FileWriter writer = new java.io.FileWriter(filePath)) {
@@ -49,16 +48,14 @@ public class JSONBoardWriter implements FileWriter {
       }
 
       Tile tile = board.getTile(i);
-      if (tile instanceof LadderUpTile) {
-        LadderUpTile ladderUpTile = (LadderUpTile) tile;
+      if (tile instanceof LadderUpTile ladderUpTile) {
         JsonObject actionJson = new JsonObject();
         actionJson.addProperty("type", "LadderUpAction");
         actionJson.addProperty("destinationTileId", ladderUpTile.getDestination());
         actionJson.addProperty("description", "Ladder from " + i + " to " + ladderUpTile.getDestination());
         tileJson.add("action", actionJson);
       }
-      else if (tile instanceof LadderDownTile) {
-        LadderDownTile ladderDownTile = (LadderDownTile) tile;
+      else if (tile instanceof LadderDownTile ladderDownTile) {
         JsonObject actionJson = new JsonObject();
         actionJson.addProperty("type", "LadderDownAction");
         actionJson.addProperty("destinationTileId", ladderDownTile.getDestination());
