@@ -52,7 +52,7 @@ public class BoardGenerator {
     if (success) {
       System.out.println("Board saved to resources/boards/" + filename + ".json");
     } else {
-      System.out.println("Failed to save " + filename);
+      System.out.println("Failed to save " + filename + ".json");
     }
   }
 }
