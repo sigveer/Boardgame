@@ -2,8 +2,8 @@ package com.gruppe24.boardgames.laddergame.view;
 
 import static com.gruppe24.utils.StyleUtils.styleNormalButton;
 
+import com.gruppe24.boardgames.MenuGui;
 import com.gruppe24.boardgames.laddergame.models.board.BoardType;
-import com.gruppe24.boardgames.MenuGUI;
 import com.gruppe24.utils.Validators;
 import java.util.logging.Level;
 import javafx.application.Application;
@@ -15,14 +15,18 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
-public class LadderGameMenuGUI extends Application {
+/**
+ * This class represents the GUI for the Ladder Game menu.
+ * It allows the user to choose between different game modes.
+ */
+public class LadderGameMenuGui extends Application {
 
   @Override
   public void start(Stage primaryStage) {
-    if(primaryStage == null){
+    if (primaryStage == null) {
       throw new IllegalArgumentException("Parameter Stage cannot be empty");
     }
-    Validators.getLogger().log(Level.INFO,"Ladder Menu started");
+    Validators.getLogger().log(Level.INFO, "Ladder Menu started");
 
     primaryStage.setTitle("Ladder Game");
 
@@ -60,7 +64,7 @@ public class LadderGameMenuGUI extends Application {
     styleNormalButton(textModeButton);
 
     Button backToMenu = new Button("Back to Menu");
-    backToMenu.setOnAction(event -> new MenuGUI().start(primaryStage));
+    backToMenu.setOnAction(event -> new MenuGui().start(primaryStage));
     styleNormalButton(backToMenu);
 
     gridPane.add(title, 0, 0);

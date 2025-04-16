@@ -8,13 +8,11 @@ import javafx.scene.paint.Color;
  * Class containing utility methods for validating user input.
  */
 public class Validators {
+
   private static Scanner scanner;
 
   /**
-   * Edited by: Sigveer
-   * Version: 1.0
-   * Date: 31.01.2025
-   * Method for getting the scanner object
+   * Method for getting the scanner object.
    *
    * @return the scanner object
    */
@@ -26,19 +24,16 @@ public class Validators {
   }
 
   /**
-   * Scanner for string
+   * Scanner for string.
    *
    * @return string
    */
-  public static String scannerString(){
+  public static String scannerString() {
     return scanner.nextLine();
   }
 
   /**
-   * Edited by: Sigveer
-   * Version: 1.0
-   * Date: 31.01.2025
-   * Method for ensuring that value is an int
+   * Method for ensuring that value is an int.
    *
    * @param prompt display the message to user for what to input
    * @return the entered int value
@@ -58,8 +53,13 @@ public class Validators {
     return value;
   }
 
-  public static Color colorChoice(String prompt){
-    while(true){
+  /**
+   * Method for choosing a color.
+   *
+   * @param prompt the color choice
+   */
+  public static Color colorChoice(String prompt) {
+    while (true) {
       switch (prompt) {
         case "R" -> {
           return Color.RED;
@@ -75,10 +75,14 @@ public class Validators {
     }
   }
 
-  public static Logger getLogger(){
+  /**
+   * Logger method for logging messages.
+   *
+   * @return the logger object
+   */
+  public static Logger getLogger() {
     return Logger.getLogger(Validators.class.getName());
   }
-
 }
 
 

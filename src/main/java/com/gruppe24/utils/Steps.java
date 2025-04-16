@@ -3,15 +3,11 @@ package com.gruppe24.utils;
 import java.util.Scanner;
 
 /**
- * Class containing utility methods for steps in the game.
+ * Class containing utility methods for steps in the text based game.
  */
 public class Steps {
 
   /**
-   * @Author Sigveer
-   * Version: 1.0
-   * Date: 06.02.2025
-   *
    * Method for pausing the game and waiting for the user to press Enter.
    */
   public static void pressEnterToContinue() {

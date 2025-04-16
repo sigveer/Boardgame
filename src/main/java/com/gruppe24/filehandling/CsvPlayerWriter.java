@@ -3,13 +3,18 @@ package com.gruppe24.filehandling;
 import com.gruppe24.boardgames.laddergame.models.Player;
 import com.gruppe24.utils.ColorUtil;
 import java.io.File;
-import java.io.IOException;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.util.List;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
-public class CSVPlayerWriter implements com.gruppe24.filehandling.FileWriter {
+/**
+ * CSVPlayerWriter is a utility class for writing player data to a CSV file.
+ * It implements the FileWriter interface and provides functionality to save
+ * player information in a specific format.
+ */
+public class CsvPlayerWriter implements com.gruppe24.filehandling.FileWriter {
 
   @Override
   public boolean writeToFile(Object object, String filePath) {
@@ -38,7 +43,13 @@ public class CSVPlayerWriter implements com.gruppe24.filehandling.FileWriter {
     }
   }
 
-
+  /**
+   * Saves a list of players to a CSV file.
+   *
+   * @param players the list of players to save
+   * @param stage the stage for the file chooser dialog
+   * @return true if the file was saved successfully, false otherwise
+   */
   public static boolean savePlayers(List<Player> players, Stage stage) {
     if (players == null || players.isEmpty() || stage == null) {
       return false;
@@ -53,7 +64,7 @@ public class CSVPlayerWriter implements com.gruppe24.filehandling.FileWriter {
         filePath += ".csv";
       }
 
-      CSVPlayerWriter writer = new CSVPlayerWriter();
+      CsvPlayerWriter writer = new CsvPlayerWriter();
       return writer.writeToFile(players, filePath);
     }
     return false;

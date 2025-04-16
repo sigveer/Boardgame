@@ -1,9 +1,9 @@
-package com.gruppe24.boardgames.laddergame.models.Tile;
+package com.gruppe24.boardgames.laddergame.models.tiles;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import com.gruppe24.boardgames.laddergame.models.board.tile.LadderUpTile;
 import com.gruppe24.boardgames.laddergame.models.Player;
+import com.gruppe24.boardgames.laddergame.models.board.tiles.LadderUpTile;
 import javafx.scene.paint.Color;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

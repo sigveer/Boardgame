@@ -1,11 +1,11 @@
 package com.gruppe24.boardgames.laddergame.models.board;
 
-import com.gruppe24.boardgames.laddergame.models.board.tile.FrozenTile;
-import com.gruppe24.boardgames.laddergame.models.board.tile.LadderDownTile;
-import com.gruppe24.boardgames.laddergame.models.board.tile.LadderUpTile;
-import com.gruppe24.boardgames.laddergame.models.board.tile.NormalTile;
-import com.gruppe24.boardgames.laddergame.models.board.tile.RandomTeleportTile;
-import com.gruppe24.boardgames.laddergame.models.board.tile.Tile;
+import com.gruppe24.boardgames.laddergame.models.board.tiles.FrozenTile;
+import com.gruppe24.boardgames.laddergame.models.board.tiles.LadderDownTile;
+import com.gruppe24.boardgames.laddergame.models.board.tiles.LadderUpTile;
+import com.gruppe24.boardgames.laddergame.models.board.tiles.NormalTile;
+import com.gruppe24.boardgames.laddergame.models.board.tiles.RandomTeleportTile;
+import com.gruppe24.boardgames.laddergame.models.board.tiles.Tile;
 import java.util.HashMap;
 
 /**

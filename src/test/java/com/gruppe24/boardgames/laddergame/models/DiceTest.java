@@ -5,14 +5,12 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-
 /**
  * {@code DieTest} is a test class for the {@code Die} class.
  */
 class DiceTest {
 
   private Dice dice;
-
 
   /**
    * Sets up the test fixture by creating a new die before each test.
@@ -21,7 +19,6 @@ class DiceTest {
   void setUp() {
     dice = new Dice(3);
   }
-
 
   /**
    * Tests the {@code roll} method in the {@code Die} class.
@@ -34,7 +31,6 @@ class DiceTest {
       System.out.println("Rolled: " + value);
     }
   }
-
 
   /**
    * Tests the {@code getDie} method in the {@code Die} class.
@@ -57,22 +53,20 @@ class DiceTest {
     System.out.println("Dice3: " + value3 + " which is between 1 and 6");
   }
 
-
   /**
    * Checks if the number of dice is invalid.
    */
   @Test
-  void InvalidNumberOfDice() {
+  void invalidNumberOfDice() {
     assertThrows(IllegalArgumentException.class, () -> new Dice(0));
     System.out.println("Invalid number of dice");
   }
-
 
   /**
    * Checks if the die number is invalid.
    */
   @Test
-  void InvalidDieNumber() {
+  void invalidDieNumber() {
     dice.rollSum();
     assertThrows(IllegalArgumentException.class, () -> dice.getDie(3));
     System.out.println("Invalid die number");

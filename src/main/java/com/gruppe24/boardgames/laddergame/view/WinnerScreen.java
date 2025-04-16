@@ -14,12 +14,23 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
+/**
+ * This class represents the winner screen of the game.
+ * It displays the name of the winning player and provides an exit button to return to
+ * the main menu.
+ */
 public class WinnerScreen extends Application {
 
-  private Player player;
+  private final Player player;
 
-  public WinnerScreen(Player player){
-    if(player == null){
+  /**
+   * Constructor for the WinnerScreen class.
+   *
+   * @param player The player who won the game.
+   * @throws IllegalArgumentException if the player is null.
+   */
+  public WinnerScreen(Player player) {
+    if (player == null) {
       throw new IllegalArgumentException("Parameter player cannot be empty");
     }
     this.player = player;
@@ -27,7 +38,7 @@ public class WinnerScreen extends Application {
 
   @Override
   public void start(Stage primaryStage) {
-    if(primaryStage == null){
+    if (primaryStage == null) {
       throw new IllegalArgumentException("Parameter Stage cannot be empty");
     }
     Validators.getLogger().log(Level.INFO, "Winner screen displayed");
@@ -37,21 +48,21 @@ public class WinnerScreen extends Application {
     primaryStage.setY(100);
 
     GridPane gridPane = new GridPane();
-    Scene scene = new Scene(gridPane,1000,700);
+    Scene scene = new Scene(gridPane, 1000, 700);
     gridPane.setAlignment(Pos.CENTER);
     gridPane.setVgap(25);
     gridPane.setHgap(20);
     gridPane.setStyle("-fx-background-color: #607ee4;");
 
     Label winnerLabel = new Label("WINNER: " + player.getName());
-    winnerLabel.setFont(new Font("Arial",40));
+    winnerLabel.setFont(new Font("Arial", 40));
     winnerLabel.setTextFill(Color.WHITE);
-    gridPane.add(winnerLabel,1,1);
+    gridPane.add(winnerLabel, 1, 1);
 
     Button exitButton = new Button("Exit");
     StyleUtils.styleNormalButton(exitButton);
-    exitButton.setOnAction(event -> new LadderGameMenuGUI().start(primaryStage));
-    gridPane.add(exitButton,1,2);
+    exitButton.setOnAction(event -> new LadderGameMenuGui().start(primaryStage));
+    gridPane.add(exitButton, 1, 2);
 
     primaryStage.setScene(scene);
     primaryStage.show();

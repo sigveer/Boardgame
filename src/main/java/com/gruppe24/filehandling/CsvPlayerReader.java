@@ -11,7 +11,11 @@ import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
-public class CSVPlayerReader implements com.gruppe24.filehandling.FileReader {
+/**
+ * CSVPlayerReader is a class that implements the FileReader interface to read player data from a
+ * CSV file. The CSV file should contain player names and their corresponding colors.
+ */
+public class CsvPlayerReader implements com.gruppe24.filehandling.FileReader {
 
   @Override
   public Object readFromFile(String filePath) {
@@ -35,7 +39,12 @@ public class CSVPlayerReader implements com.gruppe24.filehandling.FileReader {
     }
   }
 
-
+  /**
+   * Loads players from a CSV file using a file chooser dialog.
+   *
+   * @param stage the stage to use for the file chooser dialog
+   * @return a list of players loaded from the CSV file, or null if no file was selected
+   */
   public static List<Player> loadPlayers(Stage stage) {
     if (stage == null) {
       return null;
@@ -45,7 +54,7 @@ public class CSVPlayerReader implements com.gruppe24.filehandling.FileReader {
     File file = fileChooser.showOpenDialog(stage);
 
     if (file != null) {
-      CSVPlayerReader reader = new CSVPlayerReader();
+      CsvPlayerReader reader = new CsvPlayerReader();
       Object result = reader.readFromFile(file.getAbsolutePath());
 
       if (result instanceof List<?>) {

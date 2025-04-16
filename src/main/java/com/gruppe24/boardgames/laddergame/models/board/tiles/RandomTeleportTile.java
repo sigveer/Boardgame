@@ -1,4 +1,4 @@
-package com.gruppe24.boardgames.laddergame.models.board.tile;
+package com.gruppe24.boardgames.laddergame.models.board.tiles;
 
 import com.gruppe24.boardgames.laddergame.models.Player;
 import java.util.Random;

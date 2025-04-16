@@ -1,14 +1,14 @@
 package com.gruppe24.boardgames.laddergame.view;
 
 import com.gruppe24.boardgames.laddergame.controller.GameController;
-import com.gruppe24.boardgames.laddergame.models.board.Board;
-import com.gruppe24.boardgames.laddergame.models.board.BoardType;
-import com.gruppe24.boardgames.laddergame.models.board.tile.FrozenTile;
-import com.gruppe24.boardgames.laddergame.models.board.tile.RandomTeleportTile;
 import com.gruppe24.boardgames.laddergame.models.Dice;
 import com.gruppe24.boardgames.laddergame.models.Player;
-import com.gruppe24.boardgames.laddergame.models.board.tile.LadderUpTile;
-import com.gruppe24.boardgames.laddergame.models.board.tile.LadderDownTile;
+import com.gruppe24.boardgames.laddergame.models.board.Board;
+import com.gruppe24.boardgames.laddergame.models.board.BoardType;
+import com.gruppe24.boardgames.laddergame.models.board.tiles.FrozenTile;
+import com.gruppe24.boardgames.laddergame.models.board.tiles.LadderDownTile;
+import com.gruppe24.boardgames.laddergame.models.board.tiles.LadderUpTile;
+import com.gruppe24.boardgames.laddergame.models.board.tiles.RandomTeleportTile;
 import com.gruppe24.utils.StyleUtils;
 import com.gruppe24.utils.Validators;
 import java.util.ArrayList;
@@ -16,44 +16,58 @@ import java.util.List;
 import java.util.logging.Level;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.scene.control.Button;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.paint.Color;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+/**
+ * Class that represents the LadderGame.
+ */
 public class LadderGame extends Application {
 
   private final Board board;
   private final GameController gameController;
-  private List<Player> players;
+  private final List<Player> players;
   private static final int tileSize = 75;
   private int currentPlayerIndex = 0;
   private Label diceResultLabel;
   private Label currentPlayerLabel;
-  private Label snakeOrLadderCheck;
+  private Label ladderUpOrDownCheck;
   private Label isFrozenLabel;
   private final Dice dice = new Dice(2);
 
+  /**
+   * Constructor for LadderGame.
+   *
+   * @param players list of players
+   */
   public LadderGame(List<Player> players) {
     this(players, BoardType.CLASSIC);
   }
 
+  /**
+   * Constructor for LadderGame.
+   *
+   * @param players list of players
+   * @param boardType type of board
+   */
   public LadderGame(List<Player> players, BoardType boardType) {
-    if(players == null || players.isEmpty()){
+    if (players == null || players.isEmpty()) {
       throw new IllegalArgumentException("Parameter list of players cannot be empty");
     }
-    if(boardType == null){
+    if (boardType == null) {
       throw new IllegalArgumentException("Parameter boardType cannot be empty");
     }
     this.gameController = new GameController(boardType);
@@ -63,7 +77,7 @@ public class LadderGame extends Application {
 
   @Override
   public void start(Stage primaryStage) {
-    if(primaryStage == null){
+    if (primaryStage == null) {
       throw new IllegalArgumentException("Parameter Stage cannot be empty");
     }
     Validators.getLogger().log(Level.INFO, "LadderGame started");
@@ -77,21 +91,21 @@ public class LadderGame extends Application {
     gridPane.setHgap(1);
     gridPane.setStyle("-fx-background-color: #607ee4;");
 
-    //Pane for laddersAndSnakes and dices
-    Pane ladderSnakeP = new Pane();
-    ladderSnakeP.setMouseTransparent(true);
-    Pane diceP = new Pane();
-    diceP.setMouseTransparent(true);
+    //Pane for ladders and dices
+    Pane ladderPane = new Pane();
+    ladderPane.setMouseTransparent(true);
+    Pane dicePane = new Pane();
+    dicePane.setMouseTransparent(true);
 
     //Scene
-    Scene scene = new Scene(new StackPane(gridPane,ladderSnakeP, diceP), 1000, 850); //AI-suggestion
+    Scene scene = new Scene(new StackPane(gridPane, ladderPane, dicePane), 1000, 850); //AI-suggestion
 
     //Title Label
     Label title = new Label("Board Games!");
     title.setStyle("-fx-font-size: 40px; -fx-text-fill: #ffffff; -fx-font-weight: bold;");
 
     //Draw Board
-    drawBoard(gridPane, ladderSnakeP); //drawing the board
+    drawBoard(gridPane, ladderPane); //drawing the board
 
     //Labels
     currentPlayerLabel = new Label("Current Player: " + players.get(currentPlayerIndex).getName());
@@ -100,19 +114,19 @@ public class LadderGame extends Application {
     diceResultLabel = new Label("Roll the dice!");
     diceResultLabel.setStyle("-fx-font-size: 16px; -fx-text-fill: white;");
 
-    snakeOrLadderCheck = new Label("");
-    snakeOrLadderCheck.setStyle("-fx-font-size: 16px; -fx-text-fill: white;");
+    ladderUpOrDownCheck = new Label("");
+    ladderUpOrDownCheck.setStyle("-fx-font-size: 16px; -fx-text-fill: white;");
 
     isFrozenLabel = new Label("");
     isFrozenLabel.setStyle("-fx-font-size: 16px; -fx-text-fill: white;");
 
     //Buttons
     Button diceRoll = new Button("Roll Dice");
-    diceRoll.setOnAction(event -> rollDiceAndMove(gridPane, primaryStage, diceP));
+    diceRoll.setOnAction(event -> rollDiceAndMove(gridPane, primaryStage, dicePane));
     StyleUtils.styleNormalButton(diceRoll);
 
     Button backToMenu = new Button("Back to Menu");
-    backToMenu.setOnAction(event -> {new LadderGameMenuGUI().start(primaryStage);});
+    backToMenu.setOnAction(event -> new LadderGameMenuGui().start(primaryStage));
     StyleUtils.styleNormalButton(backToMenu);
 
     //Vertical Box for control panel
@@ -125,10 +139,10 @@ public class LadderGame extends Application {
     currentPlayerLabel.setMaxWidth(190);
 
     diceResultLabel.setMaxWidth(190);
-    snakeOrLadderCheck.setMaxWidth(190);
+    ladderUpOrDownCheck.setMaxWidth(190);
     isFrozenLabel.setMaxWidth(190);
 
-    controlPanel.getChildren().addAll(currentPlayerLabel, diceResultLabel, snakeOrLadderCheck,
+    controlPanel.getChildren().addAll(currentPlayerLabel, diceResultLabel, ladderUpOrDownCheck,
         isFrozenLabel, diceRoll, backToMenu);
 
     gridPane.add(controlPanel, 11, 0, 1, 5);
@@ -139,11 +153,12 @@ public class LadderGame extends Application {
   }
 
   /**
-   * Draws the board, hardcoded with snakes and ladders
-   * @param gridPane
-   * @param ladderSnakePane
+   * Draws the board with tiles and ladders.
+   *
+   * @param gridPane the grid pane to draw on
+   * @param ladderPane the pane for ladders
    */
-  public void drawBoard(GridPane gridPane, Pane ladderSnakePane) {
+  public void drawBoard(GridPane gridPane, Pane ladderPane) {
     for (int row = 9; row >= 0; row--) {
       for (int col = 0; col < 9; col++) {
         int tileNumber = (9 - row) % 2 == 0 ? (9 - row) * 9 + col + 1 : (9 - row + 1) * 9 - col;
@@ -155,9 +170,9 @@ public class LadderGame extends Application {
 
         if (tileNumber == 90) {
           tile.setFill(Color.YELLOW);
-        } else if(board.getTile(tileNumber) instanceof RandomTeleportTile) {
+        } else if (board.getTile(tileNumber) instanceof RandomTeleportTile) {
           tile.setFill(Color.PURPLE);
-        } else if(board.getTile(tileNumber) instanceof FrozenTile){
+        } else if (board.getTile(tileNumber) instanceof FrozenTile) {
           tile.setFill(Color.LIGHTBLUE);
         } else if (board.getTile(tileNumber) instanceof LadderUpTile) {
           tile.setFill(Color.GREEN);
@@ -168,13 +183,13 @@ public class LadderGame extends Application {
         }
 
         //Landing-tile upon special tiles
-        for(Integer value : board.getLadderUp().values()){
-          if(tileNumber == value){
+        for (Integer value : board.getLadderUp().values()) {
+          if (tileNumber == value) {
             tile.setFill(Color.LIGHTGREEN);
           }
         }
-        for(Integer value : board.getLadderDown().values()){
-          if(tileNumber == value){
+        for (Integer value : board.getLadderDown().values()) {
+          if (tileNumber == value) {
             tile.setFill(Color.LIGHTPINK);
           }
         }
@@ -243,7 +258,8 @@ public class LadderGame extends Application {
     ladderUpView7.setY(80);
     ladderUpView7.setRotate(15);
 
-    ladderSnakePane.getChildren().addAll(ladderUpView1,ladderUpView2,ladderUpView3,ladderUpView4,ladderUpView5,ladderUpView6,ladderUpView7);
+    ladderPane.getChildren().addAll(ladderUpView1, ladderUpView2, ladderUpView3, ladderUpView4,
+        ladderUpView5, ladderUpView6, ladderUpView7);
 
     //Downward Ladder
     Image ladderDownImage = new Image("Pictures/Ladder.png");
@@ -299,20 +315,18 @@ public class LadderGame extends Application {
     ladderDownView7.setScaleX(-1); //inverts picture
 
 
-    ladderSnakePane.getChildren().addAll(ladderDownView1,ladderDownView2, ladderDownView3, ladderDownView4, ladderDownView5, ladderDownView6, ladderDownView7);
-
-
+    ladderPane.getChildren().addAll(ladderDownView1, ladderDownView2, ladderDownView3,
+        ladderDownView4, ladderDownView5, ladderDownView6, ladderDownView7);
   }
 
-
   /**
-   * These next two methods; {@link #rollDiceAndMove(GridPane, Stage, Pane)},
-   * {@link #animateAndMove(GridPane, Player, int, int)}, are intervoven and works to a high degree
-   * together. animateAndMove method is heavely assisted by AI - ChatGPT-free and Grok 3.
-   * <p>1/2 method</p>
-   * @param gridPane
+   * Rolls the dice and moves the current player.
+   *
+   * @param gridPane the grid pane to draw on
+   * @param primaryStage the primary stage
+   * @param dicePane the pane for dices
    */
-  private void rollDiceAndMove(GridPane gridPane, Stage primaryStage, Pane diceP) {
+  private void rollDiceAndMove(GridPane gridPane, Stage primaryStage, Pane dicePane) {
     Player currentPlayer = players.get(currentPlayerIndex);
 
     if (currentPlayer.isFrozen()) {
@@ -334,23 +348,23 @@ public class LadderGame extends Application {
 
     String dice1Path = dicePath(diceValue1);
     Image dice1 = new Image(dice1Path);
-    ImageView dice1IV = new ImageView(dice1);
-    dice1IV.setX(1030);
-    dice1IV.setY(450);
-    dice1IV.setFitHeight(75);
-    dice1IV.setFitWidth(75);
+    ImageView dice1Iv = new ImageView(dice1);
+    dice1Iv.setX(1030);
+    dice1Iv.setY(450);
+    dice1Iv.setFitHeight(75);
+    dice1Iv.setFitWidth(75);
 
     String dice2Path = dicePath(diceValue2);
     Image dice2 = new Image(dice2Path);
-    ImageView dice2IV = new ImageView(dice2);
-    dice2IV.setX(1030);
-    dice2IV.setY(530);
-    dice2IV.setFitHeight(75);
-    dice2IV.setFitWidth(75);
+    ImageView dice2Iv = new ImageView(dice2);
+    dice2Iv.setX(1030);
+    dice2Iv.setY(530);
+    dice2Iv.setFitHeight(75);
+    dice2Iv.setFitWidth(75);
 
-    diceResultLabel.setText("Totalsum: "+diceValue);
-    diceP.getChildren().clear(); //removes old dice
-    diceP.getChildren().addAll(dice1IV,dice2IV);
+    diceResultLabel.setText("Totalsum: " + diceValue);
+    dicePane.getChildren().clear(); //removes old dice
+    dicePane.getChildren().addAll(dice1Iv, dice2Iv);
 
     gameController.handlePlayerTurn(currentPlayer, diceValue);
 
@@ -368,11 +382,20 @@ public class LadderGame extends Application {
     currentPlayerLabel.setText("Current Player: " + players.get(currentPlayerIndex).getName());
     currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
   }
+
+  /**
+   * Animates the player piece and moves it to the new position.
+   *
+   * @param gridPane the grid pane to draw on
+   * @param player the current player
+   * @param fromPosition the original position
+   * @param toPosition the new position
+   */
   private void animateAndMove(GridPane gridPane, Player player, int fromPosition, int toPosition) {
     int tileType = gameController.getCheckTileType();
 
     // --------------- Frozen Tile ---------------------
-    if(tileType == 4){
+    if (tileType == 4) {
       Timeline timeline = new Timeline();
       timeline.setCycleCount(1);
 
@@ -397,7 +420,8 @@ public class LadderGame extends Application {
       }
       timeline.play();
       return;
-    } isFrozenLabel.setText("");
+    }
+    isFrozenLabel.setText("");
 
     // --------------- Teleport Tile ------------------
     if (tileType == 3) {
@@ -407,23 +431,23 @@ public class LadderGame extends Application {
       int teleportRow = 9 - (specialTilePosition - 1) / 9;
       int teleportCol = (9 - teleportRow) % 2 == 0 ? (specialTilePosition - 1) % 9 : 8 - (specialTilePosition - 1) % 9;
 
-      Timeline moveToTeleportTL = new Timeline(new KeyFrame(
+      Timeline moveToTeleportTl = new Timeline(new KeyFrame(
           Duration.seconds(0.3),
 
           e -> {
             gridPane.getChildren().remove(player.getPlayerPiece());
             gridPane.add(player.getPlayerPiece(), teleportCol, teleportRow);
-            snakeOrLadderCheck.setText("Teleporting...");
+            ladderUpOrDownCheck.setText("Teleporting...");
           }
       ));
 
       // After reaching teleport, wait then jump to destination
-      moveToTeleportTL.setOnFinished(e -> {
+      moveToTeleportTl.setOnFinished(e -> {
 
         // Wait briefly, then teleport to destination
-        Timeline pauseTL = new Timeline(new KeyFrame(Duration.seconds(0.5)));
+        Timeline pauseTl = new Timeline(new KeyFrame(Duration.seconds(0.5)));
 
-        pauseTL.setOnFinished(event -> {
+        pauseTl.setOnFinished(event -> {
           // Move directly to final destination
           int finalRow = 9 - (toPosition - 1) / 9;
           int finalCol = (9 - finalRow) % 2 == 0 ? (toPosition - 1) % 9 : 8 - (toPosition - 1) % 9;
@@ -431,11 +455,11 @@ public class LadderGame extends Application {
 
           gridPane.getChildren().remove(player.getPlayerPiece());
           gridPane.add(player.getPlayerPiece(), finalCol, finalRow);
-          snakeOrLadderCheck.setText("Teleported to " + toPosition + "!");
+          ladderUpOrDownCheck.setText("Teleported to " + toPosition + "!");
         });
-        pauseTL.play();
+        pauseTl.play();
       });
-      moveToTeleportTL.play();
+      moveToTeleportTl.play();
       return;
     }
 
@@ -481,18 +505,18 @@ public class LadderGame extends Application {
 //      return;
 //    }
 
-    // ---------------- Ladder or Snake -------------------
+    // ---------------- Ladder Up or Down -------------------
     else if (tileType == 1 || tileType == 2) {
-      Timeline snakesLadderTL = new Timeline();
-      snakesLadderTL.setCycleCount(1);
+      Timeline ladderTl = new Timeline();
+      ladderTl.setCycleCount(1);
 
       int specialTileStartPosition = gameController.getSpecialTilePosition();
       int stepsToSpecial = specialTileStartPosition - fromPosition;
-      boolean isForward = stepsToSpecial > 0; //check if ladder or snake
+      boolean isForward = stepsToSpecial > 0; //check if ladder Up or Down
 
 
-      // Feedback upon hitting ladders or snakes
-      snakeOrLadderCheck.setText(tileType == 1 ? "Ladder!" : "Snake...");
+      // Feedback upon hitting ladders up or downs
+      ladderUpOrDownCheck.setText(tileType == 1 ? "Climbing up!" : "Sliding down...");
 
       // Create a list of keyframes
       List<KeyFrame> keyFrames = new ArrayList<>();
@@ -500,11 +524,13 @@ public class LadderGame extends Application {
 
       int absSteps = Math.abs(stepsToSpecial);
       for (int i = 0; i <= absSteps + 1; i++) {
-        currentPosition = fromPosition + (isForward ? i : -i); //So it does not matter if it goes backward or forwards
+        currentPosition = fromPosition + (isForward ? i : -i); //So it does not matter if it goes
+        // backward or forwards
+
         // Calculate the current position coordinates
         int row = 9 - (currentPosition - 1) / 9;
         int col = (9 - row) % 2 == 0 ? (currentPosition - 1) % 9 :  8 - (currentPosition - 1) % 9;
-        if(col == -1){
+        if (col == -1) {
           col = 0;
         }
 
@@ -518,17 +544,18 @@ public class LadderGame extends Application {
             }
         );
         keyFrames.add(keyFrame);
-      } snakesLadderTL.getKeyFrames().addAll(keyFrames);
+      }
+      ladderTl.getKeyFrames().addAll(keyFrames);
 
       // After animation, teleport to final destination
-      snakesLadderTL.setOnFinished(event -> {
+      ladderTl.setOnFinished(event -> {
         int finalRow = 9 - (toPosition - 1) / 9;
         int finalCol = (9 - finalRow) % 2 == 0 ? (toPosition - 1) % 9 : 8 - (toPosition - 1) % 9;
 
         gridPane.getChildren().remove(player.getPlayerPiece());
         gridPane.add(player.getPlayerPiece(), finalCol, finalRow);
       });
-      snakesLadderTL.play();
+      ladderTl.play();
       return;
     }
     // --------------- Normal tiles -----------------
@@ -537,7 +564,7 @@ public class LadderGame extends Application {
 
     int steps = toPosition - fromPosition;
     int currentPosition = fromPosition;
-    snakeOrLadderCheck.setText("");
+    ladderUpOrDownCheck.setText("");
 
     for (int i = 0; i < steps; i++) {
       currentPosition++;
@@ -557,7 +584,13 @@ public class LadderGame extends Application {
     timeline.play();
   }
 
-  public String dicePath(int dice){
+  /**
+   * Returns the path to the dice image.
+   *
+   * @param dice the number on the dice
+   * @return the path to the dice image
+   */
+  public String dicePath(int dice) {
     return "Pictures/Dices/dice" + dice + ".png";
   }
 

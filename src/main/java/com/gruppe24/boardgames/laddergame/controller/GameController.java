@@ -5,7 +5,7 @@ import com.gruppe24.boardgames.laddergame.models.Player;
 import com.gruppe24.boardgames.laddergame.models.board.Board;
 import com.gruppe24.boardgames.laddergame.models.board.BoardFactory;
 import com.gruppe24.boardgames.laddergame.models.board.BoardType;
-import com.gruppe24.boardgames.laddergame.models.board.tile.Tile;
+import com.gruppe24.boardgames.laddergame.models.board.tiles.Tile;
 import com.gruppe24.utils.Steps;
 
 /**

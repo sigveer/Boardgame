@@ -13,7 +13,6 @@ class DieTest {
 
   private Die die;
 
-
   /**
    * Sets up the test fixture by creating a new die before each test.
    */
@@ -21,7 +20,6 @@ class DieTest {
   void setUp() {
     die = new Die();
   }
-
 
   /**
    * Tests the {@code roll} method in the {@code Die} class.
@@ -34,7 +32,6 @@ class DieTest {
       System.out.println("Rolled: " + value);
     }
   }
-
 
   /**
    * Tests the {@code getValue} method in the {@code Die} class.

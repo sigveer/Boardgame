@@ -3,9 +3,9 @@ package com.gruppe24.boardgames.laddergame.models;
 import static org.junit.jupiter.api.Assertions.*;
 
 import com.gruppe24.boardgames.laddergame.models.board.Board;
-import com.gruppe24.boardgames.laddergame.models.board.tile.LadderUpTile;
-import com.gruppe24.boardgames.laddergame.models.board.tile.LadderDownTile;
-import com.gruppe24.boardgames.laddergame.models.board.tile.Tile;
+import com.gruppe24.boardgames.laddergame.models.board.tiles.LadderDownTile;
+import com.gruppe24.boardgames.laddergame.models.board.tiles.LadderUpTile;
+import com.gruppe24.boardgames.laddergame.models.board.tiles.Tile;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -18,7 +18,7 @@ class BoardTest {
   private Board board;
 
   @BeforeEach
-  public void beforeEach(){
+  public void beforeEach() {
     board = new Board();
   }
 
@@ -36,7 +36,7 @@ class BoardTest {
    * Tests the {@code getTile} method on a ladder tile in the {@code Board} class.
    */
   @Test
-  void getLadderTile() {
+  void getLadderUpTile() {
     Tile tile = board.getTile(1);
     assertInstanceOf(LadderUpTile.class, tile);
   }
@@ -46,10 +46,8 @@ class BoardTest {
    * Tests the {@code getTile} method on a snake tile in the {@code Board} class.
    */
   @Test
-  void getSnakeTile() {
+  void getLadderDownTile() {
     Tile tile = board.getTile(24);
     assertInstanceOf(LadderDownTile.class, tile);
   }
-
-
 }

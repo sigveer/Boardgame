@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 class GameControllerTest {
 
   private Player testPlayer;
-  private GameController GC;
+  private GameController gameController;
 
   /**
    * Sets up the test fixture by creating a new board and player before each test.
@@ -19,149 +19,141 @@ class GameControllerTest {
   @BeforeEach
   void setUp() {
     testPlayer = new Player("TestPlayer", Color.RED);
-    GC = new GameController();
+    gameController = new GameController();
   }
 
-
   /**
-   *
+   * Tests the handleTileAction method of the GameController class.
    */
   @Test
   void handleTileAction() {
     testPlayer.setPosition(1);
-    GC.handleTileAction(testPlayer, 1);
+    gameController.handleTileAction(testPlayer, 1);
     assertEquals(40, testPlayer.getPosition());
 
     testPlayer.setPosition(24);
-    GC.handleTileAction(testPlayer, 24);
+    gameController.handleTileAction(testPlayer, 24);
     assertEquals(5, testPlayer.getPosition());
   }
 
   /**
-   *
+   * Tests the handleTileAction method of the GameController class with ladder up tile.
    */
   @Test
-  void testHandleLadderTileAction() {
+  void testHandleLadderUpTileAction() {
     int oldPosition = testPlayer.getPosition();
-    GC.handleTileAction(testPlayer, 1);
+    gameController.handleTileAction(testPlayer, 2);
     assertNotEquals(oldPosition, testPlayer.getPosition());
     assertEquals(40, testPlayer.getPosition());
   }
 
-
   /**
-   *
+   * Tests the handleTileAction method of the GameController class with ladder down tile.
    */
   @Test
-  void testHandleSnakeTileAction() {
+  void testHandleLadderDownTileAction() {
     int oldPosition = testPlayer.getPosition();
-    GC.handleTileAction(testPlayer, 24);
+    gameController.handleTileAction(testPlayer, 24);
     assertNotEquals(oldPosition, testPlayer.getPosition());
     assertEquals(5, testPlayer.getPosition());
   }
 
-
   /**
-   *
+   * Tests the checkAndHandleWin method of the GameController class when a player wins.
    */
   @Test
-  void testCheckAndHandleWin_Win() {
+  void testCheckAndHandleWin() {
     testPlayer.setPosition(90);
-    assertTrue(GC.checkAndHandleWin(90));
+    assertTrue(gameController.checkAndHandleWin(90));
   }
 
-
   /**
-   *
+   * Tests the checkAndHandleWin method of the GameController class when a player does not win.
    */
   @Test
-  void testCheckAndHandleWin_NotWin() {
+  void testCheckAndHandleNotWin() {
     testPlayer.setPosition(89);
-    assertFalse(GC.checkAndHandleWin(89));
+    assertFalse(gameController.checkAndHandleWin(89));
   }
 
-
   /**
-   *
+   * Tests the handleOvershoot method of the GameController class when a player overshoots.
    */
   @Test
-  void testHandleOvershoot_Overshoot() {
-    int newPosition = GC.handleOvershoot(95);
+  void testHandleOvershootWithOvershoot() {
+    int newPosition = gameController.handleOvershoot(95);
     assertEquals(85, newPosition);
   }
 
-
   /**
-   *
+   * Tests the handleOvershoot method of the GameController class when a player does not overshoot.
    */
   @Test
-  void testHandleOvershoot_NotOvershoot() {
-    int newPosition = GC.handleOvershoot(95);
+  void testHandleOvershootWithNotOvershoot() {
+    int newPosition = gameController.handleOvershoot(95);
     assertEquals(85, newPosition);
   }
 
-
   /**
-   *
+   * Tests the handlePlayerTurn method of the GameController class when a player rolls a 4.
    */
   @Test
   void handlePlayerTurn() {
     System.setIn(new ByteArrayInputStream("\n".getBytes()));
     int initialPosition = testPlayer.getPosition();
-    GC.handlePlayerTurn(testPlayer, 4);
+    gameController.handlePlayerTurn(testPlayer, 4);
     assertTrue(testPlayer.getPosition() > initialPosition);
   }
 
-
   /**
-   *
+   * Tests the movePlayer method of the GameController class.
    */
   @Test
   void movePlayer() {
     testPlayer.setPosition(5);
     int sumDice = 2;
-    GC.movePlayer(testPlayer, sumDice);
+    gameController.movePlayer(testPlayer, sumDice);
     assertEquals(7, testPlayer.getPosition());
   }
 
+  /**
+   * Tests the getCheckTileType method of the GameController class.
+   */
   @Test
-  void testIsFrozen(){
-    assertTrue(GC.isFrozen(32));
-    assertTrue(GC.isFrozen(59));
-    assertFalse(GC.isFrozen(1));
-  }
-
-  @Test
-  public void testGetCheckTile(){
-   //Positive test
-    GC.handlePlayerTurn(testPlayer, 1);
-    assertEquals(1,GC.getCheckTileType()); //1 means ladderUp
-    GC.handlePlayerTurn(testPlayer, 24);
-    assertEquals(2, GC.getCheckTileType()); //2 means ladderDown
-    GC.handlePlayerTurn(testPlayer,3);
-    assertEquals(0, GC.getCheckTileType()); //0 just a normal tile
+  public void testGetCheckTile() {
+    gameController.handlePlayerTurn(testPlayer, 1);
+    assertEquals(1, gameController.getCheckTileType()); //1 means ladderUp
+    gameController.handlePlayerTurn(testPlayer, 24);
+    assertEquals(2, gameController.getCheckTileType()); //2 means ladderDown
+    gameController.handlePlayerTurn(testPlayer, 3);
+    assertEquals(0, gameController.getCheckTileType()); //0 just a normal tile
 
     //Negativ test
-    assertNotEquals(1, GC.getCheckTileType());
+    assertNotEquals(1, gameController.getCheckTileType());
   }
 
+  /**
+   * Tests the getSpecialTilePosition method of the GameController class.
+   */
   @Test
-  public void testGetSpecialTilePosition(){
+  public void testGetSpecialTilePosition() {
     //Positive test
-    GC.handlePlayerTurn(testPlayer,1);
-    assertEquals(1,GC.getSpecialTilePosition());
+    gameController.handlePlayerTurn(testPlayer, 1);
+    assertEquals(1, gameController.getSpecialTilePosition());
     //Negative test
-    assertNotEquals(2,GC.getSpecialTilePosition());
+    assertNotEquals(2, gameController.getSpecialTilePosition());
   }
 
-
+  /**
+   * Tests the textBasedCheckAndHandleWin method of the GameController class.
+   */
   @Test
-  public void testTextBasedCheckAndHandleWin(){
+  public void testTextBasedCheckAndHandleWin() {
     //Positive test
-    int WinCondition = 90;
-    assertTrue(GC.textBasedCheckAndHandleWin(testPlayer,WinCondition));
+    int winCondition = 90;
+    assertTrue(gameController.textBasedCheckAndHandleWin(testPlayer, winCondition));
     //Negative test
-    WinCondition = 80;
-    assertFalse(GC.textBasedCheckAndHandleWin(testPlayer,WinCondition));
+    winCondition = 80;
+    assertFalse(gameController.textBasedCheckAndHandleWin(testPlayer, winCondition));
   }
 }

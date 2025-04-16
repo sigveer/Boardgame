@@ -1,6 +1,6 @@
 package com.gruppe24.boardgames.tictactoe;
 
-import com.gruppe24.boardgames.MenuGUI;
+import com.gruppe24.boardgames.MenuGui;
 import com.gruppe24.utils.StyleUtils;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -14,9 +14,6 @@ import javafx.stage.Stage;
 /**
  * {@code View} is the view class for the Tic Tac Toe game.
  *
- * @Author Sigveer
- * @Date: 15.03.2025
- * @Version: 1.0
  */
 public class View {
   private final Stage primaryStage;
@@ -24,16 +21,12 @@ public class View {
   private final Model model;
   private final Controller controller;
 
-
   /**
-   * Constructor for the view class
+   * Constructor for the view class.
    *
    * @param primaryStage is the stage to be shown
    * @param model is the model for the game
    * @param controller is the controller for the game
-   * @Author Sigveer
-   * @Date: 15.03.2025
-   * @Version: 1.0
    */
   public View(Stage primaryStage, Model model, Controller controller) {
     this.primaryStage = primaryStage;
@@ -41,13 +34,8 @@ public class View {
     this.controller = controller;
   }
 
-
   /**
-   * Method to initialize the view
-   *
-   * @Author Sigveer
-   * @Date: 15.03.2025
-   * @Version: 1.0
+   * Method to initialize the view.
    */
   public void initializeView() {
     GridPane background = new GridPane();
@@ -65,7 +53,7 @@ public class View {
         boardButtons[row][col].setPrefSize(200, 200);
         boardButtons[row][col].setStyle("-fx-font-size: 50px;");
 
-        StyleUtils.styleTTTButton(boardButtons[row][col]);
+        StyleUtils.styletttButton(boardButtons[row][col]);
 
         final int finalRow = row;
         final int finalCol = col;
@@ -86,7 +74,7 @@ public class View {
 
     Button quitButton = new Button("Quit");
     StyleUtils.styleNormalButton(quitButton);
-    quitButton.setOnAction(e -> new MenuGUI().start(primaryStage));
+    quitButton.setOnAction(e -> new MenuGui().start(primaryStage));
 
     menuPanel.add(restartButton, 0, 0);
     menuPanel.add(quitButton, 0, 1);
@@ -100,31 +88,22 @@ public class View {
     primaryStage.show();
   }
 
-
   /**
-   * Method to update the board
-   *
-   * @Author Sigveer
-   * @Date: 15.03.2025
-   * @Version: 1.0
+   * Method to update the board.
    */
   public void updateBoard() {
     for (int row = 0; row < 3; row++) {
       for (int col = 0; col < 3; col++) {
         boardButtons[row][col].setText(model.getCell(row, col));
-        StyleUtils.styleTTTButton(boardButtons[row][col]);
+        StyleUtils.styletttButton(boardButtons[row][col]);
       }
     }
   }
 
-
   /**
-   * Method to show an alert
+   * Method to show an alert.
    *
    * @param message is the message to be shown
-   * @Author Sigveer
-   * @Date: 15.03.2025
-   * @Version: 1.0
    */
   public void showAlert(String message) {
     Alert alert = new Alert(AlertType.INFORMATION);

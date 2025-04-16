@@ -6,28 +6,21 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 
 /**
- * Class to represent the Tic Tac Toe application
- *
- * @Author Sigveer
- * @Date: 15.03.2025
- * @Version: 1.0
+ * Class to represent the Tic Tac Toe application.
  */
 public class TicTacToeApp extends Application {
 
   /**
-   * Method to start the application
+   * Method to start the application.
    *
    * @param primaryStage is the stage to be shown
-   * @Author Sigveer
-   * @Date: 15.03.2025
-   * @Version: 1.0
    */
   @Override
   public void start(Stage primaryStage) {
-    if(primaryStage == null){
+    if (primaryStage == null) {
       throw new IllegalArgumentException("primaryStage cannot be empty");
     }
-    Validators.getLogger().log(Level.INFO,"TicTacToe started");
+    Validators.getLogger().log(Level.INFO, "TicTacToe started");
 
     Model model = new Model();
     Controller controller = new Controller(model);
@@ -38,12 +31,9 @@ public class TicTacToeApp extends Application {
   }
 
   /**
-   * Main method to launch the application
+   * Main method to launch the application.
    *
    * @param args is the command line arguments
-   * @Author Sigveer
-   * @Date: 15.03.2025
-   * @Version: 1.0
    */
   public static void main(String[] args) {
     launch(args);

@@ -2,7 +2,7 @@ package com.gruppe24.boardgames;
 
 import static com.gruppe24.utils.StyleUtils.styleNormalButton;
 
-import com.gruppe24.boardgames.laddergame.view.LadderGameMenuGUI;
+import com.gruppe24.boardgames.laddergame.view.LadderGameMenuGui;
 import com.gruppe24.boardgames.tictactoe.TicTacToeApp;
 import com.gruppe24.utils.Validators;
 import java.util.logging.Level;
@@ -14,21 +14,24 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
-public class MenuGUI extends Application {
+/**
+ * This class is the main menu for the game. It allows the user to select which game to play.
+ */
+public class MenuGui extends Application {
 
   @Override
   public void start(Stage primaryStage) {
-    if(primaryStage == null){
+    if (primaryStage == null) {
       throw new IllegalArgumentException("Parameter Stage cannot be empty");
     }
-    Validators.getLogger().log(Level.INFO,"Menu started");
+    Validators.getLogger().log(Level.INFO, "Menu started");
 
     primaryStage.setTitle("GameMenu");
     primaryStage.setX(250);
     primaryStage.setY(100);
 
     GridPane gridPane = new GridPane();
-    Scene scene = new Scene(gridPane,1000,850);
+    Scene scene = new Scene(gridPane, 1000, 850);
     gridPane.setAlignment(Pos.CENTER);
     gridPane.setVgap(25);
     gridPane.setHgap(20);
@@ -40,22 +43,22 @@ public class MenuGUI extends Application {
 
     //Buttons
     Button ladderButton = new Button("LadderGame");
-    ladderButton.setOnAction(event -> new LadderGameMenuGUI().start(primaryStage));
+    ladderButton.setOnAction(event -> new LadderGameMenuGui().start(primaryStage));
     styleNormalButton(ladderButton);
 
     Button game2Button = new Button("Different game");
     game2Button.setOnAction(event -> System.out.println("Game2!"));
     styleNormalButton(game2Button);
 
-    Button TicTacToeApp = new Button("TicTacToe");
-    TicTacToeApp.setOnAction(event -> new TicTacToeApp().start(primaryStage));
-    styleNormalButton(TicTacToeApp);
+    Button ticTacToeApp = new Button("TicTacToe");
+    ticTacToeApp.setOnAction(event -> new TicTacToeApp().start(primaryStage));
+    styleNormalButton(ticTacToeApp);
 
 
     gridPane.add(title, 0, 0);
     gridPane.add(ladderButton, 0, 1);
     gridPane.add(game2Button, 0, 2);
-    gridPane.add(TicTacToeApp, 0, 3);
+    gridPane.add(ticTacToeApp, 0, 3);
 
     primaryStage.setScene(scene);
     primaryStage.show();

@@ -11,7 +11,12 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
 
-public class JSONBoardReader implements com.gruppe24.filehandling.FileReader {
+/**
+ * JsonBoardReader is a class that implements the FileReader interface to read a board configuration
+ * from a JSON file. It parses the JSON data and constructs a Board object based on the information
+ * provided in the file.
+ */
+public class JsonBoardReader implements com.gruppe24.filehandling.FileReader {
 
 
   @Override

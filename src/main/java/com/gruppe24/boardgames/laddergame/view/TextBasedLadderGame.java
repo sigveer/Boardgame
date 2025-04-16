@@ -11,7 +11,7 @@ import javafx.scene.paint.Color;
 
 
 /**
- * Class that represents the game as a whole
+ * Class that represents the game as a whole.
  *
  * @author Ingve V., Sigveer
  * @date 06.02.2025
@@ -19,20 +19,19 @@ import javafx.scene.paint.Color;
  */
 public class TextBasedLadderGame {
   private final List<Player> players;
-  private final GameController GM;
+  private final GameController gameController;
 
+  /**
+   * Constructor for the TextBasedLadderGame class.
+   */
   public TextBasedLadderGame() {
     this.players = new ArrayList<>();
-    this.GM = new GameController();
+    this.gameController = new GameController();
     Validators.getLogger().log(Level.INFO, "Text based ladde game started");
   }
 
   /**
    * Method that sets up the game.
-   *
-   * @Author Sigveer, Ingve
-   * @Date: 06.02.2025
-   * @Version: 1.0
    */
   public void setUpPlayers() {
     int numberOfPlayers = 0;
@@ -49,7 +48,7 @@ public class TextBasedLadderGame {
       String name = Validators.scannerString();
       System.out.println("Color of player" + i + "\n(R = Red, B = blue, G = green):");
       Color color = Validators.colorChoice(Validators.scannerString());
-      players.add(new Player(name,color)); //AI-assisted
+      players.add(new Player(name, color)); //AI-assisted
     }
 
     System.out.println("Players are ready to play!");
@@ -59,17 +58,13 @@ public class TextBasedLadderGame {
 
   /**
    * Method that starts the game.
-   *
-   * @Author Sigveer, Ingve
-   * @Date: 06.02.2025
-   * @Version: 1.0
    */
   public void play() {
     boolean gameOver = false;
     while (!gameOver) {
       for (Player player : players) {
-        GM.textBasedHandlePlayerTurn(player);
-        if (GM.textBasedCheckAndHandleWin(player, player.getPosition())) {
+        gameController.textBasedHandlePlayerTurn(player);
+        if (gameController.textBasedCheckAndHandleWin(player, player.getPosition())) {
           gameOver = true;
           Steps.pressEnterToContinue();
           break;

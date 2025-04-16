@@ -1,4 +1,4 @@
-package com.gruppe24.boardgames.laddergame.models.Tile;
+package com.gruppe24.boardgames.laddergame.models.tiles;
 
 import org.junit.jupiter.api.Test;
 

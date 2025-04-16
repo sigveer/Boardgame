@@ -1,9 +1,9 @@
 package com.gruppe24.boardgames.laddergame.view;
 
-import com.gruppe24.boardgames.laddergame.models.board.BoardType;
 import com.gruppe24.boardgames.laddergame.models.Player;
-import com.gruppe24.filehandling.CSVPlayerReader;
-import com.gruppe24.filehandling.CSVPlayerWriter;
+import com.gruppe24.boardgames.laddergame.models.board.BoardType;
+import com.gruppe24.filehandling.CsvPlayerReader;
+import com.gruppe24.filehandling.CsvPlayerWriter;
 import com.gruppe24.utils.ColorUtil;
 import com.gruppe24.utils.StyleUtils;
 import com.gruppe24.utils.Validators;
@@ -23,6 +23,10 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+/**
+ * The Setup class is responsible for setting up the initial game screen where players can enter
+ * their names and select colors.
+ */
 public class Setup extends Application {
 
   private final List<Player> players;
@@ -30,12 +34,22 @@ public class Setup extends Application {
   private List<TextField> nameFields;
   private List<ComboBox<String>> colorSelections;
 
-  public Setup(){
+  /**
+   * Constructor for the Setup class.
+   * Initializes the players list.
+   */
+  public Setup() {
     this.players = new ArrayList<>();
   }
 
+  /**
+   * Constructor for the Setup class with a specified board type.
+   * Initializes the players list and sets the board type.
+   *
+   * @param boardType The type of board to be used in the game.
+   */
   public void setBoardType(BoardType boardType) {
-    if(boardType == null){
+    if (boardType == null) {
       throw new IllegalArgumentException("Parameter boardType cannot be empty");
     }
     this.boardType = boardType;
@@ -43,7 +57,7 @@ public class Setup extends Application {
 
   @Override
   public void start(Stage primaryStage) {
-    if(primaryStage == null){
+    if (primaryStage == null) {
       throw new IllegalArgumentException("Parameter Stage cannot be empty");
     }
     Validators.getLogger().log(Level.INFO, "Setup started");
@@ -59,68 +73,70 @@ public class Setup extends Application {
 
     Text text = new Text("How many players are there?:");
     text.setStyle("-fx-font-size: 20px; -fx-fill: white; -fx-font-weight: bold;");
-    gridPane.add(text,1,1,6,1);
+    gridPane.add(text, 1, 1, 6, 1);
 
     Text nameText = new Text("Write down the names in the bars");
     nameText.setStyle("-fx-font-size: 20px; -fx-fill: white; -fx-font-weight: bold;");
-    gridPane.add(nameText,3,4,6,1);
+    gridPane.add(nameText, 3, 4, 6, 1);
 
     TextField nameTextField1 = new TextField();
     nameTextField1.setPromptText("write name here");
-    gridPane.add(nameTextField1,3,5);
+    gridPane.add(nameTextField1, 3, 5);
     TextField nameTextField2 = new TextField();
     nameTextField2.setPromptText("write name here");
-    gridPane.add(nameTextField2,3,6);
+    gridPane.add(nameTextField2, 3, 6);
     TextField nameTextField3 = new TextField();
     nameTextField3.setPromptText("write name here");
-    gridPane.add(nameTextField3,3,7);
+    gridPane.add(nameTextField3, 3, 7);
     TextField nameTextField4 = new TextField();
     nameTextField4.setPromptText("write name here");
-    gridPane.add(nameTextField4,3,8);
+    gridPane.add(nameTextField4, 3, 8);
     TextField nameTextField5 = new TextField();
     nameTextField5.setPromptText("write name here");
-    gridPane.add(nameTextField5,3,9);
+    gridPane.add(nameTextField5, 3, 9);
 
     ComboBox<String> colorComboBox1 = new ComboBox<>();
-    colorComboBox1.getItems().addAll("Red","Blue","Green","Yellow","Purple");
+    colorComboBox1.getItems().addAll("Red", "Blue", "Green", "Yellow", "Purple");
     colorComboBox1.setValue("Red"); //default
-    gridPane.add(colorComboBox1,1,5);
+    gridPane.add(colorComboBox1, 1, 5);
     ComboBox<String> colorComboBox2 = new ComboBox<>();
-    colorComboBox2.getItems().addAll("Red","Blue","Green","Yellow","Purple");
+    colorComboBox2.getItems().addAll("Red", "Blue", "Green", "Yellow", "Purple");
     colorComboBox2.setValue("Blue"); //default
-    gridPane.add(colorComboBox2,1,6);
+    gridPane.add(colorComboBox2, 1, 6);
     ComboBox<String> colorComboBox3 = new ComboBox<>();
-    colorComboBox3.getItems().addAll("Red","Blue","Green","Yellow","Purple");
+    colorComboBox3.getItems().addAll("Red", "Blue", "Green", "Yellow", "Purple");
     colorComboBox3.setValue("Green"); //default
-    gridPane.add(colorComboBox3,1,7);
+    gridPane.add(colorComboBox3, 1, 7);
     ComboBox<String> colorComboBox4 = new ComboBox<>();
-    colorComboBox4.getItems().addAll("Red","Blue","Green","Yellow","Purple");
+    colorComboBox4.getItems().addAll("Red", "Blue", "Green", "Yellow", "Purple");
     colorComboBox4.setValue("Yellow"); //default
-    gridPane.add(colorComboBox4,1,8);
+    gridPane.add(colorComboBox4, 1, 8);
     ComboBox<String> colorComboBox5 = new ComboBox<>();
-    colorComboBox5.getItems().addAll("Red","Blue","Green","Yellow","Purple");
+    colorComboBox5.getItems().addAll("Red", "Blue", "Green", "Yellow", "Purple");
     colorComboBox5.setValue("Purple"); //default
-    gridPane.add(colorComboBox5,1,9);
+    gridPane.add(colorComboBox5, 1, 9);
 
     //Collection of names and colours
-    List<TextField> names = Arrays.asList(nameTextField1,nameTextField2,nameTextField3,nameTextField4,nameTextField5);
-    List<ComboBox<String>> colors = Arrays.asList(colorComboBox1,colorComboBox2,colorComboBox3,colorComboBox4,colorComboBox5);
+    List<TextField> names = Arrays.asList(nameTextField1, nameTextField2, nameTextField3,
+        nameTextField4, nameTextField5);
+    List<ComboBox<String>> colors = Arrays.asList(colorComboBox1, colorComboBox2,
+        colorComboBox3, colorComboBox4, colorComboBox5);
     //setting the fields
     this.nameFields = names;
     this.colorSelections = colors;
 
     //calculating amount of players
-    Button SubmitButton = new Button("SUBMIT");
-    StyleUtils.styleNormalButton(SubmitButton);
-    gridPane.add(SubmitButton,7,9);
-    SubmitButton.setOnAction(event -> {
+    Button submitButton = new Button("SUBMIT");
+    StyleUtils.styleNormalButton(submitButton);
+    gridPane.add(submitButton, 7, 9);
+    submitButton.setOnAction(event -> {
       players.clear();
 
-      for(int i = 0; i < names.size(); i++){
+      for (int i = 0; i < names.size(); i++) {
         String name = names.get(i).getText();
-        if(!name.isEmpty()){
+        if (!name.isEmpty()) {
           Color color = ColorUtil.getColorFromString(colors.get(i).getValue());
-          players.add(new Player(name,color));
+          players.add(new Player(name, color));
         }
       }
 
@@ -142,7 +158,7 @@ public class Setup extends Application {
         showAlert("No players to save");
         return;
       }
-      boolean success = CSVPlayerWriter.savePlayers(playersToSave, primaryStage);
+      boolean success = CsvPlayerWriter.savePlayers(playersToSave, primaryStage);
       if (success) {
         showAlert("Players saved successfully");
       } else {
@@ -155,7 +171,7 @@ public class Setup extends Application {
     StyleUtils.styleNormalButton(loadPlayersButton);
     gridPane.add(loadPlayersButton, 7, 6);
     loadPlayersButton.setOnAction(event -> {
-      List<Player> loadedPlayers = CSVPlayerReader.loadPlayers(primaryStage);
+      List<Player> loadedPlayers = CsvPlayerReader.loadPlayers(primaryStage);
       if (loadedPlayers != null && !loadedPlayers.isEmpty()) {
         populateFieldsWithPlayers(loadedPlayers);
         showAlert("Players loaded successfully");
@@ -172,9 +188,9 @@ public class Setup extends Application {
   private List<Player> collectPlayersFromFields() {
     List<Player> collectedPlayers = new ArrayList<>();
 
-    for(int i = 0; i < nameFields.size(); i++) {
+    for (int i = 0; i < nameFields.size(); i++) {
       String name = nameFields.get(i).getText();
-      if(!name.isEmpty()) {
+      if (!name.isEmpty()) {
         Color color = ColorUtil.getColorFromString(colorSelections.get(i).getValue());
         collectedPlayers.add(new Player(name, color));
       }
@@ -196,7 +212,8 @@ public class Setup extends Application {
 
       // Set the correct color in ComboBox
       String colorName = ColorUtil.getColorName(player.getPlayerPiece().getFill());
-      colorSelections.get(i).setValue(colorName.substring(0, 1).toUpperCase() + colorName.substring(1));
+      colorSelections.get(i).setValue(colorName.substring(0, 1).toUpperCase()
+          + colorName.substring(1));
     }
   }
 

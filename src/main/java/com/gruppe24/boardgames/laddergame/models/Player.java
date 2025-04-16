@@ -70,11 +70,11 @@ public class Player {
    */
   public String getColoredName() {
     if (color == Color.RED) {
-      return StyleUtils.textRED() + name + StyleUtils.textRESET();
+      return StyleUtils.textRed() + name + StyleUtils.textReset();
     } else if (color == Color.BLUE) {
-      return StyleUtils.textBLUE() + name + StyleUtils.textRESET();
+      return StyleUtils.textBlue() + name + StyleUtils.textReset();
     } else {
-      return StyleUtils.textGREEN() + name + StyleUtils.textRESET();
+      return StyleUtils.textGreen() + name + StyleUtils.textReset();
     }
   }
 
