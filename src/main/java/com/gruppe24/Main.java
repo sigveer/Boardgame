@@ -1,7 +1,7 @@
 package com.gruppe24;
 
-import com.gruppe24.BoardGames.MenuGUI;
-import com.gruppe24.Utils.Validators;
+import com.gruppe24.boardgames.MenuGUI;
+import com.gruppe24.utils.Validators;
 import java.util.logging.Level;
 
 public class Main {
