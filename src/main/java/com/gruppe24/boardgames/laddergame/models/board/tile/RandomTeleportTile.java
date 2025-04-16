@@ -5,19 +5,25 @@ import java.util.Random;
 
 /**
  * A special tile that teleports the player to a random position on the board.
- *
- * @Author GitHub Copilot
- * @Date: 07.09.2023
- * @Version: 1.0
  */
 public class RandomTeleportTile extends SpecialTile {
 
   private final Random random = new Random();
 
+  /**
+   * Constructor that initializes the random teleport tile.
+   *
+   * @param position The position of the tile.
+   */
   public RandomTeleportTile(int position) {
     super(position);
   }
 
+  /**
+   * Method that performs the action of the tile.
+   *
+   * @param player The player that lands on the tile.
+   */
   @Override
   public void perform(Player player) {
     this.checkTileType = 3;
@@ -29,10 +35,5 @@ public class RandomTeleportTile extends SpecialTile {
     player.setPosition(destinationPosition);
 
     this.position = destinationPosition;
-  }
-
-  @Override
-  public int getPosition() {
-    return position;
   }
 }

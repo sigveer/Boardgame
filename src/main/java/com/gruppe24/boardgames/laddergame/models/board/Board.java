@@ -1,23 +1,18 @@
 package com.gruppe24.boardgames.laddergame.models.board;
 
+import com.gruppe24.boardgames.laddergame.models.board.tile.FrozenTile;
+import com.gruppe24.boardgames.laddergame.models.board.tile.LadderDownTile;
 import com.gruppe24.boardgames.laddergame.models.board.tile.LadderUpTile;
 import com.gruppe24.boardgames.laddergame.models.board.tile.NormalTile;
-import com.gruppe24.boardgames.laddergame.models.board.tile.LadderDownTile;
 import com.gruppe24.boardgames.laddergame.models.board.tile.RandomTeleportTile;
-import com.gruppe24.boardgames.laddergame.models.board.tile.FrozenTile;
 import com.gruppe24.boardgames.laddergame.models.board.tile.Tile;
 import java.util.HashMap;
 
 /**
- * Represets Snakes and Ladder board.
- *
- * @author Ingve, Sigveer.
- * @date 06.02.2025
- * @version 1.0.0
+ * Represents the game board for the LadderGame.
  */
 public class Board {
 
-  //Attributes
   protected HashMap<Integer, Integer> ladderUp;
   protected HashMap<Integer, Integer> ladderDown;
   protected HashMap<Integer, Boolean> frozenTiles = new HashMap<>();
@@ -29,11 +24,8 @@ public class Board {
   private final String description;
 
   /**
-   * Constructor that initializes the ladders and snakes.
-   *
-   * @author Ingve, Sigveer
-   * @date 06.02.2025
-   * @Version 1.0
+   * Constructor for the Board class.
+   * Initializes the ladders and tiles on the board.
    */
   public Board() {
     this.ladderUp = new HashMap<>();
@@ -44,6 +36,16 @@ public class Board {
     initializeTiles();
   }
 
+  /**
+   * Constructor for the Board class with custom ladders and special tiles.
+   *
+   * @param ladderUp HashMap of ladders going up
+   * @param ladderDown HashMap of ladders going down
+   * @param frozenTiles HashMap of frozen tiles
+   * @param randomTeleportTiles HashMap of random teleport tiles
+   * @param name Name of the board
+   * @param description Description of the board
+   */
   public Board(HashMap<Integer, Integer> ladderUp, HashMap<Integer, Integer> ladderDown,
       HashMap<Integer, Boolean> frozenTiles, HashMap<Integer, Boolean> randomTeleportTiles,
       String name, String description) {
@@ -56,26 +58,28 @@ public class Board {
     initializeTiles();
   }
 
-  //methods
-
   /**
    * Method that puts ladders at certain indexes in ladders-hashMap.
-   *
-   * @author Ingve, Sigveer
-   * @date 06.02.2025
-   * @Version 1.0
    */
-  public void initializeLadders(){
+  public void initializeLadders() {
     initializeStandardLadders(ladderUp, ladderDown);
   }
 
-
-  public void initializeSpecialTiles(){
+  /**
+   * Method that puts special tiles at certain indexes in specialTiles-hashMap.
+   */
+  public void initializeSpecialTiles() {
     initializeStandardSpecialTiles(frozenTiles, randomTeleportTiles);
   }
 
-
-  public static void initializeStandardLadders(HashMap<Integer, Integer> ladderUp, HashMap<Integer, Integer> ladderDown) {
+  /**
+   * Method that initializes the standard ladders.
+   *
+   * @param ladderUp HashMap of ladders going up
+   * @param ladderDown HashMap of ladders going down
+   */
+  public static void initializeStandardLadders(HashMap<Integer, Integer> ladderUp, HashMap<Integer,
+      Integer> ladderDown) {
     ladderUp.put(2, 40);
     ladderUp.put(8, 10);
     ladderUp.put(36, 52);
@@ -93,20 +97,21 @@ public class Board {
     ladderDown.put(87, 70);
   }
 
-
-  public static void initializeStandardSpecialTiles(HashMap<Integer, Boolean> frozenTiles, HashMap<Integer, Boolean> randomTeleportTiles) {
+  /**
+   * Method that initializes the standard special tiles.
+   *
+   * @param frozenTiles HashMap of frozen tiles
+   * @param randomTeleportTiles HashMap of random teleport tiles
+   */
+  public static void initializeStandardSpecialTiles(HashMap<Integer, Boolean> frozenTiles,
+      HashMap<Integer, Boolean> randomTeleportTiles) {
     frozenTiles.put(34, true);
     frozenTiles.put(78, true);
     randomTeleportTiles.put(50, true);
   }
 
-
   /**
    * Method that initializes the tiles.
-   *
-   * @Author Sigveer, Ingve
-   * @Date: 19.02.2025
-   * @Version: 1.0
    */
   protected void initializeTiles() {
     tiles = new Tile[Columns * Rows];
@@ -125,16 +130,11 @@ public class Board {
     }
   }
 
-
   /**
    * Method that gets the tile.
    *
    * @param position the position of the tile
    * @return the tile
-   *
-   * @Author Sigveer, Ingve
-   * @Date: 20.02.2025
-   * @Version: 1.0
    */
   public Tile getTile(int position) {
     if (position >= 0 && position < tiles.length) {
@@ -143,22 +143,38 @@ public class Board {
     return new NormalTile(position);
   }
 
-
-  public HashMap<Integer,Integer> getLadderUp(){
+  /**
+   * Getter for the ladderUp hashmaps tiles.
+   *
+   * @return HashMap of ladderUp tiles.
+   */
+  public HashMap<Integer, Integer> getLadderUp() {
     return ladderUp;
   }
 
-
-  public HashMap<Integer,Integer> getLadderDown(){
+  /**
+   * Getter for the ladderDown hashmaps tiles.
+   *
+   * @return HashMap of ladderDown tiles.
+   */
+  public HashMap<Integer, Integer> getLadderDown() {
     return ladderDown;
   }
 
-
+  /**
+   * Getter for board names.
+   *
+   * @return the name of the board.
+   */
   public String getName() {
     return name;
   }
 
-
+  /**
+   * Getter for board description.
+   *
+   * @return the description of the board.
+   */
   public String getDescription() {
     return description;
   }

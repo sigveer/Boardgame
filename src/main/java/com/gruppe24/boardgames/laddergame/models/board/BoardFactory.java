@@ -12,13 +12,12 @@ public class BoardFactory {
    * @return A new board of the specified type
    */
   public static Board createBoard(BoardType boardType) {
-    if(boardType == null){
+    if (boardType == null) {
       throw new IllegalArgumentException("Parameter boardType cannot be empty");
     }
     return switch (boardType) {
       case CLASSIC -> createClassicBoard();
       case SPECIAL -> createSpecialBoard();
-      default -> throw new IllegalArgumentException("Unknown board type: " + boardType);
     };
   }
 

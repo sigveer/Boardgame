@@ -5,23 +5,27 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
 /**
- * Class that represents players
+ * Class that represents players.
  */
 public class Player {
 
-  //attributes
   private final String name;
   public int position;
-  private Circle playerPiece;
-  private Color color;
+  private final Circle playerPiece;
+  private final Color color;
   private boolean frozen;
 
-  //constructor
-  public Player(String name, Color color){
-    if(name == null ||name.trim().isEmpty()){
+  /**
+   * Constructor for Player.
+   *
+   * @param name  name of the player
+   * @param color color of the player
+   */
+  public Player(String name, Color color) {
+    if (name == null || name.trim().isEmpty()) {
       throw new IllegalArgumentException("Parameter name cannot be empty");
     }
-    if(color == null){
+    if (color == null) {
       throw new IllegalArgumentException("Parameter colour cannot be empty");
     }
     this.name = name;
@@ -32,9 +36,8 @@ public class Player {
     this.frozen = false;
   }
 
-
   /**
-   * Check if the player is currently frozen
+   * Check if the player is currently frozen.
    *
    * @return true if player is frozen, false otherwise
    */
@@ -42,9 +45,8 @@ public class Player {
     return frozen;
   }
 
-
   /**
-   * Set the frozen status of the player
+   * Set the frozen status of the player.
    *
    * @param frozen true to freeze the player, false to unfreeze
    */
@@ -52,63 +54,54 @@ public class Player {
     this.frozen = frozen;
   }
 
-
-  public Circle getPlayerPiece(){
+  /**
+   * Getter-method for the color of the player.
+   *
+   * @return color-variable
+   */
+  public Circle getPlayerPiece() {
     return playerPiece;
   }
 
   /**
-   * Getter-method for the coloured version of name
+   * Getter-method for the coloured version of name.
    *
    * @return name-variable
-   *
-   * @Author Ingve
-   * @Date: 06.02.2025
-   * @Version: 1.0
    */
-  public String getColoredName(){
-    if(color == Color.RED){
+  public String getColoredName() {
+    if (color == Color.RED) {
       return StyleUtils.textRED() + name + StyleUtils.textRESET();
-    }
-    else if(color == Color.BLUE){
+    } else if (color == Color.BLUE) {
       return StyleUtils.textBLUE() + name + StyleUtils.textRESET();
-    }
-    else{
+    } else {
       return StyleUtils.textGREEN() + name + StyleUtils.textRESET();
     }
   }
 
   /**
-   * Accessor-method for name
-   * @return name as string
+   * Accessor-method for name.
+   *
+   * @return name as string.
    */
-  public String getName(){
+  public String getName() {
     return name;
   }
 
   /**
-   * Getter-method for Position
+   * Getter-method for Position.
    *
    * @return position-variable
-   *
-   * @Author Ingve
-   * @Date: 06.02.2025
-   * @Version: 1.0
    */
-  public int getPosition(){
+  public int getPosition() {
     return this.position;
   }
 
   /**
-   * Setter-method for Position
+   * Setter-method for Position.
    *
-   * @param position-variable
-   *
-   * @Author Ingve
-   * @Date: 06.02.2025
-   * @Version: 1.0
+   * @param position new position
    */
-  public void setPosition(int position){
+  public void setPosition(int position) {
     this.position = position;
   }
 }

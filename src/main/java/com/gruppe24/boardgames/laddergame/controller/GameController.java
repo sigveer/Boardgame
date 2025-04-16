@@ -9,28 +9,41 @@ import com.gruppe24.boardgames.laddergame.models.board.tile.Tile;
 import com.gruppe24.utils.Steps;
 
 /**
- *
+ * Class that handles the game logic and player turns.
  */
 public class GameController {
 
-  private Board board;
+  private final Board board;
   private final Dice dice;
   private static final int WinCondition = 90;
   private int checkTileType = 0;
   private int specialTilePosition;
 
+  /**
+   * Constructor that initializes the game controller with a board type.
+   */
   public GameController() {
     this(BoardType.CLASSIC); // Default to classic board
   }
 
+  /**
+   * Constructor that initializes the game controller with a board type.
+   *
+   * @param boardType the type of board to use
+   */
   public GameController(BoardType boardType) {
-    if(boardType == null){
+    if (boardType == null) {
       throw new IllegalArgumentException("Parameter boardType cannot be empty");
     }
     this.board = BoardFactory.createBoard(boardType);
     this.dice = new Dice(2);
   }
 
+  /**
+   * Constructor that initializes the game controller with a board.
+   *
+   * @return board the board to use
+   */
   public Board getBoard() {
     return board;
   }
@@ -65,7 +78,8 @@ public class GameController {
     if (newPosition > WinCondition) {
       int overshoot = newPosition - WinCondition;
       newPosition = WinCondition - overshoot;
-    } return newPosition;
+    }
+    return newPosition;
   }
 
 
@@ -93,11 +107,11 @@ public class GameController {
     return newPosition == WinCondition;
   }
 
-  public int getCheckTileType(){
+  public int getCheckTileType() {
     return checkTileType;
   }
 
-  public int getSpecialTilePosition(){
+  public int getSpecialTilePosition() {
     return specialTilePosition;
   }
 
@@ -127,11 +141,10 @@ public class GameController {
     movePlayer(player, sumDice);
 
     System.out.println(player.getColoredName() + " rolled " + sumDice);
-    if(getCheckTileType() == 1){
-      System.out.println("A ladder!");
-    }
-    else if(getCheckTileType() == 2){
-      System.out.println("A snake...");
+    if (getCheckTileType() == 1) {
+      System.out.println("Climbing up!");
+    } else if (getCheckTileType() == 2) {
+      System.out.println("Sliding down...");
     }
     System.out.println(player.getColoredName() + " is now on tile " + player.getPosition());
   }
