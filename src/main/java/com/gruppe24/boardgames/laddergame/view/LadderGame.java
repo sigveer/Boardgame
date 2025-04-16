@@ -75,6 +75,11 @@ public class LadderGame extends Application {
     this.players = players;
   }
 
+  /**
+   * Main method to start the application.
+   *
+   * @param primaryStage the primary stage.
+   */
   @Override
   public void start(Stage primaryStage) {
     if (primaryStage == null) {

@@ -21,6 +21,11 @@ import javafx.stage.Stage;
  */
 public class LadderGameMenuGui extends Application {
 
+  /**
+   * The main method to launch the Ladder Game menu GUI.
+   *
+   * @param primaryStage the primary stage for this application.
+   */
   @Override
   public void start(Stage primaryStage) {
     if (primaryStage == null) {

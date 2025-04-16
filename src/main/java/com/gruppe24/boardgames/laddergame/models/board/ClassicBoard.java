@@ -5,6 +5,9 @@ package com.gruppe24.boardgames.laddergame.models.board;
  */
 class ClassicBoard extends Board {
 
+  /**
+   * Initializes the ladders on the board.
+   */
   public ClassicBoard() {
     initializeLadders();
     initializeTiles();

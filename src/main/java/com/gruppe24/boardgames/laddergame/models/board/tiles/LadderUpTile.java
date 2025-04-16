@@ -21,10 +21,6 @@ public class LadderUpTile extends SpecialTile {
    * Method that performs the action of the tile.
    *
    * @param player The player that lands on the tile.
-   *
-   * @Author Sigveer
-   * @Date: 06.02.2025
-   * @Version: 1.0
    */
   @Override
   public void perform(Player player) {

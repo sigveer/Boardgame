@@ -36,6 +36,11 @@ public class WinnerScreen extends Application {
     this.player = player;
   }
 
+  /**
+   * The main method that launches the Winner screen.
+   *
+   * @param primaryStage The primary stage for this window.
+   */
   @Override
   public void start(Stage primaryStage) {
     if (primaryStage == null) {

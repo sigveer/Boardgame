@@ -19,6 +19,11 @@ import javafx.stage.Stage;
  */
 public class MenuGui extends Application {
 
+  /**
+   * The main method is the entry point of the application.
+   *
+   * @param primaryStage the primary stage for this application.
+   */
   @Override
   public void start(Stage primaryStage) {
     if (primaryStage == null) {

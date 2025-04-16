@@ -67,7 +67,6 @@ public class GameController {
     handleTileAction(player, newPosition);
   }
 
-
   /**
    * Method that handles overshoot of the player.
    *
@@ -81,7 +80,6 @@ public class GameController {
     }
     return newPosition;
   }
-
 
   /**
    * Method that handles the action of a tile. Indirectly takes value checkTileType.

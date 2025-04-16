@@ -55,6 +55,11 @@ public class Setup extends Application {
     this.boardType = boardType;
   }
 
+  /**
+   * The main method that launches the setup window.
+   *
+   * @param primaryStage The primary stage for this window.
+   */
   @Override
   public void start(Stage primaryStage) {
     if (primaryStage == null) {
@@ -184,7 +189,11 @@ public class Setup extends Application {
     primaryStage.show();
   }
 
-
+  /**
+   * Collects players from the text fields and color selections.
+   *
+   * @return A list of players collected from the fields.
+   */
   private List<Player> collectPlayersFromFields() {
     List<Player> collectedPlayers = new ArrayList<>();
 
@@ -199,7 +208,11 @@ public class Setup extends Application {
     return collectedPlayers;
   }
 
-
+  /**
+   * Populates the text fields and color selections with loaded players.
+   *
+   * @param loadedPlayers The list of players to populate the fields with.
+   */
   private void populateFieldsWithPlayers(List<Player> loadedPlayers) {
     for (TextField field : nameFields) {
       field.clear();
@@ -217,6 +230,11 @@ public class Setup extends Application {
     }
   }
 
+  /**
+   * Displays an alert with the given message.
+   *
+   * @param message The message to be displayed in the alert.
+   */
   private void showAlert(String message) {
     Alert alert = new Alert(Alert.AlertType.INFORMATION);
     alert.setTitle("Player Management");

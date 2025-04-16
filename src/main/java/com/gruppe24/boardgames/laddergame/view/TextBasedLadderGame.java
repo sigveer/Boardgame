@@ -9,13 +9,8 @@ import java.util.List;
 import java.util.logging.Level;
 import javafx.scene.paint.Color;
 
-
 /**
  * Class that represents the game as a whole.
- *
- * @author Ingve V., Sigveer
- * @date 06.02.2025
- * @version 1.0.0
  */
 public class TextBasedLadderGame {
   private final List<Player> players;

@@ -1,6 +1,5 @@
 package com.gruppe24.boardgames.laddergame.models.board.tiles;
 
-
 /**
  * Class representing a special tile.
  */
