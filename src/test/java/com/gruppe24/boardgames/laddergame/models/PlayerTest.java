@@ -1,6 +1,7 @@
 package com.gruppe24.boardgames.laddergame.models;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import javafx.scene.paint.Color;
 import org.junit.jupiter.api.BeforeEach;
@@ -45,5 +46,15 @@ class PlayerTest {
   void setPosition() {
     player.setPosition(10);
     assertEquals(10, player.getPosition());
+  }
+
+  /**
+   * Tests the player piece is properly initialized.
+   */
+  @Test
+  void testPlayerPiece() {
+    assertNotNull(player.getPlayerPiece());
+    assertEquals(25, player.getPlayerPiece().getRadius());
+    assertEquals(Color.RED, player.getPlayerPiece().getFill());
   }
 }
