@@ -1,6 +1,6 @@
 package com.gruppe24.boardgames.laddergame.models;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import javafx.scene.paint.Color;
 import org.junit.jupiter.api.BeforeEach;

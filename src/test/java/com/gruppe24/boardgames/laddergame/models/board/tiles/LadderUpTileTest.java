@@ -1,4 +1,4 @@
-package com.gruppe24.boardgames.laddergame.models.tiles;
+package com.gruppe24.boardgames.laddergame.models.board.tiles;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 
 
 /**
- * {@code LadderTileTest} is a test class for the {@code LadderTile} class.
+ * {@code LadderUpTileTest} is a test class for the {@code LadderUpTile} class.
  */
 class LadderUpTileTest {
 
@@ -19,7 +19,7 @@ class LadderUpTileTest {
 
 
   /**
-   * Sets up the test fixture by creating a new ladder tile and player before each test.
+   * Sets up the test fixture by creating a new ladderUp tile and player before each test.
    */
   @BeforeEach
   void setUp() {
@@ -30,7 +30,7 @@ class LadderUpTileTest {
 
 
   /**
-   * Tests the perform method in the {@code LadderTile} class.
+   * Tests the perform method in the {@code LadderUpTile} class.
    */
   @Test
   void perform() {

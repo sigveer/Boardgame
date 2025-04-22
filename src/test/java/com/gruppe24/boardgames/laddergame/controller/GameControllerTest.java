@@ -1,9 +1,15 @@
 package com.gruppe24.boardgames.laddergame.controller;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.gruppe24.boardgames.laddergame.models.Player;
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 import javafx.scene.paint.Color;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -23,12 +29,20 @@ class GameControllerTest {
   }
 
   /**
+   * Tests the getBoard method returns a non-null board.
+   */
+  @Test
+  void testGetBoard() {
+    assertNotNull(gameController.getBoard());
+  }
+
+  /**
    * Tests the handleTileAction method of the GameController class.
    */
   @Test
   void handleTileAction() {
-    testPlayer.setPosition(1);
-    gameController.handleTileAction(testPlayer, 1);
+    testPlayer.setPosition(2);
+    gameController.handleTileAction(testPlayer, 2);
     assertEquals(40, testPlayer.getPosition());
 
     testPlayer.setPosition(24);
@@ -120,15 +134,25 @@ class GameControllerTest {
    * Tests the getCheckTileType method of the GameController class.
    */
   @Test
-  public void testGetCheckTile() {
-    gameController.handlePlayerTurn(testPlayer, 1);
-    assertEquals(1, gameController.getCheckTileType()); //1 means ladderUp
-    gameController.handlePlayerTurn(testPlayer, 24);
-    assertEquals(2, gameController.getCheckTileType()); //2 means ladderDown
-    gameController.handlePlayerTurn(testPlayer, 3);
-    assertEquals(0, gameController.getCheckTileType()); //0 just a normal tile
+  public void testGetCheckTileType() {
+    // Test ladder up tile
+    testPlayer.setPosition(0);
+    gameController.handlePlayerTurn(testPlayer, 2);
+    assertEquals(1, gameController.getCheckTileType());
 
-    //Negativ test
+    // Test ladder down tile
+    testPlayer.setPosition(20);
+    gameController.handlePlayerTurn(testPlayer, 4);
+    assertEquals(2, gameController.getCheckTileType());
+
+    // Test normal tile
+    testPlayer.setPosition(3);
+    gameController.handlePlayerTurn(testPlayer, 3);
+    assertEquals(0, gameController.getCheckTileType());
+
+    // Negative test - verify not a ladder up
+    testPlayer.setPosition(3);
+    gameController.handlePlayerTurn(testPlayer, 3);
     assertNotEquals(1, gameController.getCheckTileType());
   }
 
@@ -155,5 +179,54 @@ class GameControllerTest {
     //Negative test
     winCondition = 80;
     assertFalse(gameController.textBasedCheckAndHandleWin(testPlayer, winCondition));
+  }
+
+  /**
+   * Tests the textBasedHandlePlayerTurn method.
+   * This test uses a ByteArrayInputStream to simulate user input.
+   */
+  @Test
+  void testTextBasedHandlePlayerTurn() {
+    ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+    System.setOut(new PrintStream(outContent));
+
+    System.setIn(new ByteArrayInputStream("\n".getBytes()));
+
+    int initialPosition = testPlayer.getPosition();
+    gameController.textBasedHandlePlayerTurn(testPlayer);
+
+    assertTrue(testPlayer.getPosition() >= initialPosition);
+
+    String output = outContent.toString();
+    assertTrue(output.contains("rolled"));
+
+    System.setOut(System.out);
+    System.setIn(System.in);
+  }
+
+  /**
+   * Tests the handlePlayerTurn method with specific dice values.
+   */
+  @Test
+  void testHandlePlayerTurnWithSpecificValue() {
+    testPlayer.setPosition(0);
+
+    // Test with a value that should move to a ladder up tile
+    gameController.handlePlayerTurn(testPlayer, 2);
+    assertEquals(40, testPlayer.getPosition());
+
+    // Reset and test with a value that moves to a ladder down tile
+    testPlayer.setPosition(20);
+    gameController.handlePlayerTurn(testPlayer, 4);
+    assertEquals(5, testPlayer.getPosition());
+  }
+
+  /**
+   * Tests the handleOvershoot method with exact win condition.
+   */
+  @Test
+  void testHandleOvershootWithExactWin() {
+    int newPosition = gameController.handleOvershoot(90);
+    assertEquals(90, newPosition);
   }
 }

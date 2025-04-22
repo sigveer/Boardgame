@@ -1,16 +1,15 @@
-package com.gruppe24.boardgames.laddergame.models.tiles;
+package com.gruppe24.boardgames.laddergame.models.board.tiles;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.gruppe24.boardgames.laddergame.models.Player;
-import com.gruppe24.boardgames.laddergame.models.board.tiles.LadderDownTile;
 import javafx.scene.paint.Color;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 
 /**
- * {@code SnakeTileTest} is a test class for the {@code SnakeTile} class.
+ * {@code ladderDownTileTest} is a test class for the {@code ladderDownTile} class.
  */
 class LadderDownTileTest {
 
@@ -19,7 +18,7 @@ class LadderDownTileTest {
 
 
   /**
-   * Sets up the test fixture by creating a new snake tile and player before each test.
+   * Sets up the test fixture by creating a new ladderDown tile and player before each test.
    */
   @BeforeEach
   void setUp() {
@@ -30,7 +29,7 @@ class LadderDownTileTest {
 
 
   /**
-   * Tests the perform method in the {@code SnakeTile} class.
+   * Tests the perform method in the {@code ladderDownTile} class.
    */
   @Test
   void perform() {

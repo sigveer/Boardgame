@@ -1,8 +1,7 @@
-package com.gruppe24.boardgames.laddergame.models;
+package com.gruppe24.boardgames.laddergame.models.board;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 
-import com.gruppe24.boardgames.laddergame.models.board.Board;
 import com.gruppe24.boardgames.laddergame.models.board.tiles.LadderDownTile;
 import com.gruppe24.boardgames.laddergame.models.board.tiles.LadderUpTile;
 import com.gruppe24.boardgames.laddergame.models.board.tiles.Tile;
@@ -37,7 +36,7 @@ class BoardTest {
    */
   @Test
   void getLadderUpTile() {
-    Tile tile = board.getTile(1);
+    Tile tile = board.getTile(2);
     assertInstanceOf(LadderUpTile.class, tile);
   }
 
