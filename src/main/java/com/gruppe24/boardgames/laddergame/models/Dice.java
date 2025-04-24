@@ -9,6 +9,7 @@ import java.util.List;
 public class Dice {
 
   private final List<Die> dice;
+  private int sum = 0;
 
   /**
    * The value of the last rolled die.
@@ -31,7 +32,7 @@ public class Dice {
    * @return The sum of the values of all dice after rolling.
    */
   public int rollSum() {
-    int sum = 0;
+     sum = 0;
     for (Die die : dice) {
       sum += die.roll();
     }
@@ -48,5 +49,9 @@ public class Dice {
       throw new IllegalArgumentException("Die number out of bounds");
     }
     return dice.get(dieNumber).getLastRoll();
+  }
+
+  public int getSum(){
+    return this.sum;
   }
 }

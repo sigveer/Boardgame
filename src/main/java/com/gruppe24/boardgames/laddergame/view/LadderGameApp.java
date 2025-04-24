@@ -354,6 +354,55 @@ public class LadderGameApp extends Application {
   private void animateAndMove(GridPane gridPane, Player player, int fromPosition, int toPosition) {
     int tileType = gameController.getCheckTileType();
 
+    // --------------- Overshoot ---------------------
+    if (fromPosition < 90 && toPosition < 90 && (fromPosition + dice.getSum() > 90)) {
+      Timeline bounceTimeline = new Timeline();
+      List<KeyFrame> keyFrames = new ArrayList<>();
+
+      // First, animate forward movement to tile 90
+      int currentPos = fromPosition;
+      double delay = 0.0;
+
+      // Move forward to 90
+      while (currentPos < 90) {
+        currentPos++;
+        int row = 9 - (currentPos - 1) / 9;
+        int col = (9 - row) % 2 == 0 ? (currentPos - 1) % 9 : 8 - (currentPos - 1) % 9;
+
+        keyFrames.add(new KeyFrame(
+            Duration.seconds(delay += 0.3),
+            event -> {
+              gridPane.getChildren().remove(player.getPlayerPiece());
+              gridPane.add(player.getPlayerPiece(), col, row);
+              ladderUpOrDownCheck.setText("Overshoot! Bouncing back");
+            }
+        ));
+      }
+
+      // Move backward to final position
+      currentPos = 90;
+      while (currentPos > toPosition) {
+        currentPos--;
+        int row = 9 - (currentPos - 1) / 9;
+        int col = (9 - row) % 2 == 0 ? (currentPos - 1) % 9 : 8 - (currentPos - 1) % 9;
+
+        keyFrames.add(new KeyFrame(
+            Duration.seconds(delay += 0.3),
+            event -> {
+              gridPane.getChildren().remove(player.getPlayerPiece());
+              gridPane.add(player.getPlayerPiece(), col, row);
+              ladderUpOrDownCheck.setText("Overshoot! Bounced back");
+            }
+        ));
+      }
+
+
+      bounceTimeline.getKeyFrames().addAll(keyFrames);
+      bounceTimeline.play();
+      ladderUpOrDownCheck.setText("");
+      return;
+    }
+
     // --------------- Frozen Tile ---------------------
     if (tileType == 4) {
       Timeline timeline = new Timeline();
