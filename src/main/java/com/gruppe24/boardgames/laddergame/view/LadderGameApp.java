@@ -343,6 +343,16 @@ public class LadderGameApp extends Application {
     currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
   }
 
+  private void addPlayerPieceToGrid (GridPane gridPane, Player player, int col, int row) {
+    gridPane.getChildren().remove(player.getPlayerPiece());
+
+    StackPane cellContainer = new StackPane();
+    cellContainer.getChildren().add(player.getPlayerPiece());
+    StackPane.setAlignment(player.getPlayerPiece(), Pos.CENTER);
+
+    gridPane.add(cellContainer, col, row);
+  }
+
   /**
    * Animates the player piece and moves it to the new position.
    *
@@ -372,8 +382,7 @@ public class LadderGameApp extends Application {
         keyFrames.add(new KeyFrame(
             Duration.seconds(delay += 0.3),
             event -> {
-              gridPane.getChildren().remove(player.getPlayerPiece());
-              gridPane.add(player.getPlayerPiece(), col, row);
+              addPlayerPieceToGrid(gridPane, player, col, row);
               ladderUpOrDownCheck.setText("Overshoot! Bouncing back");
             }
         ));
@@ -389,8 +398,7 @@ public class LadderGameApp extends Application {
         keyFrames.add(new KeyFrame(
             Duration.seconds(delay += 0.3),
             event -> {
-              gridPane.getChildren().remove(player.getPlayerPiece());
-              gridPane.add(player.getPlayerPiece(), col, row);
+              addPlayerPieceToGrid(gridPane, player, col, row);
               ladderUpOrDownCheck.setText("Overshoot! Bounced back");
             }
         ));
@@ -421,8 +429,7 @@ public class LadderGameApp extends Application {
         KeyFrame keyFrame = new KeyFrame(
             Duration.seconds((i + 1) * 0.3),
             event -> {
-              gridPane.getChildren().remove(player.getPlayerPiece());
-              gridPane.add(player.getPlayerPiece(), col, row);
+              addPlayerPieceToGrid(gridPane, player, col, row);
             }
         );
         timeline.getKeyFrames().add(keyFrame);
@@ -444,8 +451,7 @@ public class LadderGameApp extends Application {
           Duration.seconds(0.3),
 
           e -> {
-            gridPane.getChildren().remove(player.getPlayerPiece());
-            gridPane.add(player.getPlayerPiece(), teleportCol, teleportRow);
+            addPlayerPieceToGrid(gridPane, player, teleportCol, teleportRow);
             ladderUpOrDownCheck.setText("Teleporting...");
           }
       ));
@@ -462,8 +468,7 @@ public class LadderGameApp extends Application {
           int finalCol = (9 - finalRow) % 2 == 0 ? (toPosition - 1) % 9 : 8 - (toPosition - 1) % 9;
 
 
-          gridPane.getChildren().remove(player.getPlayerPiece());
-          gridPane.add(player.getPlayerPiece(), finalCol, finalRow);
+          addPlayerPieceToGrid(gridPane, player, finalCol, finalRow);
           ladderUpOrDownCheck.setText("Teleported to " + toPosition + "!");
         });
         pauseTl.play();
@@ -548,8 +553,7 @@ public class LadderGameApp extends Application {
         KeyFrame keyFrame = new KeyFrame(
             Duration.seconds((i + 1) * 0.3),
             event -> {
-              gridPane.getChildren().remove(player.getPlayerPiece());
-              gridPane.add(player.getPlayerPiece(), finalCol, row);
+              addPlayerPieceToGrid(gridPane, player, finalCol, row);
             }
         );
         keyFrames.add(keyFrame);
@@ -561,8 +565,7 @@ public class LadderGameApp extends Application {
         int finalRow = 9 - (toPosition - 1) / 9;
         int finalCol = (9 - finalRow) % 2 == 0 ? (toPosition - 1) % 9 : 8 - (toPosition - 1) % 9;
 
-        gridPane.getChildren().remove(player.getPlayerPiece());
-        gridPane.add(player.getPlayerPiece(), finalCol, finalRow);
+        addPlayerPieceToGrid(gridPane, player, finalCol, finalRow);
       });
       ladderTl.play();
       return;
@@ -584,8 +587,7 @@ public class LadderGameApp extends Application {
       KeyFrame keyFrame = new KeyFrame(
           Duration.seconds((i + 1) * 0.3),
           event -> {
-            gridPane.getChildren().remove(player.getPlayerPiece());
-            gridPane.add(player.getPlayerPiece(), col, row);
+            addPlayerPieceToGrid(gridPane, player, col, row);
           }
       );
       timeline.getKeyFrames().add(keyFrame);
