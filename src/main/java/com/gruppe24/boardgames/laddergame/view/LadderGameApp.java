@@ -12,12 +12,18 @@ import com.gruppe24.boardgames.laddergame.models.board.tiles.RandomTeleportTile;
 import com.gruppe24.utils.StyleUtils;
 import com.gruppe24.utils.Validators;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.geometry.Bounds;
+import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -35,7 +41,7 @@ import javafx.util.Duration;
 /**
  * Class that represents the LadderGame.
  */
-public class LadderGame extends Application {
+public class LadderGameApp extends Application {
 
   private final Board board;
   private final GameController gameController;
@@ -53,7 +59,7 @@ public class LadderGame extends Application {
    *
    * @param players list of players
    */
-  public LadderGame(List<Player> players) {
+  public LadderGameApp(List<Player> players) {
     this(players, BoardType.CLASSIC);
   }
 
@@ -63,7 +69,7 @@ public class LadderGame extends Application {
    * @param players list of players
    * @param boardType type of board
    */
-  public LadderGame(List<Player> players, BoardType boardType) {
+  public LadderGameApp(List<Player> players, BoardType boardType) {
     if (players == null || players.isEmpty()) {
       throw new IllegalArgumentException("Parameter list of players cannot be empty");
     }
@@ -104,6 +110,15 @@ public class LadderGame extends Application {
 
     //Scene
     Scene scene = new Scene(new StackPane(gridPane, ladderPane, dicePane), 1000, 850); //AI-suggestion
+
+    scene.widthProperty().addListener((obs, oldVal, newVal) -> {
+      ladderPane.getChildren().clear();
+      drawBoard(gridPane, ladderPane);
+    });
+    scene.heightProperty().addListener((obs, oldVal, newVal) -> {
+      ladderPane.getChildren().clear();
+      drawBoard(gridPane, ladderPane);
+    });
 
     //Title Label
     Label title = new Label("Board Games!");
@@ -153,8 +168,46 @@ public class LadderGame extends Application {
     gridPane.add(controlPanel, 11, 0, 1, 5);
 
     primaryStage.setScene(scene);
-    primaryStage.setFullScreen(true); // can not resize the window. A temporary fix?
+    primaryStage.setFullScreen(false); // can not resize the window. A temporary fix?
     primaryStage.show();
+  }
+
+  /**
+   * Method to draw the ladders on board, and enabeling to resize the window.
+   * @param ladderPane
+   * @param image
+   * @param startTile
+   * @param endTile
+   */
+  public void drawLadder(Pane ladderPane, Image image, Node startTile, Node endTile) {
+    Bounds startBounds = startTile.localToScene(startTile.getBoundsInLocal());
+    Bounds endBounds = endTile.localToScene(endTile.getBoundsInLocal());
+
+    double startX = (startBounds.getMinX() + startBounds.getMaxX()) / 2;
+    double startY = (startBounds.getMinY() + startBounds.getMaxY()) / 2;
+    double endX = (endBounds.getMinX() + endBounds.getMaxX()) / 2;
+    double endY = (endBounds.getMinY() + endBounds.getMaxY()) / 2;
+
+    //converting scene coordinates to ladderPanes local ones
+    Point2D start = ladderPane.sceneToLocal(startX, startY);
+    Point2D end = ladderPane.sceneToLocal(endX, endY);
+
+    double dx = end.getX() - start.getX();
+    double dy = end.getY() - start.getY();
+    double length = Math.hypot(dx, dy);
+    double angle = Math.toDegrees(Math.atan2(dy, dx) - 80);
+
+    ImageView ladderView = new ImageView(image);
+    ladderView.setPreserveRatio(false);
+    ladderView.setFitHeight(length);
+    ladderView.setFitWidth(length / 1.5);
+
+    ladderView.setRotate(angle);
+
+    ladderView.setTranslateX((start.getX() + end.getX()) / 2 - ladderView.getFitWidth() / 2);
+    ladderView.setTranslateY((start.getY() + end.getY()) / 2 - length / 2);
+
+    ladderPane.getChildren().add(ladderView);
   }
 
   /**
@@ -164,6 +217,8 @@ public class LadderGame extends Application {
    * @param ladderPane the pane for ladders
    */
   public void drawBoard(GridPane gridPane, Pane ladderPane) {
+    Map<Integer, Node> tileNodeMap = new HashMap<>();
+
     for (int row = 9; row >= 0; row--) {
       for (int col = 0; col < 9; col++) {
         int tileNumber = (9 - row) % 2 == 0 ? (9 - row) * 9 + col + 1 : (9 - row + 1) * 9 - col;
@@ -208,120 +263,21 @@ public class LadderGame extends Application {
         stackPane.setAlignment(Pos.CENTER);
 
         gridPane.add(stackPane, col, row);
+
+        tileNodeMap.put(tileNumber, stackPane);
       }
     }
 
-    //Upward Ladders
-    Image ladderUpImage = new Image("Pictures/Ladder.png");
+    Platform.runLater(() -> {
+      Image ladderUpImage = new Image("Pictures/Ladder.png");
 
-    ImageView ladderUpView1 = new ImageView(ladderUpImage);
-    ladderUpView1.setFitWidth(180);
-    ladderUpView1.setFitHeight(425);
-    ladderUpView1.setX(380);
-    ladderUpView1.setY(465);
-    ladderUpView1.setRotate(25);
-
-    ImageView ladderUpView2 = new ImageView(ladderUpImage);
-    ladderUpView2.setFitWidth(150);
-    ladderUpView2.setFitHeight(150);
-    ladderUpView2.setX(830);
-    ladderUpView2.setY(700);
-    ladderUpView2.setRotate(30);
-
-    ImageView ladderUpView3 = new ImageView(ladderUpImage);
-    ladderUpView3.setFitWidth(220);
-    ladderUpView3.setFitHeight(270);
-    ladderUpView3.setX(290);
-    ladderUpView3.setY(365);
-    ladderUpView3.setRotate(35);
-
-    ImageView ladderUpView4 = new ImageView(ladderUpImage);
-    ladderUpView4.setFitWidth(190);
-    ladderUpView4.setFitHeight(240);
-    ladderUpView4.setX(740);
-    ladderUpView4.setY(310);
-    ladderUpView4.setRotate(18);
-
-    ImageView ladderUpView5 = new ImageView(ladderUpImage);
-    ladderUpView5.setFitWidth(200);
-    ladderUpView5.setFitHeight(300);
-    ladderUpView5.setX(640);
-    ladderUpView5.setY(170);
-    ladderUpView5.setRotate(15);
-
-    ImageView ladderUpView6 = new ImageView(ladderUpImage);
-    ladderUpView6.setFitWidth(200);
-    ladderUpView6.setFitHeight(230);
-    ladderUpView6.setX(802);
-    ladderUpView6.setY(90);
-    ladderUpView6.setRotate(15);
-
-    ImageView ladderUpView7 = new ImageView(ladderUpImage);
-    ladderUpView7.setFitWidth(200);
-    ladderUpView7.setFitHeight(230);
-    ladderUpView7.setX(565);
-    ladderUpView7.setY(80);
-    ladderUpView7.setRotate(15);
-
-    ladderPane.getChildren().addAll(ladderUpView1, ladderUpView2, ladderUpView3, ladderUpView4,
-        ladderUpView5, ladderUpView6, ladderUpView7);
-
-    //Downward Ladder
-    Image ladderDownImage = new Image("Pictures/Ladder.png");
-
-    ImageView ladderDownView1 = new ImageView(ladderDownImage);
-    ladderDownView1.setFitWidth(200);
-    ladderDownView1.setFitHeight(250);
-    ladderDownView1.setX(405);
-    ladderDownView1.setY(590);
-    ladderDownView1.setRotate(20);
-
-    ImageView ladderDownView2 = new ImageView(ladderDownImage);
-    ladderDownView2.setFitWidth(200);
-    ladderDownView2.setFitHeight(200);
-    ladderDownView2.setX(555);
-    ladderDownView2.setY(650);
-    ladderDownView2.setRotate(25);
-
-    ImageView ladderDownView3 = new ImageView(ladderDownImage);
-    ladderDownView3.setFitWidth(200);
-    ladderDownView3.setFitHeight(450);
-    ladderDownView3.setX(830);
-    ladderDownView3.setY(260);
-    ladderDownView3.setRotate(1);
-
-    ImageView ladderDownView4 = new ImageView(ladderDownImage);
-    ladderDownView4.setFitWidth(150);
-    ladderDownView4.setFitHeight(150);
-    ladderDownView4.setX(665);
-    ladderDownView4.setY(500);
-    ladderDownView4.setRotate(-40);
-
-    ImageView ladderDownView5 = new ImageView(ladderDownImage);
-    ladderDownView5.setFitWidth(150);
-    ladderDownView5.setFitHeight(250);
-    ladderDownView5.setX(280);
-    ladderDownView5.setY(325);
-    ladderDownView5.setRotate(20);
-
-    ImageView ladderDownView6 = new ImageView(ladderDownImage);
-    ladderDownView6.setFitWidth(150);
-    ladderDownView6.setFitHeight(175);
-    ladderDownView6.setX(430);
-    ladderDownView6.setY(125);
-    ladderDownView6.setRotate(20);
-
-    ImageView ladderDownView7 = new ImageView(ladderDownImage);
-    ladderDownView7.setFitWidth(175);
-    ladderDownView7.setFitHeight(800);
-    ladderDownView7.setX(515);
-    ladderDownView7.setY(100);
-    ladderDownView7.setRotate(-35);
-    ladderDownView7.setScaleX(-1); //inverts picture
-
-
-    ladderPane.getChildren().addAll(ladderDownView1, ladderDownView2, ladderDownView3,
-        ladderDownView4, ladderDownView5, ladderDownView6, ladderDownView7);
+      for (Map.Entry<Integer, Integer> entry : board.getLadderUp().entrySet()) {
+        drawLadder(ladderPane, ladderUpImage, tileNodeMap.get(entry.getKey()), tileNodeMap.get(entry.getValue()));
+      }
+      for (Map.Entry<Integer, Integer> entry : board.getLadderDown().entrySet()) {
+        drawLadder(ladderPane, ladderUpImage, tileNodeMap.get(entry.getKey()), tileNodeMap.get(entry.getValue()));
+      }
+    });
   }
 
   /**

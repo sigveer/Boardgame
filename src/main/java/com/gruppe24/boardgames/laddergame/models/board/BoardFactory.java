@@ -24,18 +24,23 @@ public class BoardFactory {
   /**
    * Creates a classic Snakes and Ladders board.
    *
-   * @return A classic snakes and ladders board
    */
   private static Board createClassicBoard() {
-    return new ClassicBoard();
+    Board board = new Board();
+    board.initializeLadders();
+    board.initializeTiles();
+    return board;
   }
 
   /**
    * Creates a special board with additional tile types.
    *
-   * @return A board with special tiles
    */
   private static Board createSpecialBoard() {
-    return new SpecialBoard();
+    Board board = new Board();
+    board.initializeLadders();
+    board.initializeSpecialTiles();
+    board.initializeTiles();
+    return board;
   }
 }

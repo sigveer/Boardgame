@@ -47,17 +47,17 @@ public class LadderGameMenuGui extends Application {
 
     Button classicButton = new Button("Classic Mode");
     classicButton.setOnAction(event -> {
-      Setup setup = new Setup();
-      setup.setBoardType(BoardType.CLASSIC);
-      setup.start(primaryStage);
+      LadderGameSetup ladderGameSetup = new LadderGameSetup();
+      ladderGameSetup.setBoardType(BoardType.CLASSIC);
+      ladderGameSetup.start(primaryStage);
     });
     styleNormalButton(classicButton);
 
     Button specialTileButton = new Button("Special Mode");
     specialTileButton.setOnAction(event -> {
-      Setup setup = new Setup();
-      setup.setBoardType(BoardType.SPECIAL);
-      setup.start(primaryStage);
+      LadderGameSetup ladderGameSetup = new LadderGameSetup();
+      ladderGameSetup.setBoardType(BoardType.SPECIAL);
+      ladderGameSetup.start(primaryStage);
     });
     styleNormalButton(specialTileButton);
 
