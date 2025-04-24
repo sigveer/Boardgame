@@ -174,10 +174,11 @@ public class LadderGameApp extends Application {
 
   /**
    * Method to draw the ladders on board, and enabeling to resize the window.
-   * @param ladderPane
-   * @param image
-   * @param startTile
-   * @param endTile
+   *
+   * @param ladderPane the pane for ladders.
+   * @param image the image of the ladder.
+   * @param startTile the starting tile.
+   * @param endTile the ending tile.
    */
   public void drawLadder(Pane ladderPane, Image image, Node startTile, Node endTile) {
     Bounds startBounds = startTile.localToScene(startTile.getBoundsInLocal());
@@ -200,7 +201,7 @@ public class LadderGameApp extends Application {
     ImageView ladderView = new ImageView(image);
     ladderView.setPreserveRatio(false);
     ladderView.setFitHeight(length);
-    ladderView.setFitWidth(length / 1.5);
+    ladderView.setFitWidth(length / 10);
 
     ladderView.setRotate(angle);
 
