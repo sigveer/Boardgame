@@ -98,8 +98,6 @@ public class LadderGameApp extends Application {
     //GridPane for tiles
     GridPane gridPane = new GridPane();
     gridPane.setAlignment(Pos.CENTER);
-    gridPane.setVgap(1);
-    gridPane.setHgap(1);
     gridPane.setStyle("-fx-background-color: #607ee4;");
 
     //Pane for ladders and dices
@@ -227,31 +225,31 @@ public class LadderGameApp extends Application {
         StackPane stackPane = new StackPane();
         Rectangle tile = new Rectangle(tileSize, tileSize);
         tile.setStroke(Color.BLACK);
-        tile.setStrokeWidth(1);
+        tile.setStrokeWidth(1.5);
 
         if (tileNumber == 90) {
-          tile.setFill(Color.YELLOW);
+          tile.setFill(Color.web("F4DA16"));
         } else if (board.getTile(tileNumber) instanceof RandomTeleportTile) {
-          tile.setFill(Color.PURPLE);
+          tile.setFill(Color.web("9D41FF"));
         } else if (board.getTile(tileNumber) instanceof FrozenTile) {
-          tile.setFill(Color.LIGHTBLUE);
+          tile.setFill(Color.web("7CCAEF"));
         } else if (board.getTile(tileNumber) instanceof LadderUpTile) {
-          tile.setFill(Color.GREEN);
+          tile.setFill(Color.web("009E22"));
         } else if (board.getTile(tileNumber) instanceof LadderDownTile) {
-          tile.setFill(Color.RED);
+          tile.setFill(Color.web("E02929"));
         } else {
-          tile.setFill(Color.WHITE);
+          tile.setFill(Color.web("FDF2F2"));
         }
 
         //Landing-tile upon special tiles
         for (Integer value : board.getLadderUp().values()) {
           if (tileNumber == value) {
-            tile.setFill(Color.LIGHTGREEN);
+            tile.setFill(Color.web("9CEA95"));
           }
         }
         for (Integer value : board.getLadderDown().values()) {
           if (tileNumber == value) {
-            tile.setFill(Color.LIGHTPINK);
+            tile.setFill(Color.web("FF9090"));
           }
         }
 
