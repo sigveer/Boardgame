@@ -21,6 +21,7 @@ import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Bounds;
+import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -110,6 +111,15 @@ public class LadderGameApp extends Application {
     //Scene
     Scene scene = new Scene(new StackPane(gridPane, ladderPane, dicePane), 1000, 850); //AI-suggestion
 
+    scene.widthProperty().addListener((obs, oldVal, newVal) -> {
+      ladderPane.getChildren().clear();
+      drawBoard(gridPane, ladderPane);
+    });
+    scene.heightProperty().addListener((obs, oldVal, newVal) -> {
+      ladderPane.getChildren().clear();
+      drawBoard(gridPane, ladderPane);
+    });
+
     //Title Label
     Label title = new Label("Board Games!");
     title.setStyle("-fx-font-size: 40px; -fx-text-fill: #ffffff; -fx-font-weight: bold;");
@@ -162,7 +172,13 @@ public class LadderGameApp extends Application {
     primaryStage.show();
   }
 
-
+  /**
+   * Method to draw the ladders on board, and enabeling to resize the window.
+   * @param ladderPane
+   * @param image
+   * @param startTile
+   * @param endTile
+   */
   public void drawLadder(Pane ladderPane, Image image, Node startTile, Node endTile) {
     Bounds startBounds = startTile.localToScene(startTile.getBoundsInLocal());
     Bounds endBounds = endTile.localToScene(endTile.getBoundsInLocal());
@@ -172,20 +188,24 @@ public class LadderGameApp extends Application {
     double endX = (endBounds.getMinX() + endBounds.getMaxX()) / 2;
     double endY = (endBounds.getMinY() + endBounds.getMaxY()) / 2;
 
-    double dx = endX - startX;
-    double dy = endY - startY;
-    double length = Math.hypot(dx,dy);
-    double angle = Math.toDegrees(Math.atan2(dy,dx));
+    //converting scene coordinates to ladderPanes local ones
+    Point2D start = ladderPane.sceneToLocal(startX, startY);
+    Point2D end = ladderPane.sceneToLocal(endX, endY);
+
+    double dx = end.getX() - start.getX();
+    double dy = end.getY() - start.getY();
+    double length = Math.hypot(dx, dy);
+    double angle = Math.toDegrees(Math.atan2(dy, dx) - 80);
 
     ImageView ladderView = new ImageView(image);
-    ladderView.setPreserveRatio(true);
+    ladderView.setPreserveRatio(false);
     ladderView.setFitHeight(length);
-    ladderView.setFitWidth(40);
+    ladderView.setFitWidth(length / 1.5);
 
     ladderView.setRotate(angle);
 
-    ladderView.setTranslateX((startX+endX) / 2 - ladderView.getFitWidth() / 2);
-    ladderView.setTranslateY((startY+endY) / 2 - length / 2);
+    ladderView.setTranslateX((start.getX() + end.getX()) / 2 - ladderView.getFitWidth() / 2);
+    ladderView.setTranslateY((start.getY() + end.getY()) / 2 - length / 2);
 
     ladderPane.getChildren().add(ladderView);
   }
