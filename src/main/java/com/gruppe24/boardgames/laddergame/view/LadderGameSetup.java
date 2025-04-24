@@ -27,7 +27,7 @@ import javafx.stage.Stage;
  * The Setup class is responsible for setting up the initial game screen where players can enter
  * their names and select colors.
  */
-public class Setup extends Application {
+public class LadderGameSetup extends Application {
 
   private final List<Player> players;
   private BoardType boardType = BoardType.CLASSIC;
@@ -38,7 +38,7 @@ public class Setup extends Application {
    * Constructor for the Setup class.
    * Initializes the players list.
    */
-  public Setup() {
+  public LadderGameSetup() {
     this.players = new ArrayList<>();
   }
 
@@ -150,7 +150,7 @@ public class Setup extends Application {
         return;
       }
 
-      new LadderGame(players, boardType).start(primaryStage);
+      new LadderGameApp(players, boardType).start(primaryStage);
     });
 
 
