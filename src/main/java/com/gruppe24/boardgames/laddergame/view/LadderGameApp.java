@@ -95,39 +95,37 @@ public class LadderGameApp extends Application {
 
     primaryStage.setTitle("Laddergame Classic");
 
-    //GridPane for tiles
+    // Create main layout container using BorderPane
+    javafx.scene.layout.BorderPane mainLayout = new javafx.scene.layout.BorderPane();
+    mainLayout.setStyle("-fx-background-color: #607ee4;");
+
+    // Board container (left/center section)
+    StackPane boardContainer = new StackPane();
+
+    // GridPane for tiles
     GridPane gridPane = new GridPane();
     gridPane.setAlignment(Pos.CENTER);
-    gridPane.setStyle("-fx-background-color: #607ee4;");
 
-    //Pane for ladders and dices
+    // Pane for ladders
     Pane ladderPane = new Pane();
     ladderPane.setMouseTransparent(true);
-    Pane dicePane = new Pane();
-    dicePane.setMouseTransparent(true);
 
-    //Scene
-    Scene scene = new Scene(new StackPane(gridPane, ladderPane, dicePane), 1000, 850); //AI-suggestion
+    // Add components to board container
+    boardContainer.getChildren().addAll(gridPane, ladderPane);
 
-    scene.widthProperty().addListener((obs, oldVal, newVal) -> {
-      ladderPane.getChildren().clear();
-      drawBoard(gridPane, ladderPane);
-    });
-    scene.heightProperty().addListener((obs, oldVal, newVal) -> {
-      ladderPane.getChildren().clear();
-      drawBoard(gridPane, ladderPane);
-    });
+    // Control panel (right section)
+    VBox controlPanel = new VBox(15);
+    controlPanel.setAlignment(Pos.CENTER);
+    controlPanel.setPrefWidth(250);
+    controlPanel.setMinWidth(200);
+    controlPanel.setStyle("-fx-padding: 20px; -fx-background-color: #4a63b3; -fx-border-width: 3; "
+        + "-fx-border-color: #2a3f8d;");
 
-    //Title Label
-    Label title = new Label("Board Games!");
-    title.setStyle("-fx-font-size: 40px; -fx-text-fill: #ffffff; -fx-font-weight: bold;");
-
-    //Draw Board
-    drawBoard(gridPane, ladderPane); //drawing the board
-
-    //Labels
+    // Set up labels
     currentPlayerLabel = new Label("Current Player: " + players.get(currentPlayerIndex).getName());
     currentPlayerLabel.setStyle("-fx-font-size: 16px; -fx-text-fill: white;");
+    currentPlayerLabel.setWrapText(true);
+    currentPlayerLabel.setMaxWidth(230);
 
     diceResultLabel = new Label("Roll the dice!");
     diceResultLabel.setStyle("-fx-font-size: 16px; -fx-text-fill: white;");
@@ -138,7 +136,11 @@ public class LadderGameApp extends Application {
     isFrozenLabel = new Label("");
     isFrozenLabel.setStyle("-fx-font-size: 16px; -fx-text-fill: white;");
 
-    //Buttons
+    // Dice display area
+    Pane dicePane = new Pane();
+    dicePane.setPrefHeight(150);
+
+    // Buttons
     Button diceRoll = new Button("Roll Dice");
     diceRoll.setOnAction(event -> rollDiceAndMove(gridPane, primaryStage, dicePane));
     StyleUtils.styleNormalButton(diceRoll);
@@ -147,26 +149,36 @@ public class LadderGameApp extends Application {
     backToMenu.setOnAction(event -> new LadderGameMenuGui().start(primaryStage));
     StyleUtils.styleNormalButton(backToMenu);
 
-    //Vertical Box for control panel
-    VBox controlPanel = new VBox(10);
-    controlPanel.setAlignment(Pos.CENTER);
-    controlPanel.setPrefWidth(200);
-    controlPanel.setMinWidth(200);
+    controlPanel.getChildren().addAll(
+        currentPlayerLabel,
+        diceResultLabel,
+        ladderUpOrDownCheck,
+        isFrozenLabel,
+        dicePane,
+        diceRoll,
+        backToMenu
+    );
 
-    currentPlayerLabel.setWrapText(true); // Enable text wrapping
-    currentPlayerLabel.setMaxWidth(190);
+    mainLayout.setCenter(boardContainer);
+    mainLayout.setRight(controlPanel);
 
-    diceResultLabel.setMaxWidth(190);
-    ladderUpOrDownCheck.setMaxWidth(190);
-    isFrozenLabel.setMaxWidth(190);
+    Scene scene = new Scene(mainLayout, 1000, 850);
 
-    controlPanel.getChildren().addAll(currentPlayerLabel, diceResultLabel, ladderUpOrDownCheck,
-        isFrozenLabel, diceRoll, backToMenu);
+    // Window resize handlers
+    scene.widthProperty().addListener((obs, oldVal, newVal) -> {
+      ladderPane.getChildren().clear();
+      drawBoard(gridPane, ladderPane);
+    });
 
-    gridPane.add(controlPanel, 11, 0, 1, 5);
+    scene.heightProperty().addListener((obs, oldVal, newVal) -> {
+      ladderPane.getChildren().clear();
+      drawBoard(gridPane, ladderPane);
+    });
+
+    drawBoard(gridPane, ladderPane);
 
     primaryStage.setScene(scene);
-    primaryStage.setFullScreen(false); // can not resize the window. A temporary fix?
+    primaryStage.setFullScreen(false);
     primaryStage.show();
   }
 
@@ -309,16 +321,16 @@ public class LadderGameApp extends Application {
     String dice1Path = dicePath(diceValue1);
     Image dice1 = new Image(dice1Path);
     ImageView dice1Iv = new ImageView(dice1);
-    dice1Iv.setX(1030);
-    dice1Iv.setY(450);
+    dice1Iv.setX(0);
+    dice1Iv.setY(0);
     dice1Iv.setFitHeight(75);
     dice1Iv.setFitWidth(75);
 
     String dice2Path = dicePath(diceValue2);
     Image dice2 = new Image(dice2Path);
     ImageView dice2Iv = new ImageView(dice2);
-    dice2Iv.setX(1030);
-    dice2Iv.setY(530);
+    dice2Iv.setX(85);
+    dice2Iv.setY(0);
     dice2Iv.setFitHeight(75);
     dice2Iv.setFitWidth(75);
 
