@@ -89,11 +89,15 @@ public class DashboardGui extends Application {
 
     Button addPlayerButton = new Button("+");
     styleNormalButton(addPlayerButton);
-    addPlayerButton.setOnAction(e -> {addPlayer();});
+    addPlayerButton.setOnAction(e -> {
+      addPlayer();
+    });
 
     Button removePlayerButton = new Button("-");
     styleNormalButton(removePlayerButton);
-    removePlayerButton.setOnAction(e -> {removePlayer();});
+    removePlayerButton.setOnAction(e -> {
+      removePlayer();
+    });
 
     Button savePlayersButton = new Button("Save Players");
     styleNormalButton(savePlayersButton);
@@ -138,11 +142,11 @@ public class DashboardGui extends Application {
 
   private Image getNextIcon() {
     String[] iconPaths = {
-        "pictures/jpgIcons/mario.jpg",
-        "pictures/jpgIcons/luigi.jpg",
-        "pictures/jpgIcons/wario.jpg",
-        "pictures/jpgIcons/waluigi.jpg",
-        "pictures/jpgIcons/donkeykong.jpg",
+        "pictures/pngIcons/mario.png",
+        "pictures/pngIcons/luigi.png",
+        "pictures/pngIcons/wario.png",
+        "pictures/pngIcons/waluigi.png",
+        "pictures/pngIcons/donkeykong.png",
     };
     String selectedPath = iconPaths[players.size() % iconPaths.length];
     return new Image(
@@ -166,7 +170,7 @@ public class DashboardGui extends Application {
    * @param index  the index of the player
    * @return the HBox containing the player information
    *
-   * @AI_Assisted javafx.scene.shape.Circle, nameField.setOnAction([x]),
+   * @AI_Assisted nameField.setOnAction([x]),
    */
   private HBox createPlayerBox(Player player, int index) {
     HBox playerBox = new HBox(10);
@@ -175,13 +179,8 @@ public class DashboardGui extends Application {
     playerBox.setStyle("-fx-background-color: #FFFFFF33; -fx-background-radius: 5;");
 
     ImageView playerIcon = new ImageView(player.getPlayerPiece().getImage());
-    playerIcon.setFitWidth(30);
-    playerIcon.setFitHeight(30);
-
-    javafx.scene.shape.Circle clip = new javafx.scene.shape.Circle(15);
-    clip.setCenterX(15);
-    clip.setCenterY(15);
-    playerIcon.setClip(clip);
+    playerIcon.setFitWidth(60);
+    playerIcon.setFitHeight(60);
 
     TextField nameField = new TextField(player.getName());
     nameField.setOnAction(event -> {

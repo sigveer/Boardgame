@@ -11,7 +11,7 @@ public class Player {
 
   private String name;
   public int position;
-  private final ImageView playerPiece;
+  private ImageView playerPiece;
   private Image image;
   private boolean frozen;
 
@@ -62,6 +62,14 @@ public class Player {
    */
   public ImageView getPlayerPiece() {
     return playerPiece;
+  }
+
+  public void initializePlayerPiece(Image image) {
+    ImageView playerPiece = new ImageView(image);
+    playerPiece.setFitWidth(50);
+    playerPiece.setFitHeight(50);
+    playerPiece.setPreserveRatio(true);
+    this.playerPiece = playerPiece;
   }
 
 //  /**

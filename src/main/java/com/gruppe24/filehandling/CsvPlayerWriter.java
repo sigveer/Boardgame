@@ -84,6 +84,6 @@ public class CsvPlayerWriter implements com.gruppe24.filehandling.FileWriter {
     if (url != null && !url.isEmpty()) {
       return url.substring(url.lastIndexOf("/") + 1);
     }
-    return "mario.jpg";
+    return "mario.png";
   }
 }

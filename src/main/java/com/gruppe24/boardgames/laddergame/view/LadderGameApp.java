@@ -18,8 +18,10 @@ import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Bounds;
+import javafx.geometry.HPos;
 import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
+import javafx.geometry.VPos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -91,6 +93,10 @@ public class LadderGameApp extends Application {
       throw new IllegalArgumentException("Parameter Stage cannot be empty");
     }
     Validators.getLogger().log(Level.INFO, "LadderGame started");
+
+    for (Player player : players) {
+      player.initializePlayerPiece(player.getImage());
+    }
 
     primaryStage.setTitle("Laddergame Classic");
 

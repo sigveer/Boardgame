@@ -58,7 +58,7 @@ public class CsvPlayerReader implements com.gruppe24.filehandling.FileReader {
    */
   private Image loadImageFromName(String imageName) {
     // Construct the full path based on the image name
-    String fullPath = "pictures/jpgIcons/" + imageName;
+    String fullPath = "pictures/pngIcons/" + imageName;
     try {
       return new Image(
           Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(fullPath)));
@@ -66,7 +66,7 @@ public class CsvPlayerReader implements com.gruppe24.filehandling.FileReader {
       System.err.println("Error loading image: " + fullPath);
      //Deafult
       return new Image(Objects.requireNonNull(
-          getClass().getClassLoader().getResourceAsStream("pictures/jpgIcons/mario.jpg")));
+          getClass().getClassLoader().getResourceAsStream("pictures/pngIcons/mario.png")));
     }
   }
 
