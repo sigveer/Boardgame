@@ -1,13 +1,13 @@
 package com.gruppe24.filehandling;
 
 import com.gruppe24.boardgames.laddergame.models.Player;
-import com.gruppe24.utils.ColorUtil;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import javafx.scene.paint.Color;
+import java.util.Objects;
+import javafx.scene.image.Image;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -17,6 +17,15 @@ import javafx.stage.Stage;
  */
 public class CsvPlayerReader implements com.gruppe24.filehandling.FileReader {
 
+
+  /**
+   * Reads player data from a CSV file.
+   *
+   * @param filePath the path to the CSV file
+   * @return a list of players read from the file
+   *
+   * @AI_Based The while loop logic in this method is based on AI suggestion
+   */
   @Override
   public Object readFromFile(String filePath) {
     List<Player> players = new ArrayList<>();
@@ -27,15 +36,37 @@ public class CsvPlayerReader implements com.gruppe24.filehandling.FileReader {
         String[] parts = line.split(",");
         if (parts.length == 2) {
           String name = parts[0];
-          String colorStr = parts[1];
-          Color color = ColorUtil.getColorFromString(colorStr);
-          players.add(new Player(name, color));
+          String imageName = parts[1];
+          Image image = loadImageFromName(imageName);
+          players.add(new Player(name, image));
         }
       }
       return players;
     } catch (IOException e) {
       System.err.println("Error reading CSV file: " + e.getMessage());
       return new ArrayList<Player>();
+    }
+  }
+
+  /**
+   * Loads an image from the specified name.
+   *
+   * @param imageName the name of the image file
+   * @return the loaded Image object
+   *
+   * @AI_Based
+   */
+  private Image loadImageFromName(String imageName) {
+    // Construct the full path based on the image name
+    String fullPath = "pictures/jpgIcons/" + imageName;
+    try {
+      return new Image(
+          Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(fullPath)));
+    } catch (Exception e) {
+      System.err.println("Error loading image: " + fullPath);
+     //Deafult
+      return new Image(Objects.requireNonNull(
+          getClass().getClassLoader().getResourceAsStream("pictures/jpgIcons/mario.jpg")));
     }
   }
 

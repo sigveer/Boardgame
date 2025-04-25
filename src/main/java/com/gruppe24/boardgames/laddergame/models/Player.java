@@ -1,38 +1,39 @@
 package com.gruppe24.boardgames.laddergame.models;
 
 import com.gruppe24.utils.StyleUtils;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 /**
  * Class that represents players.
  */
 public class Player {
 
-  private final String name;
+  private String name;
   public int position;
-  private final Circle playerPiece;
-  private final Color color;
+  private final ImageView playerPiece;
+  private Image image;
   private boolean frozen;
 
   /**
    * Constructor for Player.
    *
    * @param name  name of the player
-   * @param color color of the player
+   * @param image image of the player
    */
-  public Player(String name, Color color) {
+  public Player(String name, Image image) {
     if (name == null || name.trim().isEmpty()) {
       throw new IllegalArgumentException("Parameter name cannot be empty");
     }
-    if (color == null) {
+    if (image == null) {
       throw new IllegalArgumentException("Parameter colour cannot be empty");
     }
     this.name = name;
     this.position = 0;
-    this.color = color;
-    this.playerPiece = new Circle(25);
-    this.playerPiece.setFill(color);
+    this.image = image;
+    this.playerPiece = new ImageView(image);
+    this.playerPiece.setFitWidth(40);
+    this.playerPiece.setFitHeight(40);
     this.frozen = false;
   }
 
@@ -59,24 +60,24 @@ public class Player {
    *
    * @return color-variable
    */
-  public Circle getPlayerPiece() {
+  public ImageView getPlayerPiece() {
     return playerPiece;
   }
 
-  /**
-   * Getter-method for the coloured version of name.
-   *
-   * @return name-variable
-   */
-  public String getColoredName() {
-    if (color == Color.RED) {
-      return StyleUtils.textRed() + name + StyleUtils.textReset();
-    } else if (color == Color.BLUE) {
-      return StyleUtils.textBlue() + name + StyleUtils.textReset();
-    } else {
-      return StyleUtils.textGreen() + name + StyleUtils.textReset();
-    }
-  }
+//  /**
+//   * Getter-method for the coloured text version of name.
+//   *
+//   * @return name-variable
+//   */
+//  public String getColoredName() {
+//    if (color == Color.RED) {
+//      return StyleUtils.textRed() + name + StyleUtils.textReset();
+//    } else if (color == Color.BLUE) {
+//      return StyleUtils.textBlue() + name + StyleUtils.textReset();
+//    } else {
+//      return StyleUtils.textGreen() + name + StyleUtils.textReset();
+//    }
+//  }
 
   /**
    * Accessor-method for name.
@@ -85,6 +86,15 @@ public class Player {
    */
   public String getName() {
     return name;
+  }
+
+  /**
+   * Setter-method for name.
+   *
+   * @param name
+   */
+  public void setName(String name) {
+    this.name = name;
   }
 
   /**
@@ -103,5 +113,23 @@ public class Player {
    */
   public void setPosition(int position) {
     this.position = position;
+  }
+
+  /**
+   * Getter-method for Image.
+   *
+   * @return image-variable
+   */
+  public Image getImage() {
+    return this.image;
+  }
+
+  /**
+   * Setter-method for Image.
+   *
+   * @param image new image
+   */
+  public void setImage(Image image) {
+    this.image = image;
   }
 }
