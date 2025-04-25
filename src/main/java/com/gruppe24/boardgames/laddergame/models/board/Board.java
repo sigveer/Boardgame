@@ -39,6 +39,8 @@ public class Board {
   /**
    * Constructor for the Board class with custom ladders and special tiles.
    *
+   * @AI_Assisted Constructor is completed with a logical answer from AI.
+   *
    * @param ladderUp HashMap of ladders going up
    * @param ladderDown HashMap of ladders going down
    * @param frozenTiles HashMap of frozen tiles
@@ -100,6 +102,9 @@ public class Board {
   /**
    * Method that initializes the standard special tiles.
    *
+   * @AI_Based How to initialize the special tiles .put([x], true/false) is based on AI generated
+   * code.
+   *
    * @param frozenTiles HashMap of frozen tiles
    * @param randomTeleportTiles HashMap of random teleport tiles
    */
@@ -112,6 +117,8 @@ public class Board {
 
   /**
    * Method that initializes the tiles.
+   *
+   * @AI_Based Logic as to how to initialize the tiles is based on AI generated code.
    */
   protected void initializeTiles() {
     tiles = new Tile[Columns * Rows];

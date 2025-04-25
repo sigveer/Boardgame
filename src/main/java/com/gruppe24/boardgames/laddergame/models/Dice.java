@@ -32,7 +32,7 @@ public class Dice {
    * @return The sum of the values of all dice after rolling.
    */
   public int rollSum() {
-     sum = 0;
+    sum = 0;
     for (Die die : dice) {
       sum += die.roll();
     }
@@ -51,7 +51,7 @@ public class Dice {
     return dice.get(dieNumber).getLastRoll();
   }
 
-  public int getSum(){
+  public int getSum() {
     return this.sum;
   }
 }

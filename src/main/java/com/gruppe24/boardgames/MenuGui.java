@@ -37,13 +37,13 @@ public class MenuGui extends Application {
 
     GridPane gridPane = new GridPane();
     Scene scene = new Scene(gridPane, 1000, 850);
-    gridPane.setAlignment(Pos.CENTER);
+    gridPane.setAlignment(Pos.TOP_CENTER);
     gridPane.setVgap(25);
     gridPane.setHgap(20);
-    gridPane.setStyle("-fx-background-color: #0a1b5e;");
+    gridPane.setStyle("-fx-background-color: #3a5ad7;");
 
     Label title = new Label("Board Games!");
-    title.setStyle("-fx-font-size: 40px; -fx-text-fill: #ffffff; -fx-font-weight: bold;");
+    title.setStyle("-fx-font-size: 45px; -fx-text-fill: #ffffff; -fx-font-weight: bold;");
 
 
     //Buttons
@@ -61,9 +61,9 @@ public class MenuGui extends Application {
 
 
     gridPane.add(title, 0, 0);
-    gridPane.add(ladderButton, 0, 1);
-    gridPane.add(game2Button, 0, 2);
-    gridPane.add(ticTacToeApp, 0, 3);
+    gridPane.add(ladderButton, 0, 10);
+    gridPane.add(game2Button, 0, 11);
+    gridPane.add(ticTacToeApp, 0, 12);
 
     primaryStage.setScene(scene);
     primaryStage.show();

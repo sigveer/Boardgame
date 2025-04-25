@@ -40,7 +40,7 @@ public class LadderGameMenuGui extends Application {
     gridPane.setAlignment(Pos.CENTER);
     gridPane.setVgap(25);
     gridPane.setHgap(20);
-    gridPane.setStyle("-fx-background-color: #2e49ae;");
+    gridPane.setStyle("-fx-background-color: #3a5ad7;");
 
     Label title = new Label("Snakes and Ladders");
     title.setStyle("-fx-font-size: 40px; -fx-text-fill: #ffffff; -fx-font-weight: bold;");

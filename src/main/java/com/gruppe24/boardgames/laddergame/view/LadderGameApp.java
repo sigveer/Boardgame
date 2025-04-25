@@ -100,7 +100,7 @@ public class LadderGameApp extends Application {
 
     // Create main layout container using BorderPane
     javafx.scene.layout.BorderPane mainLayout = new javafx.scene.layout.BorderPane();
-    mainLayout.setStyle("-fx-background-color: #607ee4;");
+    mainLayout.setStyle("-fx-background-color: #3a5ad7;");
 
     // Board container (left/center section)
     StackPane boardContainer = new StackPane();
@@ -121,7 +121,7 @@ public class LadderGameApp extends Application {
     controlPanel.setAlignment(Pos.CENTER);
     controlPanel.setPrefWidth(250);
     controlPanel.setMinWidth(200);
-    controlPanel.setStyle("-fx-padding: 20px; -fx-background-color: #4a63b3; -fx-border-width: 3; "
+    controlPanel.setStyle("-fx-padding: 20px; -fx-background-color: #3a5ad7; -fx-border-width: 3; "
         + "-fx-border-color: #2a3f8d;");
 
     // Set up labels
@@ -181,7 +181,6 @@ public class LadderGameApp extends Application {
     drawBoard(gridPane, ladderPane);
 
     primaryStage.setScene(scene);
-    primaryStage.setFullScreen(false);
     primaryStage.show();
   }
 
