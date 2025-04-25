@@ -1,5 +1,6 @@
 package com.gruppe24.boardgames.laddergame.view;
 
+import com.gruppe24.boardgames.MenuGui;
 import com.gruppe24.boardgames.laddergame.controller.GameController;
 import com.gruppe24.boardgames.laddergame.models.Dice;
 import com.gruppe24.boardgames.laddergame.models.Player;
@@ -25,6 +26,8 @@ import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -358,7 +361,15 @@ public class LadderGameApp extends Application {
    */
   private void checkWinner(Player player, int position, Stage primaryStage) {
     if (gameController.checkAndHandleWin(position)) {
-      Platform.runLater(() -> new WinnerScreen(player).start(primaryStage));
+      Alert alert = new Alert(AlertType.INFORMATION);
+      alert.setTitle("Game Over");
+      alert.setHeaderText(null);
+      alert.setContentText(player.getName() + " has won the game!");
+
+      Platform.runLater(() -> {
+        alert.showAndWait();
+        primaryStage.close();
+      });
     }
   }
 
