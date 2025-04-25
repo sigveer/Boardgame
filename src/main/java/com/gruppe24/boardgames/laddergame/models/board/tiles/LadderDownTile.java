@@ -25,6 +25,10 @@ public class LadderDownTile extends SpecialTile {
   @Override
   public void perform(Player player) {
     player.setPosition(getDestination());
-    checkTileType = 2;
+  }
+
+  @Override
+  public int getTileType() {
+    return 2;
   }
 }

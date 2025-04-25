@@ -1,6 +1,6 @@
 package com.gruppe24.boardgames.tictactoe;
 
-import com.gruppe24.boardgames.MenuGui;
+import com.gruppe24.boardgames.DashboardGui;
 import com.gruppe24.utils.StyleUtils;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -74,7 +74,7 @@ public class View {
 
     Button quitButton = new Button("Quit");
     StyleUtils.styleNormalButton(quitButton);
-    quitButton.setOnAction(e -> new MenuGui().start(primaryStage));
+    quitButton.setOnAction(e -> new DashboardGui().start(primaryStage));
 
     menuPanel.add(restartButton, 0, 0);
     menuPanel.add(quitButton, 0, 1);

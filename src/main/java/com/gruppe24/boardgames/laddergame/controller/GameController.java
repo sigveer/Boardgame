@@ -91,7 +91,7 @@ public class GameController {
   public void handleTileAction(Player player, int newPosition) {
     Tile tile = board.getTile(newPosition);
     tile.perform(player);
-    checkTileType = tile.checkTileType;
+    checkTileType = tile.tileTypeNumber;
     specialTilePosition = tile.getPosition();
   }
 

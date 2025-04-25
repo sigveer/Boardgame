@@ -1,6 +1,6 @@
 package com.gruppe24;
 
-import com.gruppe24.boardgames.MenuGui;
+import com.gruppe24.boardgames.DashboardGui;
 import com.gruppe24.utils.Validators;
 import java.util.logging.Level;
 
@@ -17,7 +17,7 @@ public class Main {
    * @param args command line arguments
    */
   public static void main(String[] args) {
-    MenuGui.launch(MenuGui.class, args);
+    DashboardGui.launch(DashboardGui.class, args);
     Validators.getLogger().log(Level.INFO, "Application closed");
   }
 }

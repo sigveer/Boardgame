@@ -103,7 +103,7 @@ public class Board {
    * Method that initializes the standard special tiles.
    *
    * @AI_Based How to initialize the special tiles .put([x], true/false) is based on AI generated
-   * code.
+   code.
    *
    * @param frozenTiles HashMap of frozen tiles
    * @param randomTeleportTiles HashMap of random teleport tiles
@@ -148,6 +148,16 @@ public class Board {
       return tiles[position];
     }
     return new NormalTile(position);
+  }
+
+  /**
+   * Method that gets the tile type.
+   *
+   * @param position the position of the tile
+   * @return the tile type
+   */
+  public int getTileType(int position) {
+    return getTile(position).getTileType();
   }
 
   /**

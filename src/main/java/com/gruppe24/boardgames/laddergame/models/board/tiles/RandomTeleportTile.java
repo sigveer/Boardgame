@@ -26,7 +26,6 @@ public class RandomTeleportTile extends SpecialTile {
    */
   @Override
   public void perform(Player player) {
-    this.checkTileType = 3;
 
     int maxPosition = 89;
     int minPosition = 1;
@@ -35,5 +34,10 @@ public class RandomTeleportTile extends SpecialTile {
     player.setPosition(destinationPosition);
 
     this.position = destinationPosition;
+  }
+
+  @Override
+  public int getTileType() {
+    return 3;
   }
 }

@@ -38,4 +38,9 @@ public class SpecialTile extends Tile {
   public int getDestination() {
     return destination;
   }
+
+  @Override
+  public int getTileType() {
+    return -1;
+  }
 }

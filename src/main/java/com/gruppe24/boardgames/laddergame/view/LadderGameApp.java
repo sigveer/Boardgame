@@ -1,15 +1,11 @@
 package com.gruppe24.boardgames.laddergame.view;
 
-import com.gruppe24.boardgames.MenuGui;
+import com.gruppe24.boardgames.DashboardGui;
 import com.gruppe24.boardgames.laddergame.controller.GameController;
 import com.gruppe24.boardgames.laddergame.models.Dice;
 import com.gruppe24.boardgames.laddergame.models.Player;
 import com.gruppe24.boardgames.laddergame.models.board.Board;
 import com.gruppe24.boardgames.laddergame.models.board.BoardType;
-import com.gruppe24.boardgames.laddergame.models.board.tiles.FrozenTile;
-import com.gruppe24.boardgames.laddergame.models.board.tiles.LadderDownTile;
-import com.gruppe24.boardgames.laddergame.models.board.tiles.LadderUpTile;
-import com.gruppe24.boardgames.laddergame.models.board.tiles.RandomTeleportTile;
 import com.gruppe24.utils.StyleUtils;
 import com.gruppe24.utils.Validators;
 import java.util.ArrayList;
@@ -121,8 +117,7 @@ public class LadderGameApp extends Application {
     controlPanel.setAlignment(Pos.CENTER);
     controlPanel.setPrefWidth(250);
     controlPanel.setMinWidth(200);
-    controlPanel.setStyle("-fx-padding: 20px; -fx-background-color: #3a5ad7; -fx-border-width: 3; "
-        + "-fx-border-color: #2a3f8d;");
+    StyleUtils.stylePanel(controlPanel);
 
     // Set up labels
     currentPlayerLabel = new Label("Current Player: " + players.get(currentPlayerIndex).getName());
@@ -149,7 +144,7 @@ public class LadderGameApp extends Application {
     StyleUtils.styleNormalButton(diceRoll);
 
     Button backToMenu = new Button("Back to Menu");
-    backToMenu.setOnAction(event -> new LadderGameMenuGui().start(primaryStage));
+    backToMenu.setOnAction(event -> new DashboardGui().start(primaryStage));
     StyleUtils.styleNormalButton(backToMenu);
 
     controlPanel.getChildren().addAll(
@@ -243,17 +238,27 @@ public class LadderGameApp extends Application {
 
         if (tileNumber == 90) {
           tile.setFill(Color.web("F4DA16"));
-        } else if (board.getTile(tileNumber) instanceof RandomTeleportTile) {
-          tile.setFill(Color.web("9D41FF"));
-        } else if (board.getTile(tileNumber) instanceof FrozenTile) {
-          tile.setFill(Color.web("7CCAEF"));
-        } else if (board.getTile(tileNumber) instanceof LadderUpTile) {
-          tile.setFill(Color.web("009E22"));
-        } else if (board.getTile(tileNumber) instanceof LadderDownTile) {
-          tile.setFill(Color.web("E02929"));
-        } else {
-          tile.setFill(Color.web("FDF2F2"));
         }
+        int tileType = board.getTileType(tileNumber);
+        switch (tileType) {
+          case 1 -> tile.setFill(Color.web("009E22")); // Ladder Up
+          case 2 -> tile.setFill(Color.web("E02929")); // Ladder Down
+          case 3 -> tile.setFill(Color.web("9D41FF")); // Random Teleport
+          case 4 -> tile.setFill(Color.web("7CCAEF")); // Frozen Tile
+          default -> tile.setFill(Color.web("FDF2F2")); // Normal Tile
+        }
+
+//        else if (board.getTile(tileNumber) instanceof RandomTeleportTile) {
+//          tile.setFill(Color.web("9D41FF"));
+//        } else if (board.getTile(tileNumber) instanceof FrozenTile) {
+//          tile.setFill(Color.web("7CCAEF"));
+//        } else if (board.getTile(tileNumber) instanceof LadderUpTile) {
+//          tile.setFill(Color.web("009E22"));
+//        } else if (board.getTile(tileNumber) instanceof LadderDownTile) {
+//          tile.setFill(Color.web("E02929"));
+//        } else {
+//          tile.setFill(Color.web("FDF2F2"));
+//        }
 
         //Landing-tile upon special tiles
         for (Integer value : board.getLadderUp().values()) {
@@ -282,7 +287,7 @@ public class LadderGameApp extends Application {
     }
 
     Platform.runLater(() -> {
-      Image ladderUpImage = new Image("Pictures/Ladder.png");
+      Image ladderUpImage = new Image("pictures/Ladder.png");
 
       for (Map.Entry<Integer, Integer> entry : board.getLadderUp().entrySet()) {
         drawLadder(ladderPane, ladderUpImage, tileNodeMap.get(entry.getKey()), tileNodeMap.get(entry.getValue()));
@@ -323,7 +328,7 @@ public class LadderGameApp extends Application {
     String dice1Path = dicePath(diceValue1);
     Image dice1 = new Image(dice1Path);
     ImageView dice1Iv = new ImageView(dice1);
-    dice1Iv.setX(0);
+    dice1Iv.setX(40);
     dice1Iv.setY(0);
     dice1Iv.setFitHeight(75);
     dice1Iv.setFitWidth(75);
@@ -331,7 +336,7 @@ public class LadderGameApp extends Application {
     String dice2Path = dicePath(diceValue2);
     Image dice2 = new Image(dice2Path);
     ImageView dice2Iv = new ImageView(dice2);
-    dice2Iv.setX(85);
+    dice2Iv.setX(125);
     dice2Iv.setY(0);
     dice2Iv.setFitHeight(75);
     dice2Iv.setFitWidth(75);
@@ -642,7 +647,7 @@ public class LadderGameApp extends Application {
    * @return the path to the dice image
    */
   public String dicePath(int dice) {
-    return "Pictures/Dices/dice" + dice + ".png";
+    return "pictures/dices/dice" + dice + ".png";
   }
 
 }

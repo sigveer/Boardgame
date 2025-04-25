@@ -45,7 +45,7 @@ class RandomTeleportTileTest {
     assertEquals(player.getPosition(), randomTeleportTile.getPosition(),
         "Tile position should match player's new position");
 
-    assertEquals(3, randomTeleportTile.checkTileType,
+    assertEquals(3, randomTeleportTile.tileTypeNumber,
         "checkTileType should be 3 for RandomTeleportTile");
   }
 }

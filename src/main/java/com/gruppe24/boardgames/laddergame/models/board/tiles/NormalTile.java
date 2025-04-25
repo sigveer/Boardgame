@@ -13,4 +13,9 @@ public class NormalTile extends Tile {
   public NormalTile(int position) {
     super(position);
   }
+
+  @Override
+  public int getTileType() {
+    return 0;
+  }
 }

@@ -25,6 +25,10 @@ public class FrozenTile extends SpecialTile {
   @Override
   public void perform(Player player) {
     player.setFrozen(true);
-    checkTileType = 4;
+  }
+
+  @Override
+  public int getTileType() {
+    return 4;
   }
 }

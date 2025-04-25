@@ -8,7 +8,7 @@ import com.gruppe24.boardgames.laddergame.models.Player;
 public abstract class Tile {
 
   protected int position;
-  public int checkTileType = 0;
+  public int tileTypeNumber = 0;
 
   /**
    * Constructor that initializes the normal tile.
@@ -32,7 +32,7 @@ public abstract class Tile {
    * @param player The player who is currently on this tile.
    */
   public void perform(Player player) {
-    checkTileType = 0;
+    tileTypeNumber = 0;
   }
 
   /**
@@ -43,5 +43,12 @@ public abstract class Tile {
   public int getPosition() {
     return position;
   }
+
+  /**
+   * Getter for the tile type number.
+   *
+   * @return The tile type number.
+   */
+  public abstract int getTileType();
 }
 
