@@ -1,6 +1,6 @@
 package com.gruppe24.boardgames.laddergame.view;
 
-import com.gruppe24.boardgames.laddergame.controller.GameController;
+import com.gruppe24.boardgames.laddergame.controller.TextBasedController;
 import com.gruppe24.boardgames.laddergame.models.Player;
 import com.gruppe24.utils.Steps;
 import com.gruppe24.utils.Validators;
@@ -14,14 +14,14 @@ import javafx.scene.paint.Color;
  */
 public class TextBasedLadderGame {
   private final List<Player> players;
-  private final GameController gameController;
+  private final TextBasedController gameController;
 
   /**
    * Constructor for the TextBasedLadderGame class.
    */
   public TextBasedLadderGame() {
     this.players = new ArrayList<>();
-    this.gameController = new GameController();
+    this.gameController = new TextBasedController();
     Validators.getLogger().log(Level.INFO, "Text based ladde game started");
   }
 
