@@ -1,12 +1,10 @@
 package com.gruppe24.boardgames.laddergame.controller;
 
-import com.gruppe24.boardgames.laddergame.models.Dice;
 import com.gruppe24.boardgames.laddergame.models.Player;
 import com.gruppe24.boardgames.laddergame.models.board.Board;
 import com.gruppe24.boardgames.laddergame.models.board.BoardFactory;
 import com.gruppe24.boardgames.laddergame.models.board.BoardType;
 import com.gruppe24.boardgames.laddergame.models.board.tiles.Tile;
-import com.gruppe24.utils.Steps;
 
 /**
  * Class that handles the game logic and player turns.
@@ -14,7 +12,6 @@ import com.gruppe24.utils.Steps;
 public class GameController {
 
   private final Board board;
-  private final Dice dice;
   private static final int WinCondition = 90;
   private int checkTileType = 0;
   private int specialTilePosition;
@@ -36,7 +33,6 @@ public class GameController {
       throw new IllegalArgumentException("Parameter boardType cannot be empty");
     }
     this.board = BoardFactory.createBoard(boardType);
-    this.dice = new Dice(2);
   }
 
   /**
@@ -112,40 +108,5 @@ public class GameController {
   public int getSpecialTilePosition() {
     return specialTilePosition;
   }
-
-  //----------------CONTROLLERS FOR TEXTBASED LADDERGAME--------------------//
-  /**
-   * Method that checks if a player has won the game.
-   *
-   * @param p the player
-   * @param newPosition the new position of the player
-   * @return true if the player has won, false otherwise
-   */
-  public boolean textBasedCheckAndHandleWin(Player p, int newPosition) {
-    if (newPosition == WinCondition) {
-      System.out.println(p.getColoredName() + " won the game!");
-      return true;
-    }
-    return false;
-  }
-
-  /**
-   * Method that handles the player's turn.
-   */
-  public void textBasedHandlePlayerTurn(Player player) {
-    Steps.pressEnterToContinue();
-    int sumDice = dice.rollSum();
-
-    movePlayer(player, sumDice);
-
-    System.out.println(player.getColoredName() + " rolled " + sumDice);
-    if (getCheckTileType() == 1) {
-      System.out.println("Climbing up!");
-    } else if (getCheckTileType() == 2) {
-      System.out.println("Sliding down...");
-    }
-    System.out.println(player.getColoredName() + " is now on tile " + player.getPosition());
-  }
-
 
 }
