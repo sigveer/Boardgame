@@ -1,5 +1,6 @@
 package com.gruppe24.boardgames.laddergame.view;
 
+import com.gruppe24.boardgames.MenuGui;
 import com.gruppe24.boardgames.laddergame.controller.GameController;
 import com.gruppe24.boardgames.laddergame.models.Dice;
 import com.gruppe24.boardgames.laddergame.models.Player;
@@ -25,6 +26,8 @@ import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -342,20 +345,43 @@ public class LadderGameApp extends Application {
 
     //Update animation with the new position
     int newPosition = currentPlayer.getPosition();
-    animateAndMove(gridPane, currentPlayer, previousPosition, newPosition);
-
-    //Check winner
-    if (gameController.checkAndHandleWin(newPosition)) {
-      new WinnerScreen(currentPlayer).start(primaryStage);
-      return;
-    }
+    animateAndMove(gridPane, currentPlayer, previousPosition, newPosition, primaryStage);
 
     //Switch player
     currentPlayerLabel.setText("Current Player: " + players.get(currentPlayerIndex).getName());
     currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
   }
 
-  private void addPlayerPieceToGrid (GridPane gridPane, Player player, int col, int row) {
+  /**
+   * Checks if the current player has won.
+   *
+   * @param player the current player
+   * @param position the current position of the player
+   * @param primaryStage the primary stage
+   */
+  private void checkWinner(Player player, int position, Stage primaryStage) {
+    if (gameController.checkAndHandleWin(position)) {
+      Alert alert = new Alert(AlertType.INFORMATION);
+      alert.setTitle("Game Over");
+      alert.setHeaderText(null);
+      alert.setContentText(player.getName() + " has won the game!");
+
+      Platform.runLater(() -> {
+        alert.showAndWait();
+        primaryStage.close();
+      });
+    }
+  }
+
+  /**
+   * Adds the player piece to the grid.
+   *
+   * @param gridPane the grid pane to draw on
+   * @param player the current player
+   * @param col the column index
+   * @param row the row index
+   */
+  private void addPlayerPieceToGrid(GridPane gridPane, Player player, int col, int row) {
     gridPane.getChildren().remove(player.getPlayerPiece());
 
     StackPane cellContainer = new StackPane();
@@ -373,7 +399,7 @@ public class LadderGameApp extends Application {
    * @param fromPosition the original position
    * @param toPosition the new position
    */
-  private void animateAndMove(GridPane gridPane, Player player, int fromPosition, int toPosition) {
+  private void animateAndMove(GridPane gridPane, Player player, int fromPosition, int toPosition, Stage primaryStage) {
     int tileType = gameController.getCheckTileType();
 
     // --------------- Overshoot ---------------------
@@ -576,8 +602,8 @@ public class LadderGameApp extends Application {
       ladderTl.setOnFinished(event -> {
         int finalRow = 9 - (toPosition - 1) / 9;
         int finalCol = (9 - finalRow) % 2 == 0 ? (toPosition - 1) % 9 : 8 - (toPosition - 1) % 9;
-
         addPlayerPieceToGrid(gridPane, player, finalCol, finalRow);
+        checkWinner(player, toPosition, primaryStage);
       });
       ladderTl.play();
       return;
@@ -604,6 +630,9 @@ public class LadderGameApp extends Application {
       );
       timeline.getKeyFrames().add(keyFrame);
     }
+    timeline.setOnFinished(event -> {
+      checkWinner(player, toPosition, primaryStage);
+    });
     timeline.play();
   }
 
