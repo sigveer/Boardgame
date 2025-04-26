@@ -14,6 +14,7 @@ public class Player {
   public int position;
   private ImageView playerPiece;
   private Image icon;
+  private String iconPath;
   private  int currentIconIndex = 0;
   private boolean frozen;
 
@@ -37,6 +38,7 @@ public class Player {
     this.playerPiece.setFitWidth(40);
     this.playerPiece.setFitHeight(40);
     this.frozen = false;
+    this.iconPath = getIconPaths()[0];
   }
 
   /**
@@ -161,14 +163,22 @@ public class Player {
    */
   public void cycleToNextIcon() {
     String[] paths = getIconPaths();
-
     currentIconIndex = (currentIconIndex + 1) % paths.length;
     String nextPath = paths[currentIconIndex];
+    this.iconPath = nextPath;
 
     Image newIcon = new Image(
         Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(nextPath)));
     this.setIcon(newIcon);
     this.playerPiece.setImage(newIcon);
+  }
+
+  public String getIconPath() {
+    return iconPath;
+  }
+
+  public void setIconPath(String iconPath) {
+    this.iconPath = iconPath;
   }
 
 }
