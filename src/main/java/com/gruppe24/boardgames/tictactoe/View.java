@@ -82,7 +82,7 @@ public class View {
     background.add(boardgrid, 0, 0);
     background.add(menuPanel, 1, 0);
 
-    Scene scene = new Scene(background, 1000, 700);
+    Scene scene = new Scene(background, 1000, 850);
     primaryStage.setScene(scene);
     primaryStage.setTitle("Tic Tac Toe");
     primaryStage.show();

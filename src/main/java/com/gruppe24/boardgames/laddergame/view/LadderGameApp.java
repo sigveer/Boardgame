@@ -95,7 +95,7 @@ public class LadderGameApp extends Application {
     Validators.getLogger().log(Level.INFO, "LadderGame started");
 
     for (Player player : players) {
-      player.initializePlayerPiece(player.getImage());
+      player.initializePlayerPiece(player.getIcon());
     }
 
     primaryStage.setTitle("Laddergame Classic");

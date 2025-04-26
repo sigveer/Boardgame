@@ -1,6 +1,7 @@
 package com.gruppe24.boardgames.laddergame.models;
 
 import com.gruppe24.utils.StyleUtils;
+import java.util.Objects;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
@@ -12,26 +13,27 @@ public class Player {
   private String name;
   public int position;
   private ImageView playerPiece;
-  private Image image;
+  private Image icon;
+  private  int currentIconIndex = 0;
   private boolean frozen;
 
   /**
    * Constructor for Player.
    *
    * @param name  name of the player
-   * @param image image of the player
+   * @param icon icon of the player
    */
-  public Player(String name, Image image) {
+  public Player(String name, Image icon) {
     if (name == null || name.trim().isEmpty()) {
       throw new IllegalArgumentException("Parameter name cannot be empty");
     }
-    if (image == null) {
+    if (icon == null) {
       throw new IllegalArgumentException("Parameter colour cannot be empty");
     }
     this.name = name;
     this.position = 0;
-    this.image = image;
-    this.playerPiece = new ImageView(image);
+    this.icon = icon;
+    this.playerPiece = new ImageView(icon);
     this.playerPiece.setFitWidth(40);
     this.playerPiece.setFitHeight(40);
     this.frozen = false;
@@ -128,8 +130,8 @@ public class Player {
    *
    * @return image-variable
    */
-  public Image getImage() {
-    return this.image;
+  public Image getIcon() {
+    return this.icon;
   }
 
   /**
@@ -137,7 +139,36 @@ public class Player {
    *
    * @param image new image
    */
-  public void setImage(Image image) {
-    this.image = image;
+  public void setIcon(Image image) {
+    if (image == null) {
+      throw new IllegalArgumentException("Parameter image cannot be empty");
+    }
+    this.icon = image;
   }
+
+  public static String[] getIconPaths() {
+    return new String[] {
+      "pictures/pngIcons/mario.png",
+      "pictures/pngIcons/luigi.png",
+      "pictures/pngIcons/wario.png",
+      "pictures/pngIcons/waluigi.png",
+      "pictures/pngIcons/donkeykong.png"
+    };
+  }
+
+  /**
+   * Method to cycle to the next icon.
+   */
+  public void cycleToNextIcon() {
+    String[] paths = getIconPaths();
+
+    currentIconIndex = (currentIconIndex + 1) % paths.length;
+    String nextPath = paths[currentIconIndex];
+
+    Image newIcon = new Image(
+        Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(nextPath)));
+    this.setIcon(newIcon);
+    this.playerPiece.setImage(newIcon);
+  }
+
 }

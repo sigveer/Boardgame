@@ -34,7 +34,7 @@ public class CsvPlayerWriter implements com.gruppe24.filehandling.FileWriter {
 
     try (FileWriter writer = new FileWriter(filePath)) {
       for (Player player : players) {
-        String imagePath = extractImagePath(player.getImage());
+        String imagePath = extractImagePath(player.getIcon());
         writer.write(player.getName() + "," + imagePath + "\n");
       }
       return true;

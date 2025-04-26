@@ -4,8 +4,10 @@ import static com.gruppe24.boardgames.laddergame.models.board.BoardType.CLASSIC;
 import static com.gruppe24.boardgames.laddergame.models.board.BoardType.SPECIAL;
 import static com.gruppe24.utils.StyleUtils.styleNormalButton;
 
+import com.gruppe24.boardgames.laddergame.controller.PlayerController;
 import com.gruppe24.boardgames.laddergame.models.Player;
 import com.gruppe24.boardgames.laddergame.view.LadderGameApp;
+import com.gruppe24.boardgames.tictactoe.TicTacToeApp;
 import com.gruppe24.utils.StyleUtils;
 import com.gruppe24.utils.Validators;
 import java.util.ArrayList;
@@ -34,6 +36,7 @@ public class DashboardGui extends Application {
 
   private List<Player> players;
   private VBox playerList;
+  private PlayerController playerController;
 
   /**
    * The main method is the entry point of the application.
@@ -46,6 +49,9 @@ public class DashboardGui extends Application {
       throw new IllegalArgumentException("Parameter Stage cannot be empty");
     }
     Validators.getLogger().log(Level.INFO, "Dashboard started");
+
+    this.playerController = new PlayerController();
+    this.players = playerController.getPlayers();
 
     BorderPane mainLayout = new BorderPane();
     mainLayout.setStyle("-fx-background-color: #3a5ad7;");
@@ -90,20 +96,24 @@ public class DashboardGui extends Application {
     Button addPlayerButton = new Button("+");
     styleNormalButton(addPlayerButton);
     addPlayerButton.setOnAction(e -> {
-      addPlayer();
+      playerController.addPlayer();
+      updatePlayerList();
     });
 
     Button removePlayerButton = new Button("-");
     styleNormalButton(removePlayerButton);
     removePlayerButton.setOnAction(e -> {
-      removePlayer();
+      playerController.removePlayer();
+      updatePlayerList();
     });
 
     Button savePlayersButton = new Button("Save Players");
-    styleNormalButton(savePlayersButton);
+    StyleUtils.styleNormalButton(savePlayersButton);
+    savePlayersButton.setOnAction(e -> {});
 
     Button loadPlayersButton = new Button("Load Players");
-    styleNormalButton(loadPlayersButton);
+    StyleUtils.styleNormalButton(loadPlayersButton);
+    loadPlayersButton.setOnAction(e -> {});
 
     buttonBox.getChildren().addAll(addPlayerButton, removePlayerButton);
 
@@ -111,46 +121,11 @@ public class DashboardGui extends Application {
     saveLoadBox.setAlignment(Pos.CENTER);
     saveLoadBox.getChildren().addAll(savePlayersButton, loadPlayersButton);
 
-    playerMenu.getChildren().addAll(playerLabel, playerList, buttonBox, saveLoadBox);
+    playerMenu.getChildren().addAll(playerLabel, buttonBox, playerList, saveLoadBox);
 
-    if (players == null) {
-      addPlayer();
-    }
+    updatePlayerList();
 
     return playerMenu;
-  }
-
-  private void addPlayer() {
-    if (players == null) {
-      players = new ArrayList<>();
-    }
-    if (players.size() >= 5) {
-      return;
-    }
-
-    Player player = new Player("Player " + (players.size() + 1), getNextIcon());
-    players.add(player);
-    updatePlayerList();
-  }
-
-  private void removePlayer() {
-    if (players.size() > 1) {
-      players.removeLast();
-      updatePlayerList();
-    }
-  }
-
-  private Image getNextIcon() {
-    String[] iconPaths = {
-        "pictures/pngIcons/mario.png",
-        "pictures/pngIcons/luigi.png",
-        "pictures/pngIcons/wario.png",
-        "pictures/pngIcons/waluigi.png",
-        "pictures/pngIcons/donkeykong.png",
-    };
-    String selectedPath = iconPaths[players.size() % iconPaths.length];
-    return new Image(
-        Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(selectedPath)));
   }
 
   private void updatePlayerList() {
@@ -170,7 +145,7 @@ public class DashboardGui extends Application {
    * @param index  the index of the player
    * @return the HBox containing the player information
    *
-   * @AI_Assisted nameField.setOnAction([x]),
+   * @AI_Assisted nameField.setOnAction([x]).....
    */
   private HBox createPlayerBox(Player player, int index) {
     HBox playerBox = new HBox(10);
@@ -187,7 +162,12 @@ public class DashboardGui extends Application {
       player.setName(nameField.getText());
     });
 
-    playerBox.getChildren().addAll(playerIcon, nameField);
+    Button changeIconButton = new Button("⟳");
+    styleNormalButton(changeIconButton);
+    changeIconButton.setOnAction(e -> playerController.cyclePlayerIcon(player, index));
+
+    playerBox.getChildren().addAll(playerIcon, nameField, changeIconButton);
+
     return playerBox;
   }
 
@@ -199,14 +179,20 @@ public class DashboardGui extends Application {
 
     VBox classicLadderGameBox = createGameBox("Classic Laddergame",
         "pictures/boardpictures/classicBoard.jpg", event ->
-            new LadderGameApp(players, CLASSIC).start(primaryStage));
+            new LadderGameApp(playerController.getPlayers(), CLASSIC).start(primaryStage));
 
     VBox specialLadderGameBox = createGameBox("Special Laddergame",
         "pictures/boardpictures/specialBoard.jpg", event ->
-            new LadderGameApp(players, SPECIAL).start(primaryStage));
+            new LadderGameApp(playerController.getPlayers(), SPECIAL).start(primaryStage));
+
+    VBox ticTacToeGameBox = createGameBox("Tic Tac Toe",
+        "pictures/boardpictures/TicTacToePicture.jpg", event ->
+            new TicTacToeApp().start(primaryStage));
 
     gamesGrid.add(classicLadderGameBox, 0, 0);
     gamesGrid.add(specialLadderGameBox, 1, 0);
+
+    gamesGrid.add(ticTacToeGameBox, 0, 1);
 
     return gamesGrid;
   }
@@ -242,5 +228,4 @@ public class DashboardGui extends Application {
     gameBox.getChildren().addAll(gameLabel, gameImage, playbutton);
     return gameBox;
   }
-
 }
