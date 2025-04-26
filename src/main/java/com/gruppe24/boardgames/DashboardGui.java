@@ -246,10 +246,14 @@ public class DashboardGui extends Application {
         "pictures/boardpictures/TicTacToePicture.jpg", event ->
             new TicTacToeApp().start(primaryStage));
 
+    VBox jsonBoardBox = createGameBox("Use your own JSON Board",
+        "pictures/boardpictures/ownJsonBoard.jpg", event -> {});
+
     gamesGrid.add(classicLadderGameBox, 0, 0);
     gamesGrid.add(specialLadderGameBox, 1, 0);
 
     gamesGrid.add(ticTacToeGameBox, 0, 1);
+    gamesGrid.add(jsonBoardBox, 1, 1);
 
     return gamesGrid;
   }

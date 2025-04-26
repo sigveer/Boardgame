@@ -252,18 +252,6 @@ public class LadderGameApp extends Application {
           default -> tile.setFill(Color.web("FDF2F2")); // Normal Tile
         }
 
-//        else if (board.getTile(tileNumber) instanceof RandomTeleportTile) {
-//          tile.setFill(Color.web("9D41FF"));
-//        } else if (board.getTile(tileNumber) instanceof FrozenTile) {
-//          tile.setFill(Color.web("7CCAEF"));
-//        } else if (board.getTile(tileNumber) instanceof LadderUpTile) {
-//          tile.setFill(Color.web("009E22"));
-//        } else if (board.getTile(tileNumber) instanceof LadderDownTile) {
-//          tile.setFill(Color.web("E02929"));
-//        } else {
-//          tile.setFill(Color.web("FDF2F2"));
-//        }
-
         //Landing-tile upon special tiles
         for (Integer value : board.getLadderUp().values()) {
           if (tileNumber == value) {
