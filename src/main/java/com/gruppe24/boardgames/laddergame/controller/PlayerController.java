@@ -31,12 +31,6 @@ public class PlayerController {
     return players;
   }
 
-  public void changePlayerName(int index, String name) {
-    if (index >= 0 && index < players.size()) {
-      players.get(index).setName(name);
-    }
-  }
-
   public void cyclePlayerIcon(Player player, int index) {
     if (index >= 0 && index < players.size()) {
       players.get(index).cycleToNextIcon();

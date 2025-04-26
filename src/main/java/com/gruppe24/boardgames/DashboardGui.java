@@ -8,6 +8,8 @@ import com.gruppe24.boardgames.laddergame.controller.PlayerController;
 import com.gruppe24.boardgames.laddergame.models.Player;
 import com.gruppe24.boardgames.laddergame.view.LadderGameApp;
 import com.gruppe24.boardgames.tictactoe.TicTacToeApp;
+import com.gruppe24.filehandling.CsvPlayerReader;
+import com.gruppe24.filehandling.CsvPlayerWriter;
 import com.gruppe24.utils.StyleUtils;
 import com.gruppe24.utils.Validators;
 import java.util.ArrayList;
@@ -164,7 +166,10 @@ public class DashboardGui extends Application {
 
     Button changeIconButton = new Button("⟳");
     styleNormalButton(changeIconButton);
-    changeIconButton.setOnAction(e -> playerController.cyclePlayerIcon(player, index));
+    changeIconButton.setOnAction(e -> {
+      playerController.cyclePlayerIcon(player, index);
+      updatePlayerList();
+    });
 
     playerBox.getChildren().addAll(playerIcon, nameField, changeIconButton);
 
