@@ -6,7 +6,6 @@ import com.gruppe24.boardgames.laddergame.models.board.Board;
 import com.gruppe24.boardgames.laddergame.models.board.BoardFactory;
 import com.gruppe24.boardgames.laddergame.models.board.BoardType;
 import com.gruppe24.boardgames.laddergame.models.board.tiles.Tile;
-import com.gruppe24.utils.Steps;
 
 /**
  * Class that handles the game logic and player turns.
@@ -112,38 +111,4 @@ public class GameController {
   public int getSpecialTilePosition() {
     return specialTilePosition;
   }
-
-//  //----------------CONTROLLERS FOR TEXTBASED LADDERGAME--------------------//
-//  /**
-//   * Method that checks if a player has won the game.
-//   *
-//   * @param p the player
-//   * @param newPosition the new position of the player
-//   * @return true if the player has won, false otherwise
-//   */
-//  public boolean textBasedCheckAndHandleWin(Player p, int newPosition) {
-//    if (newPosition == WinCondition) {
-//      System.out.println(p.getColoredName() + " won the game!");
-//      return true;
-//    }
-//    return false;
-//  }
-//
-//  /**
-//   * Method that handles the player's turn.
-//   */
-//  public void textBasedHandlePlayerTurn(Player player) {
-//    Steps.pressEnterToContinue();
-//    int sumDice = dice.rollSum();
-//
-//    movePlayer(player, sumDice);
-//
-//    System.out.println(player.getColoredName() + " rolled " + sumDice);
-//    if (getCheckTileType() == 1) {
-//      System.out.println("Climbing up!");
-//    } else if (getCheckTileType() == 2) {
-//      System.out.println("Sliding down...");
-//    }
-//    System.out.println(player.getColoredName() + " is now on tile " + player.getPosition());
-//  }
 }
