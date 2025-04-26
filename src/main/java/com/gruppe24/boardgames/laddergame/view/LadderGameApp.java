@@ -83,6 +83,24 @@ public class LadderGameApp extends Application {
   }
 
   /**
+   * Constructor for LadderGame with a custom board.
+   *
+   * @param players list of players
+   * @param customBoard the custom board to use
+   */
+  public LadderGameApp(List<Player> players, Board customBoard) {
+    if (players == null || players.isEmpty()) {
+      throw new IllegalArgumentException("Parameter list of players cannot be empty");
+    }
+    if (customBoard == null) {
+      throw new IllegalArgumentException("Parameter customBoard cannot be empty");
+    }
+    this.gameController = new GameController(customBoard);
+    this.board = customBoard;
+    this.players = players;
+  }
+
+  /**
    * Main method to start the application.
    *
    * @param primaryStage the primary stage.

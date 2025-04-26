@@ -36,6 +36,7 @@ public class Board {
     this.name = "Classic LadderGame";
     this.description = "A classic game of Ladders with 90 tiles.";
     initializeLadders();
+    initializeWinningTile();
     initializeTiles();
   }
 
@@ -52,15 +53,17 @@ public class Board {
    * @param description Description of the board
    */
   public Board(HashMap<Integer, Integer> ladderUp, HashMap<Integer, Integer> ladderDown,
-      HashMap<Integer, Boolean> frozenTiles, HashMap<Integer, Boolean> randomTeleportTiles,
+      HashMap<Integer, Boolean> winningTile, HashMap<Integer, Boolean> frozenTiles,
+      HashMap<Integer, Boolean> randomTeleportTiles,
       String name, String description) {
     this.ladderUp = ladderUp;
     this.ladderDown = ladderDown;
-    this.winningTile = new HashMap<>();
+    this.winningTile = winningTile;
     this.frozenTiles = frozenTiles;
     this.randomTeleportTiles = randomTeleportTiles;
     this.name = name;
     this.description = description;
+    initializeWinningTile();
     initializeTiles();
   }
 

@@ -39,6 +39,19 @@ public class GameController {
   }
 
   /**
+   * Constructor that initializes the game controller with a custom board.
+   *
+   * @param customBoard the custom board to use
+   */
+  public GameController(Board customBoard) {
+    if (customBoard == null) {
+      throw new IllegalArgumentException("Parameter customBoard cannot be empty");
+    }
+    this.board = customBoard;
+    this.dice = new Dice(2);
+  }
+
+  /**
    * Constructor that initializes the game controller with a board.
    *
    * @return board the board to use

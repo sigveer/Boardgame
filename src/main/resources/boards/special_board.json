@@ -441,7 +441,15 @@
       "nextTile": 89
     },
     {
-      "id": 89
+      "id": 89,
+      "nextTile": 90
+    },
+    {
+      "id": 90,
+      "action": {
+        "type": "WinningAction",
+        "description": "Player wins the game on tile 90"
+      }
     }
   ]
 }

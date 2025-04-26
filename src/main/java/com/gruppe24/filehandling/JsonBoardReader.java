@@ -34,6 +34,7 @@ public class JsonBoardReader implements com.gruppe24.filehandling.FileReader {
 
       HashMap<Integer, Integer> ladderUp = new HashMap<>();
       HashMap<Integer, Integer> ladderDown = new HashMap<>();
+      HashMap<Integer, Boolean> winningTile = new HashMap<>();
       HashMap<Integer, Boolean> frozenTiles = new HashMap<>();
       HashMap<Integer, Boolean> randomTeleportTiles = new HashMap<>();
 
@@ -77,6 +78,9 @@ public class JsonBoardReader implements com.gruppe24.filehandling.FileReader {
                 ladderDown.put(tileId, destinationTileId);
               }
               break;
+            case "WinningAction":
+              winningTile.put(tileId, true);
+              break;
             case "FrozenAction":
               frozenTiles.put(tileId, true);
               break;
@@ -89,7 +93,7 @@ public class JsonBoardReader implements com.gruppe24.filehandling.FileReader {
         }
       }
 
-      return new Board(ladderUp, ladderDown, frozenTiles, randomTeleportTiles, name, description);
+      return new Board(ladderUp, ladderDown, winningTile, frozenTiles, randomTeleportTiles, name, description);
 
     } catch (FileNotFoundException e) {
       System.err.println("Error: File not found: " + e.getMessage());

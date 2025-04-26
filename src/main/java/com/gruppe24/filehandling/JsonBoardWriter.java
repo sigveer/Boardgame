@@ -9,6 +9,7 @@ import com.gruppe24.boardgames.laddergame.models.board.tiles.FrozenTile;
 import com.gruppe24.boardgames.laddergame.models.board.tiles.LadderDownTile;
 import com.gruppe24.boardgames.laddergame.models.board.tiles.LadderUpTile;
 import com.gruppe24.boardgames.laddergame.models.board.tiles.RandomTeleportTile;
+import com.gruppe24.boardgames.laddergame.models.board.tiles.WinningTile;
 import com.gruppe24.boardgames.laddergame.models.board.tiles.Tile;
 import java.io.IOException;
 
@@ -18,6 +19,7 @@ import java.io.IOException;
  */
 public class JsonBoardWriter implements FileWriter {
 
+  //fjerne instanceof
   @Override
   public boolean writeToFile(Object object, String filePath) {
     if (!(object instanceof Board board)) {
@@ -49,14 +51,15 @@ public class JsonBoardWriter implements FileWriter {
     boardJson.addProperty("description", board.getDescription());
 
     JsonArray tilesJsonArray = new JsonArray();
-    for (int i = 0; i < 90; i++) {
+    for (int i = 0; i <= 90; i++) {
       JsonObject tileJson = new JsonObject();
       tileJson.addProperty("id", i);
 
-      if (i < 89) {
+      if (i < 90) {
         tileJson.addProperty("nextTile", i + 1);
       }
 
+      //fjerne instanceof
       Tile tile = board.getTile(i);
       if (tile instanceof LadderUpTile ladderUpTile) {
         JsonObject actionJson = new JsonObject();
@@ -83,6 +86,11 @@ public class JsonBoardWriter implements FileWriter {
         actionJson.addProperty("type", "RandomTeleportAction");
         actionJson.addProperty("description",
             "Player gets teleported to a random tile from " + i);
+        tileJson.add("action", actionJson);
+      } else if (tile instanceof WinningTile) {
+        JsonObject actionJson = new JsonObject();
+        actionJson.addProperty("type", "WinningAction");
+        actionJson.addProperty("description", "Player wins the game on tile " + i);
         tileJson.add("action", actionJson);
       }
 
