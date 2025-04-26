@@ -17,6 +17,15 @@ import javafx.stage.Stage;
  */
 public class CsvPlayerReader implements com.gruppe24.filehandling.FileReader {
 
+
+  /**
+   * Loads player data from a CSV file.
+   *
+   * @param stage The stage to use for the file chooser dialog.
+   * @return A list of players loaded from the CSV file, or null if an error occurs.
+   *
+   * @AI_Based "While" loop is based on AI logic and structure.
+   */
   public static List<Player> loadPlayers(Stage stage) {
     FileChooser fileChooser = FileHandler.createFileChooser("Load Players", false);
     File file = fileChooser.showOpenDialog(stage);
@@ -33,7 +42,7 @@ public class CsvPlayerReader implements com.gruppe24.filehandling.FileReader {
 
       String line;
       while ((line = reader.readLine()) != null) {
-        String[] parts = line.split(",", 2); // Limit to 2 parts to handle commas in names
+        String[] parts = line.split(",", 2);
         if (parts.length >= 2) {
           String name = parts[0];
           String iconPath = parts[1];
@@ -54,6 +63,12 @@ public class CsvPlayerReader implements com.gruppe24.filehandling.FileReader {
     }
   }
 
+  /**
+   * Loads an image from the specified path. If the image cannot be loaded, a default image is used.
+   *
+   * @param path The path to the image file.
+   * @return The loaded image or a default image if loading fails.
+   */
   private static Image loadImageFromPath(String path) {
     try {
       ClassLoader classLoader = CsvPlayerReader.class.getClassLoader();

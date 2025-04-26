@@ -242,11 +242,9 @@ public class LadderGameApp extends Application {
         tile.setStroke(Color.BLACK);
         tile.setStrokeWidth(1.5);
 
-        if (tileNumber == 90) {
-          tile.setFill(Color.web("F4DA16"));
-        }
         int tileType = board.getTileType(tileNumber);
         switch (tileType) {
+          case -3 -> tile.setFill(Color.web("F4DA16")); // Winning Tile
           case 1 -> tile.setFill(Color.web("009E22")); // Ladder Up
           case 2 -> tile.setFill(Color.web("E02929")); // Ladder Down
           case 3 -> tile.setFill(Color.web("9D41FF")); // Random Teleport
@@ -378,7 +376,7 @@ public class LadderGameApp extends Application {
 
       Platform.runLater(() -> {
         alert.showAndWait();
-        primaryStage.close();
+        new DashboardGui().start(primaryStage);
       });
     }
   }
