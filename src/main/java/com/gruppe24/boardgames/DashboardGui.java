@@ -62,7 +62,7 @@ public class DashboardGui extends Application {
 
     this.stage = primaryStage;
 
-    this.playerController = new PlayerController();
+    this.playerController = new PlayerController(boardController);
     this.players = playerController.getPlayers();
 
     BorderPane mainLayout = new BorderPane();

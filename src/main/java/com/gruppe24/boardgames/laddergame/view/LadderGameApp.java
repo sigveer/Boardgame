@@ -1,7 +1,8 @@
 package com.gruppe24.boardgames.laddergame.view;
 
 import com.gruppe24.boardgames.DashboardGui;
-import com.gruppe24.boardgames.laddergame.controller.GameController;
+import com.gruppe24.boardgames.laddergame.controller.BoardController;
+import com.gruppe24.boardgames.laddergame.controller.PlayerController;
 import com.gruppe24.boardgames.laddergame.models.Dice;
 import com.gruppe24.boardgames.laddergame.models.Player;
 import com.gruppe24.boardgames.laddergame.models.board.Board;
@@ -18,10 +19,8 @@ import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Bounds;
-import javafx.geometry.HPos;
 import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
-import javafx.geometry.VPos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -45,7 +44,8 @@ import javafx.util.Duration;
 public class LadderGameApp extends Application {
 
   private final Board board;
-  private final GameController gameController;
+  BoardController boardController = new BoardController();
+  PlayerController playerController = new PlayerController(boardController);
   private final List<Player> players;
   private static final int tileSize = 75;
   private int currentPlayerIndex = 0;
@@ -55,14 +55,14 @@ public class LadderGameApp extends Application {
   private Label isFrozenLabel;
   private final Dice dice = new Dice(2);
 
-  /**
-   * Constructor for LadderGame.
-   *
-   * @param players list of players
-   */
-  public LadderGameApp(List<Player> players) {
-    this(players, BoardType.CLASSIC);
-  }
+//  /**
+//   * Constructor for LadderGame.
+//   *
+//   * @param players list of players
+//   */
+//  public LadderGameApp(List<Player> players) {
+//    this(players, BoardType.CLASSIC);
+//  }
 
   /**
    * Constructor for LadderGame.
@@ -77,8 +77,8 @@ public class LadderGameApp extends Application {
     if (boardType == null) {
       throw new IllegalArgumentException("Parameter boardType cannot be empty");
     }
-    this.gameController = new GameController(boardType);
-    this.board = gameController.getBoard();
+    this.boardController = new BoardController(boardType);
+    this.board = boardController.getBoard();
     this.players = players;
   }
 
@@ -95,7 +95,7 @@ public class LadderGameApp extends Application {
     if (customBoard == null) {
       throw new IllegalArgumentException("Parameter customBoard cannot be empty");
     }
-    this.gameController = new GameController(customBoard);
+    this.boardController = new BoardController(customBoard);
     this.board = customBoard;
     this.players = players;
   }
@@ -355,7 +355,7 @@ public class LadderGameApp extends Application {
     dicePane.getChildren().clear(); //removes old dice
     dicePane.getChildren().addAll(dice1Iv, dice2Iv);
 
-    gameController.handlePlayerTurn(currentPlayer, diceValue);
+    playerController.handlePlayerTurn(currentPlayer, diceValue);
 
     //Update animation with the new position
     int newPosition = currentPlayer.getPosition();
@@ -374,7 +374,7 @@ public class LadderGameApp extends Application {
    * @param primaryStage the primary stage
    */
   private void checkWinner(Player player, int position, Stage primaryStage) {
-    if (gameController.checkAndHandleWin(position)) {
+    if (boardController.isWinningPosition(position)) {
       Alert alert = new Alert(AlertType.INFORMATION);
       alert.setTitle("Game Over");
       alert.setHeaderText(null);
@@ -414,7 +414,7 @@ public class LadderGameApp extends Application {
    * @param toPosition the new position
    */
   private void animateAndMove(GridPane gridPane, Player player, int fromPosition, int toPosition, Stage primaryStage) {
-    int tileType = gameController.getCheckTileType();
+    int tileType = boardController.getCheckTileType();
 
     // --------------- Overshoot ---------------------
     if (fromPosition < 90 && toPosition < 90 && (fromPosition + dice.getSum() > 90)) {
@@ -493,7 +493,7 @@ public class LadderGameApp extends Application {
 
     // --------------- Teleport Tile ------------------
     if (tileType == 3) {
-      int specialTilePosition = gameController.getSpecialTilePosition();
+      int specialTilePosition = boardController.getSpecialTilePosition();
 
       // First, directly move to teleport tile position
       int teleportRow = 9 - (specialTilePosition - 1) / 9;
@@ -576,7 +576,7 @@ public class LadderGameApp extends Application {
       Timeline ladderTl = new Timeline();
       ladderTl.setCycleCount(1);
 
-      int specialTileStartPosition = gameController.getSpecialTilePosition();
+      int specialTileStartPosition = boardController.getSpecialTilePosition();
       int stepsToSpecial = specialTileStartPosition - fromPosition;
       boolean isForward = stepsToSpecial > 0; //check if ladder Up or Down
 

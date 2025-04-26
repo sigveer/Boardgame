@@ -148,6 +148,11 @@ public class Player {
     this.icon = image;
   }
 
+  /**
+   * Method to get the icon paths.
+   *
+   * @return array of icon paths
+   */
   public static String[] getIconPaths() {
     return new String[] {
       "pictures/pngIcons/mario.png",
@@ -173,10 +178,20 @@ public class Player {
     this.playerPiece.setImage(newIcon);
   }
 
+  /**
+   * Method for getting the current icon path.
+   *
+   * @return iconPath
+   */
   public String getIconPath() {
     return iconPath;
   }
 
+  /**
+   * Method for setting the icon path.
+   *
+   * @param iconPath the new icon path
+   */
   public void setIconPath(String iconPath) {
     this.iconPath = iconPath;
   }
