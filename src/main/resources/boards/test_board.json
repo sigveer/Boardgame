@@ -1,5 +1,5 @@
 {
-  "name": "Classic Board",
+  "name": "TestBoard",
   "description": "The classic Ladder board",
   "tiles": [
     {
@@ -15,8 +15,8 @@
       "nextTile": 3,
       "action": {
         "type": "LadderUpAction",
-        "destinationTileId": 40,
-        "description": "Ladder from 2 to 40"
+        "destinationTileId": 86,
+        "description": "Ladder from 2 to 89"
       }
     },
     {
@@ -41,12 +41,7 @@
     },
     {
       "id": 8,
-      "nextTile": 9,
-      "action": {
-        "type": "LadderUpAction",
-        "destinationTileId": 10,
-        "description": "Ladder from 8 to 10"
-      }
+      "nextTile": 9
     },
     {
       "id": 9,
@@ -151,12 +146,7 @@
     },
     {
       "id": 33,
-      "nextTile": 34,
-      "action": {
-        "type": "LadderDownAction",
-        "destinationTileId": 3,
-        "description": "Ladder from 33 to 3"
-      }
+      "nextTile": 34
     },
     {
       "id": 34,
@@ -206,12 +196,7 @@
     },
     {
       "id": 43,
-      "nextTile": 44,
-      "action": {
-        "type": "LadderUpAction",
-        "destinationTileId": 62,
-        "description": "Ladder from 43 to 62"
-      }
+      "nextTile": 44
     },
     {
       "id": 44,
@@ -314,12 +299,7 @@
     },
     {
       "id": 65,
-      "nextTile": 66,
-      "action": {
-        "type": "LadderUpAction",
-        "destinationTileId": 82,
-        "description": "Ladder from 65 to 82"
-      }
+      "nextTile": 66
     },
     {
       "id": 66,
@@ -360,12 +340,7 @@
     },
     {
       "id": 74,
-      "nextTile": 75,
-      "action": {
-        "type": "LadderDownAction",
-        "destinationTileId": 12,
-        "description": "Ladder from 74 to 12"
-      }
+      "nextTile": 75
     },
     {
       "id": 75,
@@ -429,15 +404,7 @@
       "nextTile": 89
     },
     {
-      "id": 89,
-      "nextTile": 90
-    },
-    {
-      "id": 90,
-      "action": {
-        "type": "WinningAction",
-        "description": "Player wins the game on tile 90"
-      }
+      "id": 89
     }
   ]
 }

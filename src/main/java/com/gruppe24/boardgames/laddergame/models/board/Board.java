@@ -6,6 +6,7 @@ import com.gruppe24.boardgames.laddergame.models.board.tiles.LadderUpTile;
 import com.gruppe24.boardgames.laddergame.models.board.tiles.NormalTile;
 import com.gruppe24.boardgames.laddergame.models.board.tiles.RandomTeleportTile;
 import com.gruppe24.boardgames.laddergame.models.board.tiles.Tile;
+import com.gruppe24.boardgames.laddergame.models.board.tiles.WinningTile;
 import java.util.HashMap;
 
 /**
@@ -17,6 +18,7 @@ public class Board {
   protected HashMap<Integer, Integer> ladderDown;
   protected HashMap<Integer, Boolean> frozenTiles = new HashMap<>();
   protected HashMap<Integer, Boolean> randomTeleportTiles = new HashMap<>();
+  protected HashMap<Integer , Boolean> winningTile = new HashMap<>();
   private static final int Columns = 9;
   private static final int Rows = 10;
   protected Tile[] tiles;
@@ -30,9 +32,11 @@ public class Board {
   public Board() {
     this.ladderUp = new HashMap<>();
     this.ladderDown = new HashMap<>();
+    this.winningTile = new HashMap<>();
     this.name = "Classic LadderGame";
     this.description = "A classic game of Ladders with 90 tiles.";
     initializeLadders();
+    initializeWinningTile();
     initializeTiles();
   }
 
@@ -49,15 +53,22 @@ public class Board {
    * @param description Description of the board
    */
   public Board(HashMap<Integer, Integer> ladderUp, HashMap<Integer, Integer> ladderDown,
-      HashMap<Integer, Boolean> frozenTiles, HashMap<Integer, Boolean> randomTeleportTiles,
+      HashMap<Integer, Boolean> winningTile, HashMap<Integer, Boolean> frozenTiles,
+      HashMap<Integer, Boolean> randomTeleportTiles,
       String name, String description) {
     this.ladderUp = ladderUp;
     this.ladderDown = ladderDown;
+    this.winningTile = winningTile;
     this.frozenTiles = frozenTiles;
     this.randomTeleportTiles = randomTeleportTiles;
     this.name = name;
     this.description = description;
+    initializeWinningTile();
     initializeTiles();
+  }
+
+  public void initializeWinningTile() {
+    winningTile.put(90, true);
   }
 
   /**
@@ -121,12 +132,14 @@ public class Board {
    * @AI_Based Logic as to how to initialize the tiles is based on AI generated code.
    */
   protected void initializeTiles() {
-    tiles = new Tile[Columns * Rows];
-    for (int i = 0; i < Columns * Rows; i++) {
+    tiles = new Tile[Columns * Rows + 1];
+    for (int i = 0; i <= Columns * Rows; i++) {
       if (ladderUp.containsKey(i)) {
         tiles[i] = new LadderUpTile(i, ladderUp.get(i));
       } else if (ladderDown.containsKey(i)) {
         tiles[i] = new LadderDownTile(i, ladderDown.get(i));
+      } else if (winningTile != null && winningTile.containsKey(i)) {
+        tiles[i] = new WinningTile(i);
       } else if (frozenTiles != null && frozenTiles.containsKey(i)) {
         tiles[i] = new FrozenTile(i);
       } else if (randomTeleportTiles != null && randomTeleportTiles.containsKey(i)) {

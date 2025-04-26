@@ -76,9 +76,9 @@ class GameControllerTest {
    * Tests the checkAndHandleWin method of the GameController class when a player wins.
    */
   @Test
-  void testCheckAndHandleWin() {
+  void testIsWinningPosition() {
     testPlayer.setPosition(90);
-    assertTrue(gameController.checkAndHandleWin(90));
+    assertTrue(gameController.isWinningPosition(90));
   }
 
   /**
@@ -87,7 +87,7 @@ class GameControllerTest {
   @Test
   void testCheckAndHandleNotWin() {
     testPlayer.setPosition(89);
-    assertFalse(gameController.checkAndHandleWin(89));
+    assertFalse(gameController.isWinningPosition(89));
   }
 
   /**
@@ -172,7 +172,7 @@ class GameControllerTest {
    * Tests the textBasedCheckAndHandleWin method of the GameController class.
    */
   @Test
-  public void testTextBasedCheckAndHandleWin() {
+  public void testTextBasedIsWinningPosition() {
     //Positive test
     int winCondition = 90;
     assertTrue(gameController.textBasedCheckAndHandleWin(testPlayer, winCondition));
