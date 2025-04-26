@@ -1,89 +1,50 @@
 package com.gruppe24.filehandling;
 
 import com.gruppe24.boardgames.laddergame.models.Player;
-import com.gruppe24.utils.ColorUtil;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
-import javafx.scene.image.Image;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 /**
- * CSVPlayerWriter is a utility class for writing player data to a CSV file.
- * It implements the FileWriter interface and provides functionality to save
- * player information in a specific format.
+ * Utility class for saving player data to CSV format.
  */
 public class CsvPlayerWriter implements com.gruppe24.filehandling.FileWriter {
-
-  @Override
-  public boolean writeToFile(Object object, String filePath) {
-    if (!(object instanceof List<?> list)) {
-      System.err.println("Error: Object is not a List");
-      return false;
-    }
-
-    if (list.isEmpty() || !(list.getFirst() instanceof Player)) {
-      System.err.println("Error: List does not contain Player objects");
-      return false;
-    }
-
-    @SuppressWarnings("unchecked")
-    List<Player> players = (List<Player>) list;
-
-    try (FileWriter writer = new FileWriter(filePath)) {
-      for (Player player : players) {
-        String imagePath = extractImagePath(player.getIcon());
-        writer.write(player.getName() + "," + imagePath + "\n");
-      }
-      return true;
-    } catch (IOException e) {
-      System.err.println("Error writing CSV file: " + e.getMessage());
-      return false;
-    }
-  }
 
   /**
    * Saves a list of players to a CSV file.
    *
-   * @param players the list of players to save
-   * @param stage the stage for the file chooser dialog
-   * @return true if the file was saved successfully, false otherwise
+   * @param players The list of players to save
+   * @param stage The stage to display the file chooser
+   * @return true if saving was successful, false otherwise
    */
   public static boolean savePlayers(List<Player> players, Stage stage) {
-    if (players == null || players.isEmpty() || stage == null) {
-      return false;
-    }
-
     FileChooser fileChooser = FileHandler.createFileChooser("Save Players", true);
     File file = fileChooser.showSaveDialog(stage);
 
-    if (file != null) {
-      String filePath = file.getAbsolutePath();
-      if (!filePath.toLowerCase().endsWith(".csv")) {
-        filePath += ".csv";
+    if (file == null) {
+      return false;
+    }
+
+    try (FileWriter writer = new FileWriter(file)) {
+
+      writer.write("Name,IconPath\n");
+
+      for (Player player : players) {
+        writer.write(player.getName() + "," + player.getIconPath() + "\n");
       }
 
-      CsvPlayerWriter writer = new CsvPlayerWriter();
-      return writer.writeToFile(players, filePath);
+      return true;
+    } catch (IOException e) {
+      e.printStackTrace();
+      return false;
     }
-    return false;
   }
 
-  /**
-   * Extracts the image path from the given Image object.
-   *
-   * @param image the Image object
-   * @return the extracted image path, or a default value if the path is empty
-   *
-   * @AI_Based The method is based on logic provided by AI
-   */
-  private String extractImagePath(Image image) {
-    String url = image.getUrl();
-    if (url != null && !url.isEmpty()) {
-      return url.substring(url.lastIndexOf("/") + 1);
-    }
-    return "mario.png";
+  @Override
+  public boolean writeToFile(Object object, String filePath) {
+    return false;
   }
 }

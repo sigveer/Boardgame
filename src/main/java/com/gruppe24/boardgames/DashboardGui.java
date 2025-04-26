@@ -20,6 +20,7 @@ import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -39,6 +40,7 @@ public class DashboardGui extends Application {
   private List<Player> players;
   private VBox playerList;
   private PlayerController playerController;
+  private Stage stage;
 
   /**
    * The main method is the entry point of the application.
@@ -51,6 +53,8 @@ public class DashboardGui extends Application {
       throw new IllegalArgumentException("Parameter Stage cannot be empty");
     }
     Validators.getLogger().log(Level.INFO, "Dashboard started");
+
+    this.stage = primaryStage;
 
     this.playerController = new PlayerController();
     this.players = playerController.getPlayers();
@@ -111,11 +115,31 @@ public class DashboardGui extends Application {
 
     Button savePlayersButton = new Button("Save Players");
     StyleUtils.styleNormalButton(savePlayersButton);
-    savePlayersButton.setOnAction(e -> {});
+    savePlayersButton.setOnAction(e -> {
+      List<Player> playersToSave = collectPlayersFromFields();
+      if (playersToSave.isEmpty()) {
+        showAlert("No players to save");
+        return;
+      }
+      boolean success = CsvPlayerWriter.savePlayers(playersToSave, stage);
+      if (success) {
+        showAlert("Players saved successfully");
+      } else {
+        showAlert("Failed to save players");
+      }
+    });
 
     Button loadPlayersButton = new Button("Load Players");
     StyleUtils.styleNormalButton(loadPlayersButton);
-    loadPlayersButton.setOnAction(e -> {});
+    loadPlayersButton.setOnAction(e -> {
+      List<Player> loadedPlayers = CsvPlayerReader.loadPlayers(stage);
+      if (loadedPlayers != null && !loadedPlayers.isEmpty()) {
+        populateFieldsWithPlayers(loadedPlayers);
+        showAlert("Players loaded successfully");
+      } else {
+        showAlert("No players loaded");
+      }
+    });
 
     buttonBox.getChildren().addAll(addPlayerButton, removePlayerButton);
 
@@ -141,12 +165,40 @@ public class DashboardGui extends Application {
   }
 
   /**
+   * Collects players from the current player list.
+   *
+   * @return A list of players with their current names and icons.
+   */
+  private List<Player> collectPlayersFromFields() {
+    List<Player> collectedPlayers = new ArrayList<>();
+
+    for (Player player : players) {
+      if (player != null && !player.getName().isEmpty()) {
+        collectedPlayers.add(player);
+      }
+    }
+
+    return collectedPlayers;
+  }
+
+  /**
+   * Updates the player list with loaded players.
+   *
+   * @param loadedPlayers The list of players to populate the fields with.
+   */
+  private void populateFieldsWithPlayers(List<Player> loadedPlayers) {
+    players.clear();
+    players.addAll(loadedPlayers);
+
+    updatePlayerList();
+  }
+
+  /**
    * Creates a player box with an icon, name field, and change image button.
    *
    * @param player the player to display
    * @param index  the index of the player
    * @return the HBox containing the player information
-   *
    * @AI_Assisted nameField.setOnAction([x]).....
    */
   private HBox createPlayerBox(Player player, int index) {
@@ -160,8 +212,8 @@ public class DashboardGui extends Application {
     playerIcon.setFitHeight(60);
 
     TextField nameField = new TextField(player.getName());
-    nameField.setOnAction(event -> {
-      player.setName(nameField.getText());
+    nameField.textProperty().addListener((observable, oldValue, newValue) -> {
+      player.setName(newValue);
     });
 
     Button changeIconButton = new Button("⟳");
@@ -205,10 +257,9 @@ public class DashboardGui extends Application {
   /**
    * Creates a game box with a title and a button to start the game.
    *
-   * @AI_Assisted javafx.event.EventHandler, ImageView, new Insets,
-   *
    * @param title
    * @return
+   * @AI_Assisted javafx.event.EventHandler, ImageView, new Insets,
    */
   private VBox createGameBox(String title, String imagePath,
       javafx.event.EventHandler<javafx.event.ActionEvent> action) {
@@ -222,7 +273,8 @@ public class DashboardGui extends Application {
     Label gameLabel = new Label(title);
     gameLabel.setStyle("-fx-font-size: 20px; -fx-text-fill: #ffffff; -fx-font-weight: bold;");
 
-    ImageView gameImage = new ImageView(imagePath);;
+    ImageView gameImage = new ImageView(imagePath);
+    ;
     gameImage.setFitWidth(200);
     gameImage.setFitHeight(200);
 
@@ -233,4 +285,18 @@ public class DashboardGui extends Application {
     gameBox.getChildren().addAll(gameLabel, gameImage, playbutton);
     return gameBox;
   }
+
+  /**
+   * Displays an alert with the given message.
+   *
+   * @param message The message to be displayed in the alert.
+   */
+  private void showAlert(String message) {
+    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+    alert.setTitle("Player Management");
+    alert.setHeaderText(null);
+    alert.setContentText(message);
+    alert.showAndWait();
+  }
+
 }
