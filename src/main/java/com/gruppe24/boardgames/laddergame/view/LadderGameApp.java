@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.logging.Level;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -29,12 +30,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -119,7 +119,7 @@ public class LadderGameApp extends Application {
     primaryStage.setTitle("Laddergame Classic");
 
     // Create main layout container using BorderPane
-    javafx.scene.layout.BorderPane mainLayout = new javafx.scene.layout.BorderPane();
+    BorderPane mainLayout = new BorderPane();
     mainLayout.setStyle("-fx-background-color: #3a5ad7;");
 
     // Board container (left/center section)
@@ -256,29 +256,52 @@ public class LadderGameApp extends Application {
         int tileNumber = (9 - row) % 2 == 0 ? (9 - row) * 9 + col + 1 : (9 - row + 1) * 9 - col;
 
         StackPane stackPane = new StackPane();
-        Rectangle tile = new Rectangle(tileSize, tileSize);
-        tile.setStroke(Color.BLACK);
-        tile.setStrokeWidth(1.5);
+        stackPane.setPrefSize(tileSize, tileSize);
 
         int tileType = board.getTileType(tileNumber);
         switch (tileType) {
-          case -3 -> tile.setFill(Color.web("F4DA16")); // Winning Tile
-          case 1 -> tile.setFill(Color.web("009E22")); // Ladder Up
-          case 2 -> tile.setFill(Color.web("E02929")); // Ladder Down
-          case 3 -> tile.setFill(Color.web("9D41FF")); // Random Teleport
-          case 4 -> tile.setFill(Color.web("7CCAEF")); // Frozen Tile
-          default -> tile.setFill(Color.web("FDF2F2")); // Normal Tile
+          case -3 -> stackPane.setStyle("-fx-background-color: #F4DA16; "
+              + "-fx-border-width: 1.5; -fx-border-color: black;"); // Winning Tile
+          case 1 -> stackPane.setStyle("-fx-background-color: #009E22; "
+              + "-fx-border-width: 1.5; -fx-border-color: black;"); // Ladder Up
+          case 2 -> stackPane.setStyle("-fx-background-color: #E02929; "
+              + "-fx-border-width: 1.5; -fx-border-color: black;"); // Ladder Down
+
+          case 3 -> {
+            stackPane.setStyle("-fx-background-color: #9D41FF; "
+                + "-fx-border-width: 1.5; -fx-border-color: black;"); // Random Teleport
+            ImageView teleportImage = new ImageView(new Image(
+                "pictures/tilepictures/questionmark.png"));
+            teleportImage.setFitWidth(40);
+            teleportImage.setFitHeight(40);
+            StackPane.setAlignment(teleportImage, Pos.CENTER);
+            stackPane.getChildren().add(teleportImage);
+          }
+          case 4 -> {
+            stackPane.setStyle("-fx-background-color: #7CCAEF; "
+                + "-fx-border-width: 1.5; -fx-border-color: black;"); // Frozen Tile
+            ImageView snowflakeImage = new ImageView(new Image(
+                "pictures/tilepictures/snowflake.png"));
+            snowflakeImage.setFitWidth(60);
+            snowflakeImage.setFitHeight(60);
+            StackPane.setAlignment(snowflakeImage, Pos.CENTER);
+            stackPane.getChildren().add(snowflakeImage);
+          }
+          default -> stackPane.setStyle("-fx-background-color: #FDF2F2; "
+              + "-fx-border-width: 1.5; -fx-border-color: black;"); // Normal Tile
         }
 
         //Landing-tile upon special tiles
         for (Integer value : board.getLadderUp().values()) {
           if (tileNumber == value) {
-            tile.setFill(Color.web("9CEA95"));
+            stackPane.setStyle("-fx-background-color: #9CEA95; "
+                + "-fx-border-width: 1.5; -fx-border-color: black;");
           }
         }
         for (Integer value : board.getLadderDown().values()) {
           if (tileNumber == value) {
-            tile.setFill(Color.web("FF9090"));
+            stackPane.setStyle("-fx-background-color: #FF9090; "
+                + "-fx-border-width: 1.5; -fx-border-color: black;");
           }
         }
 
@@ -286,12 +309,10 @@ public class LadderGameApp extends Application {
         numberLabel.setStyle("-fx-font-weight: bold;");
         numberLabel.setTranslateX(26);
         numberLabel.setTranslateY(30);
+        stackPane.getChildren().add(numberLabel);
 
-        stackPane.getChildren().addAll(tile, numberLabel);
         stackPane.setAlignment(Pos.CENTER);
-
         gridPane.add(stackPane, col, row);
-
         tileNodeMap.put(tileNumber, stackPane);
       }
     }
@@ -299,11 +320,13 @@ public class LadderGameApp extends Application {
     Platform.runLater(() -> {
       Image ladderUpImage = new Image("pictures/Ladder.png");
 
-      for (Map.Entry<Integer, Integer> entry : board.getLadderUp().entrySet()) {
-        drawLadder(ladderPane, ladderUpImage, tileNodeMap.get(entry.getKey()), tileNodeMap.get(entry.getValue()));
+      for (Entry<Integer, Integer> entry : board.getLadderUp().entrySet()) {
+        drawLadder(ladderPane, ladderUpImage, tileNodeMap.get(entry.getKey()),
+            tileNodeMap.get(entry.getValue()));
       }
-      for (Map.Entry<Integer, Integer> entry : board.getLadderDown().entrySet()) {
-        drawLadder(ladderPane, ladderUpImage, tileNodeMap.get(entry.getKey()), tileNodeMap.get(entry.getValue()));
+      for (Entry<Integer, Integer> entry : board.getLadderDown().entrySet()) {
+        drawLadder(ladderPane, ladderUpImage, tileNodeMap.get(entry.getKey()),
+            tileNodeMap.get(entry.getValue()));
       }
     });
   }

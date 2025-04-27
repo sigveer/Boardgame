@@ -285,7 +285,7 @@ public class DashboardGui extends Application {
     gameLabel.setStyle("-fx-font-size: 20px; -fx-text-fill: #ffffff; -fx-font-weight: bold;");
 
     ImageView gameImage = new ImageView(imagePath);
-    ;
+
     gameImage.setFitWidth(200);
     gameImage.setFitHeight(200);
 

@@ -60,9 +60,9 @@ public class BoardController {
     fileChooser.setTitle("Open JSON Board File");
     fileChooser.getExtensionFilters().add(
         new FileChooser.ExtensionFilter("JSON Files", "*.json"));
-    File boardsDir = new File("src/main/resources/boards");
-    if (boardsDir.exists()) {
-      fileChooser.setInitialDirectory(boardsDir);
+    File boardsDirectory = new File("src/main/resources/boards");
+    if (boardsDirectory.exists()) {
+      fileChooser.setInitialDirectory(boardsDirectory);
     }
     File selectedFile = fileChooser.showOpenDialog(stage);
     if (selectedFile != null) {
