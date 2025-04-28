@@ -58,7 +58,11 @@
     },
     {
       "id": 11,
-      "nextTile": 12
+      "nextTile": 12,
+      "action": {
+        "type": "RandomTeleportAction",
+        "description": "Player gets teleported to a random tile from 11"
+      }
     },
     {
       "id": 12,
@@ -160,11 +164,7 @@
     },
     {
       "id": 34,
-      "nextTile": 35,
-      "action": {
-        "type": "FrozenAction",
-        "description": "Player gets frozen on tile 34 for 1 turn"
-      }
+      "nextTile": 35
     },
     {
       "id": 35,
@@ -389,11 +389,7 @@
     },
     {
       "id": 78,
-      "nextTile": 79,
-      "action": {
-        "type": "FrozenAction",
-        "description": "Player gets frozen on tile 78 for 1 turn"
-      }
+      "nextTile": 79
     },
     {
       "id": 79,
@@ -438,7 +434,11 @@
     },
     {
       "id": 88,
-      "nextTile": 89
+      "nextTile": 89,
+      "action": {
+        "type": "RandomTeleportAction",
+        "description": "Player gets teleported to a random tile from 88"
+      }
     },
     {
       "id": 89,
