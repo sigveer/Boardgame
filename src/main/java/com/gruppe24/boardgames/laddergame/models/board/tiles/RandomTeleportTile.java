@@ -1,5 +1,6 @@
 package com.gruppe24.boardgames.laddergame.models.board.tiles;
 
+import com.google.gson.JsonObject;
 import com.gruppe24.boardgames.laddergame.models.Player;
 import java.util.Random;
 
@@ -39,5 +40,14 @@ public class RandomTeleportTile extends SpecialTile {
   @Override
   public int getTileType() {
     return 3;
+  }
+
+  @Override
+  public void addActionToJson(JsonObject tileJson, int tileId) {
+    JsonObject actionJson = new JsonObject();
+    actionJson.addProperty("type", "RandomTeleportAction");
+    actionJson.addProperty("description",
+        "Player gets teleported to a random tile from " + tileId);
+    tileJson.add("action", actionJson);
   }
 }

@@ -33,6 +33,7 @@ public class BoardGenerator {
   private static Board createBoard(boolean includeSpecialTiles, String name, String description) {
     HashMap<Integer, Integer> ladderUp = new HashMap<>();
     HashMap<Integer, Integer> ladderDown = new HashMap<>();
+    HashMap<Integer, Boolean> winningTile = new HashMap<>();
     HashMap<Integer, Boolean> frozenTiles = new HashMap<>();
     HashMap<Integer, Boolean> randomTeleportTiles = new HashMap<>();
 
@@ -42,7 +43,7 @@ public class BoardGenerator {
       initializeStandardSpecialTiles(frozenTiles, randomTeleportTiles);
     }
 
-    return new Board(ladderUp, ladderDown, frozenTiles, randomTeleportTiles, name, description);
+    return new Board(ladderUp, ladderDown, winningTile, frozenTiles, randomTeleportTiles, name, description);
   }
 
   /**

@@ -4,14 +4,18 @@ import static com.gruppe24.boardgames.laddergame.models.board.BoardType.CLASSIC;
 import static com.gruppe24.boardgames.laddergame.models.board.BoardType.SPECIAL;
 import static com.gruppe24.utils.StyleUtils.styleNormalButton;
 
+import com.gruppe24.boardgames.laddergame.controller.BoardController;
 import com.gruppe24.boardgames.laddergame.controller.PlayerController;
 import com.gruppe24.boardgames.laddergame.models.Player;
+import com.gruppe24.boardgames.laddergame.models.board.Board;
 import com.gruppe24.boardgames.laddergame.view.LadderGameApp;
 import com.gruppe24.boardgames.tictactoe.TicTacToeApp;
 import com.gruppe24.filehandling.CsvPlayerReader;
 import com.gruppe24.filehandling.CsvPlayerWriter;
+import com.gruppe24.filehandling.JsonBoardReader;
 import com.gruppe24.utils.StyleUtils;
 import com.gruppe24.utils.Validators;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -30,6 +34,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 /**
@@ -41,6 +46,7 @@ public class DashboardGui extends Application {
   private VBox playerList;
   private PlayerController playerController;
   private Stage stage;
+  private BoardController boardController = new BoardController();
 
   /**
    * The main method is the entry point of the application.
@@ -56,7 +62,7 @@ public class DashboardGui extends Application {
 
     this.stage = primaryStage;
 
-    this.playerController = new PlayerController();
+    this.playerController = new PlayerController(boardController);
     this.players = playerController.getPlayers();
 
     BorderPane mainLayout = new BorderPane();
@@ -197,11 +203,11 @@ public class DashboardGui extends Application {
    * Creates a player box with an icon, name field, and change image button.
    *
    * @param player the player to display
-   * @param index  the index of the player
+   * @param iconIndex  the index of the player
    * @return the HBox containing the player information
    * @AI_Assisted nameField.setOnAction([x]).....
    */
-  private HBox createPlayerBox(Player player, int index) {
+  private HBox createPlayerBox(Player player, int iconIndex) {
     HBox playerBox = new HBox(10);
     playerBox.setAlignment(Pos.CENTER_LEFT);
     playerBox.setPadding(new Insets(5));
@@ -219,7 +225,7 @@ public class DashboardGui extends Application {
     Button changeIconButton = new Button("⟳");
     styleNormalButton(changeIconButton);
     changeIconButton.setOnAction(e -> {
-      playerController.cyclePlayerIcon(player, index);
+      playerController.cyclePlayerIcon(iconIndex);
       updatePlayerList();
     });
 
@@ -246,10 +252,15 @@ public class DashboardGui extends Application {
         "pictures/boardpictures/TicTacToePicture.jpg", event ->
             new TicTacToeApp().start(primaryStage));
 
+    VBox jsonBoardBox = createGameBox("Use your own JSON Board",
+        "pictures/boardpictures/ownJsonBoard.jpg", event ->
+            loadCustomBoard(primaryStage));
+
     gamesGrid.add(classicLadderGameBox, 0, 0);
     gamesGrid.add(specialLadderGameBox, 1, 0);
 
     gamesGrid.add(ticTacToeGameBox, 0, 1);
+    gamesGrid.add(jsonBoardBox, 1, 1);
 
     return gamesGrid;
   }
@@ -274,7 +285,7 @@ public class DashboardGui extends Application {
     gameLabel.setStyle("-fx-font-size: 20px; -fx-text-fill: #ffffff; -fx-font-weight: bold;");
 
     ImageView gameImage = new ImageView(imagePath);
-    ;
+
     gameImage.setFitWidth(200);
     gameImage.setFitHeight(200);
 
@@ -299,4 +310,30 @@ public class DashboardGui extends Application {
     alert.showAndWait();
   }
 
+  private void loadCustomBoard(Stage primaryStage) {
+    Board customBoard = boardController.loadCustomBoard(primaryStage);
+    if (customBoard != null) {
+      startLadderGameWithCustomBoard(primaryStage, customBoard);
+    } else {
+      showAlert("Failed to load board from file");
+    }
+  }
+
+  /**
+   * Starts the LadderGameApp with a custom board.
+   *
+   * @param primaryStage the primary stage
+   * @param board the custom board
+   */
+  private void startLadderGameWithCustomBoard(Stage primaryStage, Board board) {
+    // Get players for the game
+    List<Player> activePlayers = collectPlayersFromFields();
+
+    // Start game with custom board
+    try {
+      new LadderGameApp(activePlayers, board).start(primaryStage);
+    } catch (Exception e) {
+      showAlert("Error starting game: " + e.getMessage());
+    }
+  }
 }

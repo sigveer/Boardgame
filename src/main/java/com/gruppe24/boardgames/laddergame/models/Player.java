@@ -22,23 +22,31 @@ public class Player {
    * Constructor for Player.
    *
    * @param name  name of the player
-   * @param icon icon of the player
+   * @param iconIndex icon of the player
    */
-  public Player(String name, Image icon) {
+  public Player(String name, int iconIndex) {
     if (name == null || name.trim().isEmpty()) {
       throw new IllegalArgumentException("Parameter name cannot be empty");
     }
-    if (icon == null) {
-      throw new IllegalArgumentException("Parameter colour cannot be empty");
+    if (iconIndex < 0) {
+      throw new IllegalArgumentException("Parameter iconIndex cannot be negative");
     }
+    String[] iconPaths = getIconPaths();
+    if (iconIndex >= iconPaths.length) {
+      iconIndex = 0; // Default image index (Mario)
+    }
+
     this.name = name;
     this.position = 0;
-    this.icon = icon;
+    this.currentIconIndex = iconIndex;
+    this.iconPath = getIconPaths()[iconIndex];
+    this.icon = new Image(Objects.requireNonNull(getClass()
+        .getClassLoader()
+        .getResourceAsStream(this.iconPath)));
     this.playerPiece = new ImageView(icon);
     this.playerPiece.setFitWidth(40);
     this.playerPiece.setFitHeight(40);
     this.frozen = false;
-    this.iconPath = getIconPaths()[0];
   }
 
   /**
@@ -148,6 +156,11 @@ public class Player {
     this.icon = image;
   }
 
+  /**
+   * Method to get the icon paths.
+   *
+   * @return array of icon paths
+   */
   public static String[] getIconPaths() {
     return new String[] {
       "pictures/pngIcons/mario.png",
@@ -173,12 +186,30 @@ public class Player {
     this.playerPiece.setImage(newIcon);
   }
 
+  /**
+   * Method for getting the current icon path.
+   *
+   * @return iconPath
+   */
   public String getIconPath() {
     return iconPath;
   }
 
+  /**
+   * Method for setting the icon path.
+   *
+   * @param iconPath the new icon path
+   */
   public void setIconPath(String iconPath) {
     this.iconPath = iconPath;
   }
 
+  /**
+   * Method to get the current icon index.
+   *
+   * @return currentIconIndex
+   */
+  public int getIconIndex() {
+    return currentIconIndex;
+  }
 }

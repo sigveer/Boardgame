@@ -7,8 +7,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-import javafx.scene.image.Image;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -45,13 +43,9 @@ public class CsvPlayerReader implements com.gruppe24.filehandling.FileReader {
         String[] parts = line.split(",", 2);
         if (parts.length >= 2) {
           String name = parts[0];
-          String iconPath = parts[1];
-          
-          Image icon = loadImageFromPath(iconPath);
+          int iconIndex = Integer.parseInt(parts[1]);
 
-          Player player = new Player(name, icon);
-          player.setIconPath(iconPath);
-
+          Player player = new Player(name, iconIndex);
           players.add(player);
         }
       }
@@ -59,26 +53,8 @@ public class CsvPlayerReader implements com.gruppe24.filehandling.FileReader {
       return players;
     } catch (IOException e) {
       e.printStackTrace();
+      //implementer seinere
       return null;
-    }
-  }
-
-  /**
-   * Loads an image from the specified path. If the image cannot be loaded, a default image is used.
-   *
-   * @param path The path to the image file.
-   * @return The loaded image or a default image if loading fails.
-   */
-  private static Image loadImageFromPath(String path) {
-    try {
-      ClassLoader classLoader = CsvPlayerReader.class.getClassLoader();
-      return new Image(Objects.requireNonNull(classLoader.getResourceAsStream(path)));
-    } catch (Exception e) {
-      e.printStackTrace();
-      
-      String defaultPath = Player.getIconPaths()[0];
-      ClassLoader classLoader = CsvPlayerReader.class.getClassLoader();
-      return new Image(Objects.requireNonNull(classLoader.getResourceAsStream(defaultPath)));
     }
   }
 

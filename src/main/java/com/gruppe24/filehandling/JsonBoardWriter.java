@@ -5,10 +5,6 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.gruppe24.boardgames.laddergame.models.board.Board;
-import com.gruppe24.boardgames.laddergame.models.board.tiles.FrozenTile;
-import com.gruppe24.boardgames.laddergame.models.board.tiles.LadderDownTile;
-import com.gruppe24.boardgames.laddergame.models.board.tiles.LadderUpTile;
-import com.gruppe24.boardgames.laddergame.models.board.tiles.RandomTeleportTile;
 import com.gruppe24.boardgames.laddergame.models.board.tiles.Tile;
 import java.io.IOException;
 
@@ -16,15 +12,19 @@ import java.io.IOException;
  * JSONBoardWriter is a class that implements the FileWriter interface to write a Board object to a
  * JSON file.
  */
-public class JsonBoardWriter implements FileWriter {
+public class JsonBoardWriter implements FileWriter<Board> {
 
+  /**
+   * Writes the given Board object to a JSON file at the specified file path.
+   *
+   * @param board the Board object to write to the file.
+   * @param filePath the path to the file where the object will be written
+   * @return true if the write operation was successful, false otherwise
+   *
+   * @AI_Assisted try loop is assisted by AI.
+   */
   @Override
-  public boolean writeToFile(Object object, String filePath) {
-    if (!(object instanceof Board board)) {
-      System.err.println("Error: Object is not a Board");
-      return false;
-    }
-
+  public boolean writeToFile(Board board, String filePath) {
     JsonObject boardJson = serializeBoard(board);
 
     try (java.io.FileWriter writer = new java.io.FileWriter(filePath)) {
@@ -49,42 +49,16 @@ public class JsonBoardWriter implements FileWriter {
     boardJson.addProperty("description", board.getDescription());
 
     JsonArray tilesJsonArray = new JsonArray();
-    for (int i = 0; i < 90; i++) {
+    for (int i = 0; i <= 90; i++) {
       JsonObject tileJson = new JsonObject();
       tileJson.addProperty("id", i);
 
-      if (i < 89) {
+      if (i < 90) {
         tileJson.addProperty("nextTile", i + 1);
       }
 
       Tile tile = board.getTile(i);
-      if (tile instanceof LadderUpTile ladderUpTile) {
-        JsonObject actionJson = new JsonObject();
-        actionJson.addProperty("type", "LadderUpAction");
-        actionJson.addProperty("destinationTileId", ladderUpTile.getDestination());
-        actionJson.addProperty("description",
-            "Ladder from " + i + " to " + ladderUpTile.getDestination());
-        tileJson.add("action", actionJson);
-      } else if (tile instanceof LadderDownTile ladderDownTile) {
-        JsonObject actionJson = new JsonObject();
-        actionJson.addProperty("type", "LadderDownAction");
-        actionJson.addProperty("destinationTileId", ladderDownTile.getDestination());
-        actionJson.addProperty("description",
-            "Ladder from " + i + " to " + ladderDownTile.getDestination());
-        tileJson.add("action", actionJson);
-      } else if (tile instanceof FrozenTile) {
-        JsonObject actionJson = new JsonObject();
-        actionJson.addProperty("type", "FrozenAction");
-        actionJson.addProperty("description",
-            "Player gets frozen on tile " + i + " for 1 turn");
-        tileJson.add("action", actionJson);
-      } else if (tile instanceof RandomTeleportTile) {
-        JsonObject actionJson = new JsonObject();
-        actionJson.addProperty("type", "RandomTeleportAction");
-        actionJson.addProperty("description",
-            "Player gets teleported to a random tile from " + i);
-        tileJson.add("action", actionJson);
-      }
+      tile.addActionToJson(tileJson, i);
 
       tilesJsonArray.add(tileJson);
     }
