@@ -1,11 +1,13 @@
 package com.gruppe24.boardgames.laddergame.models.board.tiles;
 
+import com.google.gson.JsonObject;
 import com.gruppe24.boardgames.laddergame.models.Player;
+import com.gruppe24.filehandling.TileJsonSerializer;
 
 /**
  * Abstract class representing a tile on the board.
  */
-public abstract class Tile {
+public abstract class Tile implements TileJsonSerializer {
 
   protected int position;
   public int tileTypeNumber = 0;
@@ -50,5 +52,10 @@ public abstract class Tile {
    * @return The tile type number.
    */
   public abstract int getTileType();
+
+
+  @Override
+  public void addActionToJson(JsonObject tileJson, int tileId) {
+  }
 }
 

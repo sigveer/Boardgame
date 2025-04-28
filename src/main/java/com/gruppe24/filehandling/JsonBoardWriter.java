@@ -5,11 +5,6 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.gruppe24.boardgames.laddergame.models.board.Board;
-import com.gruppe24.boardgames.laddergame.models.board.tiles.FrozenTile;
-import com.gruppe24.boardgames.laddergame.models.board.tiles.LadderDownTile;
-import com.gruppe24.boardgames.laddergame.models.board.tiles.LadderUpTile;
-import com.gruppe24.boardgames.laddergame.models.board.tiles.RandomTeleportTile;
-import com.gruppe24.boardgames.laddergame.models.board.tiles.WinningTile;
 import com.gruppe24.boardgames.laddergame.models.board.tiles.Tile;
 import java.io.IOException;
 
@@ -59,40 +54,8 @@ public class JsonBoardWriter implements FileWriter {
         tileJson.addProperty("nextTile", i + 1);
       }
 
-      //fjerne instanceof
       Tile tile = board.getTile(i);
-      if (tile instanceof LadderUpTile ladderUpTile) {
-        JsonObject actionJson = new JsonObject();
-        actionJson.addProperty("type", "LadderUpAction");
-        actionJson.addProperty("destinationTileId", ladderUpTile.getDestination());
-        actionJson.addProperty("description",
-            "Ladder from " + i + " to " + ladderUpTile.getDestination());
-        tileJson.add("action", actionJson);
-      } else if (tile instanceof LadderDownTile ladderDownTile) {
-        JsonObject actionJson = new JsonObject();
-        actionJson.addProperty("type", "LadderDownAction");
-        actionJson.addProperty("destinationTileId", ladderDownTile.getDestination());
-        actionJson.addProperty("description",
-            "Ladder from " + i + " to " + ladderDownTile.getDestination());
-        tileJson.add("action", actionJson);
-      } else if (tile instanceof FrozenTile) {
-        JsonObject actionJson = new JsonObject();
-        actionJson.addProperty("type", "FrozenAction");
-        actionJson.addProperty("description",
-            "Player gets frozen on tile " + i + " for 1 turn");
-        tileJson.add("action", actionJson);
-      } else if (tile instanceof RandomTeleportTile) {
-        JsonObject actionJson = new JsonObject();
-        actionJson.addProperty("type", "RandomTeleportAction");
-        actionJson.addProperty("description",
-            "Player gets teleported to a random tile from " + i);
-        tileJson.add("action", actionJson);
-      } else if (tile instanceof WinningTile) {
-        JsonObject actionJson = new JsonObject();
-        actionJson.addProperty("type", "WinningAction");
-        actionJson.addProperty("description", "Player wins the game on tile " + i);
-        tileJson.add("action", actionJson);
-      }
+      tile.addActionToJson(tileJson, i);
 
       tilesJsonArray.add(tileJson);
     }
