@@ -67,6 +67,9 @@ public class Board {
     initializeTiles();
   }
 
+  /**
+   * Method that puts the winning tile at a certain index in the winningTile-hashMap.
+   */
   public void initializeWinningTile() {
     winningTile.put(90, true);
   }
@@ -123,7 +126,11 @@ public class Board {
       HashMap<Integer, Boolean> randomTeleportTiles) {
     frozenTiles.put(34, true);
     frozenTiles.put(78, true);
+    frozenTiles.put(61, true);
+    frozenTiles.put(18, true);
+    randomTeleportTiles.put(11, true);
     randomTeleportTiles.put(50, true);
+    randomTeleportTiles.put(88, true);
   }
 
   /**

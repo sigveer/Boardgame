@@ -33,12 +33,14 @@ public class CsvPlayerWriter implements com.gruppe24.filehandling.FileWriter {
       writer.write("Name,IconPath\n");
 
       for (Player player : players) {
-        writer.write(player.getName() + "," + player.getIconPath() + "\n");
+        int iconIndex = player.getIconIndex();
+        writer.write(player.getName() + "," + iconIndex + "\n");
       }
 
       return true;
     } catch (IOException e) {
       e.printStackTrace();
+      //implementer seinere
       return false;
     }
   }
