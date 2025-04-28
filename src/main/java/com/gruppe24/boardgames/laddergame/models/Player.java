@@ -16,7 +16,8 @@ public class Player {
   private Image icon;
   private String iconPath;
   private  int currentIconIndex = 0;
-  private boolean frozen;
+  private boolean frozen = false;
+
 
   /**
    * Constructor for Player.
@@ -47,24 +48,6 @@ public class Player {
     this.playerPiece.setFitWidth(40);
     this.playerPiece.setFitHeight(40);
     this.frozen = false;
-  }
-
-  /**
-   * Check if the player is currently frozen.
-   *
-   * @return true if player is frozen, false otherwise
-   */
-  public boolean isFrozen() {
-    return frozen;
-  }
-
-  /**
-   * Set the frozen status of the player.
-   *
-   * @param frozen true to freeze the player, false to unfreeze
-   */
-  public void setFrozen(boolean frozen) {
-    this.frozen = frozen;
   }
 
   /**
@@ -211,5 +194,13 @@ public class Player {
    */
   public int getIconIndex() {
     return currentIconIndex;
+  }
+
+  public boolean isFrozen() {
+    return frozen;
+  }
+
+  public void setFrozen(boolean frozen) {
+    this.frozen = frozen;
   }
 }

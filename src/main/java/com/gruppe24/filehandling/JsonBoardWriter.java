@@ -58,6 +58,7 @@ public class JsonBoardWriter implements FileWriter<Board> {
       }
 
       Tile tile = board.getTile(i);
+      // addActionToJson is a method in the Tile class that adds the action to the JSON object
       tile.addActionToJson(tileJson, i);
 
       tilesJsonArray.add(tileJson);
