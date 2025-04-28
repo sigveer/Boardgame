@@ -203,11 +203,11 @@ public class DashboardGui extends Application {
    * Creates a player box with an icon, name field, and change image button.
    *
    * @param player the player to display
-   * @param index  the index of the player
+   * @param iconIndex  the index of the player
    * @return the HBox containing the player information
    * @AI_Assisted nameField.setOnAction([x]).....
    */
-  private HBox createPlayerBox(Player player, int index) {
+  private HBox createPlayerBox(Player player, int iconIndex) {
     HBox playerBox = new HBox(10);
     playerBox.setAlignment(Pos.CENTER_LEFT);
     playerBox.setPadding(new Insets(5));
@@ -225,7 +225,7 @@ public class DashboardGui extends Application {
     Button changeIconButton = new Button("⟳");
     styleNormalButton(changeIconButton);
     changeIconButton.setOnAction(e -> {
-      playerController.cyclePlayerIcon(player, index);
+      playerController.cyclePlayerIcon(iconIndex);
       updatePlayerList();
     });
 
@@ -285,7 +285,7 @@ public class DashboardGui extends Application {
     gameLabel.setStyle("-fx-font-size: 20px; -fx-text-fill: #ffffff; -fx-font-weight: bold;");
 
     ImageView gameImage = new ImageView(imagePath);
-    ;
+
     gameImage.setFitWidth(200);
     gameImage.setFitHeight(200);
 

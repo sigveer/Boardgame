@@ -4,17 +4,15 @@ import com.gruppe24.boardgames.laddergame.models.Dice;
 import com.gruppe24.boardgames.laddergame.models.Player;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-import javafx.scene.image.Image;
 
 /**
  * PlayerController is a class that manages the players in the game.
  * It handles player creation, removal, icon cycling, and player movement.
  */
 public class PlayerController {
-  private List<Player> players;
-  private Dice dice;
-  private BoardController boardController;
+  private final List<Player> players;
+  private final Dice dice;
+  private final BoardController boardController;
 
   /**
    * Constructor for PlayerController.
@@ -32,9 +30,10 @@ public class PlayerController {
    * Method for adding a player to playermenu.
    */
   public void addPlayer() {
-    if (players.size() >= 5)
+    if (players.size() >= 5) {
       return;
-    players.add(new Player("Player " + (players.size() + 1), getNextIcon()));
+    }
+    players.add(new Player("Player " + (players.size() + 1), getNextIconIndex()));
   }
 
   /**
@@ -58,10 +57,9 @@ public class PlayerController {
   /**
    * Method for cycling the player icon.
    *
-   * @param player the player to cycle the icon for
    * @param index the index of the player in the list
    */
-  public void cyclePlayerIcon(Player player, int index) {
+  public void cyclePlayerIcon(int index) {
     if (index >= 0 && index < players.size()) {
       players.get(index).cycleToNextIcon();
     }
@@ -79,11 +77,14 @@ public class PlayerController {
    *
    * @return the next icon.
    */
-  private Image getNextIcon() {
-    String[] iconPaths = Player.getIconPaths();
-    String selectedPath = iconPaths[players.size() % iconPaths.length];
-    return new Image(
-        Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(selectedPath)));
+  private int getNextIconIndex() {
+    int iconIndex = 0;
+    for (Player player : players) {
+      if (player.getIconIndex() == iconIndex) {
+        iconIndex++;
+      }
+    }
+    return iconIndex;
   }
 
   /**
