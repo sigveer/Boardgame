@@ -12,16 +12,19 @@ import java.io.IOException;
  * JSONBoardWriter is a class that implements the FileWriter interface to write a Board object to a
  * JSON file.
  */
-public class JsonBoardWriter implements FileWriter {
+public class JsonBoardWriter implements FileWriter<Board> {
 
-  //fjerne instanceof
+  /**
+   * Writes the given Board object to a JSON file at the specified file path.
+   *
+   * @param board the Board object to write to the file.
+   * @param filePath the path to the file where the object will be written
+   * @return true if the write operation was successful, false otherwise
+   *
+   * @AI_Assisted try loop is assisted by AI.
+   */
   @Override
-  public boolean writeToFile(Object object, String filePath) {
-    if (!(object instanceof Board board)) {
-      System.err.println("Error: Object is not a Board");
-      return false;
-    }
-
+  public boolean writeToFile(Board board, String filePath) {
     JsonObject boardJson = serializeBoard(board);
 
     try (java.io.FileWriter writer = new java.io.FileWriter(filePath)) {
