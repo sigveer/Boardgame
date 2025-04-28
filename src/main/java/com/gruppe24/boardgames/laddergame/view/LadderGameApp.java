@@ -358,7 +358,7 @@ public class LadderGameApp extends Application {
     int diceValue1 = dice.getDie(0);
     int diceValue2 = dice.getDie(1);
 
-    String dice1Path = dicePath(diceValue1);
+    String dice1Path = dice.dicePath(diceValue1);
     Image dice1 = new Image(dice1Path);
     ImageView dice1Iv = new ImageView(dice1);
     dice1Iv.setX(40);
@@ -366,7 +366,7 @@ public class LadderGameApp extends Application {
     dice1Iv.setFitHeight(75);
     dice1Iv.setFitWidth(75);
 
-    String dice2Path = dicePath(diceValue2);
+    String dice2Path = dice.dicePath(diceValue2);
     Image dice2 = new Image(dice2Path);
     ImageView dice2Iv = new ImageView(dice2);
     dice2Iv.setX(125);
@@ -672,15 +672,4 @@ public class LadderGameApp extends Application {
     });
     timeline.play();
   }
-
-  /**
-   * Returns the path to the dice image.
-   *
-   * @param dice the number on the dice
-   * @return the path to the dice image
-   */
-  public String dicePath(int dice) {
-    return "pictures/dices/dice" + dice + ".png";
-  }
-
 }

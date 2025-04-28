@@ -54,4 +54,14 @@ public class Dice {
   public int getSum() {
     return this.sum;
   }
+
+  /**
+   * Returns the path to the dice image.
+   *
+   * @param dice the number on the dice
+   * @return the path to the dice image
+   */
+  public String dicePath(int dice) {
+    return "pictures/dices/dice" + dice + ".png";
+  }
 }
