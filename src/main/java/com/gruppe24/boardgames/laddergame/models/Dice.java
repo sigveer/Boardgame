@@ -64,4 +64,13 @@ public class Dice {
   public String dicePath(int dice) {
     return "pictures/dices/dice" + dice + ".png";
   }
+
+  /**
+   * Rolls a single die (defaults to first die).
+   *
+   * @return The value of the rolled die
+   */
+  public int roll() {
+    return dice.getFirst().roll();
+  }
 }

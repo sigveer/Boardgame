@@ -33,8 +33,6 @@ public class RandomTeleportTile extends SpecialTile {
     int destinationPosition = random.nextInt(maxPosition - minPosition + 1) + minPosition;
 
     player.setPosition(destinationPosition);
-
-    this.position = destinationPosition;
   }
 
   @Override

@@ -39,5 +39,6 @@ public class FrozenTile extends SpecialTile {
     actionJson.addProperty("type", "FrozenAction");
     actionJson.addProperty("description",
         "Player gets frozen on tile " + tileId + " for 1 turn");
+    tileJson.add("action", actionJson);
   }
 }

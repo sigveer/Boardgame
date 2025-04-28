@@ -331,29 +331,43 @@ public class LadderGameApp extends Application {
     });
   }
 
+
   /**
-   * Rolls the dice and moves the current player.
+   * Rolls the dice, updates dice display, calculates the move using the controller,
+   * and initiates the animation.
    *
-   * @param gridPane the grid pane to draw on
+   * @param gridPane     the grid pane to draw on
    * @param primaryStage the primary stage
-   * @param dicePane the pane for dices
+   * @param dicePane     the pane for dices
+   *
+   * @AI_Based ....
    */
   private void rollDiceAndMove(GridPane gridPane, Stage primaryStage, Pane dicePane) {
     Player currentPlayer = players.get(currentPlayerIndex);
 
+    // Check if player is frozen before rolling
     if (currentPlayer.isFrozen()) {
-      currentPlayer.setFrozen(false);
-      isFrozenLabel.setText(currentPlayer.getName() + " is frozen and skips this turn!");
+      currentPlayer.setFrozen(false); // Unfreeze for the next turn
+      isFrozenLabel.setText(currentPlayer.getName() + " was frozen and skips this turn!");
 
+      // Switch to the next player immediately
       currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
       currentPlayerLabel.setText("Current Player: " + players.get(currentPlayerIndex).getName());
-      return;
+
+      // Update frozen label for the new current player
+      if (players.get(currentPlayerIndex).isFrozen()) {
+        isFrozenLabel.setText(players.get(currentPlayerIndex).getName() + " is frozen!");
+      } else {
+        isFrozenLabel.setText("");
+      }
+
+      ladderUpOrDownCheck.setText(""); // Clear other messages
+      diceResultLabel.setText("Roll the dice!"); // Reset dice label
+      dicePane.getChildren().clear(); // Clear dice images
+      return; // End the turn here
     }
 
-    //Get the original position; for animation
-    int previousPosition = currentPlayer.getPosition();
-
-    //Update game-logic with dice-roll and display dices
+    // --- Roll Dice and Update Display ---
     int diceValue = dice.rollSum();
     int diceValue1 = dice.getDie(0);
     int diceValue2 = dice.getDie(1);
@@ -374,19 +388,40 @@ public class LadderGameApp extends Application {
     dice2Iv.setFitHeight(75);
     dice2Iv.setFitWidth(75);
 
-    diceResultLabel.setText("Totalsum: " + diceValue);
-    dicePane.getChildren().clear(); //removes old dice
+    diceResultLabel.setText("Rolled: " + diceValue);
+    dicePane.getChildren().clear(); // removes old dice
     dicePane.getChildren().addAll(dice1Iv, dice2Iv);
 
-    playerController.handlePlayerTurn(currentPlayer, diceValue);
+    int previousPosition = currentPlayer.getPosition();
 
-    //Update animation with the new position
-    int newPosition = currentPlayer.getPosition();
-    animateAndMove(gridPane, currentPlayer, previousPosition, newPosition, primaryStage);
+    // Calculate where the player will land initially
+    int boardSize = 90;
+    int initialLandingPos = previousPosition + diceValue;
+    boolean overshoot = initialLandingPos > boardSize;
+    int targetPositionBeforeSpecial = overshoot ? boardSize - (initialLandingPos - boardSize) : initialLandingPos;
 
-    //Switch player
-    currentPlayerLabel.setText("Current Player: " + players.get(currentPlayerIndex).getName());
-    currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
+    // Check if the landing tile is a teleport tile
+    if (board.getTileType(targetPositionBeforeSpecial) == 3) {
+      // First move the player normally
+      playerController.handlePlayerTurn(currentPlayer, diceValue);
+
+      // Get position after normal movement but before teleport
+      int positionBeforeTeleport = currentPlayer.getPosition();
+
+      // Capture the tile to use its perform method
+      board.getTile(positionBeforeTeleport).perform(currentPlayer);
+
+      // Now get the final position after teleport
+      int finalPosition = currentPlayer.getPosition();
+
+      // Animate with correct destination
+      animateAndMove(gridPane, currentPlayer, previousPosition, finalPosition, diceValue, primaryStage);
+    } else {
+      // Normal case - move and apply any non-teleport effects
+      playerController.handlePlayerTurn(currentPlayer, diceValue);
+      int newPosition = currentPlayer.getPosition();
+      animateAndMove(gridPane, currentPlayer, previousPosition, newPosition, diceValue, primaryStage);
+    }
   }
 
   /**
@@ -429,247 +464,371 @@ public class LadderGameApp extends Application {
   }
 
   /**
-   * Animates the player piece and moves it to the new position.
+   * Animates the player piece step-by-step based on the dice roll,
+   * handles special tile effects (pausing then instant jumps for ladders/teleport),
+   * manages overshoot, and checks for the winner.
    *
-   * @param gridPane the grid pane to draw on
-   * @param player the current player
-   * @param fromPosition the original position
-   * @param toPosition the new position
+   * @param gridPane     the grid pane to draw on
+   * @param player       the current player
+   * @param fromPosition the original position before the roll
+   * @param toPosition   the final position after roll and any special tile effects
+   * @param diceSum      the sum rolled on the dice
+   * @param primaryStage the primary stage
+   *
+   * @AI_Based ....
    */
-  private void animateAndMove(GridPane gridPane, Player player, int fromPosition, int toPosition, Stage primaryStage) {
-    int tileType = boardController.getCheckTileType();
-
-    // --------------- Overshoot ---------------------
-    if (fromPosition < 90 && toPosition < 90 && (fromPosition + dice.getSum() > 90)) {
-      Timeline bounceTimeline = new Timeline();
-      List<KeyFrame> keyFrames = new ArrayList<>();
-
-      // First, animate forward movement to tile 90
-      int currentPos = fromPosition;
-      double delay = 0.0;
-
-      // Move forward to 90
-      while (currentPos < 90) {
-        currentPos++;
-        int row = 9 - (currentPos - 1) / 9;
-        int col = (9 - row) % 2 == 0 ? (currentPos - 1) % 9 : 8 - (currentPos - 1) % 9;
-
-        keyFrames.add(new KeyFrame(
-            Duration.seconds(delay += 0.3),
-            event -> {
-              addPlayerPieceToGrid(gridPane, player, col, row);
-              ladderUpOrDownCheck.setText("Overshoot! Bouncing back");
-            }
-        ));
-      }
-
-      // Move backward to final position
-      currentPos = 90;
-      while (currentPos > toPosition) {
-        currentPos--;
-        int row = 9 - (currentPos - 1) / 9;
-        int col = (9 - row) % 2 == 0 ? (currentPos - 1) % 9 : 8 - (currentPos - 1) % 9;
-
-        keyFrames.add(new KeyFrame(
-            Duration.seconds(delay += 0.3),
-            event -> {
-              addPlayerPieceToGrid(gridPane, player, col, row);
-              ladderUpOrDownCheck.setText("Overshoot! Bounced back");
-            }
-        ));
-      }
-
-
-      bounceTimeline.getKeyFrames().addAll(keyFrames);
-      bounceTimeline.play();
-      ladderUpOrDownCheck.setText("");
-      return;
-    }
-
-    // --------------- Frozen Tile ---------------------
-    if (tileType == 4) {
-      Timeline timeline = new Timeline();
-      timeline.setCycleCount(1);
-
-      int steps = toPosition - fromPosition;
-      int currentPosition = fromPosition;
-      isFrozenLabel.setText("Player Frozen!");
-
-      for (int i = 0; i < steps; i++) {
-        currentPosition++;
-        // Calculate into coordinates
-        int row = 9 - (currentPosition - 1) / 9;
-        int col = (9 - row) % 2 == 0 ? (currentPosition - 1) % 9 : 8 - (currentPosition - 1) % 9;
-
-        KeyFrame keyFrame = new KeyFrame(
-            Duration.seconds((i + 1) * 0.3),
-            event -> {
-              addPlayerPieceToGrid(gridPane, player, col, row);
-            }
-        );
-        timeline.getKeyFrames().add(keyFrame);
-      }
-      timeline.play();
-      return;
-    }
+  private void animateAndMove(GridPane gridPane, Player player, int fromPosition, int toPosition, int diceSum, Stage primaryStage) {
+    // Clear previous messages
+    ladderUpOrDownCheck.setText("");
     isFrozenLabel.setText("");
 
-    // --------------- Teleport Tile ------------------
-    if (tileType == 3) {
-      int specialTilePosition = boardController.getSpecialTilePosition();
+    int boardSize = 90;
+    int initialLandingPos = fromPosition + diceSum;
+    boolean overshoot = initialLandingPos > boardSize;
+    int targetPositionBeforeSpecial = overshoot ? boardSize - (initialLandingPos - boardSize) : initialLandingPos;
 
-      // First, directly move to teleport tile position
-      int teleportRow = 9 - (specialTilePosition - 1) / 9;
-      int teleportCol = (9 - teleportRow) % 2 == 0 ? (specialTilePosition - 1) % 9 : 8 - (specialTilePosition - 1) % 9;
+    Timeline stepTimeline = new Timeline();
+    List<KeyFrame> keyFrames = new ArrayList<>();
+    double delay = 0.0;
+    double animationSpeed = 0.3;
+    int currentAnimatedPos = fromPosition;
 
-      Timeline moveToTeleportTl = new Timeline(new KeyFrame(
-          Duration.seconds(0.3),
-
-          e -> {
-            addPlayerPieceToGrid(gridPane, player, teleportCol, teleportRow);
-            ladderUpOrDownCheck.setText("Teleporting...");
-          }
-      ));
-
-      // After reaching teleport, wait then jump to destination
-      moveToTeleportTl.setOnFinished(e -> {
-
-        // Wait briefly, then teleport to destination
-        Timeline pauseTl = new Timeline(new KeyFrame(Duration.seconds(0.5)));
-
-        pauseTl.setOnFinished(event -> {
-          // Move directly to final destination
-          int finalRow = 9 - (toPosition - 1) / 9;
-          int finalCol = (9 - finalRow) % 2 == 0 ? (toPosition - 1) % 9 : 8 - (toPosition - 1) % 9;
-
-
-          addPlayerPieceToGrid(gridPane, player, finalCol, finalRow);
-          ladderUpOrDownCheck.setText("Teleported to " + toPosition + "!");
-        });
-        pauseTl.play();
-      });
-      moveToTeleportTl.play();
-      return;
+    // Animate forward movement
+    int stepsForward = Math.min(diceSum, boardSize - fromPosition);
+    for (int i = 1; i <= stepsForward; i++) {
+      currentAnimatedPos = fromPosition + i;
+      int finalCurrentAnimatedPos = currentAnimatedPos;
+      int row = 9 - (finalCurrentAnimatedPos - 1) / 9;
+      int col = (9 - row) % 2 == 0 ? (finalCurrentAnimatedPos - 1) % 9 : 8 - (finalCurrentAnimatedPos - 1) % 9;
+      delay += animationSpeed;
+      keyFrames.add(new KeyFrame(Duration.seconds(delay), e -> addPlayerPieceToGrid(gridPane, player, col, row)));
     }
 
+    // Animate overshoot if needed
+    if (overshoot) {
+      ladderUpOrDownCheck.setText("Overshoot! Bouncing back...");
+      int stepsBack = initialLandingPos - boardSize;
+      currentAnimatedPos = boardSize;
+      for (int i = 1; i <= stepsBack; i++) {
+        currentAnimatedPos = boardSize - i;
+        int finalCurrentAnimatedPos = currentAnimatedPos;
+        int row = 9 - (finalCurrentAnimatedPos - 1) / 9;
+        int col = (9 - row) % 2 == 0 ? (finalCurrentAnimatedPos - 1) % 9 : 8 - (finalCurrentAnimatedPos - 1) % 9;
+        delay += animationSpeed;
+        keyFrames.add(new KeyFrame(Duration.seconds(delay), e -> addPlayerPieceToGrid(gridPane, player, col, row)));
+      }
+    }
 
-//    if (tileType == 3) {
-//      Timeline teleportTL = new Timeline();
-//      teleportTL.setCycleCount(1);
+    stepTimeline.getKeyFrames().addAll(keyFrames);
+
+    // Handle actions after animation finishes
+    stepTimeline.setOnFinished(event -> {
+      // Check the tile type at landing position
+      int tileType = board.getTileType(targetPositionBeforeSpecial);
+
+      Runnable finishTurnAction = () -> {
+        // Check for frozen tile and set player state
+        if (tileType == 4) {
+          // Make sure we call the tile's perform method directly
+          board.getTile(targetPositionBeforeSpecial).perform(player);
+          isFrozenLabel.setText(player.getName() + " landed on a frozen tile! Will skip next turn.");
+        }
+
+        checkWinner(player, toPosition, primaryStage);
+
+        // Switch to next player
+        currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
+        currentPlayerLabel.setText("Current Player: " + players.get(currentPlayerIndex).getName());
+
+        // Update frozen status for next player
+        if (players.get(currentPlayerIndex).isFrozen()) {
+          isFrozenLabel.setText(players.get(currentPlayerIndex).getName() + " is frozen and will skip their turn!");
+        } else {
+          isFrozenLabel.setText("");
+        }
+        ladderUpOrDownCheck.setText("");
+      };
+
+      // Handle special tiles
+      if (toPosition != targetPositionBeforeSpecial || tileType == 3) { // Ladders or teleport
+        String message = "";
+        if (tileType == 1) message = "Landed on a ladder!";
+        else if (tileType == 2) message = "Landed on a slide!";
+        else if (tileType == 3) message = "Landed on a teleport!";
+        ladderUpOrDownCheck.setText(message);
+
+        // Pause before special tile effect
+        Timeline pauseTimeline = new Timeline(new KeyFrame(Duration.seconds(0.8)));
+        pauseTimeline.setOnFinished(pauseEvent -> {
+          String finalMessage = "";
+          if (tileType == 1) finalMessage = "Climbing up to " + toPosition + "!";
+          else if (tileType == 2) finalMessage = "Sliding down to " + toPosition + "!";
+          else if (tileType == 3) finalMessage = "Teleporting to " + toPosition + "!";
+          ladderUpOrDownCheck.setText(finalMessage);
+
+          // Move to final position
+          int finalRow = 9 - (toPosition - 1) / 9;
+          int finalCol = (9 - finalRow) % 2 == 0 ? (toPosition - 1) % 9 : 8 - (toPosition - 1) % 9;
+          addPlayerPieceToGrid(gridPane, player, finalCol, finalRow);
+
+          finishTurnAction.run();
+        });
+        pauseTimeline.play();
+      } else {
+        // Handle frozen tile separately
+        if (tileType == 4) {
+          isFrozenLabel.setText(player.getName() + " landed on a frozen tile! Skip next turn.");
+        }
+        finishTurnAction.run();
+      }
+
+    });
+
+    stepTimeline.play();
+  }
+
+//  /**
+//   * Animates the player piece and moves it to the new position.
+//   *
+//   * @param gridPane the grid pane to draw on
+//   * @param player the current player
+//   * @param fromPosition the original position
+//   * @param toPosition the new position
+//   */
+//  private void animateAndMove(GridPane gridPane, Player player, int fromPosition, int toPosition, Stage primaryStage) {
+//    int tileType = boardController.getCheckTileType();
 //
-//      int specialTilePosition = gameController.getSpecialTilePosition();
-//      int stepsToSpecial = specialTilePosition-fromPosition;
+//    // --------------- Overshoot ---------------------
+//    if (fromPosition < 90 && toPosition < 90 && (fromPosition + dice.getSum() > 90)) {
+//      Timeline bounceTimeline = new Timeline();
+//      List<KeyFrame> keyFrames = new ArrayList<>();
 //
-//      snakeOrLadderCheck.setText("Teleporting...");
+//      // First, animate forward movement to tile 90
+//      int currentPos = fromPosition;
+//      double delay = 0.0;
 //
-//      List<KeyFrame> keyFrameList = new ArrayList<>();
+//      // Move forward to 90
+//      while (currentPos < 90) {
+//        currentPos++;
+//        int row = 9 - (currentPos - 1) / 9;
+//        int col = (9 - row) % 2 == 0 ? (currentPos - 1) % 9 : 8 - (currentPos - 1) % 9;
+//
+//        keyFrames.add(new KeyFrame(
+//            Duration.seconds(delay += 0.3),
+//            event -> {
+//              addPlayerPieceToGrid(gridPane, player, col, row);
+//              ladderUpOrDownCheck.setText("Overshoot! Bouncing back");
+//            }
+//        ));
+//      }
+//
+//      // Move backward to final position
+//      currentPos = 90;
+//      while (currentPos > toPosition) {
+//        currentPos--;
+//        int row = 9 - (currentPos - 1) / 9;
+//        int col = (9 - row) % 2 == 0 ? (currentPos - 1) % 9 : 8 - (currentPos - 1) % 9;
+//
+//        keyFrames.add(new KeyFrame(
+//            Duration.seconds(delay += 0.3),
+//            event -> {
+//              addPlayerPieceToGrid(gridPane, player, col, row);
+//              ladderUpOrDownCheck.setText("Overshoot! Bounced back");
+//            }
+//        ));
+//      }
+//
+//
+//      bounceTimeline.getKeyFrames().addAll(keyFrames);
+//      bounceTimeline.play();
+//      ladderUpOrDownCheck.setText("");
+//      return;
+//    }
+//
+//    // --------------- Frozen Tile ---------------------
+//    if (tileType == 4) {
+//      Timeline timeline = new Timeline();
+//      timeline.setCycleCount(1);
+//
+//      int steps = toPosition - fromPosition;
 //      int currentPosition = fromPosition;
+//      isFrozenLabel.setText("Player Frozen!");
 //
-//      int absSteps = Math.abs(stepsToSpecial);
-//      for(int i = 0; i <= absSteps; i++){
-//        currentPosition = fromPosition + i;
-//
-//        //calculate coordinates for grid
+//      for (int i = 0; i < steps; i++) {
+//        currentPosition++;
+//        // Calculate into coordinates
 //        int row = 9 - (currentPosition - 1) / 9;
 //        int col = (9 - row) % 2 == 0 ? (currentPosition - 1) % 9 : 8 - (currentPosition - 1) % 9;
 //
 //        KeyFrame keyFrame = new KeyFrame(
-//            Duration.seconds((i+1)*0.3),
+//            Duration.seconds((i + 1) * 0.3),
 //            event -> {
-//              gridPane.getChildren().remove(player.getPlayerPiece());
-//              gridPane.add(player.getPlayerPiece(), col, row);
+//              addPlayerPieceToGrid(gridPane, player, col, row);
 //            }
-//        ); keyFrameList.add(keyFrame);
-//      } teleportTL.getKeyFrames().addAll(keyFrameList);
-//
-//      teleportTL.setOnFinished(event -> {
-//        int finalRow = 9 - (toPosition - 1) / 9;
-//        int finalCol = (9 - finalRow) % 2 == 0 ? (toPosition - 1) % 9 : 8 - (toPosition - 1) % 9;
-//
-//        gridPane.getChildren().remove(player.getPlayerPiece());
-//        gridPane.add(player.getPlayerPiece(), finalCol, finalRow);
-//        snakeOrLadderCheck.setText("Teleported to " + toPosition + "!");
-//      });
-//      teleportTL.play();
+//        );
+//        timeline.getKeyFrames().add(keyFrame);
+//      }
+//      timeline.play();
 //      return;
 //    }
-
-    // ---------------- Ladder Up or Down -------------------
-    else if (tileType == 1 || tileType == 2) {
-      Timeline ladderTl = new Timeline();
-      ladderTl.setCycleCount(1);
-
-      int specialTileStartPosition = boardController.getSpecialTilePosition();
-      int stepsToSpecial = specialTileStartPosition - fromPosition;
-      boolean isForward = stepsToSpecial > 0; //check if ladder Up or Down
-
-
-      // Feedback upon hitting ladders up or downs
-      ladderUpOrDownCheck.setText(tileType == 1 ? "Climbing up!" : "Sliding down...");
-
-      // Create a list of keyframes
-      List<KeyFrame> keyFrames = new ArrayList<>();
-      int currentPosition = fromPosition;
-
-      int absSteps = Math.abs(stepsToSpecial);
-      for (int i = 0; i <= absSteps + 1; i++) {
-        currentPosition = fromPosition + (isForward ? i : -i); //So it does not matter if it goes
-        // backward or forwards
-
-        // Calculate the current position coordinates
-        int row = 9 - (currentPosition - 1) / 9;
-        int col = (9 - row) % 2 == 0 ? (currentPosition - 1) % 9 :  8 - (currentPosition - 1) % 9;
-        if (col == -1) {
-          col = 0;
-        }
-
-        // Add a keyframe for current step
-        int finalCol = col;
-        KeyFrame keyFrame = new KeyFrame(
-            Duration.seconds((i + 1) * 0.3),
-            event -> {
-              addPlayerPieceToGrid(gridPane, player, finalCol, row);
-            }
-        );
-        keyFrames.add(keyFrame);
-      }
-      ladderTl.getKeyFrames().addAll(keyFrames);
-
-      // After animation, teleport to final destination
-      ladderTl.setOnFinished(event -> {
-        int finalRow = 9 - (toPosition - 1) / 9;
-        int finalCol = (9 - finalRow) % 2 == 0 ? (toPosition - 1) % 9 : 8 - (toPosition - 1) % 9;
-        addPlayerPieceToGrid(gridPane, player, finalCol, finalRow);
-        checkWinner(player, toPosition, primaryStage);
-      });
-      ladderTl.play();
-      return;
-    }
-    // --------------- Normal tiles -----------------
-    Timeline timeline = new Timeline();
-    timeline.setCycleCount(1);
-
-    int steps = toPosition - fromPosition;
-    int currentPosition = fromPosition;
-    ladderUpOrDownCheck.setText("");
-
-    for (int i = 0; i < steps; i++) {
-      currentPosition++;
-      // Calculate into coordinates
-      int row = 9 - (currentPosition - 1) / 9;
-      int col = (9 - row) % 2 == 0 ? (currentPosition - 1) % 9 : 8 - (currentPosition - 1) % 9;
-
-      KeyFrame keyFrame = new KeyFrame(
-          Duration.seconds((i + 1) * 0.3),
-          event -> {
-            addPlayerPieceToGrid(gridPane, player, col, row);
-          }
-      );
-      timeline.getKeyFrames().add(keyFrame);
-    }
-    timeline.setOnFinished(event -> {
-      checkWinner(player, toPosition, primaryStage);
-    });
-    timeline.play();
-  }
+//    isFrozenLabel.setText("");
+//
+//    // --------------- Teleport Tile ------------------
+//    if (tileType == 3) {
+//      int specialTilePosition = boardController.getSpecialTilePosition();
+//
+//      // First, directly move to teleport tile position
+//      int teleportRow = 9 - (specialTilePosition - 1) / 9;
+//      int teleportCol = (9 - teleportRow) % 2 == 0 ? (specialTilePosition - 1) % 9 : 8 - (specialTilePosition - 1) % 9;
+//
+//      Timeline moveToTeleportTl = new Timeline(new KeyFrame(
+//          Duration.seconds(0.3),
+//
+//          e -> {
+//            addPlayerPieceToGrid(gridPane, player, teleportCol, teleportRow);
+//            ladderUpOrDownCheck.setText("Teleporting...");
+//          }
+//      ));
+//
+//      // After reaching teleport, wait then jump to destination
+//      moveToTeleportTl.setOnFinished(e -> {
+//
+//        // Wait briefly, then teleport to destination
+//        Timeline pauseTl = new Timeline(new KeyFrame(Duration.seconds(0.5)));
+//
+//        pauseTl.setOnFinished(event -> {
+//          // Move directly to final destination
+//          int finalRow = 9 - (toPosition - 1) / 9;
+//          int finalCol = (9 - finalRow) % 2 == 0 ? (toPosition - 1) % 9 : 8 - (toPosition - 1) % 9;
+//
+//
+//          addPlayerPieceToGrid(gridPane, player, finalCol, finalRow);
+//          ladderUpOrDownCheck.setText("Teleported to " + toPosition + "!");
+//        });
+//        pauseTl.play();
+//      });
+//      moveToTeleportTl.play();
+//      return;
+//    }
+//
+//
+////    if (tileType == 3) {
+////      Timeline teleportTL = new Timeline();
+////      teleportTL.setCycleCount(1);
+////
+////      int specialTilePosition = gameController.getSpecialTilePosition();
+////      int stepsToSpecial = specialTilePosition-fromPosition;
+////
+////      snakeOrLadderCheck.setText("Teleporting...");
+////
+////      List<KeyFrame> keyFrameList = new ArrayList<>();
+////      int currentPosition = fromPosition;
+////
+////      int absSteps = Math.abs(stepsToSpecial);
+////      for(int i = 0; i <= absSteps; i++){
+////        currentPosition = fromPosition + i;
+////
+////        //calculate coordinates for grid
+////        int row = 9 - (currentPosition - 1) / 9;
+////        int col = (9 - row) % 2 == 0 ? (currentPosition - 1) % 9 : 8 - (currentPosition - 1) % 9;
+////
+////        KeyFrame keyFrame = new KeyFrame(
+////            Duration.seconds((i+1)*0.3),
+////            event -> {
+////              gridPane.getChildren().remove(player.getPlayerPiece());
+////              gridPane.add(player.getPlayerPiece(), col, row);
+////            }
+////        ); keyFrameList.add(keyFrame);
+////      } teleportTL.getKeyFrames().addAll(keyFrameList);
+////
+////      teleportTL.setOnFinished(event -> {
+////        int finalRow = 9 - (toPosition - 1) / 9;
+////        int finalCol = (9 - finalRow) % 2 == 0 ? (toPosition - 1) % 9 : 8 - (toPosition - 1) % 9;
+////
+////        gridPane.getChildren().remove(player.getPlayerPiece());
+////        gridPane.add(player.getPlayerPiece(), finalCol, finalRow);
+////        snakeOrLadderCheck.setText("Teleported to " + toPosition + "!");
+////      });
+////      teleportTL.play();
+////      return;
+////    }
+//
+//    // ---------------- Ladder Up or Down -------------------
+//    else if (tileType == 1 || tileType == 2) {
+//      Timeline ladderTl = new Timeline();
+//      ladderTl.setCycleCount(1);
+//
+//      int specialTileStartPosition = boardController.getSpecialTilePosition();
+//      int stepsToSpecial = specialTileStartPosition - fromPosition;
+//      boolean isForward = stepsToSpecial > 0; //check if ladder Up or Down
+//
+//
+//      // Feedback upon hitting ladders up or downs
+//      ladderUpOrDownCheck.setText(tileType == 1 ? "Climbing up!" : "Sliding down...");
+//
+//      // Create a list of keyframes
+//      List<KeyFrame> keyFrames = new ArrayList<>();
+//      int currentPosition = fromPosition;
+//
+//      int absSteps = Math.abs(stepsToSpecial);
+//      for (int i = 0; i <= absSteps + 1; i++) {
+//        currentPosition = fromPosition + (isForward ? i : -i); //So it does not matter if it goes
+//        // backward or forwards
+//
+//        // Calculate the current position coordinates
+//        int row = 9 - (currentPosition - 1) / 9;
+//        int col = (9 - row) % 2 == 0 ? (currentPosition - 1) % 9 :  8 - (currentPosition - 1) % 9;
+//        if (col == -1) {
+//          col = 0;
+//        }
+//
+//        // Add a keyframe for current step
+//        int finalCol = col;
+//        KeyFrame keyFrame = new KeyFrame(
+//            Duration.seconds((i + 1) * 0.3),
+//            event -> {
+//              addPlayerPieceToGrid(gridPane, player, finalCol, row);
+//            }
+//        );
+//        keyFrames.add(keyFrame);
+//      }
+//      ladderTl.getKeyFrames().addAll(keyFrames);
+//
+//      // After animation, teleport to final destination
+//      ladderTl.setOnFinished(event -> {
+//        int finalRow = 9 - (toPosition - 1) / 9;
+//        int finalCol = (9 - finalRow) % 2 == 0 ? (toPosition - 1) % 9 : 8 - (toPosition - 1) % 9;
+//        addPlayerPieceToGrid(gridPane, player, finalCol, finalRow);
+//        checkWinner(player, toPosition, primaryStage);
+//      });
+//      ladderTl.play();
+//      return;
+//    }
+//    // --------------- Normal tiles -----------------
+//    Timeline timeline = new Timeline();
+//    timeline.setCycleCount(1);
+//
+//    int steps = toPosition - fromPosition;
+//    int currentPosition = fromPosition;
+//    ladderUpOrDownCheck.setText("");
+//
+//    for (int i = 0; i < steps; i++) {
+//      currentPosition++;
+//      // Calculate into coordinates
+//      int row = 9 - (currentPosition - 1) / 9;
+//      int col = (9 - row) % 2 == 0 ? (currentPosition - 1) % 9 : 8 - (currentPosition - 1) % 9;
+//
+//      KeyFrame keyFrame = new KeyFrame(
+//          Duration.seconds((i + 1) * 0.3),
+//          event -> {
+//            addPlayerPieceToGrid(gridPane, player, col, row);
+//          }
+//      );
+//      timeline.getKeyFrames().add(keyFrame);
+//    }
+//    timeline.setOnFinished(event -> {
+//      checkWinner(player, toPosition, primaryStage);
+//    });
+//    timeline.play();
+//  }
 }
