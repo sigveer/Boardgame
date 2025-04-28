@@ -56,15 +56,6 @@ public class LadderGameApp extends Application {
   private final Dice dice = new Dice(2);
   private Button diceRollButton;
 
-//  /**
-//   * Constructor for LadderGame.
-//   *
-//   * @param players list of players
-//   */
-//  public LadderGameApp(List<Player> players) {
-//    this(players, BoardType.CLASSIC);
-//  }
-
   /**
    * Constructor for LadderGame.
    *
@@ -353,7 +344,8 @@ public class LadderGameApp extends Application {
     int diceValue = rollAndDisplayDice(dicePane);
     int previousPosition = currentPlayer.getPosition();
     int targetPosition = calculateTargetPosition(currentPlayer, diceValue);
-    animateAndMove(gridPane, currentPlayer, previousPosition, targetPosition, diceValue, primaryStage);
+    animateAndMove(gridPane, currentPlayer, previousPosition, targetPosition,
+        diceValue, primaryStage);
   }
 
   /**
@@ -491,12 +483,14 @@ public class LadderGameApp extends Application {
     isFrozenLabel.setText("");
 
     Timeline stepTimeline = new Timeline();
-    stepTimeline.getKeyFrames().addAll(createMovementAnimationFrames(player, fromPosition, diceSum, gridPane));
+    stepTimeline.getKeyFrames().addAll(createMovementAnimationFrames(player, fromPosition,
+        diceSum, gridPane));
 
     // Set up animation completion handler
     stepTimeline.setOnFinished(event -> {
       int targetPositionBeforeSpecial = calculateInitialLandingPosition(fromPosition, diceSum);
-      handleSpecialTileEffects(gridPane, player, targetPositionBeforeSpecial, toPosition, primaryStage);
+      handleSpecialTileEffects(gridPane, player, targetPositionBeforeSpecial,
+          toPosition, primaryStage);
     });
 
     stepTimeline.play();
@@ -505,7 +499,8 @@ public class LadderGameApp extends Application {
   /**
    * Creates keyframes for movement animation.
    */
-  private List<KeyFrame> createMovementAnimationFrames(Player player, int fromPosition, int diceSum, GridPane gridPane) {
+  private List<KeyFrame> createMovementAnimationFrames(Player player, int fromPosition,
+      int diceSum, GridPane gridPane) {
     int boardSize = 90;
     int initialLandingPos = fromPosition + diceSum;
     boolean overshoot = initialLandingPos > boardSize;
@@ -513,7 +508,7 @@ public class LadderGameApp extends Application {
     List<KeyFrame> keyFrames = new ArrayList<>();
     double delay = 0.0;
     double animationSpeed = 0.3;
-    int currentAnimatedPos = fromPosition;
+    int currentAnimatedPos;
 
     // Animate forward movement
     int stepsForward = Math.min(diceSum, boardSize - fromPosition);
@@ -534,7 +529,6 @@ public class LadderGameApp extends Application {
     if (overshoot) {
       ladderUpOrDownCheck.setText("Overshoot! Bouncing back...");
       int stepsBack = initialLandingPos - boardSize;
-      currentAnimatedPos = boardSize;
       for (int i = 1; i <= stepsBack; i++) {
         currentAnimatedPos = boardSize - i;
         int finalCurrentAnimatedPos = currentAnimatedPos;
@@ -565,8 +559,9 @@ public class LadderGameApp extends Application {
   /**
    * Handle special tile effects after initial animation completes.
    */
-  private void handleSpecialTileEffects(GridPane gridPane, Player player, int targetPositionBeforeSpecial,
-      int toPosition, Stage primaryStage) {
+  private void handleSpecialTileEffects(GridPane gridPane, Player player,
+      int targetPositionBeforeSpecial, int toPosition, Stage primaryStage) {
+
     int tileType = board.getTileType(targetPositionBeforeSpecial);
 
     // Create a runnable for actions to take after tile effects
@@ -586,7 +581,6 @@ public class LadderGameApp extends Application {
 
     // Handle special tiles (ladders, slides, teleports)
     if (toPosition != targetPositionBeforeSpecial || tileType == 3) {
-      displaySpecialTileMessage(tileType);
 
       // Pause before showing special tile effect
       Timeline pauseTimeline = new Timeline(new KeyFrame(Duration.seconds(0.8)));
@@ -606,24 +600,17 @@ public class LadderGameApp extends Application {
   }
 
   /**
-   * Display message when landing on a special tile.
-   */
-  private void displaySpecialTileMessage(int tileType) {
-    String message = "";
-    if (tileType == 1) message = "Landed on a ladder!";
-    else if (tileType == 2) message = "Landed on a slide!";
-    else if (tileType == 3) message = "Landed on a teleport!";
-    ladderUpOrDownCheck.setText(message);
-  }
-
-  /**
    * Display message about the effect of a special tile.
    */
   private void displaySpecialTileEffectMessage(int tileType, int toPosition) {
     String finalMessage = "";
-    if (tileType == 1) finalMessage = "Climbing up to " + toPosition + "!";
-    else if (tileType == 2) finalMessage = "Sliding down to " + toPosition + "!";
-    else if (tileType == 3) finalMessage = "Teleporting to " + toPosition + "!";
+    if (tileType == 1) {
+      finalMessage = "Climbing up to " + toPosition + "!";
+    } else if (tileType == 2) {
+      finalMessage = "Sliding down to " + toPosition + "!";
+    } else if (tileType == 3) {
+      finalMessage = "Teleporting to " + toPosition + "!";
+    }
     ladderUpOrDownCheck.setText(finalMessage);
   }
 
