@@ -2,6 +2,8 @@ package com.gruppe24.boardgames.laddergame.controller;
 
 import com.gruppe24.boardgames.laddergame.models.Dice;
 import com.gruppe24.boardgames.laddergame.models.Player;
+import com.gruppe24.observerpattern.EventType;
+import com.gruppe24.observerpattern.GameSubject;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,16 +15,19 @@ public class PlayerController {
   private final List<Player> players;
   private final Dice dice;
   private final BoardController boardController;
+  private final GameSubject gameSubject;
 
   /**
    * Constructor for PlayerController.
    *
    * @param boardController the board controller
    */
-  public PlayerController(BoardController boardController) {
+  public PlayerController(BoardController boardController, GameSubject gameSubject) {
     this.players = new ArrayList<>();
     this.dice = new Dice(2);
     this.boardController = boardController;
+    this.gameSubject = gameSubject;
+
     addDefaultPlayer();
   }
 
@@ -33,7 +38,10 @@ public class PlayerController {
     if (players.size() >= 5) {
       return;
     }
-    players.add(new Player("Player " + (players.size() + 1), getNextIconIndex()));
+    Player newPlayer = new Player("Player " + (players.size() + 1), getNextIconIndex());
+    players.add(newPlayer);
+
+    gameSubject.notifyListener(EventType.PLAYER_ADDED, newPlayer);
   }
 
   /**
@@ -41,7 +49,9 @@ public class PlayerController {
    */
   public void removePlayer() {
     if (players.size() > 1) {
-      players.removeLast();
+      Player removedPlayer = players.removeLast();
+
+      gameSubject.notifyListener(EventType.PLAYER_REMOVED, removedPlayer);
     }
   }
 
@@ -61,7 +71,11 @@ public class PlayerController {
    */
   public void cyclePlayerIcon(int index) {
     if (index >= 0 && index < players.size()) {
-      players.get(index).cycleToNextIcon();
+      Player player = players.get(index);
+      int oldIconIndex = player.getIconIndex();
+      player.cycleToNextIcon();
+
+      gameSubject.notifyListener(EventType.PLAYER_ICON_CHANGED, player, player.getIconIndex());
     }
   }
 
@@ -70,6 +84,8 @@ public class PlayerController {
    */
   public void handlePlayerTurn(Player player, int diceValue) {
     movePlayer(player, diceValue);
+
+    gameSubject.notifyListener(EventType.DICE_ROLLED, player, diceValue);
   }
 
   /**
