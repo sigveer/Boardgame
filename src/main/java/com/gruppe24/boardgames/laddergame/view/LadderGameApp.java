@@ -7,6 +7,9 @@ import com.gruppe24.boardgames.laddergame.models.Dice;
 import com.gruppe24.boardgames.laddergame.models.Player;
 import com.gruppe24.boardgames.laddergame.models.board.Board;
 import com.gruppe24.boardgames.laddergame.models.board.BoardType;
+import com.gruppe24.observerpattern.GameEventType;
+import com.gruppe24.observerpattern.GameLogger;
+import com.gruppe24.observerpattern.GameSubject;
 import com.gruppe24.utils.StyleUtils;
 import com.gruppe24.utils.Validators;
 import java.util.ArrayList;
@@ -55,11 +58,13 @@ public class LadderGameApp extends Application {
   private Label isFrozenLabel;
   private final Dice dice = new Dice(2);
   private Button diceRollButton;
+  private final GameSubject gameSubject = new GameSubject();
+  private final GameLogger gameLogger = new GameLogger();
 
   /**
    * Constructor for LadderGame.
    *
-   * @param players list of players
+   * @param players   list of players
    * @param boardType type of board
    */
   public LadderGameApp(List<Player> players, BoardType boardType) {
@@ -70,14 +75,16 @@ public class LadderGameApp extends Application {
       throw new IllegalArgumentException("Parameter boardType cannot be empty");
     }
     this.boardController = new BoardController(boardType);
+    this.playerController = new PlayerController(boardController);
     this.board = boardController.getBoard();
     this.players = players;
+    gameSubject.registerObserver(gameLogger);
   }
 
   /**
    * Constructor for LadderGame with a custom board.
    *
-   * @param players list of players
+   * @param players     list of players
    * @param customBoard the custom board to use
    */
   public LadderGameApp(List<Player> players, Board customBoard) {
@@ -88,8 +95,10 @@ public class LadderGameApp extends Application {
       throw new IllegalArgumentException("Parameter customBoard cannot be empty");
     }
     this.boardController = new BoardController(customBoard);
+    this.playerController = new PlayerController(boardController);
     this.board = customBoard;
     this.players = players;
+    gameSubject.registerObserver(gameLogger);
   }
 
   /**
@@ -200,9 +209,9 @@ public class LadderGameApp extends Application {
    * Method to draw the ladders on board, and enabeling to resize the window.
    *
    * @param ladderPane the pane for ladders.
-   * @param image the image of the ladder.
-   * @param startTile the starting tile.
-   * @param endTile the ending tile.
+   * @param image      the image of the ladder.
+   * @param startTile  the starting tile.
+   * @param endTile    the ending tile.
    */
   public void drawLadder(Pane ladderPane, Image image, Node startTile, Node endTile) {
     Bounds startBounds = startTile.localToScene(startTile.getBoundsInLocal());
@@ -238,7 +247,7 @@ public class LadderGameApp extends Application {
   /**
    * Draws the board with tiles and ladders.
    *
-   * @param gridPane the grid pane to draw on
+   * @param gridPane   the grid pane to draw on
    * @param ladderPane the pane for ladders
    */
   public void drawBoard(GridPane gridPane, Pane ladderPane) {
@@ -326,8 +335,8 @@ public class LadderGameApp extends Application {
 
 
   /**
-   * Rolls the dice, updates dice display, calculates the move using the controller,
-   * and initiates the animation.
+   * Rolls the dice, updates dice display, calculates the move using the controller, and initiates
+   * the animation.
    */
   private void rollDiceAndMove(GridPane gridPane, Stage primaryStage, Pane dicePane) {
     // Disable the button at the start of the turn
@@ -357,7 +366,6 @@ public class LadderGameApp extends Application {
     if (currentPlayer.isFrozen()) {
       currentPlayer.setFrozen(false); // Unfreeze for the next turn
 
-      // Switch to the next player immediately
       advanceToNextPlayer();
 
       // Reset UI elements
@@ -401,8 +409,8 @@ public class LadderGameApp extends Application {
   /**
    * Checks if the current player has won.
    *
-   * @param player the current player
-   * @param position the current position of the player
+   * @param player       the current player
+   * @param position     the current position of the player
    * @param primaryStage the primary stage
    */
   private void checkWinner(Player player, int position, Stage primaryStage) {
@@ -412,7 +420,10 @@ public class LadderGameApp extends Application {
       alert.setHeaderText(null);
       alert.setContentText(player.getName() + " has won the game!");
 
+      gameSubject.notifyObservers(GameEventType.GAME_ENDED, player);
+
       Platform.runLater(() -> {
+        gameSubject.removeObserver(this.gameLogger);
         alert.showAndWait();
         new DashboardGui().start(primaryStage);
       });
@@ -423,9 +434,9 @@ public class LadderGameApp extends Application {
    * Adds the player piece to the grid.
    *
    * @param gridPane the grid pane to draw on
-   * @param player the current player
-   * @param col the column index
-   * @param row the row index
+   * @param player   the current player
+   * @param col      the column index
+   * @param row      the row index
    */
   private void addPlayerPieceToGrid(GridPane gridPane, Player player, int col, int row) {
     gridPane.getChildren().remove(player.getPlayerPiece());
@@ -435,6 +446,31 @@ public class LadderGameApp extends Application {
     StackPane.setAlignment(player.getPlayerPiece(), Pos.CENTER);
 
     gridPane.add(cellContainer, col, row);
+  }
+
+  private void displaySpecialTileEffectMessage(int tileType, int toPosition) {
+    String finalMessage = "";
+    if (tileType == 1) {
+      finalMessage = "Climbing up to " + toPosition + "!";
+    } else if (tileType == 2) {
+      finalMessage = "Sliding down to " + toPosition + "!";
+    } else if (tileType == 3) {
+      finalMessage = "Teleporting to " + toPosition + "!";
+    }
+    ladderUpOrDownCheck.setText(finalMessage);
+  }
+
+  private void advanceToNextPlayer() {
+    currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
+    currentPlayerLabel.setText("Current Player: " + players.get(currentPlayerIndex).getName());
+
+    if (players.get(currentPlayerIndex).isFrozen()) {
+      isFrozenLabel.setText(players.get(currentPlayerIndex).getName()
+          + " is frozen and will skip their turn!");
+    } else {
+      isFrozenLabel.setText("");
+    }
+    ladderUpOrDownCheck.setText("");
   }
 
   /*
@@ -600,21 +636,6 @@ public class LadderGameApp extends Application {
   }
 
   /**
-   * Display message about the effect of a special tile.
-   */
-  private void displaySpecialTileEffectMessage(int tileType, int toPosition) {
-    String finalMessage = "";
-    if (tileType == 1) {
-      finalMessage = "Climbing up to " + toPosition + "!";
-    } else if (tileType == 2) {
-      finalMessage = "Sliding down to " + toPosition + "!";
-    } else if (tileType == 3) {
-      finalMessage = "Teleporting to " + toPosition + "!";
-    }
-    ladderUpOrDownCheck.setText(finalMessage);
-  }
-
-  /**
    * Move player piece to its final position on the grid.
    */
   private void movePlayerToFinalPosition(GridPane gridPane, Player player, int toPosition) {
@@ -623,22 +644,5 @@ public class LadderGameApp extends Application {
         ? (toPosition - 1) % 9 :
         8 - (toPosition - 1) % 9;
     addPlayerPieceToGrid(gridPane, player, finalCol, finalRow);
-  }
-
-  /**
-   * Advance to the next player and update UI.
-   */
-  private void advanceToNextPlayer() {
-    currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
-    currentPlayerLabel.setText("Current Player: " + players.get(currentPlayerIndex).getName());
-
-    // Update frozen status for next player
-    if (players.get(currentPlayerIndex).isFrozen()) {
-      isFrozenLabel.setText(players.get(currentPlayerIndex).getName()
-          + " is frozen and will skip their turn!");
-    } else {
-      isFrozenLabel.setText("");
-    }
-    ladderUpOrDownCheck.setText("");
   }
 }

@@ -2,6 +2,8 @@ package com.gruppe24.boardgames.laddergame.controller;
 
 import com.gruppe24.boardgames.laddergame.models.Dice;
 import com.gruppe24.boardgames.laddergame.models.Player;
+import com.gruppe24.observerpattern.GameEventType;
+import com.gruppe24.observerpattern.GameSubject;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,6 +15,7 @@ public class PlayerController {
   private final List<Player> players;
   private final Dice dice;
   private final BoardController boardController;
+  private GameSubject gameSubject;
 
   /**
    * Constructor for PlayerController.
@@ -23,6 +26,8 @@ public class PlayerController {
     this.players = new ArrayList<>();
     this.dice = new Dice(2);
     this.boardController = boardController;
+    this.gameSubject = new GameSubject();
+
     addDefaultPlayer();
   }
 
@@ -33,7 +38,10 @@ public class PlayerController {
     if (players.size() >= 5) {
       return;
     }
-    players.add(new Player("Player " + (players.size() + 1), getNextIconIndex()));
+    Player newPlayer = new Player("Player " + (players.size() + 1), getNextIconIndex());
+    players.add(newPlayer);
+
+    gameSubject.notifyObservers(GameEventType.PLAYER_ADDED, newPlayer);
   }
 
   /**
@@ -41,7 +49,9 @@ public class PlayerController {
    */
   public void removePlayer() {
     if (players.size() > 1) {
-      players.removeLast();
+      Player removedPlayer = players.removeLast();
+
+      gameSubject.notifyObservers(GameEventType.PLAYER_REMOVED, removedPlayer);
     }
   }
 
@@ -61,7 +71,11 @@ public class PlayerController {
    */
   public void cyclePlayerIcon(int index) {
     if (index >= 0 && index < players.size()) {
-      players.get(index).cycleToNextIcon();
+      Player player = players.get(index);
+      int oldIconIndex = player.getIconIndex();
+      player.cycleToNextIcon();
+
+      gameSubject.notifyObservers(GameEventType.PLAYER_ICON_CHANGED, player);
     }
   }
 
