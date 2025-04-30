@@ -2,7 +2,7 @@ package com.gruppe24.boardgames.laddergame.controller;
 
 import com.gruppe24.boardgames.laddergame.models.Dice;
 import com.gruppe24.boardgames.laddergame.models.Player;
-import com.gruppe24.observerpattern.GameEventType;
+import com.gruppe24.observerpattern.EventType;
 import com.gruppe24.observerpattern.GameSubject;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +15,7 @@ public class PlayerController {
   private final List<Player> players;
   private final Dice dice;
   private final BoardController boardController;
-  private GameSubject gameSubject;
+  private final GameSubject gameSubject;
 
   /**
    * Constructor for PlayerController.
@@ -41,7 +41,7 @@ public class PlayerController {
     Player newPlayer = new Player("Player " + (players.size() + 1), getNextIconIndex());
     players.add(newPlayer);
 
-    gameSubject.notifyObservers(GameEventType.PLAYER_ADDED, newPlayer);
+    gameSubject.notifyObservers(EventType.PLAYER_ADDED, newPlayer);
   }
 
   /**
@@ -51,7 +51,7 @@ public class PlayerController {
     if (players.size() > 1) {
       Player removedPlayer = players.removeLast();
 
-      gameSubject.notifyObservers(GameEventType.PLAYER_REMOVED, removedPlayer);
+      gameSubject.notifyObservers(EventType.PLAYER_REMOVED, removedPlayer);
     }
   }
 
@@ -75,7 +75,7 @@ public class PlayerController {
       int oldIconIndex = player.getIconIndex();
       player.cycleToNextIcon();
 
-      gameSubject.notifyObservers(GameEventType.PLAYER_ICON_CHANGED, player);
+      gameSubject.notifyObservers(EventType.PLAYER_ICON_CHANGED, player, player.getIconIndex());
     }
   }
 
@@ -84,6 +84,9 @@ public class PlayerController {
    */
   public void handlePlayerTurn(Player player, int diceValue) {
     movePlayer(player, diceValue);
+
+    gameSubject.notifyObservers(EventType.PLAYER_MOVED, player, player.getPosition(),
+        player.getPosition() + diceValue);
   }
 
   /**
@@ -115,6 +118,9 @@ public class PlayerController {
    */
   public void movePlayer(Player player, int sumDice) {
     int newPosition = player.getPosition() + sumDice;
+
+    gameSubject.notifyObservers(EventType.DICE_ROLLED, player, sumDice);
+
     newPosition = boardController.handleOvershoot(newPosition);
     player.setPosition(newPosition);
     boardController.handleTileAction(player, newPosition);

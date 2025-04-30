@@ -1,6 +1,6 @@
 package com.gruppe24.observerpattern;
 
-public enum GameEventType {
+public enum EventType {
   DICE_ROLLED,
   PLAYER_MOVED,
   PLAYER_ADDED,

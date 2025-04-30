@@ -14,7 +14,7 @@ public class GameLogger implements GameObserver {
    * @AI_Assisted The Object args[] idea with the LOGGER was created by AI.
    */
   @Override
-  public void update(GameEventType eventType, Object... args) {
+  public void update(EventType eventType, Object... args) {
     switch (eventType) {
       case DICE_ROLLED -> {
         Player player = (Player) args[0];

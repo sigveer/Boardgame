@@ -31,9 +31,9 @@ public class GameSubject implements GameObservable {
 
 
   @Override
-  public void notifyObservers(GameEventType event, Object... args) {
+  public void notifyObservers(EventType event, Object... args) {
     for (GameObserver observer : observers) {
-      observer.update(event);
+      observer.update(event, args);
     }
   }
 

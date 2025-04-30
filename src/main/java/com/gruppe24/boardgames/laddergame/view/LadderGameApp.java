@@ -7,7 +7,7 @@ import com.gruppe24.boardgames.laddergame.models.Dice;
 import com.gruppe24.boardgames.laddergame.models.Player;
 import com.gruppe24.boardgames.laddergame.models.board.Board;
 import com.gruppe24.boardgames.laddergame.models.board.BoardType;
-import com.gruppe24.observerpattern.GameEventType;
+import com.gruppe24.observerpattern.EventType;
 import com.gruppe24.observerpattern.GameLogger;
 import com.gruppe24.observerpattern.GameSubject;
 import com.gruppe24.utils.StyleUtils;
@@ -116,6 +116,8 @@ public class LadderGameApp extends Application {
     for (Player player : players) {
       player.initializePlayerPiece(player.getIcon());
     }
+
+    gameSubject.notifyObservers(EventType.GAME_STARTED, players);
 
     primaryStage.setTitle("Laddergame Classic");
 
@@ -351,8 +353,15 @@ public class LadderGameApp extends Application {
 
     // Rest of the method remains unchanged
     int diceValue = rollAndDisplayDice(dicePane);
+
+    gameSubject.notifyObservers(EventType.DICE_ROLLED, currentPlayer, diceValue);
+
     int previousPosition = currentPlayer.getPosition();
     int targetPosition = calculateTargetPosition(currentPlayer, diceValue);
+
+    gameSubject.notifyObservers(EventType.PLAYER_MOVED,
+        currentPlayer, previousPosition, targetPosition);
+
     animateAndMove(gridPane, currentPlayer, previousPosition, targetPosition,
         diceValue, primaryStage);
   }
@@ -420,7 +429,7 @@ public class LadderGameApp extends Application {
       alert.setHeaderText(null);
       alert.setContentText(player.getName() + " has won the game!");
 
-      gameSubject.notifyObservers(GameEventType.GAME_ENDED, player);
+      gameSubject.notifyObservers(EventType.GAME_ENDED, player);
 
       Platform.runLater(() -> {
         gameSubject.removeObserver(this.gameLogger);
