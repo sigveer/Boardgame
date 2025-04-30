@@ -22,11 +22,11 @@ public class PlayerController {
    *
    * @param boardController the board controller
    */
-  public PlayerController(BoardController boardController) {
+  public PlayerController(BoardController boardController, GameSubject gameSubject) {
     this.players = new ArrayList<>();
     this.dice = new Dice(2);
     this.boardController = boardController;
-    this.gameSubject = new GameSubject();
+    this.gameSubject = gameSubject;
 
     addDefaultPlayer();
   }
@@ -85,8 +85,7 @@ public class PlayerController {
   public void handlePlayerTurn(Player player, int diceValue) {
     movePlayer(player, diceValue);
 
-    gameSubject.notifyObservers(EventType.PLAYER_MOVED, player, player.getPosition(),
-        player.getPosition() + diceValue);
+    gameSubject.notifyObservers(EventType.DICE_ROLLED, player, diceValue);
   }
 
   /**
@@ -118,9 +117,6 @@ public class PlayerController {
    */
   public void movePlayer(Player player, int sumDice) {
     int newPosition = player.getPosition() + sumDice;
-
-    gameSubject.notifyObservers(EventType.DICE_ROLLED, player, sumDice);
-
     newPosition = boardController.handleOvershoot(newPosition);
     player.setPosition(newPosition);
     boardController.handleTileAction(player, newPosition);

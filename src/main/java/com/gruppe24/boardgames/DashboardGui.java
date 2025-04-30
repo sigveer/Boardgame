@@ -13,6 +13,9 @@ import com.gruppe24.boardgames.tictactoe.TicTacToeApp;
 import com.gruppe24.filehandling.CsvPlayerReader;
 import com.gruppe24.filehandling.CsvPlayerWriter;
 import com.gruppe24.filehandling.JsonBoardReader;
+import com.gruppe24.observerpattern.EventType;
+import com.gruppe24.observerpattern.GameLogger;
+import com.gruppe24.observerpattern.GameSubject;
 import com.gruppe24.utils.StyleUtils;
 import com.gruppe24.utils.Validators;
 import java.io.File;
@@ -46,7 +49,9 @@ public class DashboardGui extends Application {
   private VBox playerList;
   private PlayerController playerController;
   private Stage stage;
-  private BoardController boardController = new BoardController();
+  private final BoardController boardController = new BoardController();
+  private final GameSubject gameSubject = new GameSubject();
+  private final GameLogger gameLogger = new GameLogger();
 
   /**
    * The main method is the entry point of the application.
@@ -62,7 +67,10 @@ public class DashboardGui extends Application {
 
     this.stage = primaryStage;
 
-    this.playerController = new PlayerController(boardController);
+    this.playerController = new PlayerController(boardController, gameSubject);
+
+    gameSubject.registerObserver(gameLogger);
+
     this.players = playerController.getPlayers();
 
     BorderPane mainLayout = new BorderPane();
@@ -241,12 +249,20 @@ public class DashboardGui extends Application {
     gamesGrid.setHgap(20);
 
     VBox classicLadderGameBox = createGameBox("Classic Laddergame",
-        "pictures/boardpictures/classicBoard.jpg", event ->
-            new LadderGameApp(playerController.getPlayers(), CLASSIC).start(primaryStage));
+        "pictures/boardpictures/classicBoard.jpg", event -> {
+            new LadderGameApp(playerController.getPlayers(), CLASSIC).start(primaryStage);
+
+            gameSubject.notifyObservers(EventType.GAME_STARTED, playerController.getPlayers());
+        });
+
 
     VBox specialLadderGameBox = createGameBox("Special Laddergame",
-        "pictures/boardpictures/specialBoard.jpg", event ->
-            new LadderGameApp(playerController.getPlayers(), SPECIAL).start(primaryStage));
+        "pictures/boardpictures/specialBoard.jpg", event -> {
+            new LadderGameApp(playerController.getPlayers(), SPECIAL).start(primaryStage);
+
+          gameSubject.notifyObservers(EventType.GAME_STARTED, playerController.getPlayers());
+        });
+
 
     VBox ticTacToeGameBox = createGameBox("Tic Tac Toe",
         "pictures/boardpictures/TicTacToePicture.jpg", event ->

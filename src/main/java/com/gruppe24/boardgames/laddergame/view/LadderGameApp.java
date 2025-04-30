@@ -47,8 +47,8 @@ import javafx.util.Duration;
 public class LadderGameApp extends Application {
 
   private final Board board;
-  BoardController boardController = new BoardController();
-  PlayerController playerController = new PlayerController(boardController);
+  BoardController boardController;
+  PlayerController playerController;
   private final List<Player> players;
   private static final int tileSize = 75;
   private int currentPlayerIndex = 0;
@@ -75,7 +75,7 @@ public class LadderGameApp extends Application {
       throw new IllegalArgumentException("Parameter boardType cannot be empty");
     }
     this.boardController = new BoardController(boardType);
-    this.playerController = new PlayerController(boardController);
+    this.playerController = new PlayerController(boardController, gameSubject);
     this.board = boardController.getBoard();
     this.players = players;
     gameSubject.registerObserver(gameLogger);
@@ -95,7 +95,7 @@ public class LadderGameApp extends Application {
       throw new IllegalArgumentException("Parameter customBoard cannot be empty");
     }
     this.boardController = new BoardController(customBoard);
-    this.playerController = new PlayerController(boardController);
+    this.playerController = new PlayerController(boardController, gameSubject);
     this.board = customBoard;
     this.players = players;
     gameSubject.registerObserver(gameLogger);
@@ -116,8 +116,6 @@ public class LadderGameApp extends Application {
     for (Player player : players) {
       player.initializePlayerPiece(player.getIcon());
     }
-
-    gameSubject.notifyObservers(EventType.GAME_STARTED, players);
 
     primaryStage.setTitle("Laddergame Classic");
 
@@ -354,13 +352,8 @@ public class LadderGameApp extends Application {
     // Rest of the method remains unchanged
     int diceValue = rollAndDisplayDice(dicePane);
 
-    gameSubject.notifyObservers(EventType.DICE_ROLLED, currentPlayer, diceValue);
-
     int previousPosition = currentPlayer.getPosition();
     int targetPosition = calculateTargetPosition(currentPlayer, diceValue);
-
-    gameSubject.notifyObservers(EventType.PLAYER_MOVED,
-        currentPlayer, previousPosition, targetPosition);
 
     animateAndMove(gridPane, currentPlayer, previousPosition, targetPosition,
         diceValue, primaryStage);
@@ -428,8 +421,6 @@ public class LadderGameApp extends Application {
       alert.setTitle("Game Over");
       alert.setHeaderText(null);
       alert.setContentText(player.getName() + " has won the game!");
-
-      gameSubject.notifyObservers(EventType.GAME_ENDED, player);
 
       Platform.runLater(() -> {
         gameSubject.removeObserver(this.gameLogger);
