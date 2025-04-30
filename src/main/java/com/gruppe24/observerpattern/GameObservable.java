@@ -2,9 +2,9 @@ package com.gruppe24.observerpattern;
 
 public interface GameObservable {
 
-  void registerObserver(GameObserver observer);
+  void registerListener(GameObserver observer);
 
-  void removeObserver(GameObserver observer);
+  void removeListener(GameObserver observer);
 
-  void notifyObservers(EventType event, Object... args);
+  void notifyListener(EventType event, Object... args);
 }

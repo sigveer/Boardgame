@@ -14,7 +14,7 @@ public class GameSubject implements GameObservable {
 
 
   @Override
-  public void registerObserver(GameObserver observer) {
+  public void registerListener(GameObserver observer) {
     if (observer == null) {
       throw new IllegalArgumentException("Observer missing");
     }
@@ -25,13 +25,13 @@ public class GameSubject implements GameObservable {
 
 
   @Override
-  public void removeObserver(GameObserver observer) {
+  public void removeListener(GameObserver observer) {
     observers.remove(observer);
   }
 
 
   @Override
-  public void notifyObservers(EventType event, Object... args) {
+  public void notifyListener(EventType event, Object... args) {
     for (GameObserver observer : observers) {
       observer.update(event, args);
     }

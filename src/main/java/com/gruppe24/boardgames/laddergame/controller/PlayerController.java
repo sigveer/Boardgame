@@ -41,7 +41,7 @@ public class PlayerController {
     Player newPlayer = new Player("Player " + (players.size() + 1), getNextIconIndex());
     players.add(newPlayer);
 
-    gameSubject.notifyObservers(EventType.PLAYER_ADDED, newPlayer);
+    gameSubject.notifyListener(EventType.PLAYER_ADDED, newPlayer);
   }
 
   /**
@@ -51,7 +51,7 @@ public class PlayerController {
     if (players.size() > 1) {
       Player removedPlayer = players.removeLast();
 
-      gameSubject.notifyObservers(EventType.PLAYER_REMOVED, removedPlayer);
+      gameSubject.notifyListener(EventType.PLAYER_REMOVED, removedPlayer);
     }
   }
 
@@ -75,7 +75,7 @@ public class PlayerController {
       int oldIconIndex = player.getIconIndex();
       player.cycleToNextIcon();
 
-      gameSubject.notifyObservers(EventType.PLAYER_ICON_CHANGED, player, player.getIconIndex());
+      gameSubject.notifyListener(EventType.PLAYER_ICON_CHANGED, player, player.getIconIndex());
     }
   }
 
@@ -85,7 +85,7 @@ public class PlayerController {
   public void handlePlayerTurn(Player player, int diceValue) {
     movePlayer(player, diceValue);
 
-    gameSubject.notifyObservers(EventType.DICE_ROLLED, player, diceValue);
+    gameSubject.notifyListener(EventType.DICE_ROLLED, player, diceValue);
   }
 
   /**

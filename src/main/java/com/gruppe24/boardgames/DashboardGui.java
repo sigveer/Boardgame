@@ -12,16 +12,13 @@ import com.gruppe24.boardgames.laddergame.view.LadderGameApp;
 import com.gruppe24.boardgames.tictactoe.TicTacToeApp;
 import com.gruppe24.filehandling.CsvPlayerReader;
 import com.gruppe24.filehandling.CsvPlayerWriter;
-import com.gruppe24.filehandling.JsonBoardReader;
 import com.gruppe24.observerpattern.EventType;
 import com.gruppe24.observerpattern.GameLogger;
 import com.gruppe24.observerpattern.GameSubject;
 import com.gruppe24.utils.StyleUtils;
 import com.gruppe24.utils.Validators;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.logging.Level;
 import javafx.application.Application;
 import javafx.geometry.Insets;
@@ -31,13 +28,11 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 /**
@@ -69,7 +64,7 @@ public class DashboardGui extends Application {
 
     this.playerController = new PlayerController(boardController, gameSubject);
 
-    gameSubject.registerObserver(gameLogger);
+    gameSubject.registerListener(gameLogger);
 
     this.players = playerController.getPlayers();
 
@@ -252,7 +247,7 @@ public class DashboardGui extends Application {
         "pictures/boardpictures/classicBoard.jpg", event -> {
             new LadderGameApp(playerController.getPlayers(), CLASSIC).start(primaryStage);
 
-            gameSubject.notifyObservers(EventType.GAME_STARTED, playerController.getPlayers());
+            gameSubject.notifyListener(EventType.GAME_STARTED, playerController.getPlayers());
         });
 
 
@@ -260,7 +255,7 @@ public class DashboardGui extends Application {
         "pictures/boardpictures/specialBoard.jpg", event -> {
             new LadderGameApp(playerController.getPlayers(), SPECIAL).start(primaryStage);
 
-          gameSubject.notifyObservers(EventType.GAME_STARTED, playerController.getPlayers());
+          gameSubject.notifyListener(EventType.GAME_STARTED, playerController.getPlayers());
         });
 
 

@@ -7,7 +7,6 @@ import com.gruppe24.boardgames.laddergame.models.Dice;
 import com.gruppe24.boardgames.laddergame.models.Player;
 import com.gruppe24.boardgames.laddergame.models.board.Board;
 import com.gruppe24.boardgames.laddergame.models.board.BoardType;
-import com.gruppe24.observerpattern.EventType;
 import com.gruppe24.observerpattern.GameLogger;
 import com.gruppe24.observerpattern.GameSubject;
 import com.gruppe24.utils.StyleUtils;
@@ -78,7 +77,7 @@ public class LadderGameApp extends Application {
     this.playerController = new PlayerController(boardController, gameSubject);
     this.board = boardController.getBoard();
     this.players = players;
-    gameSubject.registerObserver(gameLogger);
+    gameSubject.registerListener(gameLogger);
   }
 
   /**
@@ -98,7 +97,7 @@ public class LadderGameApp extends Application {
     this.playerController = new PlayerController(boardController, gameSubject);
     this.board = customBoard;
     this.players = players;
-    gameSubject.registerObserver(gameLogger);
+    gameSubject.registerListener(gameLogger);
   }
 
   /**
@@ -423,7 +422,7 @@ public class LadderGameApp extends Application {
       alert.setContentText(player.getName() + " has won the game!");
 
       Platform.runLater(() -> {
-        gameSubject.removeObserver(this.gameLogger);
+        gameSubject.removeListener(this.gameLogger);
         alert.showAndWait();
         new DashboardGui().start(primaryStage);
       });
