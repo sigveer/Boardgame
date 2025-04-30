@@ -18,7 +18,7 @@ public class Board {
   protected HashMap<Integer, Integer> ladderDown;
   protected HashMap<Integer, Boolean> frozenTiles = new HashMap<>();
   protected HashMap<Integer, Boolean> randomTeleportTiles = new HashMap<>();
-  protected HashMap<Integer , Boolean> winningTile = new HashMap<>();
+  protected HashMap<Integer, Boolean> winningTile = new HashMap<>();
   private static final int Columns = 9;
   private static final int Rows = 10;
   protected Tile[] tiles;

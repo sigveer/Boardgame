@@ -6,20 +6,23 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
 import com.gruppe24.boardgames.laddergame.models.board.Board;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 
 /**
  * JsonBoardReader is a class that implements the FileReader interface to read a board configuration
  * from a JSON file. It parses the JSON data and constructs a Board object based on the information
  * provided in the file.
  */
-public class JsonBoardReader implements com.gruppe24.filehandling.FileReader {
+public class JsonBoardReader {
 
+  private Board currentBoard;
 
-  @Override
   public Object readFromFile(String filePath) {
     try (FileReader reader = new FileReader(filePath)) {
       JsonObject boardJson = JsonParser.parseReader(reader).getAsJsonObject();
@@ -108,5 +111,38 @@ public class JsonBoardReader implements com.gruppe24.filehandling.FileReader {
       System.err.println("Unexpected error: " + e.getMessage());
       return null;
     }
+  }
+
+  /**
+   * Method that loads a custom board from a JSON file.
+   *
+   * @param stage the stage to use for the file chooser
+   * @return the loaded custom board
+   *
+   * @AI_Based
+   */
+  public Board loadCustomBoard(Stage stage) {
+    FileChooser fileChooser = new FileChooser();
+    fileChooser.setTitle("Open JSON Board File");
+    fileChooser.getExtensionFilters().add(
+        new FileChooser.ExtensionFilter("JSON Files", "*.json"));
+    File boardsDirectory = new File("src/main/resources/boards");
+    if (boardsDirectory.exists()) {
+      fileChooser.setInitialDirectory(boardsDirectory);
+    }
+    File selectedFile = fileChooser.showOpenDialog(stage);
+    if (selectedFile != null) {
+      try {
+        JsonBoardReader reader = new JsonBoardReader();
+        Board customBoard = (Board) reader.readFromFile(selectedFile.getPath());
+        if (customBoard != null) {
+          this.currentBoard = customBoard;
+          return customBoard;
+        }
+      } catch (Exception e) {
+        // Logge feil, ingve
+      }
+    }
+    return null;
   }
 }

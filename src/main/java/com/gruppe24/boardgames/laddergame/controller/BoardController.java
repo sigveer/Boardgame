@@ -1,19 +1,17 @@
 package com.gruppe24.boardgames.laddergame.controller;
 
-import com.gruppe24.boardgames.laddergame.models.Dice;
 import com.gruppe24.boardgames.laddergame.models.Player;
 import com.gruppe24.boardgames.laddergame.models.board.Board;
 import com.gruppe24.boardgames.laddergame.models.board.BoardFactory;
 import com.gruppe24.boardgames.laddergame.models.board.BoardType;
 import com.gruppe24.boardgames.laddergame.models.board.tiles.Tile;
-import com.gruppe24.filehandling.JsonBoardReader;
-import java.io.File;
-import javafx.stage.FileChooser;
-import javafx.stage.Stage;
 
-
+/**
+ * BoardController is a class that manages the game board interactions.
+ * It handles the game logic, including player movement, tile actions, and win conditions.
+ */
 public class BoardController {
-  private Board currentBoard;
+  private final Board currentBoard;
   private static final int WinCondition = 90;
   private int checkTileType = 0;
   private int specialTilePosition;
@@ -47,37 +45,6 @@ public class BoardController {
       throw new IllegalArgumentException("Board cannot be null");
     }
     this.currentBoard = customBoard;
-  }
-
-  /**
-   * Method that loads a custom board from a JSON file.
-   *
-   * @param stage the stage to use for the file chooser
-   * @return the loaded custom board
-   */
-  public Board loadCustomBoard(Stage stage) {
-    FileChooser fileChooser = new FileChooser();
-    fileChooser.setTitle("Open JSON Board File");
-    fileChooser.getExtensionFilters().add(
-        new FileChooser.ExtensionFilter("JSON Files", "*.json"));
-    File boardsDirectory = new File("src/main/resources/boards");
-    if (boardsDirectory.exists()) {
-      fileChooser.setInitialDirectory(boardsDirectory);
-    }
-    File selectedFile = fileChooser.showOpenDialog(stage);
-    if (selectedFile != null) {
-      try {
-        JsonBoardReader reader = new JsonBoardReader();
-        Board customBoard = (Board) reader.readFromFile(selectedFile.getPath());
-        if (customBoard != null) {
-          this.currentBoard = customBoard;
-          return customBoard;
-        }
-      } catch (Exception e) {
-        // Logge feil, ingve
-      }
-    }
-    return null;
   }
 
   /**

@@ -12,7 +12,7 @@ import java.io.IOException;
  * JSONBoardWriter is a class that implements the FileWriter interface to write a Board object to a
  * JSON file.
  */
-public class JsonBoardWriter implements FileWriter<Board> {
+public class JsonBoardWriter {
 
   /**
    * Writes the given Board object to a JSON file at the specified file path.
@@ -23,7 +23,6 @@ public class JsonBoardWriter implements FileWriter<Board> {
    *
    * @AI_Assisted try loop is assisted by AI.
    */
-  @Override
   public boolean writeToFile(Board board, String filePath) {
     JsonObject boardJson = serializeBoard(board);
 

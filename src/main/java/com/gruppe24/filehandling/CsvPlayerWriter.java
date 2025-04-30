@@ -11,7 +11,7 @@ import javafx.stage.Stage;
 /**
  * Utility class for saving player data to CSV format.
  */
-public class CsvPlayerWriter implements com.gruppe24.filehandling.FileWriter {
+public class CsvPlayerWriter {
 
   /**
    * Saves a list of players to a CSV file.
@@ -43,10 +43,5 @@ public class CsvPlayerWriter implements com.gruppe24.filehandling.FileWriter {
       //implementer seinere
       return false;
     }
-  }
-
-  @Override
-  public boolean writeToFile(Object object, String filePath) {
-    return false;
   }
 }

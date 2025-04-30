@@ -10,13 +10,11 @@ import com.gruppe24.boardgames.laddergame.models.board.BoardType;
 import com.gruppe24.observerpattern.GameLogger;
 import com.gruppe24.observerpattern.GameSubject;
 import com.gruppe24.utils.StyleUtils;
-import com.gruppe24.utils.Validators;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.logging.Level;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
@@ -110,7 +108,6 @@ public class LadderGameApp extends Application {
     if (primaryStage == null) {
       throw new IllegalArgumentException("Parameter Stage cannot be empty");
     }
-    Validators.getLogger().log(Level.INFO, "LadderGame started");
 
     for (Player player : players) {
       player.initializePlayerPiece(player.getIcon());
@@ -618,7 +615,7 @@ public class LadderGameApp extends Application {
     if (toPosition != targetPositionBeforeSpecial || tileType == 3) {
 
       // Pause before showing special tile effect
-      Timeline pauseTimeline = new Timeline(new KeyFrame(Duration.seconds(0.8)));
+      Timeline pauseTimeline = new Timeline(new KeyFrame(Duration.seconds(0.4)));
       pauseTimeline.setOnFinished(pauseEvent -> {
         displaySpecialTileEffectMessage(tileType, toPosition);
         movePlayerToFinalPosition(gridPane, player, toPosition);
