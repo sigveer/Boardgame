@@ -13,7 +13,7 @@ import javafx.stage.Stage;
 /**
  * Utility class for loading player data from CSV files.
  */
-public class CsvPlayerReader implements com.gruppe24.filehandling.FileReader {
+public class CsvPlayerReader {
 
 
   /**
@@ -56,10 +56,5 @@ public class CsvPlayerReader implements com.gruppe24.filehandling.FileReader {
       //implementer seinere
       return null;
     }
-  }
-
-  @Override
-  public Object readFromFile(String filePath) {
-    return null;
   }
 }

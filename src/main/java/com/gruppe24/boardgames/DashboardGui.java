@@ -12,6 +12,7 @@ import com.gruppe24.boardgames.laddergame.view.LadderGameApp;
 import com.gruppe24.boardgames.tictactoe.TicTacToeApp;
 import com.gruppe24.filehandling.CsvPlayerReader;
 import com.gruppe24.filehandling.CsvPlayerWriter;
+import com.gruppe24.filehandling.JsonBoardReader;
 import com.gruppe24.observerpattern.EventType;
 import com.gruppe24.observerpattern.GameLogger;
 import com.gruppe24.observerpattern.GameSubject;
@@ -44,6 +45,7 @@ public class DashboardGui extends Application {
   private VBox playerList;
   private PlayerController playerController;
   private Stage stage;
+  private JsonBoardReader jsonBoardReader;
   private final BoardController boardController = new BoardController();
   private final GameSubject gameSubject = new GameSubject();
   private final GameLogger gameLogger = new GameLogger();
@@ -60,8 +62,8 @@ public class DashboardGui extends Application {
     }
     Validators.getLogger().log(Level.INFO, "Dashboard started");
 
+    this.jsonBoardReader = new JsonBoardReader();
     this.stage = primaryStage;
-
     this.playerController = new PlayerController(boardController, gameSubject);
 
     gameSubject.registerListener(gameLogger);
@@ -70,7 +72,6 @@ public class DashboardGui extends Application {
 
     BorderPane mainLayout = new BorderPane();
     mainLayout.setStyle("-fx-background-color: #3a5ad7;");
-    Scene mainScene = new Scene(mainLayout, 1000, 850);
 
     Label title = new Label("Game Dashboard!");
     title.setStyle("-fx-font-size: 40px; -fx-text-fill: #ffffff; -fx-font-weight: bold;");
@@ -83,6 +84,8 @@ public class DashboardGui extends Application {
 
     VBox playerMenu = createPlayerMenu();
     mainLayout.setLeft(playerMenu);
+
+    Scene mainScene = new Scene(mainLayout, 1000, 850);
 
     primaryStage.setScene(mainScene);
     primaryStage.show();
@@ -221,9 +224,8 @@ public class DashboardGui extends Application {
     playerIcon.setFitHeight(60);
 
     TextField nameField = new TextField(player.getName());
-    nameField.textProperty().addListener((observable, oldValue, newValue) -> {
-      player.setName(newValue);
-    });
+    nameField.textProperty().addListener((observable, oldValue,
+        newValue) -> player.setName(newValue));
 
     Button changeIconButton = new Button("⟳");
     styleNormalButton(changeIconButton);
@@ -279,9 +281,10 @@ public class DashboardGui extends Application {
   /**
    * Creates a game box with a title and a button to start the game.
    *
-   * @param title
-   * @return
-   * @AI_Assisted javafx.event.EventHandler, ImageView, new Insets,
+   * @param title the title of the game
+   * @return the VBox containing the game information
+   *
+   * @AI_Assisted javafx.event.EventHandler, new Insets,
    */
   private VBox createGameBox(String title, String imagePath,
       javafx.event.EventHandler<javafx.event.ActionEvent> action) {
@@ -322,7 +325,7 @@ public class DashboardGui extends Application {
   }
 
   private void loadCustomBoard(Stage primaryStage) {
-    Board customBoard = boardController.loadCustomBoard(primaryStage);
+    Board customBoard = jsonBoardReader.loadCustomBoard(primaryStage);
     if (customBoard != null) {
       startLadderGameWithCustomBoard(primaryStage, customBoard);
     } else {

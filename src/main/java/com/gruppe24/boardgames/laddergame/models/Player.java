@@ -1,6 +1,5 @@
 package com.gruppe24.boardgames.laddergame.models;
 
-import com.gruppe24.utils.StyleUtils;
 import java.util.Objects;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
