@@ -6,7 +6,11 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 
 /**
- * Class to represent the Tic Tac Toe application.
+ * Class to represent the Tic Tac Toe application
+ *
+ * @Author Sigveer
+ * @Date: 15.03.2025
+ * @Version: 1.0
  */
 public class TicTacToeApp extends Application {
 
