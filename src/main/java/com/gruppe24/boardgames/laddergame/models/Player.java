@@ -14,14 +14,14 @@ public class Player {
   private ImageView playerPiece;
   private Image icon;
   private String iconPath;
-  private  int currentIconIndex = 0;
+  private int currentIconIndex = 0;
   private boolean frozen = false;
 
 
   /**
    * Constructor for Player.
    *
-   * @param name  name of the player
+   * @param name      name of the player
    * @param iconIndex icon of the player
    */
   public Player(String name, int iconIndex) {
@@ -144,12 +144,12 @@ public class Player {
    * @return array of icon paths
    */
   public static String[] getIconPaths() {
-    return new String[] {
-      "pictures/pngIcons/mario.png",
-      "pictures/pngIcons/luigi.png",
-      "pictures/pngIcons/wario.png",
-      "pictures/pngIcons/waluigi.png",
-      "pictures/pngIcons/donkeykong.png"
+    return new String[]{
+        "pictures/pngIcons/mario.png",
+        "pictures/pngIcons/luigi.png",
+        "pictures/pngIcons/wario.png",
+        "pictures/pngIcons/waluigi.png",
+        "pictures/pngIcons/donkeykong.png"
     };
   }
 
@@ -168,23 +168,23 @@ public class Player {
     this.playerPiece.setImage(newIcon);
   }
 
-  /**
-   * Method for getting the current icon path.
-   *
-   * @return iconPath
-   */
-  public String getIconPath() {
-    return iconPath;
-  }
-
-  /**
-   * Method for setting the icon path.
-   *
-   * @param iconPath the new icon path
-   */
-  public void setIconPath(String iconPath) {
-    this.iconPath = iconPath;
-  }
+//  /**
+//   * Method for getting the current icon path.
+//   *
+//   * @return iconPath
+//   */
+//  public String getIconPath() {
+//    return iconPath;
+//  }
+//
+//  /**
+//   * Method for setting the icon path.
+//   *
+//   * @param iconPath the new icon path
+//   */
+//  public void setIconPath(String iconPath) {
+//    this.iconPath = iconPath;
+//  }
 
   /**
    * Method to get the current icon index.
