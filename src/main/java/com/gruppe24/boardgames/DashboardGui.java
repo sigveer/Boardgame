@@ -9,7 +9,6 @@ import com.gruppe24.boardgames.laddergame.controller.PlayerController;
 import com.gruppe24.boardgames.laddergame.models.Player;
 import com.gruppe24.boardgames.laddergame.models.board.Board;
 import com.gruppe24.boardgames.laddergame.view.LadderGameApp;
-import com.gruppe24.boardgames.tictactoe.TicTacToeApp;
 import com.gruppe24.filehandling.CsvPlayerReader;
 import com.gruppe24.filehandling.CsvPlayerWriter;
 import com.gruppe24.filehandling.JsonBoardReader;
@@ -208,8 +207,8 @@ public class DashboardGui extends Application {
   /**
    * Creates a player box with an icon, name field, and change image button.
    *
-   * @param player the player to display
-   * @param iconIndex  the index of the player
+   * @param player    the player to display
+   * @param iconIndex the index of the player
    * @return the HBox containing the player information
    * @AI_Assisted nameField.setOnAction([x]).....
    */
@@ -247,23 +246,22 @@ public class DashboardGui extends Application {
 
     VBox classicLadderGameBox = createGameBox("Classic Laddergame",
         "pictures/boardpictures/classicBoard.jpg", event -> {
-            new LadderGameApp(playerController.getPlayers(), CLASSIC).start(primaryStage);
-
-            gameSubject.notifyListener(EventType.GAME_STARTED, playerController.getPlayers());
-        });
-
-
-    VBox specialLadderGameBox = createGameBox("Special Laddergame",
-        "pictures/boardpictures/specialBoard.jpg", event -> {
-            new LadderGameApp(playerController.getPlayers(), SPECIAL).start(primaryStage);
+          new LadderGameApp(playerController.getPlayers(), CLASSIC).start(primaryStage);
 
           gameSubject.notifyListener(EventType.GAME_STARTED, playerController.getPlayers());
         });
 
+    VBox specialLadderGameBox = createGameBox("Special Laddergame",
+        "pictures/boardpictures/specialBoard.jpg", event -> {
+          new LadderGameApp(playerController.getPlayers(), SPECIAL).start(primaryStage);
 
-    VBox ticTacToeGameBox = createGameBox("Tic Tac Toe",
-        "pictures/boardpictures/TicTacToePicture.jpg", event ->
-            new TicTacToeApp().start(primaryStage));
+          gameSubject.notifyListener(EventType.GAME_STARTED, playerController.getPlayers());
+        });
+
+    VBox ticTacToeGameBox = createGameBox("Comng soon...",
+        "pictures/boardpictures/ownJsonBoard.jpg", event -> {
+        }
+    );
 
     VBox jsonBoardBox = createGameBox("Use your own JSON Board",
         "pictures/boardpictures/ownJsonBoard.jpg", event ->
@@ -283,7 +281,6 @@ public class DashboardGui extends Application {
    *
    * @param title the title of the game
    * @return the VBox containing the game information
-   *
    * @AI_Assisted javafx.event.EventHandler, new Insets,
    */
   private VBox createGameBox(String title, String imagePath,
@@ -337,7 +334,7 @@ public class DashboardGui extends Application {
    * Starts the LadderGameApp with a custom board.
    *
    * @param primaryStage the primary stage
-   * @param board the custom board
+   * @param board        the custom board
    */
   private void startLadderGameWithCustomBoard(Stage primaryStage, Board board) {
     // Get players for the game
