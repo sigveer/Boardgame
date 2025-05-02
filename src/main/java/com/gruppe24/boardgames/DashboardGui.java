@@ -166,6 +166,8 @@ public class DashboardGui extends Application {
   }
 
   private void updatePlayerList() {
+    this.players = playerController.getPlayers();
+
     playerList.getChildren().clear();
 
     for (int i = 0; i < players.size(); i++) {
@@ -198,9 +200,13 @@ public class DashboardGui extends Application {
    * @param loadedPlayers The list of players to populate the fields with.
    */
   private void populateFieldsWithPlayers(List<Player> loadedPlayers) {
-    players.clear();
-    players.addAll(loadedPlayers);
+    // Update the player controller with loaded players
+    playerController.setPlayers(loadedPlayers);
 
+    // Now get the updated player list from controller
+    this.players = playerController.getPlayers();
+
+    // Update the UI
     updatePlayerList();
   }
 

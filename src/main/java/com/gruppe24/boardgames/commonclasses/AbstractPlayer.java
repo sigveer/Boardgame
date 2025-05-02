@@ -1,12 +1,12 @@
 package com.gruppe24.boardgames.commonclasses;
 
-import static com.gruppe24.boardgames.laddergame.models.Player.getIconPaths;
-
 import java.util.Objects;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
-
+/**
+ * Abstract class that represents players.
+ */
 public abstract class AbstractPlayer {
 
   protected String name;
@@ -16,6 +16,12 @@ public abstract class AbstractPlayer {
   protected String iconPath;
   protected int currentIconIndex;
 
+  /**
+   * Constructor for the player.
+   *
+   * @param name      name of the player
+   * @param iconIndex index of the icon
+   */
   protected AbstractPlayer(String name, int iconIndex) {
 
     this.name = name;
@@ -27,8 +33,6 @@ public abstract class AbstractPlayer {
 
   /**
    * Getter-method for the color of the player.
-   *
-   * @return color-variable
    */
   protected void initializePlayerIcon(int iconIndex) {
     String[] iconPaths = getIconPaths();
@@ -57,7 +61,7 @@ public abstract class AbstractPlayer {
   /**
    * Setter-method for name.
    *
-   * @param name
+   * @param name new name
    */
   public void setName(String name) {
     this.name = name;
@@ -88,6 +92,15 @@ public abstract class AbstractPlayer {
    */
   public Image getIcon() {
     return this.icon;
+  }
+
+  /**
+   * Getter-method for the player piece.
+   *
+   * @return playerPiece-variable
+   */
+  public ImageView getPlayerPiece() {
+    return playerPiece;
   }
 
   /**

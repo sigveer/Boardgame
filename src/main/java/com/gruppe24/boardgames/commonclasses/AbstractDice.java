@@ -4,6 +4,11 @@ import com.gruppe24.boardgames.laddergame.models.Die;
 import java.util.ArrayList;
 import java.util.List;
 
+
+/**
+ * Abstract class representing a set of dice. This class provides methods to roll the dice and get
+ * the sum of their values.
+ */
 public abstract class AbstractDice {
 
   protected final List<AbstractDie> dice;
@@ -49,10 +54,6 @@ public abstract class AbstractDice {
     return dice.get(dieNumber).getLastRoll();
   }
 
-  public int getSum() {
-    return this.sum;
-  }
-
   /**
    * Returns the path to the dice image.
    *
@@ -70,6 +71,10 @@ public abstract class AbstractDice {
    */
   public int roll() {
     return dice.getFirst().roll();
+  }
+
+  public int getSum() {
+    return this.sum;
   }
 
 }

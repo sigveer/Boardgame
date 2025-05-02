@@ -109,7 +109,12 @@ public class LadderGameApp extends Application {
       throw new IllegalArgumentException("Parameter Stage cannot be empty");
     }
 
-    players.stream().forEach(player -> player.initializePlayerPiece(player.getIcon()));
+    BoardController boardController = new BoardController(BoardType.CLASSIC);
+    this.playerController.initializeGame(boardController);
+
+    players.stream().forEach(player -> {
+      player.setIcon(player.getIcon());
+    });
 
     primaryStage.setTitle("Laddergame Classic");
 
@@ -378,15 +383,19 @@ public class LadderGameApp extends Application {
    */
   private int rollAndDisplayDice(Pane dicePane) {
     int diceValue = dice.rollSum();
-    int diceValue1 = dice.getDie(0);
-    int diceValue2 = dice.getDie(1);
 
+    diceResultLabel.setText("Rolled: " + diceValue);
+
+    int diceValue1 = dice.getDie(0);
+    
     // Create and display first die
     ImageView dice1Iv = new ImageView(new Image(dice.dicePath(diceValue1)));
     dice1Iv.setX(40);
     dice1Iv.setY(0);
     dice1Iv.setFitHeight(75);
     dice1Iv.setFitWidth(75);
+
+    int diceValue2 = dice.getDie(1);
 
     // Create and display second die
     ImageView dice2Iv = new ImageView(new Image(dice.dicePath(diceValue2)));
@@ -395,7 +404,6 @@ public class LadderGameApp extends Application {
     dice2Iv.setFitHeight(75);
     dice2Iv.setFitWidth(75);
 
-    diceResultLabel.setText("Rolled: " + diceValue);
     dicePane.getChildren().clear();
     dicePane.getChildren().addAll(dice1Iv, dice2Iv);
 
