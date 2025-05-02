@@ -54,6 +54,9 @@ public class BoardController {
    * @return the new position of the player
    */
   public int handleOvershoot(int newPosition) {
+    if (newPosition < 0) {
+      throw new IllegalArgumentException("Position cannot be sub zero");
+    }
     if (newPosition > WinCondition) {
       int overshoot = newPosition - WinCondition;
       newPosition = WinCondition - overshoot;
@@ -69,6 +72,12 @@ public class BoardController {
    * @param newPosition the new position of the player
    */
   public void handleTileAction(Player player, int newPosition) {
+    if (player == null) {
+      throw new IllegalArgumentException("Player is empty");
+    }
+    if (newPosition < 0) {
+      throw new IllegalArgumentException("New position cannot be sub zero");
+    }
     Tile tile = currentBoard.getTile(newPosition);
     tile.perform(player);
     checkTileType = tile.tileTypeNumber;

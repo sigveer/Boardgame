@@ -56,6 +56,27 @@ public class Board {
       HashMap<Integer, Boolean> winningTile, HashMap<Integer, Boolean> frozenTiles,
       HashMap<Integer, Boolean> randomTeleportTiles,
       String name, String description) {
+    if (ladderUp == null || ladderUp.isEmpty()) {
+      throw new IllegalArgumentException("LadderUp HashMap is empty");
+    }
+    if (ladderDown == null || ladderDown.isEmpty()) {
+      throw new IllegalArgumentException("LadderDown HashMap is empty");
+    }
+    if (winningTile == null || winningTile.isEmpty()) {
+      throw new IllegalArgumentException("WinningTile HashMap is empty");
+    }
+    if (frozenTiles == null || frozenTiles.isEmpty()) {
+      throw new IllegalArgumentException("FrozenTile HashMap is empty");
+    }
+    if (randomTeleportTiles == null || randomTeleportTiles.isEmpty()) {
+      throw new IllegalArgumentException("RandomTeleportTiles is empty");
+    }
+    if (name == null || name.isEmpty()) {
+      throw new IllegalArgumentException("Name in board is empty");
+    }
+    if (description == null || description.isEmpty()) {
+      throw new IllegalArgumentException("Description in board is empty");
+    }
     this.ladderUp = ladderUp;
     this.ladderDown = ladderDown;
     this.winningTile = winningTile;

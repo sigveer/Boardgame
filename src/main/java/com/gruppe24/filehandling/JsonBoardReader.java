@@ -24,6 +24,9 @@ public class JsonBoardReader {
   private Board currentBoard;
 
   public Object readFromFile(String filePath) {
+    if (filePath.isEmpty()) {
+      throw new IllegalArgumentException("Filepath is empty in JsonBoardReader");
+    }
     try (FileReader reader = new FileReader(filePath)) {
       JsonObject boardJson = JsonParser.parseReader(reader).getAsJsonObject();
 

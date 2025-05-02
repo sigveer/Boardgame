@@ -21,6 +21,12 @@ public class CsvPlayerWriter {
    * @return true if saving was successful, false otherwise
    */
   public static boolean savePlayers(List<Player> players, Stage stage) {
+    if (players == null || players.isEmpty()) {
+      throw new IllegalArgumentException("Players is empty in CsvPlayerWriter");
+    }
+    if (stage == null) {
+      throw new IllegalArgumentException("Stage is null in CsvPlayerWriter");
+    }
     FileChooser fileChooser = FileHandler.createFileChooser("Save Players", true);
     File file = fileChooser.showSaveDialog(stage);
 

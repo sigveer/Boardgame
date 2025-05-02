@@ -25,6 +25,9 @@ public class CsvPlayerReader {
    * @AI_Based "While" loop is based on AI logic and structure.
    */
   public static List<Player> loadPlayers(Stage stage) {
+    if (stage == null) {
+      throw new IllegalArgumentException("Stage is null in CsvPlayerReader");
+    }
     FileChooser fileChooser = FileHandler.createFileChooser("Load Players", false);
     File file = fileChooser.showOpenDialog(stage);
 
