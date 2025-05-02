@@ -7,10 +7,11 @@ import com.gruppe24.boardgames.laddergame.models.board.BoardType;
 import com.gruppe24.boardgames.laddergame.models.board.tiles.Tile;
 
 /**
- * BoardController is a class that manages the game board interactions.
- * It handles the game logic, including player movement, tile actions, and win conditions.
+ * BoardController is a class that manages the game board interactions. It handles the game logic,
+ * including player movement, tile actions, and win conditions.
  */
 public class BoardController {
+
   private final Board currentBoard;
   private static final int WinCondition = 90;
   private int checkTileType = 0;
@@ -62,10 +63,10 @@ public class BoardController {
   }
 
   /**
-   * Method that handles the action of a tile. Indirectly takes value checkTileType.
-   * from abstract class Tile.
+   * Method that handles the action of a tile. Indirectly takes value checkTileType. from abstract
+   * class Tile.
    *
-   * @param player the player
+   * @param player      the player
    * @param newPosition the new position of the player
    */
   public void handleTileAction(Player player, int newPosition) {

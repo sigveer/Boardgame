@@ -109,9 +109,7 @@ public class LadderGameApp extends Application {
       throw new IllegalArgumentException("Parameter Stage cannot be empty");
     }
 
-    for (Player player : players) {
-      player.initializePlayerPiece(player.getIcon());
-    }
+    players.stream().forEach(player -> player.initializePlayerPiece(player.getIcon()));
 
     primaryStage.setTitle("Laddergame Classic");
 

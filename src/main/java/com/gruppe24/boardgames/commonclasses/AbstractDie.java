@@ -1,20 +1,14 @@
-package com.gruppe24.boardgames.laddergame.models;
+package com.gruppe24.boardgames.commonclasses;
 
-import com.gruppe24.boardgames.commonclasses.AbstractDie;
 import java.util.Random;
 
-/**
- * Class representing a die.
- */
-public class Die extends AbstractDie { //kan abstraktiseres
+public abstract class AbstractDie {
 
-  private int lastRolledValue;
-  private final Random random;
+  protected int lastRolledValue;
+  protected Random random;
 
-  /**
-   * Constructor that initializes the die.
-   */
-  public Die() {
+
+  public AbstractDie() {
     this.random = new Random();
     this.lastRolledValue = 0;
   }
@@ -37,5 +31,4 @@ public class Die extends AbstractDie { //kan abstraktiseres
   public int getLastRoll() {
     return lastRolledValue;
   }
-
 }

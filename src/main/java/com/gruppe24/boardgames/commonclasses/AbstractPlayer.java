@@ -1,52 +1,28 @@
-package com.gruppe24.boardgames.laddergame.models;
+package com.gruppe24.boardgames.commonclasses;
+
+import static com.gruppe24.boardgames.laddergame.models.Player.getIconPaths;
 
 import java.util.Objects;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
-/**
- * Class that represents players.
- */
-public class Player {
 
-  private String name;
-  public int position;
-  private ImageView playerPiece;
-  private Image icon;
-  private String iconPath;
-  private int currentIconIndex = 0;
-  private boolean frozen = false;
+public abstract class AbstractPlayer {
 
+  protected String name;
+  protected int position;
+  protected ImageView playerPiece;
+  protected Image icon;
+  protected String iconPath;
+  protected int currentIconIndex;
 
-  /**
-   * Constructor for Player.
-   *
-   * @param name      name of the player
-   * @param iconIndex icon of the player
-   */
-  public Player(String name, int iconIndex) {
-    if (name == null || name.trim().isEmpty()) {
-      throw new IllegalArgumentException("Parameter name cannot be empty");
-    }
-    if (iconIndex < 0) {
-      throw new IllegalArgumentException("Parameter iconIndex cannot be negative");
-    }
-    String[] iconPaths = getIconPaths();
-    if (iconIndex >= iconPaths.length) {
-      iconIndex = 0; // Default image index (Mario)
-    }
+  protected AbstractPlayer(String name, int iconIndex) {
 
     this.name = name;
     this.position = 0;
     this.currentIconIndex = iconIndex;
-    this.iconPath = getIconPaths()[iconIndex];
-    this.icon = new Image(Objects.requireNonNull(getClass()
-        .getClassLoader()
-        .getResourceAsStream(this.iconPath)));
-    this.playerPiece = new ImageView(icon);
-    this.playerPiece.setFitWidth(40);
-    this.playerPiece.setFitHeight(40);
-    this.frozen = false;
+
+    initializePlayerIcon(iconIndex);
   }
 
   /**
@@ -54,16 +30,19 @@ public class Player {
    *
    * @return color-variable
    */
-  public ImageView getPlayerPiece() {
-    return playerPiece;
-  }
+  protected void initializePlayerIcon(int iconIndex) {
+    String[] iconPaths = getIconPaths();
+    if (iconIndex >= iconPaths.length) {
+      iconIndex = 0; // Default image index
+    }
 
-  public void initializePlayerPiece(Image image) {
-    ImageView playerPiece = new ImageView(image);
-    playerPiece.setFitWidth(50);
-    playerPiece.setFitHeight(50);
-    playerPiece.setPreserveRatio(true);
-    this.playerPiece = playerPiece;
+    this.iconPath = getIconPaths()[iconIndex];
+    this.icon = new Image(Objects.requireNonNull(getClass()
+        .getClassLoader()
+        .getResourceAsStream(this.iconPath)));
+    this.playerPiece = new ImageView(icon);
+    this.playerPiece.setFitWidth(40);
+    this.playerPiece.setFitHeight(40);
   }
 
   /**
@@ -162,11 +141,4 @@ public class Player {
     return currentIconIndex;
   }
 
-  public boolean isFrozen() {
-    return frozen;
-  }
-
-  public void setFrozen(boolean frozen) {
-    this.frozen = frozen;
-  }
 }

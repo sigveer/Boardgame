@@ -182,8 +182,8 @@ class GameControllerTest {
   }
 
   /**
-   * Tests the textBasedHandlePlayerTurn method.
-   * This test uses a ByteArrayInputStream to simulate user input.
+   * Tests the textBasedHandlePlayerTurn method. This test uses a ByteArrayInputStream to simulate
+   * user input.
    */
   @Test
   void testTextBasedHandlePlayerTurn() {

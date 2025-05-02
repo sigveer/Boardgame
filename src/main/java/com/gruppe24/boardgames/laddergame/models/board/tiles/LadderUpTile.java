@@ -12,7 +12,7 @@ public class LadderUpTile extends SpecialTile {
    * Constructor that initializes the ladder tile.
    *
    * @param position The position of the tile.
-   * @param climbUp The position to climb up to.
+   * @param climbUp  The position to climb up to.
    */
   public LadderUpTile(int position, int climbUp) {
     super(position, climbUp);

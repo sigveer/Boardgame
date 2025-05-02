@@ -21,7 +21,6 @@ public class CsvPlayerReader {
    *
    * @param stage The stage to use for the file chooser dialog.
    * @return A list of players loaded from the CSV file, or null if an error occurs.
-   *
    * @AI_Based "While" loop is based on AI logic and structure.
    */
   public static List<Player> loadPlayers(Stage stage) {

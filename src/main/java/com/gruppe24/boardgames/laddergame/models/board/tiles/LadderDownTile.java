@@ -11,7 +11,7 @@ public class LadderDownTile extends SpecialTile {
   /**
    * Constructor that initializes the snake tile.
    *
-   * @param position The position of the tile.
+   * @param position  The position of the tile.
    * @param slideDown The position to slide down to.
    */
   public LadderDownTile(int position, int slideDown) {

@@ -1,10 +1,10 @@
 package com.gruppe24.boardgames.monopolylite.model;
 
-import com.gruppe24.boardgames.laddergame.models.Player;
+import com.gruppe24.boardgames.commonclasses.AbstractPlayer;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MonopolyPlayer extends Player {
+public class MonopolyPlayer extends AbstractPlayer {
 
   private int money;
   private final List<Property> ownedProperties;
@@ -21,7 +21,7 @@ public class MonopolyPlayer extends Player {
     return money;
   }
 
-  public void getMoney(int amount) {
+  public void addMoney(int amount) {
     this.money += amount;
   }
 

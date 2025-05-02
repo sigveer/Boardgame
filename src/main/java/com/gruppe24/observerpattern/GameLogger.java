@@ -9,6 +9,7 @@ import java.util.logging.Logger;
  * GameLogger is an implementation of GameObserver interface that logs game events to the console.
  */
 public class GameLogger implements GameObserver {
+
   private static final Logger LOGGER = Logger.getLogger(GameLogger.class.getName());
 
   /**

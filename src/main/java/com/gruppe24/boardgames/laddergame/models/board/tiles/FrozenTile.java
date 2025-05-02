@@ -5,7 +5,6 @@ import com.gruppe24.boardgames.laddergame.models.Player;
 
 /**
  * Represents a frozen tile on the board.
- *
  */
 public class FrozenTile extends SpecialTile {
 

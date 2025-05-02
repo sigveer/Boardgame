@@ -17,7 +17,7 @@ public class CsvPlayerWriter {
    * Saves a list of players to a CSV file.
    *
    * @param players The list of players to save
-   * @param stage The stage to display the file chooser
+   * @param stage   The stage to display the file chooser
    * @return true if saving was successful, false otherwise
    */
   public static boolean savePlayers(List<Player> players, Stage stage) {
