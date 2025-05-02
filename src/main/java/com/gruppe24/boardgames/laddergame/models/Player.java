@@ -58,7 +58,14 @@ public class Player {
     return playerPiece;
   }
 
+  /**
+   * Initialize player
+   * @param image
+   */
   public void initializePlayerPiece(Image image) {
+    if (image == null) {
+      throw new IllegalArgumentException("Parameter image cannot be empty in Player class");
+    }
     ImageView playerPiece = new ImageView(image);
     playerPiece.setFitWidth(50);
     playerPiece.setFitHeight(50);
@@ -133,7 +140,7 @@ public class Player {
    */
   public void setIcon(Image image) {
     if (image == null) {
-      throw new IllegalArgumentException("Parameter image cannot be empty");
+      throw new IllegalArgumentException("Parameter image cannot be empty in Player class");
     }
     this.icon = image;
   }

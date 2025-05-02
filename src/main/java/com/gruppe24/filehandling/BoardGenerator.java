@@ -23,30 +23,6 @@ public class BoardGenerator {
   }
 
   /**
-   * Creates a board with the specified parameters.
-   *
-   * @param includeSpecialTiles whether to include special tiles
-   * @param name               the name of the board
-   * @param description        the description of the board
-   * @return a new Board object
-   */
-  private static Board createBoard(boolean includeSpecialTiles, String name, String description) {
-    HashMap<Integer, Integer> ladderUp = new HashMap<>();
-    HashMap<Integer, Integer> ladderDown = new HashMap<>();
-    HashMap<Integer, Boolean> winningTile = new HashMap<>();
-    HashMap<Integer, Boolean> frozenTiles = new HashMap<>();
-    HashMap<Integer, Boolean> randomTeleportTiles = new HashMap<>();
-
-    initializeStandardLadders(ladderUp, ladderDown);
-
-    if (includeSpecialTiles) {
-      initializeStandardSpecialTiles(frozenTiles, randomTeleportTiles);
-    }
-
-    return new Board(ladderUp, ladderDown, winningTile, frozenTiles, randomTeleportTiles, name, description);
-  }
-
-  /**
    * Creates a classic board and saves it to a JSON file.
    */
   private static void createClassicBoard() {
@@ -65,12 +41,49 @@ public class BoardGenerator {
   }
 
   /**
+   * Creates a board with the specified parameters.
+   *
+   * @param includeSpecialTiles whether to include special tiles
+   * @param name               the name of the board
+   * @param description        the description of the board
+   * @return a new Board object
+   */
+  private static Board createBoard(boolean includeSpecialTiles, String name, String description) {
+    if (name == null || name.isEmpty()) {
+      throw new IllegalArgumentException("Board name is null in boardGenerator");
+    }
+    if (description == null || description.isEmpty()) {
+      throw new IllegalArgumentException("Description is null in boardGenerator");
+    }
+    HashMap<Integer, Integer> ladderUp = new HashMap<>();
+    HashMap<Integer, Integer> ladderDown = new HashMap<>();
+    HashMap<Integer, Boolean> winningTile = new HashMap<>();
+    HashMap<Integer, Boolean> frozenTiles = new HashMap<>();
+    HashMap<Integer, Boolean> randomTeleportTiles = new HashMap<>();
+
+    initializeStandardLadders(ladderUp, ladderDown);
+
+    if (includeSpecialTiles) {
+      initializeStandardSpecialTiles(frozenTiles, randomTeleportTiles);
+    }
+
+    return new Board(ladderUp, ladderDown, winningTile, frozenTiles, randomTeleportTiles, name, description);
+  }
+
+
+  /**
    * Saves the given board to a JSON file.
    *
    * @param board    the board to save
    * @param filename the name of the file (without extension)
    */
   private static void saveBoard(Board board, String filename) {
+    if (board == null) {
+      throw new IllegalArgumentException("Board is null in boardGenerator");
+    }
+    if (filename == null || filename.isEmpty()) {
+      throw new IllegalArgumentException("File name is empty in BoardGenerator");
+    }
     boolean success = FileHandler.saveBoardToJson(board, filename);
 
     if (success) {

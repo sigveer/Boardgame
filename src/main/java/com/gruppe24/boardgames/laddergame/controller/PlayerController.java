@@ -23,6 +23,12 @@ public class PlayerController {
    * @param boardController the board controller
    */
   public PlayerController(BoardController boardController, GameSubject gameSubject) {
+    if (boardController == null) {
+      throw new IllegalArgumentException("Board controller is null");
+    }
+    if (gameSubject == null) {
+      throw new IllegalArgumentException("Game subject is null");
+    }
     this.players = new ArrayList<>();
     this.dice = new Dice(2);
     this.boardController = boardController;
@@ -83,9 +89,27 @@ public class PlayerController {
    * Method that handles the player's turn.
    */
   public void handlePlayerTurn(Player player, int diceValue) {
+    if (player == null) {
+      throw new IllegalArgumentException("Player is empty on move");
+    }
+    if (diceValue < 0) {
+      throw new IllegalArgumentException("Dice value can not be sub zero");
+    }
     movePlayer(player, diceValue);
 
     gameSubject.notifyListener(EventType.DICE_ROLLED, player, diceValue);
+  }
+
+  /**
+   * Method that moves the player.
+   *
+   * @param sumDice the sum of the dice
+   */
+  public void movePlayer(Player player, int sumDice) {
+    int newPosition = player.getPosition() + sumDice;
+    newPosition = boardController.handleOvershoot(newPosition);
+    player.setPosition(newPosition);
+    boardController.handleTileAction(player, newPosition);
   }
 
   /**
@@ -109,18 +133,5 @@ public class PlayerController {
   private void addDefaultPlayer() {
     addPlayer();
   }
-
-  /**
-   * Method that moves the player.
-   *
-   * @param sumDice the sum of the dice
-   */
-  public void movePlayer(Player player, int sumDice) {
-    int newPosition = player.getPosition() + sumDice;
-    newPosition = boardController.handleOvershoot(newPosition);
-    player.setPosition(newPosition);
-    boardController.handleTileAction(player, newPosition);
-  }
-
 
 }

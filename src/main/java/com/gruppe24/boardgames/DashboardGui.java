@@ -21,6 +21,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -198,6 +200,9 @@ public class DashboardGui extends Application {
    * @param loadedPlayers The list of players to populate the fields with.
    */
   private void populateFieldsWithPlayers(List<Player> loadedPlayers) {
+    if (loadedPlayers == null || loadedPlayers.isEmpty()) {
+      throw new IllegalArgumentException("No players loaded in DashBoardGui");
+    }
     players.clear();
     players.addAll(loadedPlayers);
 
@@ -213,6 +218,12 @@ public class DashboardGui extends Application {
    * @AI_Assisted nameField.setOnAction([x]).....
    */
   private HBox createPlayerBox(Player player, int iconIndex) {
+    if (player == null) {
+      throw new IllegalArgumentException("Players are empty in DashBoardGui");
+    }
+    if (iconIndex < 0) {
+      throw new IllegalArgumentException("Icon Index cannot be sub zero, DashboardGui");
+    }
     HBox playerBox = new HBox(10);
     playerBox.setAlignment(Pos.CENTER_LEFT);
     playerBox.setPadding(new Insets(5));
@@ -239,6 +250,9 @@ public class DashboardGui extends Application {
   }
 
   private GridPane createGamesGrid(Stage primaryStage) {
+    if (primaryStage == null) {
+      throw new IllegalArgumentException("ERROR! Primary Stage is null in DashBoardGui");
+    }
     GridPane gamesGrid = new GridPane();
     gamesGrid.setAlignment(Pos.CENTER);
     gamesGrid.setVgap(20);
@@ -283,8 +297,16 @@ public class DashboardGui extends Application {
    * @return the VBox containing the game information
    * @AI_Assisted javafx.event.EventHandler, new Insets,
    */
-  private VBox createGameBox(String title, String imagePath,
-      javafx.event.EventHandler<javafx.event.ActionEvent> action) {
+  private VBox createGameBox(String title, String imagePath, EventHandler<ActionEvent> action) {
+    if (title == null || title.isEmpty()) {
+      throw new IllegalArgumentException("Title in game box is empty in DashBoardGui");
+    }
+    if (imagePath == null || imagePath.isEmpty()) {
+      throw new IllegalArgumentException("Image path in DashBoardGui is null");
+    }
+    if (action == null) {
+      throw new IllegalArgumentException("EventHandler is null in DashBoardGui");
+    }
 
     VBox gameBox = new VBox(10);
     gameBox.setAlignment(Pos.CENTER);
@@ -322,6 +344,9 @@ public class DashboardGui extends Application {
   }
 
   private void loadCustomBoard(Stage primaryStage) {
+    if (primaryStage == null) {
+      throw new IllegalArgumentException("Primary Stage is null in DashBoardGui");
+    }
     Board customBoard = jsonBoardReader.loadCustomBoard(primaryStage);
     if (customBoard != null) {
       startLadderGameWithCustomBoard(primaryStage, customBoard);
@@ -337,6 +362,9 @@ public class DashboardGui extends Application {
    * @param board        the custom board
    */
   private void startLadderGameWithCustomBoard(Stage primaryStage, Board board) {
+    if (board == null) {
+      throw new IllegalArgumentException("Board is null in DashBoardGui");
+    }
     // Get players for the game
     List<Player> activePlayers = collectPlayersFromFields();
 
