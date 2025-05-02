@@ -21,7 +21,7 @@ class NormalTileTest {
   @BeforeEach
   void setUp() {
     normalTile = new NormalTile(10);
-    player = new Player("TestPlayer", Color.BLUE);
+    player = new Player("TestPlayer", 1);
     player.setPosition(10);
   }
 

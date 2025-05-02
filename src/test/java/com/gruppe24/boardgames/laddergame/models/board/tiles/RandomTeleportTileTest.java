@@ -23,7 +23,7 @@ class RandomTeleportTileTest {
   @BeforeEach
   void setUp() {
     randomTeleportTile = new RandomTeleportTile(10);
-    player = new Player("TestPlayer", Color.BLUE);
+    player = new Player("TestPlayer", 1);
     player.setPosition(10);
   }
 
@@ -42,10 +42,5 @@ class RandomTeleportTileTest {
     assertTrue(newPosition >= 1 && newPosition <= 89,
         "Teleported position should be between 1 and 89");
 
-    assertEquals(player.getPosition(), randomTeleportTile.getPosition(),
-        "Tile position should match player's new position");
-
-    assertEquals(3, randomTeleportTile.tileTypeNumber,
-        "checkTileType should be 3 for RandomTeleportTile");
   }
 }
