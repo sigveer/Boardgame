@@ -1,5 +1,7 @@
 package com.gruppe24.boardgames.laddergame.models.board.tiles;
 
+import com.gruppe24.boardgames.commonclasses.Tile;
+
 /**
  * Class representing a special tile.
  */
@@ -19,7 +21,7 @@ public class SpecialTile extends Tile {
   /**
    * Constructor that initializes the special tile with a destination.
    *
-   * @param position The position of the tile.
+   * @param position    The position of the tile.
    * @param destination The destination of the tile.
    */
   public SpecialTile(int position, int destination) {

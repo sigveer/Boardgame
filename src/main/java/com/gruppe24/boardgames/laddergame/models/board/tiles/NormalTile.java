@@ -1,5 +1,7 @@
 package com.gruppe24.boardgames.laddergame.models.board.tiles;
 
+import com.gruppe24.boardgames.commonclasses.Tile;
+
 /**
  * Class representing a normal tile.
  */

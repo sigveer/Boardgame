@@ -5,7 +5,7 @@ import com.gruppe24.boardgames.laddergame.models.board.tiles.LadderDownTile;
 import com.gruppe24.boardgames.laddergame.models.board.tiles.LadderUpTile;
 import com.gruppe24.boardgames.laddergame.models.board.tiles.NormalTile;
 import com.gruppe24.boardgames.laddergame.models.board.tiles.RandomTeleportTile;
-import com.gruppe24.boardgames.laddergame.models.board.tiles.Tile;
+import com.gruppe24.boardgames.commonclasses.Tile;
 import com.gruppe24.boardgames.laddergame.models.board.tiles.WinningTile;
 import java.util.HashMap;
 
@@ -26,8 +26,7 @@ public class Board {
   private final String description;
 
   /**
-   * Constructor for the Board class.
-   * Initializes the ladders and tiles on the board.
+   * Constructor for the Board class. Initializes the ladders and tiles on the board.
    */
   public Board() {
     this.ladderUp = new HashMap<>();
@@ -43,14 +42,13 @@ public class Board {
   /**
    * Constructor for the Board class with custom ladders and special tiles.
    *
-   * @AI_Assisted Constructor is completed with a logical answer from AI.
-   *
-   * @param ladderUp HashMap of ladders going up
-   * @param ladderDown HashMap of ladders going down
-   * @param frozenTiles HashMap of frozen tiles
+   * @param ladderUp            HashMap of ladders going up
+   * @param ladderDown          HashMap of ladders going down
+   * @param frozenTiles         HashMap of frozen tiles
    * @param randomTeleportTiles HashMap of random teleport tiles
-   * @param name Name of the board
-   * @param description Description of the board
+   * @param name                Name of the board
+   * @param description         Description of the board
+   * @AI_Assisted Constructor is completed with a logical answer from AI.
    */
   public Board(HashMap<Integer, Integer> ladderUp, HashMap<Integer, Integer> ladderDown,
       HashMap<Integer, Boolean> winningTile, HashMap<Integer, Boolean> frozenTiles,
@@ -91,7 +89,7 @@ public class Board {
   /**
    * Method that initializes the standard ladders.
    *
-   * @param ladderUp HashMap of ladders going up
+   * @param ladderUp   HashMap of ladders going up
    * @param ladderDown HashMap of ladders going down
    */
   public static void initializeStandardLadders(HashMap<Integer, Integer> ladderUp, HashMap<Integer,
@@ -116,11 +114,10 @@ public class Board {
   /**
    * Method that initializes the standard special tiles.
    *
-   * @AI_Based How to initialize the special tiles .put([x], true/false) is based on AI generated
-   code.
-   *
-   * @param frozenTiles HashMap of frozen tiles
+   * @param frozenTiles         HashMap of frozen tiles
    * @param randomTeleportTiles HashMap of random teleport tiles
+   * @AI_Based How to initialize the special tiles .put([x], true/false) is based on AI generated
+   * code.
    */
   public static void initializeStandardSpecialTiles(HashMap<Integer, Boolean> frozenTiles,
       HashMap<Integer, Boolean> randomTeleportTiles) {

@@ -5,7 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.gruppe24.boardgames.laddergame.models.board.Board;
-import com.gruppe24.boardgames.laddergame.models.board.tiles.Tile;
+import com.gruppe24.boardgames.commonclasses.Tile;
 import java.io.IOException;
 
 /**
@@ -17,10 +17,9 @@ public class JsonBoardWriter {
   /**
    * Writes the given Board object to a JSON file at the specified file path.
    *
-   * @param board the Board object to write to the file.
+   * @param board    the Board object to write to the file.
    * @param filePath the path to the file where the object will be written
    * @return true if the write operation was successful, false otherwise
-   *
    * @AI_Assisted try loop is assisted by AI.
    */
   public boolean writeToFile(Board board, String filePath) {

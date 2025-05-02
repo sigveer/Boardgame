@@ -1,4 +1,4 @@
-package com.gruppe24.boardgames.laddergame.models.board.tiles;
+package com.gruppe24.boardgames.commonclasses;
 
 import com.google.gson.JsonObject;
 import com.gruppe24.boardgames.laddergame.models.Player;
