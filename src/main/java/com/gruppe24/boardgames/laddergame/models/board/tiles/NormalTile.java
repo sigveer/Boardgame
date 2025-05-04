@@ -1,11 +1,11 @@
 package com.gruppe24.boardgames.laddergame.models.board.tiles;
 
-import com.gruppe24.boardgames.commonclasses.Tile;
+import com.gruppe24.boardgames.commonclasses.AbstractTile;
 
 /**
  * Class representing a normal tile.
  */
-public class NormalTile extends Tile {
+public class NormalTile extends AbstractTile {
 
   /**
    * Constructor that initializes the snake tile.

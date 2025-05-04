@@ -170,10 +170,10 @@ public abstract class AbstractGameController {
    * @param newPosition the new position of the player
    */
   public void handleTileAction(Player player, int newPosition) {
-    Tile tile = currentBoard.getTile(newPosition);
-    tile.perform(player);
-    checkTileType = tile.tileTypeNumber;
-    specialTilePosition = tile.getPosition();
+    AbstractTile abstractTile = currentBoard.getTile(newPosition);
+    abstractTile.perform(player);
+    checkTileType = abstractTile.tileTypeNumber;
+    specialTilePosition = abstractTile.getPosition();
   }
 
   /**

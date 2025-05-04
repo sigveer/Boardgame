@@ -5,7 +5,7 @@ import com.gruppe24.boardgames.laddergame.models.board.tiles.LadderDownTile;
 import com.gruppe24.boardgames.laddergame.models.board.tiles.LadderUpTile;
 import com.gruppe24.boardgames.laddergame.models.board.tiles.NormalTile;
 import com.gruppe24.boardgames.laddergame.models.board.tiles.RandomTeleportTile;
-import com.gruppe24.boardgames.commonclasses.Tile;
+import com.gruppe24.boardgames.commonclasses.AbstractTile;
 import com.gruppe24.boardgames.laddergame.models.board.tiles.WinningTile;
 import java.util.HashMap;
 
@@ -21,7 +21,7 @@ public class Board {
   protected HashMap<Integer, Boolean> winningTile = new HashMap<>();
   private static final int Columns = 9;
   private static final int Rows = 10;
-  protected Tile[] tiles;
+  protected AbstractTile[] abstractTiles;
   private final String name;
   private final String description;
 
@@ -136,20 +136,20 @@ public class Board {
    * @AI_Based Logic as to how to initialize the tiles is based on AI generated code.
    */
   protected void initializeTiles() {
-    tiles = new Tile[Columns * Rows + 1];
+    abstractTiles = new AbstractTile[Columns * Rows + 1];
     for (int i = 0; i <= Columns * Rows; i++) {
       if (ladderUp.containsKey(i)) {
-        tiles[i] = new LadderUpTile(i, ladderUp.get(i));
+        abstractTiles[i] = new LadderUpTile(i, ladderUp.get(i));
       } else if (ladderDown.containsKey(i)) {
-        tiles[i] = new LadderDownTile(i, ladderDown.get(i));
+        abstractTiles[i] = new LadderDownTile(i, ladderDown.get(i));
       } else if (winningTile != null && winningTile.containsKey(i)) {
-        tiles[i] = new WinningTile(i);
+        abstractTiles[i] = new WinningTile(i);
       } else if (frozenTiles != null && frozenTiles.containsKey(i)) {
-        tiles[i] = new FrozenTile(i);
+        abstractTiles[i] = new FrozenTile(i);
       } else if (randomTeleportTiles != null && randomTeleportTiles.containsKey(i)) {
-        tiles[i] = new RandomTeleportTile(i);
+        abstractTiles[i] = new RandomTeleportTile(i);
       } else {
-        tiles[i] = new NormalTile(i);
+        abstractTiles[i] = new NormalTile(i);
       }
     }
   }
@@ -160,9 +160,9 @@ public class Board {
    * @param position the position of the tile
    * @return the tile
    */
-  public Tile getTile(int position) {
-    if (position >= 0 && position < tiles.length) {
-      return tiles[position];
+  public AbstractTile getTile(int position) {
+    if (position >= 0 && position < abstractTiles.length) {
+      return abstractTiles[position];
     }
     return new NormalTile(position);
   }
