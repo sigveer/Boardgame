@@ -152,7 +152,7 @@ public class DashboardGui extends Application {
       }
     });
 
-    buttonBox.getChildren().addAll(addPlayerButton, removePlayerButton);
+    buttonBox.getChildren().addAll(removePlayerButton, addPlayerButton);
 
     HBox saveLoadBox = new HBox(10);
     saveLoadBox.setAlignment(Pos.CENTER);
@@ -200,13 +200,10 @@ public class DashboardGui extends Application {
    * @param loadedPlayers The list of players to populate the fields with.
    */
   private void populateFieldsWithPlayers(List<Player> loadedPlayers) {
-    // Update the player controller with loaded players
     playerController.setPlayers(loadedPlayers);
 
-    // Now get the updated player list from controller
     this.players = playerController.getPlayers();
 
-    // Update the UI
     updatePlayerList();
   }
 
@@ -343,10 +340,8 @@ public class DashboardGui extends Application {
    * @param board        the custom board
    */
   private void startLadderGameWithCustomBoard(Stage primaryStage, Board board) {
-    // Get players for the game
     List<Player> activePlayers = collectPlayersFromFields();
 
-    // Start game with custom board
     try {
       new LadderGameApp(activePlayers, board).start(primaryStage);
     } catch (Exception e) {

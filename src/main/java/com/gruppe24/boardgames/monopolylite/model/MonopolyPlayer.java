@@ -29,6 +29,14 @@ public class MonopolyPlayer extends AbstractPlayer {
     this.money -= amount;
   }
 
+  public boolean spendMoney(int amount) {
+    if (money >= amount) {
+      money -= amount;
+      return true;
+    }
+    return false;
+  }
+
   public void addProperty(Property property) {
     ownedProperties.add(property);
   }

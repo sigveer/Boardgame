@@ -16,7 +16,6 @@ public class Property {
     this.position = position;
   }
 
-  // Getters
   public String getName() {
     return name;
   }
