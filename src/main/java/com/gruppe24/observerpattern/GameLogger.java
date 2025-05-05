@@ -59,4 +59,13 @@ public class GameLogger implements GameObserver {
       }
     }
   }
+
+  /**
+   * Logger method for logging messages.
+   *
+   * @return the logger object
+   */
+  public static Logger getLogger() {
+    return Logger.getLogger(GameLogger.class.getName());
+  }
 }

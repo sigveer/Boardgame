@@ -22,6 +22,27 @@ public class BoardGenerator {
     createSpecialBoard();
   }
 
+
+  /**
+   * Creates a classic board and saves it to a JSON file.
+   */
+  private static void createClassicBoard() {
+    Board classicBoard = createBoard(false,
+        "Classic Board", "The classic Ladder board");
+    saveBoard(classicBoard, "classic_board");
+  }
+
+  /**
+   * Creates a special board with additional features and saves it to a JSON file.
+   */
+  private static void createSpecialBoard() {
+    Board specialBoard = createBoard(true,
+        "Special Board", "Board with special tiles like frozen and random teleport");
+    saveBoard(specialBoard, "special_board");
+  }
+
+
+
   /**
    * Creates a board with the specified parameters.
    *
@@ -44,24 +65,6 @@ public class BoardGenerator {
     }
 
     return new Board(ladderUp, ladderDown, winningTile, frozenTiles, randomTeleportTiles, name, description);
-  }
-
-  /**
-   * Creates a classic board and saves it to a JSON file.
-   */
-  private static void createClassicBoard() {
-    Board classicBoard = createBoard(false,
-        "Classic Board", "The classic Ladder board");
-    saveBoard(classicBoard, "classic_board");
-  }
-
-  /**
-   * Creates a special board with additional features and saves it to a JSON file.
-   */
-  private static void createSpecialBoard() {
-    Board specialBoard = createBoard(true,
-        "Special Board", "Board with special tiles like frozen and random teleport");
-    saveBoard(specialBoard, "special_board");
   }
 
   /**

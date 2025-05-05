@@ -1,7 +1,6 @@
 package com.gruppe24.boardgames.commonclasses;
 
 import com.gruppe24.boardgames.laddergame.controller.BoardController;
-import com.gruppe24.boardgames.laddergame.models.Dice;
 import com.gruppe24.boardgames.laddergame.models.Player;
 import com.gruppe24.boardgames.laddergame.models.board.Board;
 import com.gruppe24.observerpattern.EventType;
@@ -9,19 +8,19 @@ import com.gruppe24.observerpattern.GameSubject;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class AbstractGameController {
+public abstract class CommonGameController {
 
-  protected List<AbstractPlayer> players;
-  protected Dice dice;
+  protected List<CommonPlayer> players;
+  protected CommonDice dice;
   protected GameSubject gameSubject;
   protected int WinCondition;
   private Board currentBoard;
   private int checkTileType = 0;
   private int specialTilePosition;
 
-  protected AbstractGameController(int numDice, GameSubject gameSubject) {
+  protected CommonGameController(int numDice, GameSubject gameSubject) {
     this.players = new ArrayList<>();
-    this.dice = new Dice(numDice);
+    this.dice = new CommonDice(numDice);
     this.gameSubject = gameSubject;
 
   }
@@ -38,7 +37,7 @@ public abstract class AbstractGameController {
     this.currentBoard = boardController.getBoard();
   }
 
-  protected abstract AbstractPlayer createPlayer(String name, int iconIndex);
+  protected abstract CommonPlayer createPlayer(String name, int iconIndex);
 
   protected abstract int getMaxPlayers();
 
@@ -49,7 +48,7 @@ public abstract class AbstractGameController {
     if (players.size() >= getMaxPlayers()) {
       return;
     }
-    AbstractPlayer newPlayer = createPlayer("Player " + (players.size() + 1), getNextIconIndex());
+    CommonPlayer newPlayer = createPlayer("Player " + (players.size() + 1), getNextIconIndex());
     players.add(newPlayer);
 
     gameSubject.notifyListener(EventType.PLAYER_ADDED, newPlayer);
@@ -60,7 +59,7 @@ public abstract class AbstractGameController {
    */
   public void removePlayer() {
     if (players.size() > 1) {
-      AbstractPlayer removedPlayer = players.removeLast();
+      CommonPlayer removedPlayer = players.removeLast();
 
       gameSubject.notifyListener(EventType.PLAYER_REMOVED, removedPlayer);
     }
@@ -74,9 +73,9 @@ public abstract class AbstractGameController {
   public List<Player> getPlayers() {
     // Create a new list with the correct type
     List<Player> playerList = new ArrayList<>();
-    for (AbstractPlayer abstractPlayer : players) {
-      if (abstractPlayer instanceof Player) {
-        playerList.add((Player) abstractPlayer);
+    for (CommonPlayer commonPlayer : players) {
+      if (commonPlayer instanceof Player) {
+        playerList.add((Player) commonPlayer);
       }
     }
     return playerList;
@@ -104,7 +103,7 @@ public abstract class AbstractGameController {
    */
   public void cyclePlayerIcon(int index) {
     if (index >= 0 && index < players.size()) {
-      AbstractPlayer player = players.get(index);
+      CommonPlayer player = players.get(index);
       int oldIconIndex = player.getIconIndex();
       player.cycleToNextIcon();
 
@@ -119,7 +118,7 @@ public abstract class AbstractGameController {
    */
   private int getNextIconIndex() {
     int iconIndex = 0;
-    for (AbstractPlayer player : players) {
+    for (CommonPlayer player : players) {
       if (player.getIconIndex() == iconIndex) {
         iconIndex++;
       }
@@ -170,10 +169,10 @@ public abstract class AbstractGameController {
    * @param newPosition the new position of the player
    */
   public void handleTileAction(Player player, int newPosition) {
-    AbstractTile abstractTile = currentBoard.getTile(newPosition);
-    abstractTile.perform(player);
-    checkTileType = abstractTile.tileTypeNumber;
-    specialTilePosition = abstractTile.getPosition();
+    CommonTile commonTile = currentBoard.getTile(newPosition);
+    commonTile.perform(player);
+    checkTileType = commonTile.tileTypeNumber;
+    specialTilePosition = commonTile.getPosition();
   }
 
   /**

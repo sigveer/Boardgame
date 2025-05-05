@@ -1,11 +1,11 @@
 package com.gruppe24.boardgames.laddergame.models.board.tiles;
 
-import com.gruppe24.boardgames.commonclasses.AbstractTile;
+import com.gruppe24.boardgames.commonclasses.CommonTile;
 
 /**
  * Class representing a special tile.
  */
-public class SpecialTile extends AbstractTile {
+public class SpecialTile extends CommonTile {
 
   private int destination;
 

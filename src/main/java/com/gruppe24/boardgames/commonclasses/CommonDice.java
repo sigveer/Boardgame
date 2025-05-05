@@ -1,6 +1,5 @@
 package com.gruppe24.boardgames.commonclasses;
 
-import com.gruppe24.boardgames.laddergame.models.Die;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,9 +8,9 @@ import java.util.List;
  * Abstract class representing a set of dice. This class provides methods to roll the dice and get
  * the sum of their values.
  */
-public abstract class AbstractDice {
+public class CommonDice {
 
-  protected final List<AbstractDie> dice;
+  protected final List<CommonDie> dice;
   protected int sum = 0;
 
   /**
@@ -19,13 +18,13 @@ public abstract class AbstractDice {
    *
    * @param numberOfDice The number of dice to be created.
    */
-  public AbstractDice(int numberOfDice) {
+  public CommonDice(int numberOfDice) {
     if (numberOfDice < 1) {
       throw new IllegalArgumentException("Number of dice must be at least 1 Dice");
     }
     dice = new ArrayList<>();
     for (int i = 0; i < numberOfDice; i++) {
-      dice.add(new Die());
+      dice.add(new CommonDie());
     }
   }
 
@@ -36,7 +35,7 @@ public abstract class AbstractDice {
    */
   public int rollSum() {
     sum = 0;
-    for (AbstractDie die : dice) {
+    for (CommonDie die : dice) {
       sum += die.roll();
     }
     return sum;

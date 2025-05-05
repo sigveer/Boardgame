@@ -1,14 +1,11 @@
 package com.gruppe24.boardgames.laddergame.models;
 
-import com.gruppe24.boardgames.commonclasses.AbstractPlayer;
-import java.util.Objects;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
+import com.gruppe24.boardgames.commonclasses.CommonPlayer;
 
 /**
  * Class that represents players.
  */
-public class Player extends AbstractPlayer {
+public class Player extends CommonPlayer {
 
   private boolean frozen = false;
 

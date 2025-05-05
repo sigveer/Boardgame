@@ -3,7 +3,7 @@ package com.gruppe24.boardgames.laddergame.view;
 import com.gruppe24.boardgames.DashboardGui;
 import com.gruppe24.boardgames.laddergame.controller.BoardController;
 import com.gruppe24.boardgames.laddergame.controller.PlayerController;
-import com.gruppe24.boardgames.laddergame.models.Dice;
+import com.gruppe24.boardgames.commonclasses.CommonDice;
 import com.gruppe24.boardgames.laddergame.models.Player;
 import com.gruppe24.boardgames.laddergame.models.board.Board;
 import com.gruppe24.boardgames.laddergame.models.board.BoardType;
@@ -53,7 +53,7 @@ public class LadderGameApp extends Application {
   private Label currentPlayerLabel;
   private Label ladderUpOrDownCheck;
   private Label isFrozenLabel;
-  private final Dice dice = new Dice(2);
+  private final CommonDice dice = new CommonDice(2);
   private Button diceRollButton;
   private final GameSubject gameSubject = new GameSubject();
   private final GameLogger gameLogger = new GameLogger();

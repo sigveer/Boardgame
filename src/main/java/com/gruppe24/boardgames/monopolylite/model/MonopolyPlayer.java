@@ -1,10 +1,10 @@
 package com.gruppe24.boardgames.monopolylite.model;
 
-import com.gruppe24.boardgames.commonclasses.AbstractPlayer;
+import com.gruppe24.boardgames.commonclasses.CommonPlayer;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MonopolyPlayer extends AbstractPlayer {
+public class MonopolyPlayer extends CommonPlayer {
 
   private int money;
   private final List<Property> ownedProperties;

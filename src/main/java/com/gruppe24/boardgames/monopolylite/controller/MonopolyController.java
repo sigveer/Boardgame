@@ -1,10 +1,10 @@
 package com.gruppe24.boardgames.monopolylite.controller;
 
-import com.gruppe24.boardgames.commonclasses.AbstractGameController;
-import com.gruppe24.boardgames.commonclasses.AbstractPlayer;
+import com.gruppe24.boardgames.commonclasses.CommonGameController;
+import com.gruppe24.boardgames.commonclasses.CommonPlayer;
 import com.gruppe24.observerpattern.GameSubject;
 
-public class MonopolyController extends AbstractGameController {
+public class MonopolyController extends CommonGameController {
 
 
   protected MonopolyController(int numDice, GameSubject gameSubject) {
@@ -12,7 +12,7 @@ public class MonopolyController extends AbstractGameController {
   }
 
   @Override
-  protected AbstractPlayer createPlayer(String name, int iconIndex) {
+  protected CommonPlayer createPlayer(String name, int iconIndex) {
     return null;
   }
 

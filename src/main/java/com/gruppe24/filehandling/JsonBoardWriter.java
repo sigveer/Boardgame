@@ -4,8 +4,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.gruppe24.boardgames.commonclasses.CommonTile;
 import com.gruppe24.boardgames.laddergame.models.board.Board;
-import com.gruppe24.boardgames.commonclasses.AbstractTile;
 import java.io.IOException;
 
 /**
@@ -55,9 +55,9 @@ public class JsonBoardWriter {
         tileJson.addProperty("nextTile", i + 1);
       }
 
-      AbstractTile abstractTile = board.getTile(i);
+      CommonTile commonTile = board.getTile(i);
       // addActionToJson is a method in the Tile class that adds the action to the JSON object
-      abstractTile.addActionToJson(tileJson, i);
+      commonTile.addActionToJson(tileJson, i);
 
       tilesJsonArray.add(tileJson);
     }

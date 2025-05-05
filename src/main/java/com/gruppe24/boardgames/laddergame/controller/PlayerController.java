@@ -1,16 +1,15 @@
 package com.gruppe24.boardgames.laddergame.controller;
 
-import com.gruppe24.boardgames.commonclasses.AbstractGameController;
-import com.gruppe24.boardgames.commonclasses.AbstractPlayer;
+import com.gruppe24.boardgames.commonclasses.CommonGameController;
+import com.gruppe24.boardgames.commonclasses.CommonPlayer;
 import com.gruppe24.boardgames.laddergame.models.Player;
-import com.gruppe24.boardgames.laddergame.models.board.Board;
 import com.gruppe24.observerpattern.GameSubject;
 
 /**
  * PlayerController is a class that manages the players in the game. It handles player creation,
  * removal, icon cycling, and player movement.
  */
-public class PlayerController extends AbstractGameController {
+public class PlayerController extends CommonGameController {
 
   private final BoardController boardController;
 
@@ -29,7 +28,7 @@ public class PlayerController extends AbstractGameController {
   }
 
   @Override
-  protected AbstractPlayer createPlayer(String name, int iconIndex) {
+  protected CommonPlayer createPlayer(String name, int iconIndex) {
     return new Player(name, iconIndex);
   }
 

@@ -1,7 +1,7 @@
 package com.gruppe24.boardgames.monopolylite.view;
 
 import com.gruppe24.boardgames.DashboardGui;
-import com.gruppe24.boardgames.laddergame.models.Dice;
+import com.gruppe24.boardgames.commonclasses.CommonDice;
 import com.gruppe24.boardgames.laddergame.models.Player;
 import com.gruppe24.boardgames.monopolylite.model.Property;
 import com.gruppe24.utils.StyleUtils;
@@ -33,7 +33,7 @@ public class View {
   private Label currentPlayerLabel;
   private Label diceResultLabel;
   private final int currentPlayerIndex = 0;
-  private final Dice dice = new Dice(1);
+  private final CommonDice dice = new CommonDice(1);
   private Button diceRollButton;
   private Cards cards;
   private int currentCardIndex = 0;

@@ -16,7 +16,6 @@ import com.gruppe24.observerpattern.EventType;
 import com.gruppe24.observerpattern.GameLogger;
 import com.gruppe24.observerpattern.GameSubject;
 import com.gruppe24.utils.StyleUtils;
-import com.gruppe24.utils.Validators;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -59,7 +58,7 @@ public class DashboardGui extends Application {
     if (primaryStage == null) {
       throw new IllegalArgumentException("Parameter Stage cannot be empty");
     }
-    Validators.getLogger().log(Level.INFO, "Dashboard started");
+    GameLogger.getLogger().log(Level.INFO, "Dashboard started");
 
     this.jsonBoardReader = new JsonBoardReader();
     this.stage = primaryStage;

@@ -1,7 +1,7 @@
 package com.gruppe24;
 
 import com.gruppe24.boardgames.DashboardGui;
-import com.gruppe24.utils.Validators;
+import com.gruppe24.observerpattern.GameLogger;
 import java.util.logging.Level;
 
 /**
@@ -18,7 +18,7 @@ public class Main {
    */
   public static void main(String[] args) {
     DashboardGui.launch(DashboardGui.class, args);
-    Validators.getLogger().log(Level.INFO, "Application closed");
+    GameLogger.getLogger().log(Level.INFO, "Application closed");
   }
 }
 

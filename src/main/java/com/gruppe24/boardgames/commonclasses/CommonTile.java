@@ -7,7 +7,7 @@ import com.gruppe24.filehandling.TileJsonSerializer;
 /**
  * Abstract class representing a tile on the board.
  */
-public abstract class AbstractTile implements TileJsonSerializer {
+public abstract class CommonTile implements TileJsonSerializer {
 
   protected int position;
   public int tileTypeNumber = 0;
@@ -20,7 +20,7 @@ public abstract class AbstractTile implements TileJsonSerializer {
    * @Date: 16.02.2025
    * @Version: 1.0
    */
-  public AbstractTile(int position) {
+  public CommonTile(int position) {
     if (position < 0) {
       throw new IllegalArgumentException("Parameter position cannot be less than 0");
     }

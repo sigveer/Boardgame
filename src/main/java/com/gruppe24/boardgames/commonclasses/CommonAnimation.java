@@ -3,7 +3,7 @@ package com.gruppe24.boardgames.commonclasses;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 
-public abstract class AbstractAnimation {
+public abstract class CommonAnimation {
 
   protected static final double defaultAnimationSpeed = 0.3;
 
@@ -16,7 +16,7 @@ public abstract class AbstractAnimation {
    * @param col      The column position
    * @param row      The row position
    */
-  protected void addPlayerPieceToGrid(GridPane gridPane, AbstractPlayer player, int col, int row) {
+  protected void addPlayerPieceToGrid(GridPane gridPane, CommonPlayer player, int col, int row) {
     gridPane.getChildren().remove(player.getPlayerPiece());
 
     StackPane cellContainer = new StackPane();

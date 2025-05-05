@@ -5,7 +5,7 @@ import com.gruppe24.boardgames.laddergame.models.board.tiles.LadderDownTile;
 import com.gruppe24.boardgames.laddergame.models.board.tiles.LadderUpTile;
 import com.gruppe24.boardgames.laddergame.models.board.tiles.NormalTile;
 import com.gruppe24.boardgames.laddergame.models.board.tiles.RandomTeleportTile;
-import com.gruppe24.boardgames.commonclasses.AbstractTile;
+import com.gruppe24.boardgames.commonclasses.CommonTile;
 import com.gruppe24.boardgames.laddergame.models.board.tiles.WinningTile;
 import java.util.HashMap;
 
@@ -14,14 +14,14 @@ import java.util.HashMap;
  */
 public class Board {
 
-  protected HashMap<Integer, Integer> ladderUp;
-  protected HashMap<Integer, Integer> ladderDown;
-  protected HashMap<Integer, Boolean> frozenTiles = new HashMap<>();
-  protected HashMap<Integer, Boolean> randomTeleportTiles = new HashMap<>();
-  protected HashMap<Integer, Boolean> winningTile = new HashMap<>();
+  private HashMap<Integer, Integer> ladderUp;
+  private HashMap<Integer, Integer> ladderDown;
+  private HashMap<Integer, Boolean> frozenTiles = new HashMap<>();
+  private HashMap<Integer, Boolean> randomTeleportTiles = new HashMap<>();
+  private HashMap<Integer, Boolean> winningTile = new HashMap<>();
   private static final int Columns = 9;
   private static final int Rows = 10;
-  protected AbstractTile[] abstractTiles;
+  private CommonTile[] commonTiles;
   private final String name;
   private final String description;
 
@@ -34,13 +34,13 @@ public class Board {
     this.winningTile = new HashMap<>();
     this.name = "Classic LadderGame";
     this.description = "A classic game of Ladders with 90 tiles.";
+    initializeNormalTile();
     initializeLadders();
     initializeWinningTile();
-    initializeTiles();
   }
 
   /**
-   * Constructor for the Board class with custom ladders and special tiles.
+   * JSON-Constructor for the Board class with custom ladders and special tiles.
    *
    * @param ladderUp            HashMap of ladders going up
    * @param ladderDown          HashMap of ladders going down
@@ -61,15 +61,15 @@ public class Board {
     this.randomTeleportTiles = randomTeleportTiles;
     this.name = name;
     this.description = description;
+    initializeNormalTile();
     initializeWinningTile();
-    initializeTiles();
   }
 
   /**
-   * Method that puts the winning tile at a certain index in the winningTile-hashMap.
+   * Method that initializes normal tiles.
    */
-  public void initializeWinningTile() {
-    winningTile.put(90, true);
+  public void initializeNormalTile() {
+    initializeTiles();
   }
 
   /**
@@ -80,10 +80,42 @@ public class Board {
   }
 
   /**
+   * Method that puts the winning tile at a certain index in the winningTile-hashMap.
+   */
+  public void initializeWinningTile() {
+    winningTile.put(90, true);
+  }
+
+  /**
    * Method that puts special tiles at certain indexes in specialTiles-hashMap.
    */
   public void initializeSpecialTiles() {
     initializeStandardSpecialTiles(frozenTiles, randomTeleportTiles);
+  }
+
+
+  /**
+   * Method that initializes the tiles.
+   *
+   * @AI_Based Logic as to how to initialize the tiles is based on AI generated code.
+   */
+  public void initializeTiles() {
+    commonTiles = new CommonTile[Columns * Rows + 1];
+    for (int i = 0; i <= Columns * Rows; i++) {
+      if (ladderUp.containsKey(i)) {
+        commonTiles[i] = new LadderUpTile(i, ladderUp.get(i));
+      } else if (ladderDown.containsKey(i)) {
+        commonTiles[i] = new LadderDownTile(i, ladderDown.get(i));
+      } else if (winningTile != null && winningTile.containsKey(i)) {
+        commonTiles[i] = new WinningTile(i);
+      } else if (frozenTiles != null && frozenTiles.containsKey(i)) {
+        commonTiles[i] = new FrozenTile(i);
+      } else if (randomTeleportTiles != null && randomTeleportTiles.containsKey(i)) {
+        commonTiles[i] = new RandomTeleportTile(i);
+      } else {
+        commonTiles[i] = new NormalTile(i);
+      }
+    }
   }
 
   /**
@@ -130,29 +162,6 @@ public class Board {
     randomTeleportTiles.put(88, true);
   }
 
-  /**
-   * Method that initializes the tiles.
-   *
-   * @AI_Based Logic as to how to initialize the tiles is based on AI generated code.
-   */
-  protected void initializeTiles() {
-    abstractTiles = new AbstractTile[Columns * Rows + 1];
-    for (int i = 0; i <= Columns * Rows; i++) {
-      if (ladderUp.containsKey(i)) {
-        abstractTiles[i] = new LadderUpTile(i, ladderUp.get(i));
-      } else if (ladderDown.containsKey(i)) {
-        abstractTiles[i] = new LadderDownTile(i, ladderDown.get(i));
-      } else if (winningTile != null && winningTile.containsKey(i)) {
-        abstractTiles[i] = new WinningTile(i);
-      } else if (frozenTiles != null && frozenTiles.containsKey(i)) {
-        abstractTiles[i] = new FrozenTile(i);
-      } else if (randomTeleportTiles != null && randomTeleportTiles.containsKey(i)) {
-        abstractTiles[i] = new RandomTeleportTile(i);
-      } else {
-        abstractTiles[i] = new NormalTile(i);
-      }
-    }
-  }
 
   /**
    * Method that gets the tile.
@@ -160,9 +169,9 @@ public class Board {
    * @param position the position of the tile
    * @return the tile
    */
-  public AbstractTile getTile(int position) {
-    if (position >= 0 && position < abstractTiles.length) {
-      return abstractTiles[position];
+  public CommonTile getTile(int position) {
+    if (position >= 0 && position < commonTiles.length) {
+      return commonTiles[position];
     }
     return new NormalTile(position);
   }

@@ -2,13 +2,13 @@ package com.gruppe24.boardgames.commonclasses;
 
 import java.util.Random;
 
-public abstract class AbstractDie {
+public class CommonDie {
 
   protected int lastRolledValue;
   protected Random random;
 
 
-  public AbstractDie() {
+  public CommonDie() {
     this.random = new Random();
     this.lastRolledValue = 0;
   }

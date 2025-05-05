@@ -7,7 +7,7 @@ import javafx.scene.image.ImageView;
 /**
  * Abstract class that represents players.
  */
-public abstract class AbstractPlayer {
+public abstract class CommonPlayer {
 
   protected String name;
   protected int position;
@@ -22,7 +22,7 @@ public abstract class AbstractPlayer {
    * @param name      name of the player
    * @param iconIndex index of the icon
    */
-  protected AbstractPlayer(String name, int iconIndex) {
+  protected CommonPlayer(String name, int iconIndex) {
 
     this.name = name;
     this.position = 0;

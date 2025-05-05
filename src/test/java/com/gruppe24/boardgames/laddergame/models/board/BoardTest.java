@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import com.gruppe24.boardgames.laddergame.models.board.tiles.LadderDownTile;
 import com.gruppe24.boardgames.laddergame.models.board.tiles.LadderUpTile;
 import com.gruppe24.boardgames.laddergame.models.board.tiles.NormalTile;
-import com.gruppe24.boardgames.commonclasses.AbstractTile;
+import com.gruppe24.boardgames.commonclasses.CommonTile;
 import java.util.HashMap;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -27,7 +27,7 @@ class BoardTest {
 
   @Test
   void testBoardInitialization() {
-    assertEquals(90, board.abstractTiles.length);
+    assertEquals(90, board.commonTiles.length);
     assertEquals("Classic LadderGame", board.getName());
     assertEquals("A classic game of Ladders with 90 tiles.", board.getDescription());
   }
@@ -37,9 +37,9 @@ class BoardTest {
    */
   @Test
   void getNormalTile() {
-    AbstractTile abstractTile = board.getTile(1);
-    assertInstanceOf(NormalTile.class, abstractTile);
-    assertEquals(1, abstractTile.getPosition());
+    CommonTile commonTile = board.getTile(1);
+    assertInstanceOf(NormalTile.class, commonTile);
+    assertEquals(1, commonTile.getPosition());
   }
 
   /**
@@ -47,9 +47,9 @@ class BoardTest {
    */
   @Test
   void getLadderUpTile() {
-    AbstractTile abstractTile = board.getTile(2);
-    assertInstanceOf(LadderUpTile.class, abstractTile);
-    LadderUpTile ladderTile = (LadderUpTile) abstractTile;
+    CommonTile commonTile = board.getTile(2);
+    assertInstanceOf(LadderUpTile.class, commonTile);
+    LadderUpTile ladderTile = (LadderUpTile) commonTile;
     assertEquals(40, ladderTile.getDestination());
     assertEquals(2, ladderTile.getPosition());
   }
@@ -59,9 +59,9 @@ class BoardTest {
    */
   @Test
   void getLadderDownTile() {
-    AbstractTile abstractTile = board.getTile(24);
-    assertInstanceOf(LadderDownTile.class, abstractTile);
-    LadderDownTile snakeTile = (LadderDownTile) abstractTile;
+    CommonTile commonTile = board.getTile(24);
+    assertInstanceOf(LadderDownTile.class, commonTile);
+    LadderDownTile snakeTile = (LadderDownTile) commonTile;
     assertEquals(5, snakeTile.getDestination());
     assertEquals(24, snakeTile.getPosition());
   }
