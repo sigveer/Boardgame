@@ -1,13 +1,13 @@
 package com.gruppe24.boardgames.laddergame.view;
 
 import com.gruppe24.boardgames.DashboardGui;
+import com.gruppe24.boardgames.commonclasses.CommonDice;
 import com.gruppe24.boardgames.laddergame.controller.BoardController;
 import com.gruppe24.boardgames.laddergame.controller.PlayerController;
-import com.gruppe24.boardgames.commonclasses.CommonDice;
 import com.gruppe24.boardgames.laddergame.models.Player;
 import com.gruppe24.boardgames.laddergame.models.board.Board;
 import com.gruppe24.boardgames.laddergame.models.board.BoardType;
-import com.gruppe24.observerpattern.GameLogger;
+import com.gruppe24.utils.GameLogger;
 import com.gruppe24.observerpattern.GameSubject;
 import com.gruppe24.utils.StyleUtils;
 import java.util.ArrayList;
@@ -79,7 +79,7 @@ public class LadderGameApp extends Application {
   }
 
   /**
-   * Constructor for LadderGame with a custom board.
+   * JSON-Constructor for LadderGame with a custom board.
    *
    * @param players     list of players
    * @param customBoard the custom board to use
@@ -205,45 +205,6 @@ public class LadderGameApp extends Application {
   }
 
   /**
-   * Method to draw the ladders on board, and enabeling to resize the window.
-   *
-   * @param ladderPane the pane for ladders.
-   * @param image      the image of the ladder.
-   * @param startTile  the starting tile.
-   * @param endTile    the ending tile.
-   */
-  public void drawLadder(Pane ladderPane, Image image, Node startTile, Node endTile) {
-    Bounds startBounds = startTile.localToScene(startTile.getBoundsInLocal());
-    Bounds endBounds = endTile.localToScene(endTile.getBoundsInLocal());
-
-    double startX = (startBounds.getMinX() + startBounds.getMaxX()) / 2;
-    double startY = (startBounds.getMinY() + startBounds.getMaxY()) / 2;
-    double endX = (endBounds.getMinX() + endBounds.getMaxX()) / 2;
-    double endY = (endBounds.getMinY() + endBounds.getMaxY()) / 2;
-
-    //converting scene coordinates to ladderPanes local ones
-    Point2D start = ladderPane.sceneToLocal(startX, startY);
-    Point2D end = ladderPane.sceneToLocal(endX, endY);
-
-    double dx = end.getX() - start.getX();
-    double dy = end.getY() - start.getY();
-    double length = Math.hypot(dx, dy);
-    double angle = Math.toDegrees(Math.atan2(dy, dx) - 80);
-
-    ImageView ladderView = new ImageView(image);
-    ladderView.setPreserveRatio(false);
-    ladderView.setFitHeight(length);
-    ladderView.setFitWidth(length / 10);
-
-    ladderView.setRotate(angle);
-
-    ladderView.setTranslateX((start.getX() + end.getX()) / 2 - ladderView.getFitWidth() / 2);
-    ladderView.setTranslateY((start.getY() + end.getY()) / 2 - length / 2);
-
-    ladderPane.getChildren().add(ladderView);
-  }
-
-  /**
    * Draws the board with tiles and ladders.
    *
    * @param gridPane   the grid pane to draw on
@@ -334,6 +295,46 @@ public class LadderGameApp extends Application {
 
 
   /**
+   * Method to draw the ladders on board, and enabeling to resize the window.
+   *
+   * @param ladderPane the pane for ladders.
+   * @param image      the image of the ladder.
+   * @param startTile  the starting tile.
+   * @param endTile    the ending tile.
+   */
+  public void drawLadder(Pane ladderPane, Image image, Node startTile, Node endTile) {
+    Bounds startBounds = startTile.localToScene(startTile.getBoundsInLocal());
+    Bounds endBounds = endTile.localToScene(endTile.getBoundsInLocal());
+
+    double startX = (startBounds.getMinX() + startBounds.getMaxX()) / 2;
+    double startY = (startBounds.getMinY() + startBounds.getMaxY()) / 2;
+    double endX = (endBounds.getMinX() + endBounds.getMaxX()) / 2;
+    double endY = (endBounds.getMinY() + endBounds.getMaxY()) / 2;
+
+    //converting scene coordinates to ladderPanes local ones
+    Point2D start = ladderPane.sceneToLocal(startX, startY);
+    Point2D end = ladderPane.sceneToLocal(endX, endY);
+
+    double dx = end.getX() - start.getX();
+    double dy = end.getY() - start.getY();
+    double length = Math.hypot(dx, dy);
+    double angle = Math.toDegrees(Math.atan2(dy, dx) - 80);
+
+    ImageView ladderView = new ImageView(image);
+    ladderView.setPreserveRatio(false);
+    ladderView.setFitHeight(length);
+    ladderView.setFitWidth(length / 10);
+
+    ladderView.setRotate(angle);
+
+    ladderView.setTranslateX((start.getX() + end.getX()) / 2 - ladderView.getFitWidth() / 2);
+    ladderView.setTranslateY((start.getY() + end.getY()) / 2 - length / 2);
+
+    ladderPane.getChildren().add(ladderView);
+  }
+
+
+  /**
    * Rolls the dice, updates dice display, calculates the move using the controller, and initiates
    * the animation.
    */
@@ -376,6 +377,19 @@ public class LadderGameApp extends Application {
     return false;
   }
 
+  private void advanceToNextPlayer() {
+    currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
+    currentPlayerLabel.setText("Current Player: " + players.get(currentPlayerIndex).getName());
+
+    if (players.get(currentPlayerIndex).isFrozen()) {
+      isFrozenLabel.setText(players.get(currentPlayerIndex).getName()
+          + " is frozen and will skip their turn!");
+    } else {
+      isFrozenLabel.setText("");
+    }
+    ladderUpOrDownCheck.setText("");
+  }
+
   /**
    * Rolls dice and updates the visual dice display.
    *
@@ -411,77 +425,6 @@ public class LadderGameApp extends Application {
   }
 
   /**
-   * Checks if the current player has won.
-   *
-   * @param player       the current player
-   * @param position     the current position of the player
-   * @param primaryStage the primary stage
-   */
-  private void checkWinner(Player player, int position, Stage primaryStage) {
-    if (boardController.isWinningPosition(position)) {
-      Alert alert = new Alert(AlertType.INFORMATION);
-      alert.setTitle("Game Over");
-      alert.setHeaderText(null);
-      alert.setContentText(player.getName() + " has won the game!");
-
-      Platform.runLater(() -> {
-        gameSubject.removeListener(this.gameLogger);
-        alert.showAndWait();
-        new DashboardGui().start(primaryStage);
-      });
-    }
-  }
-
-  /**
-   * Adds the player piece to the grid.
-   *
-   * @param gridPane the grid pane to draw on
-   * @param player   the current player
-   * @param col      the column index
-   * @param row      the row index
-   */
-  private void addPlayerPieceToGrid(GridPane gridPane, Player player, int col, int row) {
-    gridPane.getChildren().remove(player.getPlayerPiece());
-
-    StackPane cellContainer = new StackPane();
-    cellContainer.getChildren().add(player.getPlayerPiece());
-    StackPane.setAlignment(player.getPlayerPiece(), Pos.CENTER);
-
-    gridPane.add(cellContainer, col, row);
-  }
-
-  private void displaySpecialTileEffectMessage(int tileType, int toPosition) {
-    String finalMessage = "";
-    if (tileType == 1) {
-      finalMessage = "Climbing up to " + toPosition + "!";
-    } else if (tileType == 2) {
-      finalMessage = "Sliding down to " + toPosition + "!";
-    } else if (tileType == 3) {
-      finalMessage = "Teleporting to " + toPosition + "!";
-    }
-    ladderUpOrDownCheck.setText(finalMessage);
-  }
-
-  private void advanceToNextPlayer() {
-    currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
-    currentPlayerLabel.setText("Current Player: " + players.get(currentPlayerIndex).getName());
-
-    if (players.get(currentPlayerIndex).isFrozen()) {
-      isFrozenLabel.setText(players.get(currentPlayerIndex).getName()
-          + " is frozen and will skip their turn!");
-    } else {
-      isFrozenLabel.setText("");
-    }
-    ladderUpOrDownCheck.setText("");
-  }
-
-  /*
-  NOTE: Since animation is not a part of the task assesment and very hard to implement in JavaFX,
-  the following code is heavily based on code generated by AI since the group wants a working game
-  without using too much time on unrelevant code.
-*/
-
-  /**
    * Calculates the player's target position after considering teleport tiles.
    */
   private int calculateTargetPosition(Player currentPlayer, int diceValue) {
@@ -511,8 +454,14 @@ public class LadderGameApp extends Application {
     }
   }
 
+  /*
+  NOTE: Since animation is not a part of the task assesment and very hard to implement in JavaFX,
+  the following code is heavily based on code generated by AI since the group wants a working game
+  without using too much time on unrelevant code.
+*/
+
   /**
-   * Animates player movement and handles special tile effects.
+   * Animates player movement and handles special tile effects. Next 8 methods are closely connected
    */
   private void animateAndMove(GridPane gridPane, Player player, int fromPosition, int toPosition,
       int diceSum, Stage primaryStage) {
@@ -535,7 +484,7 @@ public class LadderGameApp extends Application {
   }
 
   /**
-   * Creates keyframes for movement animation.
+   * Method that creates frames for TimeFrame.
    */
   private List<KeyFrame> createMovementAnimationFrames(Player player, int fromPosition,
       int diceSum, GridPane gridPane) {
@@ -584,8 +533,18 @@ public class LadderGameApp extends Application {
     return keyFrames;
   }
 
+  private void addPlayerPieceToGrid(GridPane gridPane, Player player, int col, int row) {
+    gridPane.getChildren().remove(player.getPlayerPiece());
+
+    StackPane cellContainer = new StackPane();
+    cellContainer.getChildren().add(player.getPlayerPiece());
+    StackPane.setAlignment(player.getPlayerPiece(), Pos.CENTER);
+
+    gridPane.add(cellContainer, col, row);
+  }
+
   /**
-   * Calculate initial landing position considering overshoot.
+   * Method that creates final frame before any special tile.
    */
   private int calculateInitialLandingPosition(int fromPosition, int diceSum) {
     int boardSize = 90;
@@ -594,8 +553,9 @@ public class LadderGameApp extends Application {
     return overshoot ? boardSize - (initialLandingPos - boardSize) : initialLandingPos;
   }
 
+
   /**
-   * Handle special tile effects after initial animation completes.
+   * Post-animation handler for special tile effects.
    */
   private void handleSpecialTileEffects(GridPane gridPane, Player player,
       int targetPositionBeforeSpecial, int toPosition, Stage primaryStage) {
@@ -637,9 +597,33 @@ public class LadderGameApp extends Application {
     }
   }
 
-  /**
-   * Move player piece to its final position on the grid.
-   */
+  private void checkWinner(Player player, int position, Stage primaryStage) {
+    if (boardController.isWinningPosition(position)) {
+      Alert alert = new Alert(AlertType.INFORMATION);
+      alert.setTitle("Game Over");
+      alert.setHeaderText(null);
+      alert.setContentText(player.getName() + " has won the game!");
+
+      Platform.runLater(() -> {
+        gameSubject.removeListener(this.gameLogger);
+        alert.showAndWait();
+        new DashboardGui().start(primaryStage);
+      });
+    }
+  }
+
+  private void displaySpecialTileEffectMessage(int tileType, int toPosition) {
+    String finalMessage = "";
+    if (tileType == 1) {
+      finalMessage = "Climbing up to " + toPosition + "!";
+    } else if (tileType == 2) {
+      finalMessage = "Sliding down to " + toPosition + "!";
+    } else if (tileType == 3) {
+      finalMessage = "Teleporting to " + toPosition + "!";
+    }
+    ladderUpOrDownCheck.setText(finalMessage);
+  }
+
   private void movePlayerToFinalPosition(GridPane gridPane, Player player, int toPosition) {
     int finalRow = 9 - (toPosition - 1) / 9;
     int finalCol = (9 - finalRow) % 2 == 0
@@ -647,4 +631,7 @@ public class LadderGameApp extends Application {
         8 - (toPosition - 1) % 9;
     addPlayerPieceToGrid(gridPane, player, finalCol, finalRow);
   }
+
+
+
 }

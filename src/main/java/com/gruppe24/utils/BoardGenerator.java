@@ -1,9 +1,10 @@
-package com.gruppe24.filehandling;
+package com.gruppe24.utils;
 
 import static com.gruppe24.boardgames.laddergame.models.board.Board.initializeStandardLadders;
 import static com.gruppe24.boardgames.laddergame.models.board.Board.initializeStandardSpecialTiles;
 
 import com.gruppe24.boardgames.laddergame.models.board.Board;
+import com.gruppe24.filehandling.FileHandler;
 import java.util.HashMap;
 
 /**

@@ -12,12 +12,6 @@ public class BoardController {
 
   private final Board board;
 
-  /**
-   * Constructor that initializes the game controller with a board type.
-   */
-  public BoardController() {
-    this(BoardType.CLASSIC);
-  }
 
   /**
    * Constructor that initializes the game controller with a board type.
@@ -32,7 +26,7 @@ public class BoardController {
   }
 
   /**
-   * Constructor that initializes the game controller with a custom board.
+   * JSON-Constructor that initializes the game controller with a custom board.
    *
    * @param customBoard the custom board to use
    */

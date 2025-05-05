@@ -1,11 +1,11 @@
 package com.gruppe24.boardgames.laddergame.models.board;
 
+import com.gruppe24.boardgames.commonclasses.CommonTile;
 import com.gruppe24.boardgames.laddergame.models.board.tiles.FrozenTile;
 import com.gruppe24.boardgames.laddergame.models.board.tiles.LadderDownTile;
 import com.gruppe24.boardgames.laddergame.models.board.tiles.LadderUpTile;
 import com.gruppe24.boardgames.laddergame.models.board.tiles.NormalTile;
 import com.gruppe24.boardgames.laddergame.models.board.tiles.RandomTeleportTile;
-import com.gruppe24.boardgames.commonclasses.CommonTile;
 import com.gruppe24.boardgames.laddergame.models.board.tiles.WinningTile;
 import java.util.HashMap;
 
@@ -34,9 +34,11 @@ public class Board {
     this.winningTile = new HashMap<>();
     this.name = "Classic LadderGame";
     this.description = "A classic game of Ladders with 90 tiles.";
-    initializeNormalTile();
     initializeLadders();
     initializeWinningTile();
+
+    // Confirming the tiles setup
+    initializeTiles();
   }
 
   /**
@@ -61,16 +63,11 @@ public class Board {
     this.randomTeleportTiles = randomTeleportTiles;
     this.name = name;
     this.description = description;
-    initializeNormalTile();
     initializeWinningTile();
-  }
 
-  /**
-   * Method that initializes normal tiles.
-   */
-  public void initializeNormalTile() {
     initializeTiles();
   }
+
 
   /**
    * Method that puts ladders at certain indexes in ladders-hashMap.

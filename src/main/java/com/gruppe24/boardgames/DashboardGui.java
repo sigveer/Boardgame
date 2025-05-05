@@ -1,20 +1,16 @@
 package com.gruppe24.boardgames;
 
-import static com.gruppe24.boardgames.laddergame.models.board.BoardType.CLASSIC;
-import static com.gruppe24.boardgames.laddergame.models.board.BoardType.SPECIAL;
-import static com.gruppe24.utils.StyleUtils.styleNormalButton;
-
 import com.gruppe24.boardgames.laddergame.controller.BoardController;
 import com.gruppe24.boardgames.laddergame.controller.PlayerController;
 import com.gruppe24.boardgames.laddergame.models.Player;
 import com.gruppe24.boardgames.laddergame.models.board.Board;
+import com.gruppe24.boardgames.laddergame.models.board.BoardType;
 import com.gruppe24.boardgames.laddergame.view.LadderGameApp;
-import com.gruppe24.filehandling.CsvPlayerReader;
-import com.gruppe24.filehandling.CsvPlayerWriter;
+import com.gruppe24.filehandling.FileHandler;
 import com.gruppe24.filehandling.JsonBoardReader;
 import com.gruppe24.observerpattern.EventType;
-import com.gruppe24.observerpattern.GameLogger;
 import com.gruppe24.observerpattern.GameSubject;
+import com.gruppe24.utils.GameLogger;
 import com.gruppe24.utils.StyleUtils;
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +40,7 @@ public class DashboardGui extends Application {
   private PlayerController playerController;
   private Stage stage;
   private JsonBoardReader jsonBoardReader;
-  private final BoardController boardController = new BoardController();
+  private final BoardController boardController = new BoardController(BoardType.CLASSIC);
   private final GameSubject gameSubject = new GameSubject();
   private final GameLogger gameLogger = new GameLogger();
 
@@ -110,14 +106,14 @@ public class DashboardGui extends Application {
     buttonBox.setAlignment(Pos.BOTTOM_CENTER);
 
     Button addPlayerButton = new Button("+");
-    styleNormalButton(addPlayerButton);
+    StyleUtils.styleNormalButton(addPlayerButton);
     addPlayerButton.setOnAction(e -> {
       playerController.addPlayer();
       updatePlayerList();
     });
 
     Button removePlayerButton = new Button("-");
-    styleNormalButton(removePlayerButton);
+    StyleUtils.styleNormalButton(removePlayerButton);
     removePlayerButton.setOnAction(e -> {
       playerController.removePlayer();
       updatePlayerList();
@@ -131,7 +127,7 @@ public class DashboardGui extends Application {
         showAlert("No players to save");
         return;
       }
-      boolean success = CsvPlayerWriter.savePlayers(playersToSave, stage);
+      boolean success = FileHandler.savePlayers(playersToSave, stage);
       if (success) {
         showAlert("Players saved successfully");
       } else {
@@ -142,7 +138,7 @@ public class DashboardGui extends Application {
     Button loadPlayersButton = new Button("Load Players");
     StyleUtils.styleNormalButton(loadPlayersButton);
     loadPlayersButton.setOnAction(e -> {
-      List<Player> loadedPlayers = CsvPlayerReader.loadPlayers(stage);
+      List<Player> loadedPlayers = FileHandler.loadPlayers(stage);
       if (loadedPlayers != null && !loadedPlayers.isEmpty()) {
         populateFieldsWithPlayers(loadedPlayers);
         showAlert("Players loaded successfully");
@@ -229,7 +225,7 @@ public class DashboardGui extends Application {
         newValue) -> player.setName(newValue));
 
     Button changeIconButton = new Button("⟳");
-    styleNormalButton(changeIconButton);
+    StyleUtils.styleNormalButton(changeIconButton);
     changeIconButton.setOnAction(e -> {
       playerController.cyclePlayerIcon(iconIndex);
       updatePlayerList();
@@ -248,14 +244,14 @@ public class DashboardGui extends Application {
 
     VBox classicLadderGameBox = createGameBox("Classic Laddergame",
         "pictures/boardpictures/classicBoard.jpg", event -> {
-          new LadderGameApp(playerController.getPlayers(), CLASSIC).start(primaryStage);
+          new LadderGameApp(playerController.getPlayers(), BoardType.CLASSIC).start(primaryStage);
 
           gameSubject.notifyListener(EventType.GAME_STARTED, playerController.getPlayers());
         });
 
     VBox specialLadderGameBox = createGameBox("Special Laddergame",
         "pictures/boardpictures/specialBoard.jpg", event -> {
-          new LadderGameApp(playerController.getPlayers(), SPECIAL).start(primaryStage);
+          new LadderGameApp(playerController.getPlayers(), BoardType.SPECIAL).start(primaryStage);
 
           gameSubject.notifyListener(EventType.GAME_STARTED, playerController.getPlayers());
         });
@@ -303,7 +299,7 @@ public class DashboardGui extends Application {
     gameImage.setFitHeight(200);
 
     Button playbutton = new Button("Play");
-    styleNormalButton(playbutton);
+    StyleUtils.styleNormalButton(playbutton);
     playbutton.setOnAction(action);
 
     gameBox.getChildren().addAll(gameLabel, gameImage, playbutton);
