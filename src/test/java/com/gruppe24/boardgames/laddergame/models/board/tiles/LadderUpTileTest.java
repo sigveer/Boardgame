@@ -24,7 +24,7 @@ class LadderUpTileTest {
   @BeforeEach
   void setUp() {
     ladderUpTile = new LadderUpTile(5, 10);
-    player = new Player("TestPlayer", Color.BLUE);
+    player = new Player("TestPlayer", 1);
     player.setPosition(5);
   }
 

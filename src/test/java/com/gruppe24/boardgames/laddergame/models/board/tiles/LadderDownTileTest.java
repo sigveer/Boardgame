@@ -23,7 +23,7 @@ class LadderDownTileTest {
   @BeforeEach
   void setUp() {
     ladderDownTile = new LadderDownTile(10, 5);
-    player = new Player("TestPlayer", Color.BLUE);
+    player = new Player("TestPlayer", 1);
     player.setPosition(10);
   }
 

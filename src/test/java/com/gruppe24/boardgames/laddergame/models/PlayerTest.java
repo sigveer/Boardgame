@@ -1,9 +1,9 @@
 package com.gruppe24.boardgames.laddergame.models;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
-import javafx.scene.paint.Color;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -19,11 +19,11 @@ class PlayerTest {
    */
   @BeforeEach
   void setUp() {
-    player = new Player("TestPlayer", Color.RED);
+    player = new Player("TestPlayer", 1);
   }
 
   /**
-   * Tests the getter for players name.
+   * Tests the getter for player's name.
    */
   @Test
   void getName() {
@@ -31,7 +31,16 @@ class PlayerTest {
   }
 
   /**
-   * Tests the getter for players position.
+   * Tests the setter for player's name.
+   */
+  @Test
+  void setName() {
+    player.setName("NewName");
+    assertEquals("NewName", player.getName());
+  }
+
+  /**
+   * Tests the getter for player's position.
    */
   @Test
   void getPosition() {
@@ -40,7 +49,7 @@ class PlayerTest {
   }
 
   /**
-   * Tests the setter for players position.
+   * Tests the setter for player's position.
    */
   @Test
   void setPosition() {
@@ -52,9 +61,67 @@ class PlayerTest {
    * Tests the player piece is properly initialized.
    */
   @Test
-  void testPlayerPiece() {
+  void testPlayerPieceInitialization() {
+    ImageView playerPiece = player.getPlayerPiece();
+    assertNotNull(playerPiece);
+    assertEquals(40, playerPiece.getFitWidth());
+    assertEquals(40, playerPiece.getFitHeight());
+  }
+
+  /**
+   * Tests the player's icon initialization.
+   */
+  @Test
+  void testIconInitialization() {
+    assertNotNull(player.getIcon());
+    assertEquals("pictures/pngIcons/luigi.png", player.getIconPath());
+  }
+
+  /**
+   * Tests the player's icon cycling functionality.
+   */
+  @Test
+  void testCycleToNextIcon() {
+    player.cycleToNextIcon();
+    assertEquals("pictures/pngIcons/wario.png", player.getIconPath());
+    player.cycleToNextIcon();
+    assertEquals("pictures/pngIcons/waluigi.png", player.getIconPath());
+  }
+
+  /**
+   * Tests the player's frozen state.
+   */
+  @Test
+  void testFrozenState() {
+    assertFalse(player.isFrozen());
+    player.setFrozen(true);
+    assertTrue(player.isFrozen());
+  }
+
+  /**
+   * Tests the exception when creating a player with an invalid name.
+   */
+  @Test
+  void testInvalidName() {
+    assertThrows(IllegalArgumentException.class, () -> new Player("", 1));
+  }
+
+  /**
+   * Tests the exception when creating a player with a negative icon index.
+   */
+  @Test
+  void testInvalidIconIndex() {
+    assertThrows(IllegalArgumentException.class, () -> new Player("TestPlayer", -1));
+  }
+
+  /**
+   * Tests the initialization of the player piece with a custom image.
+   */
+  @Test
+  void testInitializePlayerPiece() {
+    Image customImage = new Image(getClass().getClassLoader().getResourceAsStream("pictures/pngIcons/mario.png"));
+    player.initializePlayerPiece(customImage);
     assertNotNull(player.getPlayerPiece());
-    assertEquals(25, player.getPlayerPiece().getRadius());
-    assertEquals(Color.RED, player.getPlayerPiece().getFill());
+    assertEquals(customImage, player.getPlayerPiece().getImage());
   }
 }
