@@ -20,11 +20,6 @@ public class RandomTeleportTile extends SpecialTile {
     super(position);
   }
 
-  /**
-   * Method that performs the action of the tile.
-   *
-   * @param player The player that lands on the tile.
-   */
   @Override
   public void perform(Player player) {
 

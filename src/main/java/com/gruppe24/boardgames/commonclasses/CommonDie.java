@@ -1,19 +1,20 @@
-package com.gruppe24.boardgames.laddergame.models;
+package com.gruppe24.boardgames.commonclasses;
 
 import java.util.Random;
 
 /**
- * Class representing a die.
+ * CommonDie is a class that represents a die. It provides methods to roll the die and get the last
+ * rolled value.
  */
-public class Die { //kan abstraktiseres
+public class CommonDie {
 
-  private int lastRolledValue;
-  private final Random random;
+  protected int lastRolledValue;
+  protected Random random;
 
   /**
-   * Constructor that initializes the die.
+   * Constructor for CommonDie.
    */
-  public Die() {
+  public CommonDie() {
     this.random = new Random();
     this.lastRolledValue = 0;
   }
@@ -36,5 +37,4 @@ public class Die { //kan abstraktiseres
   public int getLastRoll() {
     return lastRolledValue;
   }
-
 }

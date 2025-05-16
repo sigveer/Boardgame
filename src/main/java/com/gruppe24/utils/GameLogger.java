@@ -1,6 +1,8 @@
-package com.gruppe24.observerpattern;
+package com.gruppe24.utils;
 
 import com.gruppe24.boardgames.laddergame.models.Player;
+import com.gruppe24.observerpattern.EventType;
+import com.gruppe24.observerpattern.GameObserver;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -9,6 +11,7 @@ import java.util.logging.Logger;
  * GameLogger is an implementation of GameObserver interface that logs game events to the console.
  */
 public class GameLogger implements GameObserver {
+
   private static final Logger LOGGER = Logger.getLogger(GameLogger.class.getName());
 
   /**
@@ -57,5 +60,14 @@ public class GameLogger implements GameObserver {
         LOGGER.log(Level.WARNING, "Unknown event: {0}", eventType);
       }
     }
+  }
+
+  /**
+   * Logger method for logging messages.
+   *
+   * @return the logger object
+   */
+  public static Logger getLogger() {
+    return Logger.getLogger(GameLogger.class.getName());
   }
 }

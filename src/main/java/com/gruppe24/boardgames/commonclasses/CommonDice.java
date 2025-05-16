@@ -1,28 +1,30 @@
-package com.gruppe24.boardgames.laddergame.models;
+package com.gruppe24.boardgames.commonclasses;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Class representing a set of dice.
- */
-public class Dice {
 
-  private final List<Die> dice;
-  private int sum = 0;
+/**
+ * Abstract class representing a set of dice. This class provides methods to roll the dice and get
+ * the sum of their values.
+ */
+public class CommonDice {
+
+  protected final List<CommonDie> dice;
+  protected int sum = 0;
 
   /**
    * The value of the last rolled die.
    *
    * @param numberOfDice The number of dice to be created.
    */
-  public Dice(int numberOfDice) {
+  public CommonDice(int numberOfDice) {
     if (numberOfDice < 1) {
       throw new IllegalArgumentException("Number of dice must be at least 1 Dice");
     }
     dice = new ArrayList<>();
     for (int i = 0; i < numberOfDice; i++) {
-      dice.add(new Die());
+      dice.add(new CommonDie());
     }
   }
 
@@ -33,7 +35,7 @@ public class Dice {
    */
   public int rollSum() {
     sum = 0;
-    for (Die die : dice) {
+    for (CommonDie die : dice) {
       sum += die.roll();
     }
     return sum;
@@ -51,10 +53,6 @@ public class Dice {
     return dice.get(dieNumber).getLastRoll();
   }
 
-  public int getSum() {
-    return this.sum;
-  }
-
   /**
    * Returns the path to the dice image.
    *
@@ -63,14 +61,5 @@ public class Dice {
    */
   public String dicePath(int dice) {
     return "pictures/dices/dice" + dice + ".png";
-  }
-
-  /**
-   * Rolls a single die (defaults to first die).
-   *
-   * @return The value of the rolled die
-   */
-  public int roll() {
-    return dice.getFirst().roll();
   }
 }

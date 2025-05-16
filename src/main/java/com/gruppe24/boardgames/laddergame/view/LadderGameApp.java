@@ -1,14 +1,14 @@
 package com.gruppe24.boardgames.laddergame.view;
 
 import com.gruppe24.boardgames.DashboardGui;
+import com.gruppe24.boardgames.commonclasses.CommonDice;
 import com.gruppe24.boardgames.laddergame.controller.BoardController;
 import com.gruppe24.boardgames.laddergame.controller.PlayerController;
-import com.gruppe24.boardgames.laddergame.models.Dice;
 import com.gruppe24.boardgames.laddergame.models.Player;
 import com.gruppe24.boardgames.laddergame.models.board.Board;
 import com.gruppe24.boardgames.laddergame.models.board.BoardType;
-import com.gruppe24.observerpattern.GameLogger;
 import com.gruppe24.observerpattern.GameSubject;
+import com.gruppe24.utils.GameLogger;
 import com.gruppe24.utils.StyleUtils;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -53,7 +53,7 @@ public class LadderGameApp extends Application {
   private Label currentPlayerLabel;
   private Label ladderUpOrDownCheck;
   private Label isFrozenLabel;
-  private final Dice dice = new Dice(2);
+  private final CommonDice dice = new CommonDice(2);
   private Button diceRollButton;
   private final GameSubject gameSubject = new GameSubject();
   private final GameLogger gameLogger = new GameLogger();
@@ -72,14 +72,14 @@ public class LadderGameApp extends Application {
       throw new IllegalArgumentException("Parameter boardType cannot be empty");
     }
     this.boardController = new BoardController(boardType);
-    this.playerController = new PlayerController(boardController, gameSubject);
+    this.playerController = new PlayerController(gameSubject);
     this.board = boardController.getBoard();
     this.players = players;
     gameSubject.registerListener(gameLogger);
   }
 
   /**
-   * Constructor for LadderGame with a custom board.
+   * JSON-Constructor for LadderGame with a custom board.
    *
    * @param players     list of players
    * @param customBoard the custom board to use
@@ -92,7 +92,7 @@ public class LadderGameApp extends Application {
       throw new IllegalArgumentException("Parameter customBoard cannot be empty");
     }
     this.boardController = new BoardController(customBoard);
-    this.playerController = new PlayerController(boardController, gameSubject);
+    this.playerController = new PlayerController(gameSubject);
     this.board = customBoard;
     this.players = players;
     gameSubject.registerListener(gameLogger);
@@ -109,13 +109,16 @@ public class LadderGameApp extends Application {
       throw new IllegalArgumentException("Parameter Stage cannot be empty");
     }
 
-    for (Player player : players) {
-      player.initializePlayerPiece(player.getIcon());
-    }
+    BoardController boardController = new BoardController(BoardType.CLASSIC);
+    this.playerController.initializeGame(boardController);
+
+    players.forEach(player -> {
+      player.setIcon(player.getIcon());
+    });
 
     primaryStage.setTitle("Laddergame Classic");
 
-    // Create main layout container using BorderPane
+    // main layout container using BorderPane
     BorderPane mainLayout = new BorderPane();
     mainLayout.setStyle("-fx-background-color: #3a5ad7;");
 
@@ -130,7 +133,6 @@ public class LadderGameApp extends Application {
     Pane ladderPane = new Pane();
     ladderPane.setMouseTransparent(true);
 
-    // Add components to board container
     boardContainer.getChildren().addAll(gridPane, ladderPane);
 
     // Control panel (right section)
@@ -140,7 +142,6 @@ public class LadderGameApp extends Application {
     controlPanel.setMinWidth(200);
     StyleUtils.stylePanel(controlPanel);
 
-    // Set up labels
     currentPlayerLabel = new Label("Current Player: " + players.get(currentPlayerIndex).getName());
     currentPlayerLabel.setStyle("-fx-font-size: 16px; -fx-text-fill: white;");
     currentPlayerLabel.setWrapText(true);
@@ -184,7 +185,7 @@ public class LadderGameApp extends Application {
 
     Scene scene = new Scene(mainLayout, 1000, 850);
 
-    // Window resize handlers
+    // Ladder resize handlers
     scene.widthProperty().addListener((obs, oldVal, newVal) -> {
       ladderPane.getChildren().clear();
       drawBoard(gridPane, ladderPane);
@@ -201,7 +202,6 @@ public class LadderGameApp extends Application {
     primaryStage.show();
   }
 
-
   /**
    * Draws the board with tiles and ladders.
    *
@@ -209,12 +209,6 @@ public class LadderGameApp extends Application {
    * @param ladderPane the pane for ladders
    */
   public void drawBoard(GridPane gridPane, Pane ladderPane) {
-    if (gridPane == null) {
-      throw new IllegalArgumentException("Gridpane is empty in LadderGame app");
-    }
-    if (ladderPane == null) {
-      throw new IllegalArgumentException("LadderPane is empty in Laddergame app");
-    }
     Map<Integer, Node> tileNodeMap = new HashMap<>();
 
     for (int row = 9; row >= 0; row--) {
@@ -306,16 +300,6 @@ public class LadderGameApp extends Application {
    * @param endTile    the ending tile.
    */
   public void drawLadder(Pane ladderPane, Image image, Node startTile, Node endTile) {
-    if (image == null) {
-      throw new IllegalArgumentException("No image path in drawLadder method in ladderGame app");
-    }
-    if (startTile == null) {
-      throw new IllegalArgumentException("Start tile node is empty in ladderGame app");
-    }
-    if (endTile == null) {
-      throw new IllegalArgumentException("End tile node is empty in ladderGame app");
-    }
-
     Bounds startBounds = startTile.localToScene(startTile.getBoundsInLocal());
     Bounds endBounds = endTile.localToScene(endTile.getBoundsInLocal());
 
@@ -352,15 +336,6 @@ public class LadderGameApp extends Application {
    * the animation.
    */
   private void rollDiceAndMove(GridPane gridPane, Stage primaryStage, Pane dicePane) {
-    if (gridPane == null) {
-      throw new IllegalArgumentException("Gridpane in ladderGame app is empty");
-    }
-    if (primaryStage == null) {
-      throw new IllegalArgumentException("ERROR! Primary Stage is null in laddergame app");
-    }
-    if (dicePane == null) {
-      throw new IllegalArgumentException("Dice pane is empty in laddergame app");
-    }
     // Disable the button at the start of the turn
     diceRollButton.setDisable(true);
 
@@ -371,7 +346,6 @@ public class LadderGameApp extends Application {
       return; // Player was frozen, skip turn
     }
 
-    // Rest of the method remains unchanged
     int diceValue = rollAndDisplayDice(dicePane);
 
     int previousPosition = currentPlayer.getPosition();
@@ -382,44 +356,11 @@ public class LadderGameApp extends Application {
   }
 
   /**
-   * Calculates the player's target position after considering teleport tiles.
-   */
-  private int calculateTargetPosition(Player currentPlayer, int diceValue) {
-    int previousPosition = currentPlayer.getPosition();
-    int boardSize = 90;
-    int initialLandingPos = previousPosition + diceValue;
-    boolean overshoot = initialLandingPos > boardSize;
-    int targetPositionBeforeSpecial = overshoot
-        ? boardSize - (initialLandingPos - boardSize) : initialLandingPos;
-
-    // Special handling for teleport tiles
-    if (board.getTileType(targetPositionBeforeSpecial) == 3) {
-      // First move the player normally
-      playerController.handlePlayerTurn(currentPlayer, diceValue);
-
-      // Get position after normal movement but before teleport
-      int positionBeforeTeleport = currentPlayer.getPosition();
-
-      // Apply teleport effect
-      board.getTile(positionBeforeTeleport).perform(currentPlayer);
-
-      return currentPlayer.getPosition();
-    } else {
-      // Normal case - move and apply any non-teleport effects
-      playerController.handlePlayerTurn(currentPlayer, diceValue);
-      return currentPlayer.getPosition();
-    }
-  }
-
-  /**
    * Handles logic for frozen players, skipping their turn if needed.
    *
    * @return true if player was frozen and turn should be skipped
    */
   private boolean handleFrozenPlayer(Player currentPlayer, Pane dicePane) {
-    if (currentPlayer == null) {
-      throw new IllegalArgumentException("Player is null in laddergame app");
-    }
     if (currentPlayer.isFrozen()) {
       currentPlayer.setFrozen(false); // Unfreeze for the next turn
 
@@ -452,8 +393,10 @@ public class LadderGameApp extends Application {
    */
   private int rollAndDisplayDice(Pane dicePane) {
     int diceValue = dice.rollSum();
+
+    diceResultLabel.setText("Rolled: " + diceValue);
+
     int diceValue1 = dice.getDie(0);
-    int diceValue2 = dice.getDie(1);
 
     // Create and display first die
     ImageView dice1Iv = new ImageView(new Image(dice.dicePath(diceValue1)));
@@ -462,6 +405,8 @@ public class LadderGameApp extends Application {
     dice1Iv.setFitHeight(75);
     dice1Iv.setFitWidth(75);
 
+    int diceValue2 = dice.getDie(1);
+
     // Create and display second die
     ImageView dice2Iv = new ImageView(new Image(dice.dicePath(diceValue2)));
     dice2Iv.setX(125);
@@ -469,26 +414,45 @@ public class LadderGameApp extends Application {
     dice2Iv.setFitHeight(75);
     dice2Iv.setFitWidth(75);
 
-    diceResultLabel.setText("Rolled: " + diceValue);
     dicePane.getChildren().clear();
     dicePane.getChildren().addAll(dice1Iv, dice2Iv);
 
     return diceValue;
   }
 
+  /**
+   * Calculates the player's target position after considering teleport tiles.
+   */
+  private int calculateTargetPosition(Player currentPlayer, int diceValue) {
+    int previousPosition = currentPlayer.getPosition();
+    int boardSize = 90;
+    int initialLandingPos = previousPosition + diceValue;
+    boolean overshoot = initialLandingPos > boardSize;
+    int targetPositionBeforeSpecial = overshoot
+        ? boardSize - (initialLandingPos - boardSize) : initialLandingPos;
 
+    // Special handling for teleport tiles
+    if (board.getTileType(targetPositionBeforeSpecial) == 3) {
+      playerController.handlePlayerTurn(currentPlayer, diceValue);
 
-  /*
-  NOTE: Since animation is not a part of the task assesment and very hard to implement in JavaFX,
-  the following code is heavily based on code generated by AI since the group wants a working game
-  without using too much time on unrelevant code.
-  These next 9 methods are all part of the animation aspect for the GUI.
-*/
+      int positionBeforeTeleport = currentPlayer.getPosition();
+
+      board.getTile(positionBeforeTeleport).perform(currentPlayer);
+
+      return currentPlayer.getPosition();
+    } else {
+      playerController.handlePlayerTurn(currentPlayer, diceValue);
+      return currentPlayer.getPosition();
+    }
+  }
+
 
   /**
    * Animates player movement and handles special tile effects.
-   * This method is split into an additional three other methods which is implemented in this
-   * mother-method.
+   *
+   * @AI_Based Next 8 methods has been based on recommendations from AI. This method is the mother
+   * if many sub-methods; createMovementAnimationFrames, calculateInitialLandingPosition,
+   * handleSpecialTileEffects.
    */
   private void animateAndMove(GridPane gridPane, Player player, int fromPosition, int toPosition,
       int diceSum, Stage primaryStage) {
@@ -510,11 +474,12 @@ public class LadderGameApp extends Application {
     stepTimeline.play();
   }
 
-
-  //-----------------KeyFrame-generator-----------------
   /**
-   * Creates keyframes for movement animation.
-   * The next TWO method are part of creating the frames for the timeline.
+   * Method that creates frames for TimeFrame.
+   *
+   * @AI_Based Method that returns KeyFrames, calculated by an algorythm for finding the row and
+   * column. If overshoot is true, another algorythm is used to calculate its frames moving
+   * backwards.
    */
   private List<KeyFrame> createMovementAnimationFrames(Player player, int fromPosition,
       int diceSum, GridPane gridPane) {
@@ -563,21 +528,11 @@ public class LadderGameApp extends Application {
     return keyFrames;
   }
 
-  private void addPlayerPieceToGrid(GridPane gridPane, Player player, int col, int row) {
-    gridPane.getChildren().remove(player.getPlayerPiece());
-
-    StackPane cellContainer = new StackPane();
-    cellContainer.getChildren().add(player.getPlayerPiece());
-    StackPane.setAlignment(player.getPlayerPiece(), Pos.CENTER);
-
-    gridPane.add(cellContainer, col, row);
-  }
-
-
-  //----------------Calculation for initial landing position-------------
   /**
-   * Calculate initial landing position considering overshoot.
-   * This is a helper method for the mother-method animateAndMove.
+   * Method that creates final frame before any special tile.
+   *
+   * @AI_Based Returns landing position before any ladder/special tile. Or calculates the overshoot
+   * value.
    */
   private int calculateInitialLandingPosition(int fromPosition, int diceSum) {
     int boardSize = 90;
@@ -586,11 +541,11 @@ public class LadderGameApp extends Application {
     return overshoot ? boardSize - (initialLandingPos - boardSize) : initialLandingPos;
   }
 
-
-  //----------------Special Tile effects handler------------------
   /**
-   * Handle special tile effects after initial animation completes.
-   * These next 4 method help with the effects of a special tile
+   * Post-animation handler for special tile effects, not including ladders.
+   *
+   * @AI_Based Uses if-statements to check what special tile it is, and gives the apporopriate
+   * response.
    */
   private void handleSpecialTileEffects(GridPane gridPane, Player player,
       int targetPositionBeforeSpecial, int toPosition, Stage primaryStage) {
@@ -624,14 +579,13 @@ public class LadderGameApp extends Application {
       });
       pauseTimeline.play();
     } else {
-      // Handle frozen tile separately
-      if (tileType == 4) {
-        isFrozenLabel.setText(player.getName() + " landed on a frozen tile! Skip next turn.");
-      }
       finishTurnAction.run();
     }
   }
 
+  /**
+   * PART OF handleSpecialTileEffects(). Checks and logs if player has won.
+   */
   private void checkWinner(Player player, int position, Stage primaryStage) {
     if (boardController.isWinningPosition(position)) {
       Alert alert = new Alert(AlertType.INFORMATION);
@@ -647,6 +601,9 @@ public class LadderGameApp extends Application {
     }
   }
 
+  /**
+   * PART OF handleSpecialTileEffects(). Displays the text upon ladder-animation.
+   */
   private void displaySpecialTileEffectMessage(int tileType, int toPosition) {
     String finalMessage = "";
     if (tileType == 1) {
@@ -659,6 +616,9 @@ public class LadderGameApp extends Application {
     ladderUpOrDownCheck.setText(finalMessage);
   }
 
+  /**
+   * PART OF handleSpecialTileEffects(). Moves player to final position after animation.
+   */
   private void movePlayerToFinalPosition(GridPane gridPane, Player player, int toPosition) {
     int finalRow = 9 - (toPosition - 1) / 9;
     int finalCol = (9 - finalRow) % 2 == 0
@@ -667,6 +627,18 @@ public class LadderGameApp extends Application {
     addPlayerPieceToGrid(gridPane, player, finalCol, finalRow);
   }
 
+  /**
+   * COMMON METHOD: USED MULTIPLE PLACES. Used to add player to grid.
+   *
+   * @AI_Based Actually places the player piece on the grid (board).
+   */
+  private void addPlayerPieceToGrid(GridPane gridPane, Player player, int col, int row) {
+    gridPane.getChildren().remove(player.getPlayerPiece());
 
+    StackPane cellContainer = new StackPane();
+    cellContainer.getChildren().add(player.getPlayerPiece());
+    StackPane.setAlignment(player.getPlayerPiece(), Pos.CENTER);
 
+    gridPane.add(cellContainer, col, row);
+  }
 }

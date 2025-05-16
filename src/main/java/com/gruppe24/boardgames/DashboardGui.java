@@ -1,28 +1,22 @@
 package com.gruppe24.boardgames;
 
-import static com.gruppe24.boardgames.laddergame.models.board.BoardType.CLASSIC;
-import static com.gruppe24.boardgames.laddergame.models.board.BoardType.SPECIAL;
-import static com.gruppe24.utils.StyleUtils.styleNormalButton;
-
 import com.gruppe24.boardgames.laddergame.controller.BoardController;
 import com.gruppe24.boardgames.laddergame.controller.PlayerController;
 import com.gruppe24.boardgames.laddergame.models.Player;
 import com.gruppe24.boardgames.laddergame.models.board.Board;
+import com.gruppe24.boardgames.laddergame.models.board.BoardType;
 import com.gruppe24.boardgames.laddergame.view.LadderGameApp;
-import com.gruppe24.filehandling.CsvPlayerReader;
-import com.gruppe24.filehandling.CsvPlayerWriter;
+import com.gruppe24.boardgames.monopolylite.MonopolyApp;
+import com.gruppe24.filehandling.FileHandler;
 import com.gruppe24.filehandling.JsonBoardReader;
 import com.gruppe24.observerpattern.EventType;
-import com.gruppe24.observerpattern.GameLogger;
 import com.gruppe24.observerpattern.GameSubject;
+import com.gruppe24.utils.GameLogger;
 import com.gruppe24.utils.StyleUtils;
-import com.gruppe24.utils.Validators;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -47,7 +41,7 @@ public class DashboardGui extends Application {
   private PlayerController playerController;
   private Stage stage;
   private JsonBoardReader jsonBoardReader;
-  private final BoardController boardController = new BoardController();
+  private final BoardController boardController = new BoardController(BoardType.CLASSIC);
   private final GameSubject gameSubject = new GameSubject();
   private final GameLogger gameLogger = new GameLogger();
 
@@ -61,11 +55,11 @@ public class DashboardGui extends Application {
     if (primaryStage == null) {
       throw new IllegalArgumentException("Parameter Stage cannot be empty");
     }
-    Validators.getLogger().log(Level.INFO, "Dashboard started");
+    GameLogger.getLogger().log(Level.INFO, "Dashboard started");
 
     this.jsonBoardReader = new JsonBoardReader();
     this.stage = primaryStage;
-    this.playerController = new PlayerController(boardController, gameSubject);
+    this.playerController = new PlayerController(gameSubject);
 
     gameSubject.registerListener(gameLogger);
 
@@ -113,14 +107,14 @@ public class DashboardGui extends Application {
     buttonBox.setAlignment(Pos.BOTTOM_CENTER);
 
     Button addPlayerButton = new Button("+");
-    styleNormalButton(addPlayerButton);
+    StyleUtils.styleNormalButton(addPlayerButton);
     addPlayerButton.setOnAction(e -> {
       playerController.addPlayer();
       updatePlayerList();
     });
 
     Button removePlayerButton = new Button("-");
-    styleNormalButton(removePlayerButton);
+    StyleUtils.styleNormalButton(removePlayerButton);
     removePlayerButton.setOnAction(e -> {
       playerController.removePlayer();
       updatePlayerList();
@@ -134,7 +128,7 @@ public class DashboardGui extends Application {
         showAlert("No players to save");
         return;
       }
-      boolean success = CsvPlayerWriter.savePlayers(playersToSave, stage);
+      boolean success = FileHandler.savePlayers(playersToSave, stage);
       if (success) {
         showAlert("Players saved successfully");
       } else {
@@ -145,7 +139,7 @@ public class DashboardGui extends Application {
     Button loadPlayersButton = new Button("Load Players");
     StyleUtils.styleNormalButton(loadPlayersButton);
     loadPlayersButton.setOnAction(e -> {
-      List<Player> loadedPlayers = CsvPlayerReader.loadPlayers(stage);
+      List<Player> loadedPlayers = FileHandler.loadPlayers(stage);
       if (loadedPlayers != null && !loadedPlayers.isEmpty()) {
         populateFieldsWithPlayers(loadedPlayers);
         showAlert("Players loaded successfully");
@@ -154,7 +148,7 @@ public class DashboardGui extends Application {
       }
     });
 
-    buttonBox.getChildren().addAll(addPlayerButton, removePlayerButton);
+    buttonBox.getChildren().addAll(removePlayerButton, addPlayerButton);
 
     HBox saveLoadBox = new HBox(10);
     saveLoadBox.setAlignment(Pos.CENTER);
@@ -168,6 +162,8 @@ public class DashboardGui extends Application {
   }
 
   private void updatePlayerList() {
+    this.players = playerController.getPlayers();
+
     playerList.getChildren().clear();
 
     for (int i = 0; i < players.size(); i++) {
@@ -200,11 +196,9 @@ public class DashboardGui extends Application {
    * @param loadedPlayers The list of players to populate the fields with.
    */
   private void populateFieldsWithPlayers(List<Player> loadedPlayers) {
-    if (loadedPlayers == null || loadedPlayers.isEmpty()) {
-      throw new IllegalArgumentException("No players loaded in DashBoardGui");
-    }
-    players.clear();
-    players.addAll(loadedPlayers);
+    playerController.setPlayers(loadedPlayers);
+
+    this.players = playerController.getPlayers();
 
     updatePlayerList();
   }
@@ -218,12 +212,6 @@ public class DashboardGui extends Application {
    * @AI_Assisted nameField.setOnAction([x]).....
    */
   private HBox createPlayerBox(Player player, int iconIndex) {
-    if (player == null) {
-      throw new IllegalArgumentException("Players are empty in DashBoardGui");
-    }
-    if (iconIndex < 0) {
-      throw new IllegalArgumentException("Icon Index cannot be sub zero, DashboardGui");
-    }
     HBox playerBox = new HBox(10);
     playerBox.setAlignment(Pos.CENTER_LEFT);
     playerBox.setPadding(new Insets(5));
@@ -238,7 +226,7 @@ public class DashboardGui extends Application {
         newValue) -> player.setName(newValue));
 
     Button changeIconButton = new Button("⟳");
-    styleNormalButton(changeIconButton);
+    StyleUtils.styleNormalButton(changeIconButton);
     changeIconButton.setOnAction(e -> {
       playerController.cyclePlayerIcon(iconIndex);
       updatePlayerList();
@@ -250,9 +238,6 @@ public class DashboardGui extends Application {
   }
 
   private GridPane createGamesGrid(Stage primaryStage) {
-    if (primaryStage == null) {
-      throw new IllegalArgumentException("ERROR! Primary Stage is null in DashBoardGui");
-    }
     GridPane gamesGrid = new GridPane();
     gamesGrid.setAlignment(Pos.CENTER);
     gamesGrid.setVgap(20);
@@ -260,20 +245,21 @@ public class DashboardGui extends Application {
 
     VBox classicLadderGameBox = createGameBox("Classic Laddergame",
         "pictures/boardpictures/classicBoard.jpg", event -> {
-          new LadderGameApp(playerController.getPlayers(), CLASSIC).start(primaryStage);
+          new LadderGameApp(playerController.getPlayers(), BoardType.CLASSIC).start(primaryStage);
 
           gameSubject.notifyListener(EventType.GAME_STARTED, playerController.getPlayers());
         });
 
     VBox specialLadderGameBox = createGameBox("Special Laddergame",
         "pictures/boardpictures/specialBoard.jpg", event -> {
-          new LadderGameApp(playerController.getPlayers(), SPECIAL).start(primaryStage);
+          new LadderGameApp(playerController.getPlayers(), BoardType.SPECIAL).start(primaryStage);
 
           gameSubject.notifyListener(EventType.GAME_STARTED, playerController.getPlayers());
         });
 
     VBox ticTacToeGameBox = createGameBox("Comng soon...",
         "pictures/boardpictures/ownJsonBoard.jpg", event -> {
+          new MonopolyApp().start(primaryStage);
         }
     );
 
@@ -297,16 +283,8 @@ public class DashboardGui extends Application {
    * @return the VBox containing the game information
    * @AI_Assisted javafx.event.EventHandler, new Insets,
    */
-  private VBox createGameBox(String title, String imagePath, EventHandler<ActionEvent> action) {
-    if (title == null || title.isEmpty()) {
-      throw new IllegalArgumentException("Title in game box is empty in DashBoardGui");
-    }
-    if (imagePath == null || imagePath.isEmpty()) {
-      throw new IllegalArgumentException("Image path in DashBoardGui is null");
-    }
-    if (action == null) {
-      throw new IllegalArgumentException("EventHandler is null in DashBoardGui");
-    }
+  private VBox createGameBox(String title, String imagePath,
+      javafx.event.EventHandler<javafx.event.ActionEvent> action) {
 
     VBox gameBox = new VBox(10);
     gameBox.setAlignment(Pos.CENTER);
@@ -323,7 +301,7 @@ public class DashboardGui extends Application {
     gameImage.setFitHeight(200);
 
     Button playbutton = new Button("Play");
-    styleNormalButton(playbutton);
+    StyleUtils.styleNormalButton(playbutton);
     playbutton.setOnAction(action);
 
     gameBox.getChildren().addAll(gameLabel, gameImage, playbutton);
@@ -344,9 +322,6 @@ public class DashboardGui extends Application {
   }
 
   private void loadCustomBoard(Stage primaryStage) {
-    if (primaryStage == null) {
-      throw new IllegalArgumentException("Primary Stage is null in DashBoardGui");
-    }
     Board customBoard = jsonBoardReader.loadCustomBoard(primaryStage);
     if (customBoard != null) {
       startLadderGameWithCustomBoard(primaryStage, customBoard);
@@ -362,13 +337,8 @@ public class DashboardGui extends Application {
    * @param board        the custom board
    */
   private void startLadderGameWithCustomBoard(Stage primaryStage, Board board) {
-    if (board == null) {
-      throw new IllegalArgumentException("Board is null in DashBoardGui");
-    }
-    // Get players for the game
     List<Player> activePlayers = collectPlayersFromFields();
 
-    // Start game with custom board
     try {
       new LadderGameApp(activePlayers, board).start(primaryStage);
     } catch (Exception e) {

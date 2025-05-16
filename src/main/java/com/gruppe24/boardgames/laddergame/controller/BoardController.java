@@ -1,27 +1,17 @@
 package com.gruppe24.boardgames.laddergame.controller;
 
-import com.gruppe24.boardgames.laddergame.models.Player;
 import com.gruppe24.boardgames.laddergame.models.board.Board;
 import com.gruppe24.boardgames.laddergame.models.board.BoardFactory;
 import com.gruppe24.boardgames.laddergame.models.board.BoardType;
-import com.gruppe24.boardgames.laddergame.models.board.tiles.Tile;
 
 /**
- * BoardController is a class that manages the game board interactions.
- * It handles the game logic, including player movement, tile actions, and win conditions.
+ * BoardController is a class that manages the game board interactions. It handles the game logic,
+ * including player movement, tile actions, and win conditions.
  */
 public class BoardController {
-  private final Board currentBoard;
-  private static final int WinCondition = 90;
-  private int checkTileType = 0;
-  private int specialTilePosition;
 
-  /**
-   * Constructor that initializes the game controller with a board type.
-   */
-  public BoardController() {
-    this(BoardType.CLASSIC); // Default board
-  }
+  private final Board board;
+
 
   /**
    * Constructor that initializes the game controller with a board type.
@@ -32,11 +22,11 @@ public class BoardController {
     if (boardType == null) {
       throw new IllegalArgumentException("Board type cannot be null");
     }
-    this.currentBoard = BoardFactory.createBoard(boardType);
+    this.board = BoardFactory.createBoard(boardType);
   }
 
   /**
-   * Constructor that initializes the game controller with a custom board.
+   * JSON-Constructor that initializes the game controller with a custom board.
    *
    * @param customBoard the custom board to use
    */
@@ -44,44 +34,7 @@ public class BoardController {
     if (customBoard == null) {
       throw new IllegalArgumentException("Board cannot be null");
     }
-    this.currentBoard = customBoard;
-  }
-
-  /**
-   * Method that handles overshoot of the player.
-   *
-   * @param newPosition the new position of the player
-   * @return the new position of the player
-   */
-  public int handleOvershoot(int newPosition) {
-    if (newPosition < 0) {
-      throw new IllegalArgumentException("Position cannot be sub zero");
-    }
-    if (newPosition > WinCondition) {
-      int overshoot = newPosition - WinCondition;
-      newPosition = WinCondition - overshoot;
-    }
-    return newPosition;
-  }
-
-  /**
-   * Method that handles the action of a tile. Indirectly takes value checkTileType.
-   * from abstract class Tile.
-   *
-   * @param player the player
-   * @param newPosition the new position of the player
-   */
-  public void handleTileAction(Player player, int newPosition) {
-    if (player == null) {
-      throw new IllegalArgumentException("Player is empty");
-    }
-    if (newPosition < 0) {
-      throw new IllegalArgumentException("New position cannot be sub zero");
-    }
-    Tile tile = currentBoard.getTile(newPosition);
-    tile.perform(player);
-    checkTileType = tile.tileTypeNumber;
-    specialTilePosition = tile.getPosition();
+    this.board = customBoard;
   }
 
   /**
@@ -90,34 +43,17 @@ public class BoardController {
    * @return board the board to use
    */
   public Board getBoard() {
-    return currentBoard;
+    return board;
   }
 
   /**
-   * Method that checks if a player has won the game.
+   * Checks if a position is a winning position.
    *
-   * @param newPosition the new position of the player
-   * @return true if the player has won, false otherwise
+   * @param position the position to check
+   * @return true if the position is winning, false otherwise
    */
-  public boolean isWinningPosition(int newPosition) {
-    return newPosition == WinCondition;
+  public boolean isWinningPosition(int position) {
+    return position == 90;
   }
 
-  /**
-   * Method that checks the type of tile the player is on.
-   *
-   * @return the type tile number.
-   */
-  public int getCheckTileType() {
-    return checkTileType;
-  }
-
-  /**
-   * Method that checks the position of the special tile.
-   *
-   * @return the position of the special tile
-   */
-  public int getSpecialTilePosition() {
-    return specialTilePosition;
-  }
 }

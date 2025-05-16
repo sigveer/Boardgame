@@ -1,9 +1,10 @@
-package com.gruppe24.filehandling;
+package com.gruppe24.utils;
 
 import static com.gruppe24.boardgames.laddergame.models.board.Board.initializeStandardLadders;
 import static com.gruppe24.boardgames.laddergame.models.board.Board.initializeStandardSpecialTiles;
 
 import com.gruppe24.boardgames.laddergame.models.board.Board;
+import com.gruppe24.filehandling.FileHandler;
 import java.util.HashMap;
 
 /**
@@ -21,6 +22,7 @@ public class BoardGenerator {
     createClassicBoard();
     createSpecialBoard();
   }
+
 
   /**
    * Creates a classic board and saves it to a JSON file.
@@ -40,6 +42,8 @@ public class BoardGenerator {
     saveBoard(specialBoard, "special_board");
   }
 
+
+
   /**
    * Creates a board with the specified parameters.
    *
@@ -49,12 +53,6 @@ public class BoardGenerator {
    * @return a new Board object
    */
   private static Board createBoard(boolean includeSpecialTiles, String name, String description) {
-    if (name == null || name.isEmpty()) {
-      throw new IllegalArgumentException("Board name is null in boardGenerator");
-    }
-    if (description == null || description.isEmpty()) {
-      throw new IllegalArgumentException("Description is null in boardGenerator");
-    }
     HashMap<Integer, Integer> ladderUp = new HashMap<>();
     HashMap<Integer, Integer> ladderDown = new HashMap<>();
     HashMap<Integer, Boolean> winningTile = new HashMap<>();
@@ -70,7 +68,6 @@ public class BoardGenerator {
     return new Board(ladderUp, ladderDown, winningTile, frozenTiles, randomTeleportTiles, name, description);
   }
 
-
   /**
    * Saves the given board to a JSON file.
    *
@@ -78,12 +75,6 @@ public class BoardGenerator {
    * @param filename the name of the file (without extension)
    */
   private static void saveBoard(Board board, String filename) {
-    if (board == null) {
-      throw new IllegalArgumentException("Board is null in boardGenerator");
-    }
-    if (filename == null || filename.isEmpty()) {
-      throw new IllegalArgumentException("File name is empty in BoardGenerator");
-    }
     boolean success = FileHandler.saveBoardToJson(board, filename);
 
     if (success) {

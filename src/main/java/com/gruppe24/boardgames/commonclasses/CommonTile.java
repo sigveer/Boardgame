@@ -1,4 +1,4 @@
-package com.gruppe24.boardgames.laddergame.models.board.tiles;
+package com.gruppe24.boardgames.commonclasses;
 
 import com.google.gson.JsonObject;
 import com.gruppe24.boardgames.laddergame.models.Player;
@@ -7,7 +7,7 @@ import com.gruppe24.filehandling.TileJsonSerializer;
 /**
  * Abstract class representing a tile on the board.
  */
-public abstract class Tile implements TileJsonSerializer {
+public abstract class CommonTile implements TileJsonSerializer {
 
   protected int position;
   public int tileTypeNumber = 0;
@@ -16,16 +16,19 @@ public abstract class Tile implements TileJsonSerializer {
    * Constructor that initializes the normal tile.
    *
    * @param position The position of the tile on the board.
-   *
    * @Author Sigveer, Ingve
    * @Date: 16.02.2025
    * @Version: 1.0
    */
-  public Tile(int position) {
+  public CommonTile(int position) {
     if (position < 0) {
       throw new IllegalArgumentException("Parameter position cannot be less than 0");
     }
     this.position = position;
+  }
+
+  @Override
+  public void addActionToJson(JsonObject tileJson, int tileId) {
   }
 
   /**
@@ -55,10 +58,5 @@ public abstract class Tile implements TileJsonSerializer {
    * @return The tile type number.
    */
   public abstract int getTileType();
-
-
-  @Override
-  public void addActionToJson(JsonObject tileJson, int tileId) {
-  }
 }
 

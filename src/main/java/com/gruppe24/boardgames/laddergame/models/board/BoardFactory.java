@@ -26,11 +26,7 @@ public class BoardFactory {
    *
    */
   private static Board createClassicBoard() {
-    Board board = new Board();
-    board.initializeLadders();
-    board.initializeWinningTile();
-    board.initializeTiles();
-    return board;
+    return new Board();
   }
 
   /**
@@ -39,9 +35,7 @@ public class BoardFactory {
    */
   private static Board createSpecialBoard() {
     Board board = new Board();
-    board.initializeLadders();
     board.initializeSpecialTiles();
-    board.initializeWinningTile();
     board.initializeTiles();
     return board;
   }
