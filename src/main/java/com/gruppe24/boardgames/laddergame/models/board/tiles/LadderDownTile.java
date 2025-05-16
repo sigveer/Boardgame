@@ -18,11 +18,6 @@ public class LadderDownTile extends SpecialTile {
     super(position, slideDown);
   }
 
-  /**
-   * Method that performs the action of the tile.
-   *
-   * @param player The player that lands on the tile.
-   */
   @Override
   public void perform(Player player) {
     player.setPosition(getDestination());

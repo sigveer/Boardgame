@@ -27,6 +27,10 @@ public abstract class CommonTile implements TileJsonSerializer {
     this.position = position;
   }
 
+  @Override
+  public void addActionToJson(JsonObject tileJson, int tileId) {
+  }
+
   /**
    * Performs the action associated with this tile for the given player.
    *
@@ -51,10 +55,5 @@ public abstract class CommonTile implements TileJsonSerializer {
    * @return The tile type number.
    */
   public abstract int getTileType();
-
-
-  @Override
-  public void addActionToJson(JsonObject tileJson, int tileId) {
-  }
 }
 

@@ -11,22 +11,6 @@ import com.gruppe24.observerpattern.GameSubject;
  */
 public class PlayerController extends CommonGameController {
 
-  private final BoardController boardController;
-
-  /**
-   * Constructor for PlayerController.
-   *
-   * @param boardController the board controller
-   * @param gameSubject     the game subject for observer pattern
-   */
-  public PlayerController(BoardController boardController, GameSubject gameSubject) {
-    super(2, gameSubject);
-    this.boardController = boardController;
-    this.WinCondition = 90;
-
-    addDefaultPlayer();
-  }
-
   @Override
   protected CommonPlayer createPlayer(String name, int iconIndex) {
     return new Player(name, iconIndex);
@@ -38,13 +22,21 @@ public class PlayerController extends CommonGameController {
   }
 
   /**
+   * Constructor for PlayerController.
+   *
+   * @param gameSubject the game subject for observer pattern
+   */
+  public PlayerController(GameSubject gameSubject) {
+    super(2, gameSubject);
+    this.winCondition = 90;
+
+    addDefaultPlayer();
+  }
+
+  /**
    * Method thats adds a default player.
    */
   private void addDefaultPlayer() {
     addPlayer();
-  }
-
-  public BoardController getBoardController() {
-    return boardController;
   }
 }

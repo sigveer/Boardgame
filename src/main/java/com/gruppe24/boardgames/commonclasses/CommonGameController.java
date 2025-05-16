@@ -8,16 +8,27 @@ import com.gruppe24.observerpattern.GameSubject;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * CommonGameController is an abstract class that manages the game state, including players, dice,
+ * and the game board. It provides methods for adding and removing players, moving players, and
+ * handling tile actions.
+ */
 public abstract class CommonGameController {
 
   protected List<CommonPlayer> players;
   protected CommonDice dice;
   protected GameSubject gameSubject;
-  protected int WinCondition;
+  protected int winCondition;
   private Board currentBoard;
   private int checkTileType = 0;
   private int specialTilePosition;
 
+  /**
+   * Constructor for CommonGameController.
+   *
+   * @param numDice     the number of dice to use in the game
+   * @param gameSubject the game subject for observer pattern
+   */
   protected CommonGameController(int numDice, GameSubject gameSubject) {
     this.players = new ArrayList<>();
     this.dice = new CommonDice(numDice);
@@ -37,8 +48,22 @@ public abstract class CommonGameController {
     this.currentBoard = boardController.getBoard();
   }
 
+  /**
+   * Abstract method for creating a player. This method must be implemented by subclasses to create
+   * players.
+   *
+   * @param name      the name of the player.
+   * @param iconIndex the icon index of the player
+   * @return the created player
+   */
   protected abstract CommonPlayer createPlayer(String name, int iconIndex);
 
+  /**
+   * Abstract method for getting the maximum number of players allowed in the game. This method must
+   * be implemented by subclasses to specify the maximum number of players.
+   *
+   * @return the maximum number of players
+   */
   protected abstract int getMaxPlayers();
 
   /**
@@ -81,19 +106,17 @@ public abstract class CommonGameController {
     return playerList;
   }
 
-
   /**
    * Sets the player list and returns the updated list.
    *
    * @param players the new list of players
-   * @return the updated list of players
    */
-  public List<Player> setPlayers(List<Player> players) {
+  public void setPlayers(List<Player> players) {
     this.players.clear();
 
     this.players.addAll(players);
 
-    return getPlayers();
+    getPlayers();
   }
 
   /**
@@ -104,7 +127,6 @@ public abstract class CommonGameController {
   public void cyclePlayerIcon(int index) {
     if (index >= 0 && index < players.size()) {
       CommonPlayer player = players.get(index);
-      int oldIconIndex = player.getIconIndex();
       player.cycleToNextIcon();
 
       gameSubject.notifyListener(EventType.PLAYER_ICON_CHANGED, player, player.getIconIndex());
@@ -154,9 +176,9 @@ public abstract class CommonGameController {
    * @return the new position of the player
    */
   public int handleOvershoot(int newPosition) {
-    if (newPosition > WinCondition) {
-      int overshoot = newPosition - WinCondition;
-      newPosition = WinCondition - overshoot;
+    if (newPosition > winCondition) {
+      int overshoot = newPosition - winCondition;
+      newPosition = winCondition - overshoot;
     }
     return newPosition;
   }
@@ -174,23 +196,4 @@ public abstract class CommonGameController {
     checkTileType = commonTile.tileTypeNumber;
     specialTilePosition = commonTile.getPosition();
   }
-
-  /**
-   * Method that checks the type of tile the player is on.
-   *
-   * @return the type tile number.
-   */
-  public int getCheckTileType() {
-    return checkTileType;
-  }
-
-  /**
-   * Method that checks the position of the special tile.
-   *
-   * @return the position of the special tile
-   */
-  public int getSpecialTilePosition() {
-    return specialTilePosition;
-  }
-
 }

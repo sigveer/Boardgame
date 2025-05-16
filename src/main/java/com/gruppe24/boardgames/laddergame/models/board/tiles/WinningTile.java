@@ -16,11 +16,6 @@ public class WinningTile extends SpecialTile {
     super(position);
   }
 
-  /**
-   * Return the type of the tile.
-   *
-   * @return the type of the tile
-   */
   @Override
   public int getTileType() {
     return -3;

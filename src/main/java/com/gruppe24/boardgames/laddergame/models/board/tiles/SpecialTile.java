@@ -32,6 +32,11 @@ public class SpecialTile extends CommonTile {
     this.destination = destination;
   }
 
+  @Override
+  public int getTileType() {
+    return -1;
+  }
+
   /**
    * Getter for the destination of the tile.
    *
@@ -39,10 +44,5 @@ public class SpecialTile extends CommonTile {
    */
   public int getDestination() {
     return destination;
-  }
-
-  @Override
-  public int getTileType() {
-    return -1;
   }
 }

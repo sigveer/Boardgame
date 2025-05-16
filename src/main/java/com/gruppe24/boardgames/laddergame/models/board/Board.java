@@ -14,11 +14,11 @@ import java.util.HashMap;
  */
 public class Board {
 
-  private HashMap<Integer, Integer> ladderUp;
-  private HashMap<Integer, Integer> ladderDown;
+  private final HashMap<Integer, Integer> ladderUp;
+  private final HashMap<Integer, Integer> ladderDown;
   private HashMap<Integer, Boolean> frozenTiles = new HashMap<>();
   private HashMap<Integer, Boolean> randomTeleportTiles = new HashMap<>();
-  private HashMap<Integer, Boolean> winningTile = new HashMap<>();
+  private final HashMap<Integer, Boolean> winningTile;
   private static final int Columns = 9;
   private static final int Rows = 10;
   private CommonTile[] commonTiles;
@@ -37,7 +37,6 @@ public class Board {
     initializeLadders();
     initializeWinningTile();
 
-    // Confirming the tiles setup
     initializeTiles();
   }
 
@@ -68,7 +67,6 @@ public class Board {
     initializeTiles();
   }
 
-
   /**
    * Method that puts ladders at certain indexes in ladders-hashMap.
    */
@@ -90,11 +88,10 @@ public class Board {
     initializeStandardSpecialTiles(frozenTiles, randomTeleportTiles);
   }
 
-
   /**
    * Method that initializes the tiles.
    *
-   * @AI_Based Logic as to how to initialize the tiles is based on AI generated code.
+   * @AI_Based Logic as to how to initialize the tiles is helped with AI.
    */
   public void initializeTiles() {
     commonTiles = new CommonTile[Columns * Rows + 1];
@@ -145,8 +142,7 @@ public class Board {
    *
    * @param frozenTiles         HashMap of frozen tiles
    * @param randomTeleportTiles HashMap of random teleport tiles
-   * @AI_Based How to initialize the special tiles .put([x], true/false) is based on AI generated
-   * code.
+   * @AI_Based Initializing of special tiles .put([x], true/false) is based on AI logic.
    */
   public static void initializeStandardSpecialTiles(HashMap<Integer, Boolean> frozenTiles,
       HashMap<Integer, Boolean> randomTeleportTiles) {
@@ -158,7 +154,6 @@ public class Board {
     randomTeleportTiles.put(50, true);
     randomTeleportTiles.put(88, true);
   }
-
 
   /**
    * Method that gets the tile.

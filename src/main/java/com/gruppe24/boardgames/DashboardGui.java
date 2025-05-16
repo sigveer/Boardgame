@@ -6,6 +6,7 @@ import com.gruppe24.boardgames.laddergame.models.Player;
 import com.gruppe24.boardgames.laddergame.models.board.Board;
 import com.gruppe24.boardgames.laddergame.models.board.BoardType;
 import com.gruppe24.boardgames.laddergame.view.LadderGameApp;
+import com.gruppe24.boardgames.monopolylite.MonopolyApp;
 import com.gruppe24.filehandling.FileHandler;
 import com.gruppe24.filehandling.JsonBoardReader;
 import com.gruppe24.observerpattern.EventType;
@@ -58,7 +59,7 @@ public class DashboardGui extends Application {
 
     this.jsonBoardReader = new JsonBoardReader();
     this.stage = primaryStage;
-    this.playerController = new PlayerController(boardController, gameSubject);
+    this.playerController = new PlayerController(gameSubject);
 
     gameSubject.registerListener(gameLogger);
 
@@ -258,6 +259,7 @@ public class DashboardGui extends Application {
 
     VBox ticTacToeGameBox = createGameBox("Comng soon...",
         "pictures/boardpictures/ownJsonBoard.jpg", event -> {
+          new MonopolyApp().start(primaryStage);
         }
     );
 

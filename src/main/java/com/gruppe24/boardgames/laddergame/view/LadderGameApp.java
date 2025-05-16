@@ -72,7 +72,7 @@ public class LadderGameApp extends Application {
       throw new IllegalArgumentException("Parameter boardType cannot be empty");
     }
     this.boardController = new BoardController(boardType);
-    this.playerController = new PlayerController(boardController, gameSubject);
+    this.playerController = new PlayerController(gameSubject);
     this.board = boardController.getBoard();
     this.players = players;
     gameSubject.registerListener(gameLogger);
@@ -92,7 +92,7 @@ public class LadderGameApp extends Application {
       throw new IllegalArgumentException("Parameter customBoard cannot be empty");
     }
     this.boardController = new BoardController(customBoard);
-    this.playerController = new PlayerController(boardController, gameSubject);
+    this.playerController = new PlayerController(gameSubject);
     this.board = customBoard;
     this.players = players;
     gameSubject.registerListener(gameLogger);
@@ -349,7 +349,6 @@ public class LadderGameApp extends Application {
       return; // Player was frozen, skip turn
     }
 
-    // Rest of the method remains unchanged
     int diceValue = rollAndDisplayDice(dicePane);
 
     int previousPosition = currentPlayer.getPosition();
@@ -401,7 +400,7 @@ public class LadderGameApp extends Application {
     diceResultLabel.setText("Rolled: " + diceValue);
 
     int diceValue1 = dice.getDie(0);
-    
+
     // Create and display first die
     ImageView dice1Iv = new ImageView(new Image(dice.dicePath(diceValue1)));
     dice1Iv.setX(40);
@@ -435,20 +434,15 @@ public class LadderGameApp extends Application {
     int targetPositionBeforeSpecial = overshoot
         ? boardSize - (initialLandingPos - boardSize) : initialLandingPos;
 
-    // Special handling for teleport tiles
     if (board.getTileType(targetPositionBeforeSpecial) == 3) {
-      // First move the player normally
       playerController.handlePlayerTurn(currentPlayer, diceValue);
 
-      // Get position after normal movement but before teleport
       int positionBeforeTeleport = currentPlayer.getPosition();
 
-      // Apply teleport effect
       board.getTile(positionBeforeTeleport).perform(currentPlayer);
 
       return currentPlayer.getPosition();
     } else {
-      // Normal case - move and apply any non-teleport effects
       playerController.handlePlayerTurn(currentPlayer, diceValue);
       return currentPlayer.getPosition();
     }
@@ -461,7 +455,8 @@ public class LadderGameApp extends Application {
 */
 
   /**
-   * Animates player movement and handles special tile effects. Next 8 methods are closely connected
+   * Animates player movement and handles special tile effects. Next 8 methods are closely
+   * connected
    */
   private void animateAndMove(GridPane gridPane, Player player, int fromPosition, int toPosition,
       int diceSum, Stage primaryStage) {
@@ -631,7 +626,6 @@ public class LadderGameApp extends Application {
         8 - (toPosition - 1) % 9;
     addPlayerPieceToGrid(gridPane, player, finalCol, finalRow);
   }
-
 
 
 }
