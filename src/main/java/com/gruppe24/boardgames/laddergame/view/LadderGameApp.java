@@ -72,7 +72,7 @@ public class LadderGameApp extends Application {
       throw new IllegalArgumentException("Parameter boardType cannot be empty");
     }
     this.boardController = new BoardController(boardType);
-    this.playerController = new PlayerController(boardController, gameSubject);
+    this.playerController = new PlayerController(gameSubject);
     this.board = boardController.getBoard();
     this.players = players;
     gameSubject.registerListener(gameLogger);
@@ -92,7 +92,7 @@ public class LadderGameApp extends Application {
       throw new IllegalArgumentException("Parameter customBoard cannot be empty");
     }
     this.boardController = new BoardController(customBoard);
-    this.playerController = new PlayerController(boardController, gameSubject);
+    this.playerController = new PlayerController(gameSubject);
     this.board = customBoard;
     this.players = players;
     gameSubject.registerListener(gameLogger);
