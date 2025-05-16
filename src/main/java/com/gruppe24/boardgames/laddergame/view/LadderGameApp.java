@@ -7,8 +7,8 @@ import com.gruppe24.boardgames.laddergame.controller.PlayerController;
 import com.gruppe24.boardgames.laddergame.models.Player;
 import com.gruppe24.boardgames.laddergame.models.board.Board;
 import com.gruppe24.boardgames.laddergame.models.board.BoardType;
-import com.gruppe24.utils.GameLogger;
 import com.gruppe24.observerpattern.GameSubject;
+import com.gruppe24.utils.GameLogger;
 import com.gruppe24.utils.StyleUtils;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -112,13 +112,13 @@ public class LadderGameApp extends Application {
     BoardController boardController = new BoardController(BoardType.CLASSIC);
     this.playerController.initializeGame(boardController);
 
-    players.stream().forEach(player -> {
+    players.forEach(player -> {
       player.setIcon(player.getIcon());
     });
 
     primaryStage.setTitle("Laddergame Classic");
 
-    // Create main layout container using BorderPane
+    // main layout container using BorderPane
     BorderPane mainLayout = new BorderPane();
     mainLayout.setStyle("-fx-background-color: #3a5ad7;");
 
@@ -133,7 +133,6 @@ public class LadderGameApp extends Application {
     Pane ladderPane = new Pane();
     ladderPane.setMouseTransparent(true);
 
-    // Add components to board container
     boardContainer.getChildren().addAll(gridPane, ladderPane);
 
     // Control panel (right section)
@@ -143,7 +142,6 @@ public class LadderGameApp extends Application {
     controlPanel.setMinWidth(200);
     StyleUtils.stylePanel(controlPanel);
 
-    // Set up labels
     currentPlayerLabel = new Label("Current Player: " + players.get(currentPlayerIndex).getName());
     currentPlayerLabel.setStyle("-fx-font-size: 16px; -fx-text-fill: white;");
     currentPlayerLabel.setWrapText(true);
@@ -187,7 +185,7 @@ public class LadderGameApp extends Application {
 
     Scene scene = new Scene(mainLayout, 1000, 850);
 
-    // Window resize handlers
+    // Ladder resize handlers
     scene.widthProperty().addListener((obs, oldVal, newVal) -> {
       ladderPane.getChildren().clear();
       drawBoard(gridPane, ladderPane);
@@ -293,7 +291,6 @@ public class LadderGameApp extends Application {
     });
   }
 
-
   /**
    * Method to draw the ladders on board, and enabeling to resize the window.
    *
@@ -349,7 +346,6 @@ public class LadderGameApp extends Application {
       return; // Player was frozen, skip turn
     }
 
-    // Rest of the method remains unchanged
     int diceValue = rollAndDisplayDice(dicePane);
 
     int previousPosition = currentPlayer.getPosition();
@@ -401,7 +397,7 @@ public class LadderGameApp extends Application {
     diceResultLabel.setText("Rolled: " + diceValue);
 
     int diceValue1 = dice.getDie(0);
-    
+
     // Create and display first die
     ImageView dice1Iv = new ImageView(new Image(dice.dicePath(diceValue1)));
     dice1Iv.setX(40);
@@ -437,18 +433,14 @@ public class LadderGameApp extends Application {
 
     // Special handling for teleport tiles
     if (board.getTileType(targetPositionBeforeSpecial) == 3) {
-      // First move the player normally
       playerController.handlePlayerTurn(currentPlayer, diceValue);
 
-      // Get position after normal movement but before teleport
       int positionBeforeTeleport = currentPlayer.getPosition();
 
-      // Apply teleport effect
       board.getTile(positionBeforeTeleport).perform(currentPlayer);
 
       return currentPlayer.getPosition();
     } else {
-      // Normal case - move and apply any non-teleport effects
       playerController.handlePlayerTurn(currentPlayer, diceValue);
       return currentPlayer.getPosition();
     }
@@ -459,8 +451,8 @@ public class LadderGameApp extends Application {
    * Animates player movement and handles special tile effects.
    *
    * @AI_Based Next 8 methods has been based on recommendations from AI. This method is the mother
-   *      if many sub-methods; createMovementAnimationFrames, calculateInitialLandingPosition,
-   *      handleSpecialTileEffects.
+   * if many sub-methods; createMovementAnimationFrames, calculateInitialLandingPosition,
+   * handleSpecialTileEffects.
    */
   private void animateAndMove(GridPane gridPane, Player player, int fromPosition, int toPosition,
       int diceSum, Stage primaryStage) {
@@ -486,8 +478,8 @@ public class LadderGameApp extends Application {
    * Method that creates frames for TimeFrame.
    *
    * @AI_Based Method that returns KeyFrames, calculated by an algorythm for finding the row and
-   *      column. If overshoot is true, another algorythm is used to calculate its frames moving
-   *      backwards.
+   * column. If overshoot is true, another algorythm is used to calculate its frames moving
+   * backwards.
    */
   private List<KeyFrame> createMovementAnimationFrames(Player player, int fromPosition,
       int diceSum, GridPane gridPane) {
@@ -536,12 +528,11 @@ public class LadderGameApp extends Application {
     return keyFrames;
   }
 
-
   /**
    * Method that creates final frame before any special tile.
    *
-   * @AI_Based Returns landing position before any ladder/special tile. Or calculates the
-   *      overshoot value.
+   * @AI_Based Returns landing position before any ladder/special tile. Or calculates the overshoot
+   * value.
    */
   private int calculateInitialLandingPosition(int fromPosition, int diceSum) {
     int boardSize = 90;
@@ -550,12 +541,11 @@ public class LadderGameApp extends Application {
     return overshoot ? boardSize - (initialLandingPos - boardSize) : initialLandingPos;
   }
 
-
   /**
    * Post-animation handler for special tile effects, not including ladders.
    *
    * @AI_Based Uses if-statements to check what special tile it is, and gives the apporopriate
-   *      response.
+   * response.
    */
   private void handleSpecialTileEffects(GridPane gridPane, Player player,
       int targetPositionBeforeSpecial, int toPosition, Stage primaryStage) {
@@ -636,7 +626,6 @@ public class LadderGameApp extends Application {
         8 - (toPosition - 1) % 9;
     addPlayerPieceToGrid(gridPane, player, finalCol, finalRow);
   }
-
 
   /**
    * COMMON METHOD: USED MULTIPLE PLACES. Used to add player to grid.
