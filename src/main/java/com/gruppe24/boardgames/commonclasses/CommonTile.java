@@ -37,6 +37,9 @@ public abstract class CommonTile implements TileJsonSerializer {
    * @param player The player who is currently on this tile.
    */
   public void perform(Player player) {
+    if (player == null) {
+      throw new IllegalArgumentException("Player on tile cannot be empty");
+    }
     tileTypeNumber = 0;
   }
 

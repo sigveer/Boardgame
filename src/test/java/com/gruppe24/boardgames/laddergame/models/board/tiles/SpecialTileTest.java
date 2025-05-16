@@ -22,7 +22,7 @@ class SpecialTileTest {
    */
   @BeforeEach
   void setUp() {
-    player = new Player("TestPlayer", Color.BLUE);
+    player = new Player("TestPlayer", 1);
     specialTileWithoutDestination = new SpecialTile(10);
     specialTileWithDestination = new SpecialTile(15, 20);
   }

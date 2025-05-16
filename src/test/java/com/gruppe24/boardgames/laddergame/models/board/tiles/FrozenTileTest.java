@@ -20,7 +20,7 @@ class FrozenTileTest {
   @BeforeEach
   void setUp() {
     frozenTile = new FrozenTile(10);
-    player = new Player("TestPlayer", Color.BLUE);
+    player = new Player("TestPlayer", 1);
     player.setPosition(10);
   }
 

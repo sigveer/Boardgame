@@ -1,20 +1,19 @@
 package com.gruppe24.boardgames.laddergame.models;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 /**
- * {@code DieTest} is a test class for the {@code Die} class.
+ * {@code DiceTest} is a test class for the {@code Dice} class.
  */
 class DiceTest {
 
   private Dice dice;
 
   /**
-   * Sets up the test fixture by creating a new die before each test.
+   * Sets up the test fixture by creating a new set of dice before each test.
    */
   @BeforeEach
   void setUp() {
@@ -22,54 +21,71 @@ class DiceTest {
   }
 
   /**
-   * Tests the {@code roll} method in the {@code Die} class.
+   * Tests the {@code rollSum} method to ensure it generates a valid sum.
    */
   @Test
-  void roll() {
+  void testRollSum() {
     for (int i = 0; i < 10; i++) {
-      int value = dice.rollSum();
-      assertTrue(value >= 3 && value <= 18);
-      System.out.println("Rolled: " + value);
+      int sum = dice.rollSum();
+      assertTrue(sum >= 3 && sum <= 18, "Sum should be between 3 and 18 for 3 dice");
     }
   }
 
   /**
-   * Tests the {@code getDie} method in the {@code Die} class.
+   * Tests the {@code getDie} method to ensure it returns valid values for each die.
    */
   @Test
-  void getDie() {
+  void testGetDie() {
     dice.rollSum();
-    int value1 = dice.getDie(0);
-    assertTrue(value1 >= 1 && value1 <= 6);
-    System.out.println("Dice1: " + value1 + " which is between 1 and 6");
-
-    dice.rollSum();
-    int value2 = dice.getDie(1);
-    assertTrue(value2 >= 1 && value2 <= 6);
-    System.out.println("Dice2: " + value2 + " which is between 1 and 6");
-
-    dice.rollSum();
-    int value3 = dice.getDie(2);
-    assertTrue(value3 >= 1 && value3 <= 6);
-    System.out.println("Dice3: " + value3 + " which is between 1 and 6");
+    for (int i = 0; i < 3; i++) {
+      int value = dice.getDie(i);
+      assertTrue(value >= 1 && value <= 6, "Die value should be between 1 and 6");
+    }
   }
 
   /**
-   * Checks if the number of dice is invalid.
+   * Tests the {@code getSum} method to ensure it returns the correct sum after rolling.
    */
   @Test
-  void invalidNumberOfDice() {
-    assertThrows(IllegalArgumentException.class, () -> new Dice(0));
-    System.out.println("Invalid number of dice");
+  void testGetSum() {
+    int sum = dice.rollSum();
+    assertEquals(sum, dice.getSum(), "getSum should return the same value as rollSum");
   }
 
   /**
-   * Checks if the die number is invalid.
+   * Tests the {@code dicePath} method to ensure it returns the correct image path.
    */
   @Test
-  void invalidDieNumber() {
+  void testDicePath() {
+    for (int i = 1; i <= 6; i++) {
+      String path = dice.dicePath(i);
+      assertEquals("pictures/dices/dice" + i + ".png", path, "Path should match the dice number");
+    }
+  }
+
+  /**
+   * Tests the {@code roll} method to ensure it rolls a single die correctly.
+   */
+  @Test
+  void testRollSingleDie() {
+    int value = dice.roll();
+    assertTrue(value >= 1 && value <= 6, "Single die roll should be between 1 and 6");
+  }
+
+  /**
+   * Tests the constructor to ensure it throws an exception for invalid number of dice.
+   */
+  @Test
+  void testInvalidNumberOfDice() {
+    assertThrows(IllegalArgumentException.class, () -> new Dice(0), "Should throw exception for less than 1 die");
+  }
+
+  /**
+   * Tests the {@code getDie} method to ensure it throws an exception for invalid die index.
+   */
+  @Test
+  void testInvalidDieIndex() {
     dice.rollSum();
-    assertThrows(IllegalArgumentException.class, () -> dice.getDie(3));
-    System.out.println("Invalid die number");
+    assertThrows(IllegalArgumentException.class, () -> dice.getDie(3), "Should throw exception for out-of-bounds index");
   }
 }
