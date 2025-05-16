@@ -29,43 +29,15 @@ public class FileHandler {
    * @return true if the file was saved successfully, false otherwise.
    */
   public static boolean saveBoardToJson(Board board, String fileName) {
-    createDirectory();
+    File directory = new File(FileHandler.BOARD_DIRECTORY);
+    if (!directory.exists()) {
+      directory.mkdirs();
+    }
 
     String filePath = BOARD_DIRECTORY + fileName + ".json";
     JsonBoardWriter writer = new JsonBoardWriter();
     return writer.writeToFile(board, filePath);
   }
-
-
-  private static void createDirectory() {
-    File directory = new File(FileHandler.BOARD_DIRECTORY);
-    if (!directory.exists()) {
-      directory.mkdirs();
-    }
-  }
-
-  /**
-   * Creates a FileChooser for loading or saving files.
-   *
-   * @param title  The title of the file chooser.
-   * @param isSave True if the file chooser is for saving, false for loading.
-   * @return A configured FileChooser instance.
-   */
-  public static FileChooser createFileChooser(String title, boolean isSave) {
-    FileChooser fileChooser = new FileChooser();
-    fileChooser.setTitle(title);
-    fileChooser.getExtensionFilters().add(
-        new FileChooser.ExtensionFilter("CSV Files", "*.csv")
-    );
-
-    if (isSave) {
-      fileChooser.setInitialFileName("players.csv");
-    }
-
-    fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
-    return fileChooser;
-  }
-
 
   /**
    * Saves a list of players to a CSV file.
@@ -98,8 +70,6 @@ public class FileHandler {
       return false;
     }
   }
-
-
 
   /**
    * Loads player data from a CSV file.
@@ -142,5 +112,26 @@ public class FileHandler {
     }
   }
 
+  /**
+   * Creates a FileChooser for loading or saving files.
+   *
+   * @param title  The title of the file chooser.
+   * @param isSave True if the file chooser is for saving, false for loading.
+   * @return A configured FileChooser instance.
+   */
+  public static FileChooser createFileChooser(String title, boolean isSave) {
+    FileChooser fileChooser = new FileChooser();
+    fileChooser.setTitle(title);
+    fileChooser.getExtensionFilters().add(
+        new FileChooser.ExtensionFilter("CSV Files", "*.csv")
+    );
+
+    if (isSave) {
+      fileChooser.setInitialFileName("players.csv");
+    }
+
+    fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
+    return fileChooser;
+  }
 
 }
