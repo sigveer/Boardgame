@@ -16,7 +16,6 @@ import org.junit.jupiter.api.Test;
  */
 class PlayerTest {
 
-  private CommonPlayer commonPlayer;
   private Player player;
 
   /**

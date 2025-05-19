@@ -84,4 +84,45 @@ class BoardControllerTest {
 //    // The expected position depends on your tile implementation
 //    assertEquals(2, boardController.getSpecialTilePosition());
 //  }
+
+  @Test
+  void testHandleOvershootWithinLimit() {
+    int position = 85;
+    assertEquals(85, gameController.handleOvershoot(position));
+  }
+
+  @Test
+  void testHandleOvershootExactWin() {
+    int position = 90;
+    assertEquals(90, gameController.handleOvershoot(position));
+  }
+
+  @Test
+  void testHandleOvershootBeyondLimit() {
+    int position = 95;
+    assertEquals(85, gameController.handleOvershoot(position));
+  }
+
+  @Test
+  void testHandleOvershootNegativePosition() {
+    assertThrows(IllegalArgumentException.class, () -> gameController.handleOvershoot(-5));
+  }
+
+  @Test
+  void testHandleTileAction() {
+    testPlayer.setPosition(2);
+    gameController.handleTileAction(testPlayer, 2);
+    assertEquals(40, testPlayer.getPosition());
+  }
+
+  @Test
+  void testHandleTileActionNullPlayer() {
+    assertThrows(IllegalArgumentException.class, () -> gameController.handleTileAction(null, 5));
+  }
+
+  @Test
+  void testHandleTileActionNegativePosition() {
+    assertThrows(IllegalArgumentException.class,
+        () -> gameController.handleTileAction(testPlayer, -5));
+  }
 }
