@@ -34,7 +34,7 @@ public abstract class CommonPlayer {
   /**
    * Getter-method for the color of the player.
    */
-  protected void initializePlayerIcon(int iconIndex) {
+  public void initializePlayerIcon(int iconIndex) {
     String[] iconPaths = getIconPaths();
     if (iconIndex >= iconPaths.length) {
       iconIndex = 0; // Default image index
@@ -101,6 +101,15 @@ public abstract class CommonPlayer {
    */
   public ImageView getPlayerPiece() {
     return playerPiece;
+  }
+
+  /**
+   * Method to get the current icon path.
+   *
+   * @return the path of the current icon as a String
+   */
+  public String getIconPath() {
+    return this.iconPath;
   }
 
   /**

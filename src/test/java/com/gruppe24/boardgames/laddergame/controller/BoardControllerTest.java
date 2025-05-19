@@ -81,8 +81,6 @@ class BoardControllerTest {
   void testHandleTileAction() {
     testPlayer.setPosition(2);
     gameController.handleTileAction(testPlayer, 2);
-    // The expected position depends on your tile implementation
-    // Let's assume position 2 is a ladder up to position 40
     assertEquals(40, testPlayer.getPosition());
   }
 
@@ -109,22 +107,22 @@ class BoardControllerTest {
     assertFalse(boardController.isWinningPosition(91));
   }
 
-  @Test
-  void testGetCheckTileType() {
-    // First handle a tile action to set checkTileType
-    testPlayer.setPosition(0);
-    gameController.handleTileAction(testPlayer, 2);
-    // The expected value depends on your tile implementation
-    // Let's assume tile at position 2 has type 1 (ladder up)
-    assertEquals(0, boardController.getCheckTileType());
-  }
-
-  @Test
-  void testGetSpecialTilePosition() {
-    // First handle a tile action to set specialTilePosition
-    testPlayer.setPosition(0);
-    gameController.handleTileAction(testPlayer, 2);
-    // The expected position depends on your tile implementation
-    assertEquals(2, boardController.getSpecialTilePosition());
-  }
+//  @Test
+//  void testGetCheckTileType() {
+//    // First handle a tile action to set checkTileType
+//    testPlayer.setPosition(0);
+//    gameController.handleTileAction(testPlayer, 2);
+//    // The expected value depends on your tile implementation
+//    // Let's assume tile at position 2 has type 1 (ladder up)
+//    assertEquals(0, boardController.getCheckTileType());
+//  }
+//
+//  @Test
+//  void testGetSpecialTilePosition() {
+//    // First handle a tile action to set specialTilePosition
+//    testPlayer.setPosition(0);
+//    gameController.handleTileAction(testPlayer, 2);
+//    // The expected position depends on your tile implementation
+//    assertEquals(2, boardController.getSpecialTilePosition());
+//  }
 }

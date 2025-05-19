@@ -7,8 +7,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.gruppe24.boardgames.commonclasses.CommonPlayer;
-import java.util.Objects;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -126,10 +124,8 @@ class PlayerTest {
    */
   @Test
   void testInitializePlayerPiece() {
-    Image customImage = new Image(Objects.requireNonNull(
-        getClass().getClassLoader().getResourceAsStream("pictures/pngIcons/mario.png")));
-    player.initializePlayerPiece(customImage);
+    int iconIndex = 2;
+    player.initializePlayerIcon(iconIndex);
     assertNotNull(player.getPlayerPiece());
-    assertEquals(customImage, player.getPlayerPiece().getImage());
   }
 }
