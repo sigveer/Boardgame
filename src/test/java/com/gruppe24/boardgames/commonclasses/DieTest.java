@@ -1,9 +1,8 @@
-package com.gruppe24.boardgames.laddergame.commonclasses;
+package com.gruppe24.boardgames.commonclasses;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.gruppe24.boardgames.commonclasses.CommonDie;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

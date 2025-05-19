@@ -86,7 +86,7 @@ class PlayerControllerTest {
 
   @Test
   void testHandlePlayerTurnWithNegativeDiceValue() {
-    Player player = playerController.getPlayers().get(0);
+    Player player = playerController.getPlayers().getFirst();
     assertThrows(IllegalArgumentException.class,
         () -> playerController.handlePlayerTurn(player, -1));
   }

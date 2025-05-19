@@ -162,5 +162,4 @@ public abstract class CommonPlayer {
   public int getIconIndex() {
     return currentIconIndex;
   }
-
 }
