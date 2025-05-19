@@ -1,7 +1,9 @@
-package com.gruppe24.boardgames.laddergame.models;
+package com.gruppe24.boardgames.laddergame.commonclasses;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.gruppe24.boardgames.commonclasses.CommonDie;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -10,14 +12,14 @@ import org.junit.jupiter.api.Test;
  */
 class DieTest {
 
-  private Die die;
+  private CommonDie die;
 
   /**
    * Sets up the test fixture by creating a new die before each test.
    */
   @BeforeEach
   void setUp() {
-    die = new Die();
+    die = new CommonDie();
   }
 
   /**

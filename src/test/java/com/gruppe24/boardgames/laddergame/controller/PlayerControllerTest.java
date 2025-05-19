@@ -1,8 +1,8 @@
 package com.gruppe24.boardgames.laddergame.controller;
 
-import static javafx.beans.binding.Bindings.when;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.gruppe24.boardgames.laddergame.models.Player;
 import com.gruppe24.observerpattern.EventType;
@@ -82,7 +82,8 @@ class PlayerControllerTest {
   @Test
   void testHandlePlayerTurnWithNegativeDiceValue() {
     Player player = playerController.getPlayers().get(0);
-    assertThrows(IllegalArgumentException.class, () -> playerController.handlePlayerTurn(player, -1));
+    assertThrows(IllegalArgumentException.class,
+        () -> playerController.handlePlayerTurn(player, -1));
   }
 
   @Test

@@ -1,7 +1,13 @@
 package com.gruppe24.boardgames.laddergame.models;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.gruppe24.boardgames.commonclasses.CommonPlayer;
+import java.util.Objects;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,6 +18,7 @@ import org.junit.jupiter.api.Test;
  */
 class PlayerTest {
 
+  private CommonPlayer commonPlayer;
   private Player player;
 
   /**
@@ -119,7 +126,8 @@ class PlayerTest {
    */
   @Test
   void testInitializePlayerPiece() {
-    Image customImage = new Image(getClass().getClassLoader().getResourceAsStream("pictures/pngIcons/mario.png"));
+    Image customImage = new Image(Objects.requireNonNull(
+        getClass().getClassLoader().getResourceAsStream("pictures/pngIcons/mario.png")));
     player.initializePlayerPiece(customImage);
     assertNotNull(player.getPlayerPiece());
     assertEquals(customImage, player.getPlayerPiece().getImage());

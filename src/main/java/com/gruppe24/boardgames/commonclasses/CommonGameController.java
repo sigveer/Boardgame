@@ -96,7 +96,6 @@ public abstract class CommonGameController {
    * @return the players
    */
   public List<Player> getPlayers() {
-    // Create a new list with the correct type
     List<Player> playerList = new ArrayList<>();
     for (CommonPlayer commonPlayer : players) {
       if (commonPlayer instanceof Player) {
