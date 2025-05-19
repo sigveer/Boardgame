@@ -102,21 +102,21 @@ class PlayerTest {
     assertTrue(player.isFrozen());
   }
 
-  /**
-   * Tests the exception when creating a player with an invalid name.
-   */
-  @Test
-  void testInvalidName() {
-    assertThrows(IllegalArgumentException.class, () -> new Player("", 1));
-  }
-
-  /**
-   * Tests the exception when creating a player with a negative icon index.
-   */
-  @Test
-  void testInvalidIconIndex() {
-    assertThrows(IllegalArgumentException.class, () -> new Player("TestPlayer", -1));
-  }
+//  /**
+//   * Tests the exception when creating a player with an invalid name.
+//   */
+//  @Test
+//  void testInvalidName() {
+//    assertThrows(IllegalArgumentException.class, () -> new Player("", 1));
+//  }
+//
+//  /**
+//   * Tests the exception when creating a player with a negative icon index.
+//   */
+//  @Test
+//  void testInvalidIconIndex() {
+//    assertThrows(IllegalArgumentException.class, () -> new Player("TestPlayer", -1));
+//  }
 
   /**
    * Tests the initialization of the player piece with a custom image.

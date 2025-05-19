@@ -83,6 +83,27 @@ class BoardTest {
   }
 
   @Test
+  void testGetTileTypeForDifferentTiles() {
+    //LadderUpTile
+    assertEquals(1, board.getTileType(2));
+
+    //LadderDownTile
+    assertEquals(2, board.getTileType(24));
+
+    //NormalTile
+    assertEquals(0, board.getTileType(1));
+
+    //FrozenTile
+    assertEquals(4, board.getTileType(34));
+
+    //RandomTeleportTile
+    assertEquals(3, board.getTileType(11));
+
+    //WinningTile
+    assertEquals(-3, board.getTileType(90));
+  }
+
+  @Test
   void testGetLadders() {
     HashMap<Integer, Integer> ladderUp = board.getLadderUp();
     HashMap<Integer, Integer> ladderDown = board.getLadderDown();
