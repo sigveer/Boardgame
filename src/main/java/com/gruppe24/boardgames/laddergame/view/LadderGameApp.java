@@ -607,13 +607,15 @@ public class LadderGameApp extends Application {
   private void displaySpecialTileEffectMessage(int tileType, int toPosition) {
     String finalMessage = "";
     if (tileType == 1) {
-      finalMessage = "Climbing up to " + toPosition + "!";
+      finalMessage = "Climbed up to " + toPosition + "!";
     } else if (tileType == 2) {
-      finalMessage = "Sliding down to " + toPosition + "!";
+      finalMessage = "Slided down to " + toPosition + "!";
     } else if (tileType == 3) {
-      finalMessage = "Teleporting to " + toPosition + "!";
+      finalMessage = "Teleported to " + toPosition + "!";
     }
-    ladderUpOrDownCheck.setText(finalMessage);
+
+    final String message = finalMessage;
+    Platform.runLater(() -> ladderUpOrDownCheck.setText(message));
   }
 
   /**

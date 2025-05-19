@@ -1,4 +1,4 @@
-package com.gruppe24.boardgames.laddergame.models;
+package com.gruppe24.boardgames.commonclasses.CommonDice;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -77,7 +77,8 @@ class DiceTest {
    */
   @Test
   void testInvalidNumberOfDice() {
-    assertThrows(IllegalArgumentException.class, () -> new Dice(0), "Should throw exception for less than 1 die");
+    assertThrows(IllegalArgumentException.class, () -> new Dice(0),
+        "Should throw exception for less than 1 die");
   }
 
   /**
@@ -86,6 +87,7 @@ class DiceTest {
   @Test
   void testInvalidDieIndex() {
     dice.rollSum();
-    assertThrows(IllegalArgumentException.class, () -> dice.getDie(3), "Should throw exception for out-of-bounds index");
+    assertThrows(IllegalArgumentException.class, () -> dice.getDie(3),
+        "Should throw exception for out-of-bounds index");
   }
 }
