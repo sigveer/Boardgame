@@ -70,4 +70,10 @@ class SpecialTileTest {
       assertEquals("Parameter destination cannot be less than 0", e.getMessage());
     }
   }
+
+  @Test
+  void testGetTileType() {
+    assertEquals(-1,
+        specialTileWithoutDestination.getTileType());
+  }
 }

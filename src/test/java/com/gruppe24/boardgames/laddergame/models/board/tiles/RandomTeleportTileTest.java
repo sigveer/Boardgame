@@ -1,8 +1,11 @@
 package com.gruppe24.boardgames.laddergame.models.board.tiles;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.google.gson.JsonObject;
 import com.gruppe24.boardgames.laddergame.models.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -40,5 +43,21 @@ class RandomTeleportTileTest {
     assertTrue(newPosition >= 1 && newPosition <= 89,
         "Teleported position should be between 1 and 89");
 
+  }
+
+  @Test
+  void testGetTileType() {
+    assertEquals(3, randomTeleportTile.getTileType());
+  }
+
+  @Test
+  void testAddActionToJson() {
+    JsonObject tileJson = new JsonObject();
+    randomTeleportTile.addActionToJson(tileJson, 10);
+
+    JsonObject actionJson = tileJson.getAsJsonObject("action");
+    assertNotNull(actionJson);
+    assertEquals("RandomTeleportAction", actionJson.get("type").getAsString());
+    assertTrue(actionJson.has("description"));
   }
 }
