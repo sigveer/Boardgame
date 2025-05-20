@@ -258,8 +258,9 @@ public class DashboardGui extends Application {
         });
 
     VBox monopolyLiteBox = createGameBox("Monopoly Lite",
-        "pictures/boardpictures/MonopolyLite.png", event ->
-            new MonopolyApp().start(primaryStage)
+        "pictures/boardpictures/MonopolyLite.png", event -> {
+          new MonopolyApp().start(primaryStage);
+        }
     );
 
     VBox jsonBoardBox = createGameBox("Use your own JSON Board",
