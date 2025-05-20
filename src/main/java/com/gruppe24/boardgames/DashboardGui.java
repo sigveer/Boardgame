@@ -257,8 +257,8 @@ public class DashboardGui extends Application {
           gameSubject.notifyListener(EventType.GAME_STARTED, playerController.getPlayers());
         });
 
-    VBox ticTacToeGameBox = createGameBox("Comng soon...",
-        "pictures/boardpictures/ownJsonBoard.jpg", event -> {
+    VBox monopolyLiteBox = createGameBox("Monopoly Lite",
+        "pictures/boardpictures/MonopolyLite.png", event -> {
           new MonopolyApp().start(primaryStage);
         }
     );
@@ -270,7 +270,7 @@ public class DashboardGui extends Application {
     gamesGrid.add(classicLadderGameBox, 0, 0);
     gamesGrid.add(specialLadderGameBox, 1, 0);
 
-    gamesGrid.add(ticTacToeGameBox, 0, 1);
+    gamesGrid.add(monopolyLiteBox, 0, 1);
     gamesGrid.add(jsonBoardBox, 1, 1);
 
     return gamesGrid;
