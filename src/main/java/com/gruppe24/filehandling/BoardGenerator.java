@@ -1,7 +1,6 @@
-package com.gruppe24.utils;
+package com.gruppe24.filehandling;
 
 import com.gruppe24.boardgames.laddergame.models.board.Board;
-import com.gruppe24.filehandling.FileHandler;
 import java.util.HashMap;
 
 /**
