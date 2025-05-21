@@ -6,24 +6,16 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-/**
- * {@code DieTest} is a test class for the {@code Die} class.
- */
 class DieTest {
 
   private CommonDie die;
 
-  /**
-   * Sets up the test fixture by creating a new die before each test.
-   */
   @BeforeEach
   void setUp() {
     die = new CommonDie();
   }
 
-  /**
-   * Tests the {@code roll} method to ensure it generates values between 1 and 6.
-   */
+
   @Test
   void testRoll() {
     for (int i = 0; i < 100; i++) { // Increased iterations for better coverage
@@ -32,9 +24,6 @@ class DieTest {
     }
   }
 
-  /**
-   * Tests the {@code getLastRoll} method to ensure it returns the last rolled value.
-   */
   @Test
   void testGetLastRoll() {
     for (int i = 0; i < 10; i++) {
@@ -44,9 +33,6 @@ class DieTest {
     }
   }
 
-  /**
-   * Tests the initial state of the die to ensure the last rolled value is 0.
-   */
   @Test
   void testInitialState() {
     assertEquals(0, die.getLastRoll(), "Initial last rolled value should be 0");

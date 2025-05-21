@@ -1,100 +1,52 @@
-//package com.gruppe24.boardgames.laddergame.controller;
-//
-//import static org.junit.jupiter.api.Assertions.assertEquals;
-//import static org.junit.jupiter.api.Assertions.assertNotNull;
-//import static org.junit.jupiter.api.Assertions.assertThrows;
-//import static org.mockito.ArgumentMatchers.any;
-//import static org.mockito.ArgumentMatchers.anyInt;
-//import static org.mockito.ArgumentMatchers.eq;
-//import static org.mockito.Mockito.mock;
-//import static org.mockito.Mockito.verify;
-//
-//import com.gruppe24.boardgames.laddergame.models.Player;
-//import com.gruppe24.observerpattern.EventType;
-//import com.gruppe24.observerpattern.GameSubject;
-//import java.util.List;
-//import org.junit.jupiter.api.BeforeEach;
-//import org.junit.jupiter.api.Test;
-//
-//class PlayerControllerTest {
-//
-//  private PlayerController playerController;
-//  private BoardController mockBoardController;
-//  private GameSubject mockGameSubject;
-//
-//  @BeforeEach
-//  void setUp() {
-//    mockBoardController = mock(BoardController.class);
-//    mockGameSubject = mock(GameSubject.class);
-//    playerController = new PlayerController(mockBoardController, mockGameSubject);
-//  }
-//
-//  @Test
-//  void testAddPlayer() {
-//    playerController.addPlayer();
-//    List<Player> players = playerController.getPlayers();
-//    assertEquals(2, players.size());
-//    assertEquals("Player 2", players.get(1).getName());
-//    verify(mockGameSubject).notifyListener(eq(EventType.PLAYER_ADDED), any(Player.class));
-//  }
-//
-//  @Test
-//  void testRemovePlayer() {
-//    playerController.addPlayer();
-//    playerController.removePlayer();
-//    List<Player> players = playerController.getPlayers();
-//    assertEquals(1, players.size());
-//    verify(mockGameSubject).notifyListener(eq(EventType.PLAYER_REMOVED), any(Player.class));
-//  }
-//
-//  @Test
-//  void testRemovePlayerWhenOnlyOneExists() {
-//    playerController.removePlayer();
-//    List<Player> players = playerController.getPlayers();
-//    assertEquals(1, players.size());
-//  }
-//
-//  @Test
-//  void testCyclePlayerIcon() {
-//    playerController.cyclePlayerIcon(0);
-//    Player player = playerController.getPlayers().get(0);
-//    verify(mockGameSubject).notifyListener(eq(EventType.PLAYER_ICON_CHANGED), eq(player), anyInt());
-//  }
-//
-//  @Test
-//  void testHandlePlayerTurn() {
-//    Player player = playerController.getPlayers().get(0);
-//
-//    // Call the method under test
-//    playerController.handlePlayerTurn(player, 4);
-//
-//    // Verify the player's position is updated correctly
-//    assertEquals(5, player.getPosition());
-//
-//    // Verify interactions with the mocked BoardController
-//    verify(mockBoardController).handleOvershoot(4);
-//    verify(mockBoardController).handleTileAction(player, 5);
-//
-//    // Verify the GameSubject notification
-//    verify(mockGameSubject).notifyListener(eq(EventType.DICE_ROLLED), eq(player), eq(4));
-//  }
-//
-//  @Test
-//  void testHandlePlayerTurnWithNullPlayer() {
-//    assertThrows(IllegalArgumentException.class, () -> playerController.handlePlayerTurn(null, 4));
-//  }
-//
-//  @Test
-//  void testHandlePlayerTurnWithNegativeDiceValue() {
-//    Player player = playerController.getPlayers().getFirst();
-//    assertThrows(IllegalArgumentException.class,
-//        () -> playerController.handlePlayerTurn(player, -1));
-//  }
-//
-//  @Test
-//  void testGetPlayers() {
-//    List<Player> players = playerController.getPlayers();
-//    assertNotNull(players);
-//    assertEquals(1, players.size());
-//  }
-//}
+package com.gruppe24.boardgames.laddergame.controller;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+import com.gruppe24.boardgames.commonclasses.CommonPlayer;
+import com.gruppe24.boardgames.laddergame.models.Player;
+import com.gruppe24.observerpattern.GameSubject;
+import java.util.List;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+public class PlayerControllerTest {
+
+  public PlayerController playerController;
+  public GameSubject gameSubject;
+
+  @BeforeEach
+  void setUp() {
+    gameSubject = new GameSubject();
+    playerController = new PlayerController(gameSubject);
+  }
+
+  @Test
+  void testCreatePlayer() {
+    CommonPlayer abstractPlayer = playerController.createPlayer("Mann", 3);
+
+    assertNotNull(playerController);
+    assertInstanceOf(Player.class, abstractPlayer);
+
+    Player concretePlayer = (Player) abstractPlayer;
+
+    assertEquals("Mann", concretePlayer.getName());
+    assertEquals(3, concretePlayer.getIconIndex());
+  }
+
+  @Test
+  void testGetMaxPlayers() {
+    assertEquals(playerController.getMaxPlayers(), 5);
+  }
+
+  @Test
+  void testAddDefaultPlayer() {
+    List<Player> playerList = playerController.getPlayers();
+
+    // Upon making an instance of playerController, a player should have been added
+    assertEquals(1, playerList.size());
+
+  }
+
+}

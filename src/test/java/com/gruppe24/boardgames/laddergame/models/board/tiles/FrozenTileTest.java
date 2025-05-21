@@ -10,9 +10,7 @@ import com.gruppe24.boardgames.laddergame.models.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-/**
- * {@code frozenTileTest} is a test class for the {@code frozenTile} class.
- */
+
 class FrozenTileTest {
 
   private FrozenTile frozenTile;

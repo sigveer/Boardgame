@@ -6,18 +6,12 @@ import com.gruppe24.boardgames.laddergame.models.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-/**
- * {@code SpecialTileTest} is a test class for the {@code SpecialTile} class.
- */
 class SpecialTileTest {
 
   private Player player;
   private SpecialTile specialTileWithoutDestination;
   private SpecialTile specialTileWithDestination;
 
-  /**
-   * Sets up the test fixture by creating a new player and special tiles before each test.
-   */
   @BeforeEach
   void setUp() {
     player = new Player("TestPlayer", 1);
@@ -25,9 +19,6 @@ class SpecialTileTest {
     specialTileWithDestination = new SpecialTile(15, 20);
   }
 
-  /**
-   * Tests the behavior of the perform method in the {@code SpecialTile} class.
-   */
   @Test
   void testSpecialTileBehaviour() {
     player.setPosition(specialTileWithoutDestination.getPosition());
@@ -48,9 +39,7 @@ class SpecialTileTest {
         "Destination should remain unchanged after perform()");
   }
 
-  /**
-   * Tests the getDestination method in the {@code SpecialTile} class.
-   */
+
   @Test
   void getDestination() {
     assertEquals(0, specialTileWithoutDestination.getDestination(),
@@ -59,9 +48,7 @@ class SpecialTileTest {
         "Destination should be 20 for special tile with destination");
   }
 
-  /**
-   * Tests the getDestination method in the {@code SpecialTile} class with a negative destination.
-   */
+
   @Test
   void testNegativeDestination() {
     try {
