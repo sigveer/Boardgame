@@ -183,8 +183,13 @@ public class View {
 
   private void rollDiceAndMove(GridPane gridPane, Stage primaryStage, Pane dicePane) {
     int diceValue = rollAndDisplayDice(dicePane);
-
     diceResultLabel.setText("Rolled: " + diceValue);
+
+    // Get current player
+    Player currentPlayer = players.get(currentPlayerIndex);
+
+    // Move player based on dice roll
+    movePlayer(gridPane, currentPlayer, diceValue);
   }
 
   private int rollAndDisplayDice(Pane dicePane) {
@@ -295,6 +300,20 @@ public class View {
       }
     }
     this.cards = new Cards(properties);
+
+    // Initialize properties
+    this.properties = createProperties();
+
+    // Rest of your board drawing code...
+
+    // Initialize player at START position once board is drawn
+    if (!players.isEmpty()) {
+      Player player = players.get(0);
+      player.setPosition(0);  // Start position
+      placePlayerPieceOnBoard(gridPane, player);
+    }
+
+    this.cards = new Cards(properties);
   }
 
   private StackPane createPropertyTile(Property property) {
@@ -322,4 +341,138 @@ public class View {
 
     return tile;
   }
+
+
+
+  /**
+   * Moves the player piece directly to the specified position.
+   *
+   * @param gridPane the grid containing the board
+   * @param player the player to move
+   * @param diceValue the dice roll value
+   */
+  private void movePlayer(GridPane gridPane, Player player, int diceValue) {
+    // Disable dice button during turn
+    diceRollButton.setDisable(true);
+
+    // Calculate new position (wrap around the board - total of 24 positions)
+    int fromPosition = player.getPosition();
+    int toPosition = (fromPosition + diceValue) % 24;
+
+    // Update player's position
+    player.setPosition(toPosition);
+
+    // Move player piece to new position
+    placePlayerPieceOnBoard(gridPane, player);
+
+    // Handle any property effects
+    handlePropertyLanding(player, toPosition);
+
+    // Re-enable dice button
+    diceRollButton.setDisable(false);
+  }
+
+  /**
+   * Places the player piece on the board at their current position.
+   */
+  private void placePlayerPieceOnBoard(GridPane gridPane, Player player) {
+    int position = player.getPosition();
+
+    // Calculate grid coordinates based on position
+    int row, col;
+
+    if (position <= 6) {
+      // Bottom row (positions 0-6)
+      row = 6;
+      col = 6 - position;
+    } else if (position <= 12) {
+      // Left column (positions 7-12)
+      row = 6 - (position - 6);
+      col = 0;
+    } else if (position <= 18) {
+      // Top row (positions 13-18)
+      row = 0;
+      col = position - 12;
+    } else {
+      // Right column (positions 19-23)
+      row = position - 18;
+      col = 6;
+    }
+
+    // Place player piece at calculated position
+    addPlayerPieceToGrid(gridPane, player, col, row);
+  }
+
+  /**
+   * Adds the player piece to the specified grid position.
+   */
+  private void addPlayerPieceToGrid(GridPane gridPane, Player player, int col, int row) {
+    // First remove player piece from current location if present
+    gridPane.getChildren().removeIf(node ->
+        node instanceof StackPane &&
+            "playerPiece".equals(node.getId()));
+
+    // Initialize player piece if needed
+    if (player.getPlayerPiece() == null) {
+      Image image = new Image("pictures/pieces/piece" + player.getIconIndex() + ".png");
+      player.setIcon(image);
+    }
+
+    // Create container for player piece with ID for identification
+    StackPane pieceContainer = new StackPane();
+    pieceContainer.setId("playerPiece");
+    pieceContainer.getChildren().add(player.getPlayerPiece());
+
+    // Find the cell at the specified position
+    for (Node node : gridPane.getChildren()) {
+      if (node instanceof StackPane &&
+          GridPane.getRowIndex(node) == row &&
+          GridPane.getColumnIndex(node) == col) {
+
+        // If this is a property tile, add player on top
+        ((StackPane) node).getChildren().add(player.getPlayerPiece());
+        return;
+      }
+    }
+  }
+
+  /**
+   * Handles effects of landing on a property.
+   */
+  private void handlePropertyLanding(Player player, int position) {
+    Property property = null;
+    for (Property p : properties) {
+      if (p.getPosition() == position) {
+        property = p;
+        break;
+      }
+    }
+
+    if (property != null) {
+      // Special positions
+      if (position == 0) {
+        diceResultLabel.setText("Landed on START");
+      } else if (position == 6) {
+        diceResultLabel.setText("Landed on JAIL");
+      } else if (position == 9 || position == 20) {
+        diceResultLabel.setText("Landed on CHANCE");
+        //showRandomCard();
+      } else if (position == 12) {
+        diceResultLabel.setText("Landed on FREE PARKING");
+      } else if (position == 18) {
+        diceResultLabel.setText("GO TO JAIL!");
+        //goToJail(player);
+      } else {
+        diceResultLabel.setText("Landed on " + property.getName());
+      }
+    }
+  }
+
+//  /**
+//   * Sends player directly to jail.
+//   */
+//  private void goToJail(Player player) {
+//    player.setPosition(6);  // Jail position
+//    placePlayerPieceOnBoard(gridPane, player);
+//  }
 }
