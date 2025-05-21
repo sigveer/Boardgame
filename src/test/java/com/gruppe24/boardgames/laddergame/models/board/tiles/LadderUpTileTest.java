@@ -13,7 +13,6 @@ class LadderUpTileTest {
   private LadderUpTile ladderUpTile;
   private Player player;
 
-
   @BeforeEach
   void setUp() {
     ladderUpTile = new LadderUpTile(5, 10);

@@ -1,8 +1,5 @@
 package com.gruppe24.utils;
 
-import static com.gruppe24.boardgames.laddergame.models.board.Board.initializeStandardLadders;
-import static com.gruppe24.boardgames.laddergame.models.board.Board.initializeStandardSpecialTiles;
-
 import com.gruppe24.boardgames.laddergame.models.board.Board;
 import com.gruppe24.filehandling.FileHandler;
 import java.util.HashMap;
@@ -23,7 +20,6 @@ public class BoardGenerator {
     createSpecialBoard();
   }
 
-
   /**
    * Creates a classic board and saves it to a JSON file.
    */
@@ -42,7 +38,6 @@ public class BoardGenerator {
     saveBoard(specialBoard, "special_board");
   }
 
-
   /**
    * Creates a board with the specified parameters.
    *
@@ -58,10 +53,10 @@ public class BoardGenerator {
     HashMap<Integer, Boolean> frozenTiles = new HashMap<>();
     HashMap<Integer, Boolean> randomTeleportTiles = new HashMap<>();
 
-    initializeStandardLadders(ladderUp, ladderDown);
+    Board.initializeStandardLadders(ladderUp, ladderDown);
 
     if (includeSpecialTiles) {
-      initializeStandardSpecialTiles(frozenTiles, randomTeleportTiles);
+      Board.initializeStandardSpecialTiles(frozenTiles, randomTeleportTiles);
     }
 
     return new Board(ladderUp, ladderDown, winningTile, frozenTiles, randomTeleportTiles, name,

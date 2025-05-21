@@ -55,5 +55,4 @@ public class BoardController {
   public boolean isWinningPosition(int position) {
     return position == 90;
   }
-
 }

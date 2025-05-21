@@ -1,7 +1,7 @@
 package com.gruppe24;
 
 import com.gruppe24.boardgames.DashboardGui;
-import com.gruppe24.utils.GameLogger;
+import com.gruppe24.observerpattern.GameLogger;
 import java.util.logging.Level;
 
 /**

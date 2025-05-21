@@ -22,7 +22,6 @@ class CommonGameControllerTest {
   CommonGameController commonGameController;
   PlayerController playerController;
 
-
   @BeforeEach
   void setUp() {
     mockGameSubject = mock(GameSubject.class);
@@ -39,7 +38,6 @@ class CommonGameControllerTest {
         return 5;
       }
     };
-
   }
 
   @Test
@@ -77,15 +75,6 @@ class CommonGameControllerTest {
     assertNotNull(players);
     assertEquals(1, players.size());
   }
-
-//  @Test
-//  void testHandlePlayerTurn() {
-//    Player player = playerController.getPlayers().getFirst();
-//    player.setPosition(1);
-//    playerController.handlePlayerTurn(player, 4);
-//
-//    assertEquals(5, player.getPosition());
-//  }
 
 
   @Test

@@ -3,7 +3,6 @@ package com.gruppe24.filehandling;
 import com.gruppe24.boardgames.laddergame.models.Player;
 import com.gruppe24.boardgames.laddergame.models.board.Board;
 import com.gruppe24.exeptions.FileHandlingException;
-import com.gruppe24.exeptions.InvalidBoardException;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;

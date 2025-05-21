@@ -18,6 +18,11 @@ public class SpecialTile extends CommonTile {
     super(position);
   }
 
+  @Override
+  public int getTileType() {
+    return -1;
+  }
+
   /**
    * Constructor that initializes the special tile with a destination.
    *
@@ -30,11 +35,6 @@ public class SpecialTile extends CommonTile {
       throw new IllegalArgumentException("Parameter destination cannot be less than 0");
     }
     this.destination = destination;
-  }
-
-  @Override
-  public int getTileType() {
-    return -1;
   }
 
   /**

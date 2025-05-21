@@ -7,6 +7,11 @@ import com.gruppe24.boardgames.commonclasses.CommonTile;
  */
 public class NormalTile extends CommonTile {
 
+  @Override
+  public int getTileType() {
+    return 0;
+  }
+
   /**
    * Constructor that initializes the snake tile.
    *
@@ -14,10 +19,5 @@ public class NormalTile extends CommonTile {
    */
   public NormalTile(int position) {
     super(position);
-  }
-
-  @Override
-  public int getTileType() {
-    return 0;
   }
 }

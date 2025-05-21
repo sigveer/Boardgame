@@ -1,8 +1,6 @@
-package com.gruppe24.utils;
+package com.gruppe24.observerpattern;
 
 import com.gruppe24.boardgames.laddergame.models.Player;
-import com.gruppe24.observerpattern.EventType;
-import com.gruppe24.observerpattern.GameObserver;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;

@@ -39,7 +39,6 @@ class SpecialTileTest {
         "Destination should remain unchanged after perform()");
   }
 
-
   @Test
   void getDestination() {
     assertEquals(0, specialTileWithoutDestination.getDestination(),
@@ -47,7 +46,6 @@ class SpecialTileTest {
     assertEquals(20, specialTileWithDestination.getDestination(),
         "Destination should be 20 for special tile with destination");
   }
-
 
   @Test
   void testNegativeDestination() {

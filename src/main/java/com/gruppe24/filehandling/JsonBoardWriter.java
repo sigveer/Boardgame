@@ -6,8 +6,6 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.gruppe24.boardgames.commonclasses.CommonTile;
 import com.gruppe24.boardgames.laddergame.models.board.Board;
-import com.gruppe24.exeptions.FileHandlingException;
-import com.gruppe24.exeptions.InvalidBoardException;
 import java.io.IOException;
 
 /**

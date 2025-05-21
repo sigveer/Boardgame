@@ -2,7 +2,6 @@ package com.gruppe24.boardgames.commonclasses;
 
 import com.google.gson.JsonObject;
 import com.gruppe24.boardgames.laddergame.models.Player;
-import com.gruppe24.exeptions.InvalidBoardException;
 import com.gruppe24.exeptions.InvalidPlayerException;
 import com.gruppe24.filehandling.TileJsonSerializer;
 
@@ -13,6 +12,11 @@ public abstract class CommonTile implements TileJsonSerializer {
 
   protected int position;
   public int tileTypeNumber = 0;
+
+
+  @Override
+  public void addActionToJson(JsonObject tileJson, int tileId) {
+  }
 
   /**
    * Constructor that initializes the normal tile.
@@ -28,10 +32,6 @@ public abstract class CommonTile implements TileJsonSerializer {
       throw new IllegalArgumentException("Parameter position cannot be less than 0");
     }
     this.position = position;
-  }
-
-  @Override
-  public void addActionToJson(JsonObject tileJson, int tileId) {
   }
 
   /**

@@ -1,6 +1,7 @@
 package com.gruppe24.boardgames.laddergame.models.board.tiles;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import com.google.gson.JsonObject;
 import org.junit.jupiter.api.BeforeEach;

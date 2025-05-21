@@ -11,7 +11,7 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class PlayerControllerTest {
+class PlayerControllerTest {
 
   public PlayerController playerController;
   public GameSubject gameSubject;
@@ -37,7 +37,7 @@ public class PlayerControllerTest {
 
   @Test
   void testGetMaxPlayers() {
-    assertEquals(playerController.getMaxPlayers(), 5);
+    assertEquals(5, playerController.getMaxPlayers());
   }
 
   @Test
@@ -46,7 +46,5 @@ public class PlayerControllerTest {
 
     // Upon making an instance of playerController, a player should have been added
     assertEquals(1, playerList.size());
-
   }
-
 }

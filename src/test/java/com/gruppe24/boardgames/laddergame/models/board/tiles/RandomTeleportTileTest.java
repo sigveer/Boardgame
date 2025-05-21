@@ -15,7 +15,6 @@ class RandomTeleportTileTest {
   private RandomTeleportTile randomTeleportTile;
   private Player player;
 
-
   @BeforeEach
   void setUp() {
     randomTeleportTile = new RandomTeleportTile(10);
@@ -34,7 +33,6 @@ class RandomTeleportTileTest {
     int newPosition = player.getPosition();
     assertTrue(newPosition >= 1 && newPosition <= 89,
         "Teleported position should be between 1 and 89");
-
   }
 
   @Test

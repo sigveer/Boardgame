@@ -17,7 +17,6 @@ import java.util.HashMap;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-
 class BoardTest {
 
   private Board board;
@@ -126,12 +125,12 @@ class BoardTest {
     HashMap<Integer, Integer> ladderUp = new HashMap<>();
     HashMap<Integer, Integer> ladderDown = new HashMap<>();
     HashMap<Integer, Boolean> frozenTiles = new HashMap<>();
-    HashMap<Integer, Boolean> randomTeleportTiles = new HashMap<>();
-    HashMap<Integer, Boolean> winningTile = new HashMap<>();
-
     ladderUp.put(1, 10);
     ladderDown.put(20, 5);
     frozenTiles.put(15, true);
+
+    HashMap<Integer, Boolean> randomTeleportTiles = new HashMap<>();
+    HashMap<Integer, Boolean> winningTile = new HashMap<>();
     randomTeleportTiles.put(25, true);
     winningTile.put(30, true);
 

@@ -23,6 +23,11 @@ public class JsonBoardReader {
 
   private Board currentBoard;
 
+  /**
+   * Method that reads a board configuration from a JSON file.
+   * @param filePath the path for JSON-file
+   * @return the board object created from the JSON data.
+   */
   public Object readFromFile(String filePath) {
     if (filePath.isEmpty()) {
       throw new IllegalArgumentException("Filepath is empty in JsonBoardReader");

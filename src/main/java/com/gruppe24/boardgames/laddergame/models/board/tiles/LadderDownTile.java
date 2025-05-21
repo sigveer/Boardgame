@@ -8,16 +8,6 @@ import com.gruppe24.boardgames.laddergame.models.Player;
  */
 public class LadderDownTile extends SpecialTile {
 
-  /**
-   * Constructor that initializes the snake tile.
-   *
-   * @param position  The position of the tile.
-   * @param slideDown The position to slide down to.
-   */
-  public LadderDownTile(int position, int slideDown) {
-    super(position, slideDown);
-  }
-
   @Override
   public void perform(Player player) {
     player.setPosition(getDestination());
@@ -36,5 +26,15 @@ public class LadderDownTile extends SpecialTile {
     actionJson.addProperty("description",
         "Ladder from " + tileId + " to " + getDestination());
     tileJson.add("action", actionJson);
+  }
+
+  /**
+   * Constructor that initializes the snake tile.
+   *
+   * @param position  The position of the tile.
+   * @param slideDown The position to slide down to.
+   */
+  public LadderDownTile(int position, int slideDown) {
+    super(position, slideDown);
   }
 }

@@ -11,16 +11,6 @@ import com.gruppe24.observerpattern.GameSubject;
  */
 public class MonopolyController extends CommonGameController {
 
-  /**
-   * Constructor for MonopolyController.
-   *
-   * @param numDice     the number of dice used in the game
-   * @param gameSubject the game subject for observer pattern
-   */
-  protected MonopolyController(int numDice, GameSubject gameSubject) {
-    super(numDice, gameSubject);
-  }
-
   @Override
   protected CommonPlayer createPlayer(String name, int iconIndex) {
     return null;
@@ -29,5 +19,15 @@ public class MonopolyController extends CommonGameController {
   @Override
   protected int getMaxPlayers() {
     return 4;
+  }
+
+  /**
+   * Constructor for MonopolyController.
+   *
+   * @param numDice     the number of dice used in the game
+   * @param gameSubject the game subject for observer pattern
+   */
+  protected MonopolyController(int numDice, GameSubject gameSubject) {
+    super(numDice, gameSubject);
   }
 }

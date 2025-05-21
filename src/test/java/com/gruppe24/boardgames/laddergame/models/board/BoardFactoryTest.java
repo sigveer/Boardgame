@@ -9,9 +9,7 @@ import com.gruppe24.boardgames.laddergame.models.board.tiles.FrozenTile;
 import com.gruppe24.boardgames.laddergame.models.board.tiles.RandomTeleportTile;
 import org.junit.jupiter.api.Test;
 
-
 class BoardFactoryTest {
-
 
   @Test
   void testCreateClassicBoard() {
@@ -21,7 +19,6 @@ class BoardFactoryTest {
     assertEquals("A classic game of Ladders with 90 tiles.", board.getDescription());
     assertEquals(91, board.getTiles().length);
   }
-
 
   @Test
   void testCreateSpecialBoard() {

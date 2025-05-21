@@ -15,7 +15,6 @@ class DieTest {
     die = new CommonDie();
   }
 
-
   @Test
   void testRoll() {
     for (int i = 0; i < 100; i++) { // Increased iterations for better coverage

@@ -34,12 +34,6 @@ class DiceTest {
     }
   }
 
-//  @Test
-//  void testGetSum() {
-//    int sum = dice.rollSum();
-//    assertEquals(sum, dice.getSum(), "getSum should return the same value as rollSum");
-//  }
-
   @Test
   void testDicePath() {
     for (int i = 1; i <= 6; i++) {
@@ -47,15 +41,6 @@ class DiceTest {
       assertEquals("pictures/dices/dice" + i + ".png", path, "Path should match the dice number");
     }
   }
-
-//  /**
-//   * Tests the {@code roll} method to ensure it rolls a single die correctly.
-//   */
-//  @Test
-//  void testRollSingleDie() {
-//    int value = dice.roll();
-//    assertTrue(value >= 1 && value <= 6, "Single die roll should be between 1 and 6");
-//  }
 
   @Test
   void testInvalidNumberOfDice() {

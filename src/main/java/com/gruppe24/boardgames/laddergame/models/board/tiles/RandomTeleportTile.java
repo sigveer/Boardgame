@@ -11,15 +11,6 @@ public class RandomTeleportTile extends SpecialTile {
 
   private final Random random = new Random();
 
-  /**
-   * Constructor that initializes the random teleport tile.
-   *
-   * @param position The position of the tile.
-   */
-  public RandomTeleportTile(int position) {
-    super(position);
-  }
-
   @Override
   public void perform(Player player) {
 
@@ -42,5 +33,14 @@ public class RandomTeleportTile extends SpecialTile {
     actionJson.addProperty("description",
         "Player gets teleported to a random tile from " + tileId);
     tileJson.add("action", actionJson);
+  }
+
+  /**
+   * Constructor that initializes the random teleport tile.
+   *
+   * @param position The position of the tile.
+   */
+  public RandomTeleportTile(int position) {
+    super(position);
   }
 }
