@@ -1,6 +1,5 @@
 package com.gruppe24.boardgames;
 
-import com.gruppe24.boardgames.laddergame.controller.BoardController;
 import com.gruppe24.boardgames.laddergame.controller.PlayerController;
 import com.gruppe24.boardgames.laddergame.models.Player;
 import com.gruppe24.boardgames.laddergame.models.board.Board;
@@ -12,8 +11,8 @@ import com.gruppe24.exeptions.InvalidPlayerException;
 import com.gruppe24.filehandling.FileHandler;
 import com.gruppe24.filehandling.JsonBoardReader;
 import com.gruppe24.observerpattern.EventType;
-import com.gruppe24.observerpattern.GameSubject;
 import com.gruppe24.observerpattern.GameLogger;
+import com.gruppe24.observerpattern.GameSubject;
 import com.gruppe24.utils.StyleUtils;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +42,6 @@ public class DashboardGui extends Application {
   private PlayerController playerController;
   private Stage stage;
   private JsonBoardReader jsonBoardReader;
-  private final BoardController boardController = new BoardController(BoardType.CLASSIC);
   private final GameSubject gameSubject = new GameSubject();
   private final GameLogger gameLogger = new GameLogger();
 
