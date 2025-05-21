@@ -12,7 +12,6 @@ public class BoardController {
 
   private final Board board;
 
-
   /**
    * Constructor that initializes the game controller with a board type.
    *

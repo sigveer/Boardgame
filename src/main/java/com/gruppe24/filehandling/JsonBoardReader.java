@@ -30,11 +30,6 @@ public class JsonBoardReader {
     try (FileReader reader = new FileReader(filePath)) {
       JsonObject boardJson = JsonParser.parseReader(reader).getAsJsonObject();
 
-      if (!boardJson.has("name") || !boardJson.has("description")) {
-        System.err.println("Error: Missing required fields (name or description)");
-        return null;
-      }
-
       String name = boardJson.get("name").getAsString();
       String description = boardJson.get("description").getAsString();
 
@@ -99,7 +94,8 @@ public class JsonBoardReader {
         }
       }
 
-      return new Board(ladderUp, ladderDown, winningTile, frozenTiles, randomTeleportTiles, name, description);
+      return new Board(ladderUp, ladderDown, winningTile, frozenTiles, randomTeleportTiles, name,
+          description);
 
     } catch (FileNotFoundException e) {
       System.err.println("Error: File not found: " + e.getMessage());
@@ -121,7 +117,6 @@ public class JsonBoardReader {
    *
    * @param stage the stage to use for the file chooser
    * @return the loaded custom board
-   *
    * @AI_Based
    */
   public Board loadCustomBoard(Stage stage) {
@@ -143,7 +138,7 @@ public class JsonBoardReader {
           return customBoard;
         }
       } catch (Exception e) {
-        // Logge feil, ingve
+        System.err.println("Error loading custom board: " + e.getMessage());
       }
     }
     return null;

@@ -56,9 +56,7 @@ public class GameLogger implements GameObserver {
         Player winner = (Player) args[0];
         LOGGER.log(Level.INFO, "Game ended. Winner: {0}", winner.getName());
       }
-      default -> {
-        LOGGER.log(Level.WARNING, "Unknown event: {0}", eventType);
-      }
+      default -> LOGGER.log(Level.WARNING, "Unknown event: {0}", eventType);
     }
   }
 

@@ -1,6 +1,6 @@
 {
   "name": "TestBoard",
-  "description": "The classic Ladder board",
+  "description": "Enhanced board with special tiles",
   "tiles": [
     {
       "id": 0,
@@ -16,7 +16,7 @@
       "action": {
         "type": "LadderUpAction",
         "destinationTileId": 86,
-        "description": "Ladder from 2 to 89"
+        "description": "Ladder from 2 to 86"
       }
     },
     {
@@ -69,7 +69,11 @@
     },
     {
       "id": 15,
-      "nextTile": 16
+      "nextTile": 16,
+      "action": {
+        "type": "FrozenAction",
+        "description": "You're frozen for one turn!"
+      }
     },
     {
       "id": 16,
@@ -97,7 +101,11 @@
     },
     {
       "id": 22,
-      "nextTile": 23
+      "nextTile": 23,
+      "action": {
+        "type": "RandomTeleportAction",
+        "description": "Random teleport to another tile!"
+      }
     },
     {
       "id": 23,
@@ -183,7 +191,11 @@
     },
     {
       "id": 41,
-      "nextTile": 42
+      "nextTile": 42,
+      "action": {
+        "type": "FrozenAction",
+        "description": "You're frozen for one turn!"
+      }
     },
     {
       "id": 42,
@@ -233,7 +245,11 @@
     },
     {
       "id": 51,
-      "nextTile": 52
+      "nextTile": 52,
+      "action": {
+        "type": "RandomTeleportAction",
+        "description": "Random teleport to another tile!"
+      }
     },
     {
       "id": 52,
@@ -299,7 +315,11 @@
     },
     {
       "id": 65,
-      "nextTile": 66
+      "nextTile": 66,
+      "action": {
+        "type": "FrozenAction",
+        "description": "You're frozen for one turn!"
+      }
     },
     {
       "id": 66,
@@ -336,7 +356,11 @@
     },
     {
       "id": 73,
-      "nextTile": 74
+      "nextTile": 74,
+      "action": {
+        "type": "RandomTeleportAction",
+        "description": "Random teleport to another tile!"
+      }
     },
     {
       "id": 74,
@@ -404,7 +428,15 @@
       "nextTile": 89
     },
     {
-      "id": 89
+      "id": 89,
+      "nextTile": 90
+    },
+    {
+      "id": 90,
+      "action": {
+        "type": "WinningAction",
+        "description": "Player wins the game on tile 90"
+      }
     }
   ]
 }

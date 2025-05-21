@@ -7,6 +7,8 @@ import com.gruppe24.boardgames.laddergame.models.board.Board;
 import com.gruppe24.boardgames.laddergame.models.board.BoardType;
 import com.gruppe24.boardgames.laddergame.view.LadderGameApp;
 import com.gruppe24.boardgames.monopolylite.MonopolyApp;
+import com.gruppe24.exeptions.FileHandlingException;
+import com.gruppe24.exeptions.InvalidPlayerException;
 import com.gruppe24.filehandling.FileHandler;
 import com.gruppe24.filehandling.JsonBoardReader;
 import com.gruppe24.observerpattern.EventType;
@@ -109,14 +111,24 @@ public class DashboardGui extends Application {
     Button addPlayerButton = new Button("+");
     StyleUtils.styleNormalButton(addPlayerButton);
     addPlayerButton.setOnAction(e -> {
-      playerController.addPlayer();
+      try {
+        playerController.addPlayer();
+      } catch (InvalidPlayerException ex) {
+        GameLogger.getLogger().log(Level.WARNING, "Error adding player, {0}", ex.getMessage());
+        return;
+      }
       updatePlayerList();
     });
 
     Button removePlayerButton = new Button("-");
     StyleUtils.styleNormalButton(removePlayerButton);
     removePlayerButton.setOnAction(e -> {
-      playerController.removePlayer();
+      try {
+        playerController.removePlayer();
+      } catch (InvalidPlayerException ex) {
+        GameLogger.getLogger().log(Level.WARNING, "Error removing player, {0}", ex.getMessage());
+        return;
+      }
       updatePlayerList();
     });
 
@@ -128,23 +140,33 @@ public class DashboardGui extends Application {
         showAlert("No players to save");
         return;
       }
-      boolean success = FileHandler.savePlayers(playersToSave, stage);
-      if (success) {
-        showAlert("Players saved successfully");
-      } else {
-        showAlert("Failed to save players");
+      try {
+        boolean success = FileHandler.savePlayers(playersToSave, stage);
+        if (success) {
+          showAlert("Players saved successfully");
+        } else {
+          showAlert("Failed to save players");
+        }
+      } catch (FileHandlingException ex) {
+        showAlert("Error saving players: " + ex.getMessage());
+        GameLogger.getLogger().log(Level.WARNING, "Error saving players: {0}", ex.getMessage());
       }
     });
 
     Button loadPlayersButton = new Button("Load Players");
     StyleUtils.styleNormalButton(loadPlayersButton);
     loadPlayersButton.setOnAction(e -> {
-      List<Player> loadedPlayers = FileHandler.loadPlayers(stage);
-      if (loadedPlayers != null && !loadedPlayers.isEmpty()) {
-        populateFieldsWithPlayers(loadedPlayers);
-        showAlert("Players loaded successfully");
-      } else {
-        showAlert("No players loaded");
+      try {
+        List<Player> loadedPlayers = FileHandler.loadPlayers(stage);
+        if (loadedPlayers != null && !loadedPlayers.isEmpty()) {
+          populateFieldsWithPlayers(loadedPlayers);
+          showAlert("Players loaded successfully");
+        } else {
+          showAlert("No players loaded");
+        }
+      } catch (FileHandlingException ex) {
+        showAlert("Error loading players: " + ex.getMessage());
+        GameLogger.getLogger().log(Level.WARNING, "Error loading players: {0}", ex.getMessage());
       }
     });
 

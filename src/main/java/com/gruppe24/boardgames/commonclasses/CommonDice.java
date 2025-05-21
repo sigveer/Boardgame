@@ -1,5 +1,6 @@
 package com.gruppe24.boardgames.commonclasses;
 
+import com.gruppe24.exeptions.InvalidDiceValueException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,10 +18,11 @@ public class CommonDice {
    * The value of the last rolled die.
    *
    * @param numberOfDice The number of dice to be created.
+   * @throws InvalidDiceValueException if number of dice is less than 1
    */
   public CommonDice(int numberOfDice) {
     if (numberOfDice < 1) {
-      throw new IllegalArgumentException("Number of dice must be at least 1 Dice");
+      throw new InvalidDiceValueException("Number of dice must be at least 1 Dice");
     }
     dice = new ArrayList<>();
     for (int i = 0; i < numberOfDice; i++) {
@@ -42,13 +44,15 @@ public class CommonDice {
   }
 
   /**
-   * Rolls all dice and returns the values of each die.
+   * Gets the value of a specific die.
    *
-   * @return The values of all dice after rolling.
+   * @param dieNumber The index of the die to get the value of.
+   * @return The value of the specified die.
+   * @throws InvalidDiceValueException if dieNumber is out of bounds
    */
   public int getDie(int dieNumber) {
     if (dieNumber < 0 || dieNumber >= dice.size()) {
-      throw new IllegalArgumentException("Die number out of bounds");
+      throw new InvalidDiceValueException("Die number out of bounds");
     }
     return dice.get(dieNumber).getLastRoll();
   }
@@ -58,8 +62,12 @@ public class CommonDice {
    *
    * @param dice the number on the dice
    * @return the path to the dice image
+   * @throws InvalidDiceValueException if dice value is not between 1 and 6
    */
   public String dicePath(int dice) {
+    if (dice < 1 || dice > 6) {
+      throw new InvalidDiceValueException("Invalid dice value for image path: " + dice);
+    }
     return "pictures/dices/dice" + dice + ".png";
   }
 }

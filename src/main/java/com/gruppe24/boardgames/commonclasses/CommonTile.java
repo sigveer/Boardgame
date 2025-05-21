@@ -2,6 +2,8 @@ package com.gruppe24.boardgames.commonclasses;
 
 import com.google.gson.JsonObject;
 import com.gruppe24.boardgames.laddergame.models.Player;
+import com.gruppe24.exeptions.InvalidBoardException;
+import com.gruppe24.exeptions.InvalidPlayerException;
 import com.gruppe24.filehandling.TileJsonSerializer;
 
 /**
@@ -16,6 +18,7 @@ public abstract class CommonTile implements TileJsonSerializer {
    * Constructor that initializes the normal tile.
    *
    * @param position The position of the tile on the board.
+   * @throws IllegalArgumentException if position is negative
    * @Author Sigveer, Ingve
    * @Date: 16.02.2025
    * @Version: 1.0
@@ -35,10 +38,11 @@ public abstract class CommonTile implements TileJsonSerializer {
    * Performs the action associated with this tile for the given player.
    *
    * @param player The player who is currently on this tile.
+   * @throws InvalidPlayerException if player is null
    */
   public void perform(Player player) {
     if (player == null) {
-      throw new IllegalArgumentException("Player on tile cannot be empty");
+      throw new InvalidPlayerException();
     }
     tileTypeNumber = 0;
   }
@@ -59,4 +63,3 @@ public abstract class CommonTile implements TileJsonSerializer {
    */
   public abstract int getTileType();
 }
-
