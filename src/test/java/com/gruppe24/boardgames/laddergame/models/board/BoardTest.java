@@ -17,9 +17,7 @@ import java.util.HashMap;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-/**
- * {@code BoardTest} is a test class for the {@code Board} class.
- */
+
 class BoardTest {
 
   private Board board;

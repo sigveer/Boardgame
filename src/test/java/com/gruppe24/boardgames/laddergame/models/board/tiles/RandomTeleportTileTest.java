@@ -10,17 +10,12 @@ import com.gruppe24.boardgames.laddergame.models.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-/**
- * {@code RandomTeleportTileTest} is a test class for the {@code RandomTeleportTile} class.
- */
 class RandomTeleportTileTest {
 
   private RandomTeleportTile randomTeleportTile;
   private Player player;
 
-  /**
-   * Sets up the test fixture by creating a new random teleport tile and player before each test.
-   */
+
   @BeforeEach
   void setUp() {
     randomTeleportTile = new RandomTeleportTile(10);
@@ -28,9 +23,6 @@ class RandomTeleportTileTest {
     player.setPosition(10);
   }
 
-  /**
-   * Tests the perform method in the {@code RandomTeleportTile} class.
-   */
   @Test
   void perform() {
     int initialPosition = player.getPosition();
