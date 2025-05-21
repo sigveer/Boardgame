@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.gruppe24.exeptions.InvalidDiceValueException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -58,14 +59,14 @@ class DiceTest {
 
   @Test
   void testInvalidNumberOfDice() {
-    assertThrows(IllegalArgumentException.class, () -> new CommonDice(0),
+    assertThrows(InvalidDiceValueException.class, () -> new CommonDice(0),
         "Should throw exception for less than 1 die");
   }
 
   @Test
   void testInvalidDieIndex() {
     dice.rollSum();
-    assertThrows(IllegalArgumentException.class, () -> dice.getDie(3),
+    assertThrows(InvalidDiceValueException.class, () -> dice.getDie(3),
         "Should throw exception for out-of-bounds index");
   }
 }

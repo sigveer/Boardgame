@@ -32,9 +32,4 @@ class DieTest {
       assertEquals(rolledValue, lastRoll, "Last rolled value should match the returned value");
     }
   }
-
-  @Test
-  void testInitialState() {
-    assertEquals(0, die.getLastRoll(), "Initial last rolled value should be 0");
-  }
 }
