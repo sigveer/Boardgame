@@ -6,9 +6,7 @@ import com.gruppe24.boardgames.laddergame.models.Player;
 import com.gruppe24.boardgames.monopolylite.model.Property;
 import com.gruppe24.utils.StyleUtils;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -26,6 +24,9 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+/**
+ * View class for monopoly game.
+ */
 public class View {
 
   private final Stage primaryStage;
@@ -34,9 +35,13 @@ public class View {
   private final CommonDice dice = new CommonDice(1);
   private Cards cards;
   private int currentCardIndex = 0;
-
   private List<Property> properties;
 
+  /**
+   * Constructor for View class.
+   *
+   * @param primaryStage the primary stage.
+   */
   public View(Stage primaryStage) {
     this.primaryStage = primaryStage;
     this.players = new ArrayList<>();
@@ -45,6 +50,9 @@ public class View {
     players.add(tempPlayer);
   }
 
+  /**
+   * Initializeser for view.
+   */
   public void initializeView() {
     primaryStage.setTitle("Monopoly Lite");
 
@@ -77,7 +85,7 @@ public class View {
     dicePane.setPrefHeight(70);
 
     Button diceRoll = new Button("Roll Dice");
-    diceRoll.setOnAction(event -> rollDiceAndMove(gridPane, primaryStage, dicePane));
+    diceRoll.setOnAction(event -> rollDiceAndMove(gridPane, dicePane));
     StyleUtils.styleNormalButton(diceRoll);
 
     Button backToMenu = new Button("Back to Menu");
@@ -115,7 +123,9 @@ public class View {
     primaryStage.show();
   }
 
-  //midlertidig
+  /**
+   * Displays the card viewer.
+   */
   private void showCardViewer() {
     Stage cardViewerStage = new Stage();
     cardViewerStage.initOwner(primaryStage);
@@ -172,7 +182,7 @@ public class View {
     cardViewerStage.show();
   }
 
-  private void rollDiceAndMove(GridPane gridPane, Stage primaryStage, Pane dicePane) {
+  private void rollDiceAndMove(GridPane gridPane, Pane dicePane) {
     int diceValue = rollAndDisplayDice(dicePane);
     diceResultLabel.setText("Rolled: " + diceValue);
 
@@ -262,6 +272,11 @@ public class View {
     }
   }
 
+  /**
+   * Draws the monopoly board.
+   *
+   * @param gridPane the gridpane.
+   */
   public void drawBoard(GridPane gridPane) {
     gridPane.getChildren().clear();
 
@@ -351,7 +366,7 @@ public class View {
 
     placePlayerPieceOnBoard(gridPane, player);
 
-    handlePropertyLanding(player, toPosition);
+    handlePropertyLanding(toPosition);
   }
 
   /**
@@ -415,7 +430,7 @@ public class View {
   /**
    * Handles effects of landing on a property.
    */
-  private void handlePropertyLanding(Player player, int position) {
+  private void handlePropertyLanding(int position) {
     Property property = null;
     for (Property p : properties) {
       if (p.getPosition() == position) {
@@ -440,12 +455,4 @@ public class View {
       }
     }
   }
-
-//  /**
-//   * Sends player directly to jail.
-//   */
-//  private void goToJail(Player player) {
-//    player.setPosition(6);  // Jail position
-//    placePlayerPieceOnBoard(gridPane, player);
-//  }
 }

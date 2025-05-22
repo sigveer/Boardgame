@@ -1,9 +1,11 @@
-package com.gruppe24.boardgames.monopolylite;
+package com.gruppe24.boardgames.monopolylite.view;
 
-import com.gruppe24.boardgames.monopolylite.view.View;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
+/**
+ * View class that initializes javafx in View-class.
+ */
 public class MonopolyApp extends Application {
 
   @Override

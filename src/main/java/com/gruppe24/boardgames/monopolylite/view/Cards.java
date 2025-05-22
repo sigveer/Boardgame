@@ -12,16 +12,29 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
+/**
+ * Represent the cards in monopoly lite.
+ */
 public class Cards {
 
-  private List<Node> propertyCards = new ArrayList<>();
-  private List<Node> chanceCards = new ArrayList<>();
+  private final List<Node> propertyCards = new ArrayList<>();
+  private final List<Node> chanceCards = new ArrayList<>();
 
+  /**
+   * Constructor for monopoly cards.
+   *
+   * @param properties the properties in the game.
+   */
   public Cards(List<Property> properties) {
     createPropertyCards(properties);
     createChanceCard();
   }
 
+  /**
+   * Adds property cards into a list propertyCards.
+   *
+   * @param properties the properties in monopoly.
+   */
   private void createPropertyCards(List<Property> properties) {
     for (Property property : properties) {
       if (property.getPrice() > 0) {
@@ -30,15 +43,9 @@ public class Cards {
     }
   }
 
-  public void createChanceCard() {
-    chanceCards.add(createChanceCardNode("Advance to GO", "Collect kr 200"));
-    chanceCards.add(createChanceCardNode("Bank pays you dividend", "Receive kr 50"));
-    chanceCards.add(createChanceCardNode("Pay school fees", "Pay kr 150"));
-    chanceCards.add(createChanceCardNode("Speeding fine", "Pay kr 100"));
-    chanceCards.add(createChanceCardNode("Go to Jail", "Do not pass GO, do not collect kr 200"));
-    chanceCards.add(createChanceCardNode("Building loan matures", "Receive kr 150"));
-  }
-
+  /**
+   * PART OF createPropertyCards-method.
+   */
   private Node createPropertyCardNode(Property property) {
     StackPane cardPane = new StackPane();
     cardPane.setMaxWidth(325);
@@ -50,8 +57,6 @@ public class Cards {
     content.setAlignment(Pos.TOP_CENTER);
     content.setPadding(new Insets(20));
 
-    // Create color header with stacked text
-    StackPane colorHeader = new StackPane();
     Rectangle colorBar = new Rectangle(260, 70);
     colorBar.setFill(Color.web(property.getColor()));
     colorBar.setStroke(Color.BLACK);
@@ -65,6 +70,8 @@ public class Cards {
     Label nameLabel = new Label(property.getName());
     nameLabel.setStyle("-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: black;");
 
+    // Create color header with stacked text
+    StackPane colorHeader = new StackPane();
     headerText.getChildren().addAll(titleLabel, nameLabel);
     colorHeader.getChildren().addAll(colorBar, headerText);
 
@@ -80,6 +87,21 @@ public class Cards {
     return cardPane;
   }
 
+  /**
+   * Adds a chance card into the list chanceCards.
+   */
+  public void createChanceCard() {
+    chanceCards.add(createChanceCardNode("Advance to GO", "Collect kr 200"));
+    chanceCards.add(createChanceCardNode("Bank pays you dividend", "Receive kr 50"));
+    chanceCards.add(createChanceCardNode("Pay school fees", "Pay kr 150"));
+    chanceCards.add(createChanceCardNode("Speeding fine", "Pay kr 100"));
+    chanceCards.add(createChanceCardNode("Go to Jail", "Do not pass GO, do not collect kr 200"));
+    chanceCards.add(createChanceCardNode("Building loan matures", "Receive kr 150"));
+  }
+
+  /**
+   * PART OF createChanceCard-method.
+   */
   private Node createChanceCardNode(String title, String description) {
     StackPane cardPane = new StackPane();
     cardPane.setMaxWidth(600);
@@ -110,14 +132,11 @@ public class Cards {
     return cardPane;
   }
 
-  public List<Node> getPropertyCards() {
-    return propertyCards;
-  }
-
-  public List<Node> getChanceCards() {
-    return chanceCards;
-  }
-
+  /**
+   * Get all cards from proprtyCards list.
+   *
+   * @return new list allCards.
+   */
   public List<Node> getAllCards() {
     List<Node> allCards = new ArrayList<>(propertyCards);
     allCards.addAll(chanceCards);

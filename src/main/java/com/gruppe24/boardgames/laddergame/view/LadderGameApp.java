@@ -41,7 +41,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 /**
- * Class that represents the LadderGame.
+ * View class that represents the ladder game.
  */
 public class LadderGameApp extends Application {
 
@@ -57,6 +57,7 @@ public class LadderGameApp extends Application {
   private Label isFrozenLabel;
   private final CommonDice dice = new CommonDice(2);
   private Button diceRollButton;
+
   private final GameLogger gameLogger = new GameLogger();
 
   /**
@@ -97,11 +98,12 @@ public class LadderGameApp extends Application {
     this.ladderGameController = new LadderGameController();
     this.board = customBoard;
     this.players = players;
+
     GameSubject.gameSubjectInstance().registerListener(gameLogger);
   }
 
   /**
-   * Main method to start the application.
+   * Start method to launch the ladder game.
    *
    * @param primaryStage the primary stage.
    */
@@ -225,7 +227,6 @@ public class LadderGameApp extends Application {
               + "-fx-border-width: 1.5; -fx-border-color: black;"); // Ladder Up
           case 2 -> stackPane.setStyle("-fx-background-color: #E02929; "
               + "-fx-border-width: 1.5; -fx-border-color: black;"); // Ladder Down
-
           case 3 -> {
             stackPane.setStyle("-fx-background-color: #9D41FF; "
                 + "-fx-border-width: 1.5; -fx-border-color: black;"); // Random Teleport
@@ -297,6 +298,8 @@ public class LadderGameApp extends Application {
    * @param image      the image of the ladder.
    * @param startTile  the starting tile.
    * @param endTile    the ending tile.
+   *
+   * @AI_Assisted Formula for bounds and angle of ladders.
    */
   public void drawLadder(Pane ladderPane, Image image, Node startTile, Node endTile) {
     Bounds startBounds = startTile.localToScene(startTile.getBoundsInLocal());
@@ -338,7 +341,6 @@ public class LadderGameApp extends Application {
     diceRollButton.setDisable(true);
 
     Player currentPlayer = players.get(currentPlayerIndex);
-
     if (handleFrozenPlayer(currentPlayer, dicePane)) {
       diceRollButton.setDisable(false); // Re-enable if player was frozen
       return; // Player was frozen, skip turn
@@ -394,11 +396,9 @@ public class LadderGameApp extends Application {
    */
   private int rollAndDisplayDice(Pane dicePane) {
     int diceValue = dice.rollSum();
-
     diceResultLabel.setText("Rolled: " + diceValue);
 
     int diceValue1 = dice.getDie(0);
-
     ImageView dice1Iv = new ImageView(new Image(dice.dicePath(diceValue1)));
     dice1Iv.setX(40);
     dice1Iv.setY(0);
@@ -406,7 +406,6 @@ public class LadderGameApp extends Application {
     dice1Iv.setFitWidth(75);
 
     int diceValue2 = dice.getDie(1);
-
     ImageView dice2Iv = new ImageView(new Image(dice.dicePath(diceValue2)));
     dice2Iv.setX(125);
     dice2Iv.setY(0);
@@ -415,7 +414,6 @@ public class LadderGameApp extends Application {
 
     dicePane.getChildren().clear();
     dicePane.getChildren().addAll(dice1Iv, dice2Iv);
-
     return diceValue;
   }
 
@@ -435,7 +433,6 @@ public class LadderGameApp extends Application {
       ladderGameController.handlePlayerTurn(currentPlayer, diceValue);
 
       int positionBeforeTeleport = currentPlayer.getPosition();
-
       board.getTile(positionBeforeTeleport).perform(currentPlayer);
 
       return currentPlayer.getPosition();
@@ -449,8 +446,8 @@ public class LadderGameApp extends Application {
    * Animates player movement and handles special tile effects.
    *
    * @AI_Based Next 8 methods has been based on recommendations from AI. This method is the mother
-   * if many sub-methods; createMovementAnimationFrames, calculateInitialLandingPosition,
-   * handleSpecialTileEffects.
+   *      if many sub-methods; createMovementAnimationFrames, calculateInitialLandingPosition,
+   *      handleSpecialTileEffects.
    */
   private void animateAndMove(GridPane gridPane, Player player, int fromPosition, int toPosition,
       int diceSum, Stage primaryStage) {
@@ -476,8 +473,8 @@ public class LadderGameApp extends Application {
    * Method that creates frames for TimeFrame.
    *
    * @AI_Based Method that returns KeyFrames, calculated by an algorythm for finding the row and
-   * column. If overshoot is true, another algorythm is used to calculate its frames moving
-   * backwards
+   *      column. If overshoot is true, another algorythm is used to calculate its frames moving
+   *      backwards
    */
   private List<KeyFrame> createMovementAnimationFrames(Player player, int fromPosition,
       int diceSum, GridPane gridPane) {
@@ -530,12 +527,13 @@ public class LadderGameApp extends Application {
    * Method that creates final frame before any special tile.
    *
    * @AI_Based Returns landing position before any ladder/special tile. Or calculates the overshoot
-   * value.
+   *      value.
    */
   private int calculateInitialLandingPosition(int fromPosition, int diceSum) {
     int boardSize = 90;
     int initialLandingPos = fromPosition + diceSum;
     boolean overshoot = initialLandingPos > boardSize;
+
     return overshoot ? boardSize - (initialLandingPos - boardSize) : initialLandingPos;
   }
 
@@ -543,7 +541,7 @@ public class LadderGameApp extends Application {
    * Post-animation handler for special tile effects, not including ladders.
    *
    * @AI_Based Uses if-statements to check what special tile it is, and gives the apporopriate
-   * response.
+   *      response.
    */
   private void handleSpecialTileEffects(GridPane gridPane, Player player,
       int targetPositionBeforeSpecial, int toPosition, Stage primaryStage) {

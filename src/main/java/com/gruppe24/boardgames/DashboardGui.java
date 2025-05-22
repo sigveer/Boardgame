@@ -5,7 +5,7 @@ import com.gruppe24.boardgames.laddergame.models.Player;
 import com.gruppe24.boardgames.laddergame.models.board.Board;
 import com.gruppe24.boardgames.laddergame.models.board.BoardType;
 import com.gruppe24.boardgames.laddergame.view.LadderGameApp;
-import com.gruppe24.boardgames.monopolylite.MonopolyApp;
+import com.gruppe24.boardgames.monopolylite.view.MonopolyApp;
 import com.gruppe24.exeptions.FileHandlingException;
 import com.gruppe24.exeptions.InvalidPlayerException;
 import com.gruppe24.filehandling.FileHandler;
@@ -18,6 +18,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -41,7 +43,6 @@ public class DashboardGui extends Application {
   private VBox playerList;
   private LadderGameController ladderGameController;
   private Stage stage;
-  private JsonBoardReader jsonBoardReader;
   private final GameLogger gameLogger = new GameLogger();
 
   /**
@@ -55,13 +56,10 @@ public class DashboardGui extends Application {
       throw new IllegalArgumentException("Parameter Stage cannot be empty");
     }
     GameLogger.getLogger().log(Level.INFO, "Dashboard started");
-
-    this.jsonBoardReader = new JsonBoardReader();
-    this.stage = primaryStage;
-    this.ladderGameController = new LadderGameController();
-
     GameSubject.gameSubjectInstance().registerListener(gameLogger);
 
+    this.stage = primaryStage;
+    this.ladderGameController = new LadderGameController();
     this.players = ladderGameController.getPlayerList();
 
     BorderPane mainLayout = new BorderPane();
@@ -80,9 +78,85 @@ public class DashboardGui extends Application {
     mainLayout.setLeft(playerMenu);
 
     Scene mainScene = new Scene(mainLayout, 1000, 850);
-
     primaryStage.setScene(mainScene);
     primaryStage.show();
+  }
+
+  /**
+   * Creates the start meny grids for the four options.
+   *
+   * @param primaryStage primary stage.
+   * @return the games grids.
+   */
+  private GridPane createGamesGrid(Stage primaryStage) {
+    GridPane gamesGrid = new GridPane();
+    gamesGrid.setAlignment(Pos.CENTER);
+    gamesGrid.setVgap(20);
+    gamesGrid.setHgap(20);
+
+    VBox classicLadderGameBox = createGameBox("Classic Laddergame",
+        "pictures/boardpictures/classicBoard.jpg", event -> {
+          new LadderGameApp(ladderGameController
+              .getPlayerList(), BoardType.CLASSIC).start(primaryStage);
+
+          GameSubject.gameSubjectInstance()
+              .notifyListener(EventType.GAME_STARTED, ladderGameController.getPlayerList());
+        });
+
+    VBox specialLadderGameBox = createGameBox("Special Laddergame",
+        "pictures/boardpictures/specialBoard.jpg", event -> {
+          new LadderGameApp(ladderGameController
+              .getPlayerList(), BoardType.SPECIAL).start(primaryStage);
+
+          GameSubject.gameSubjectInstance()
+              .notifyListener(EventType.GAME_STARTED, ladderGameController.getPlayerList());
+        });
+
+    VBox monopolyLiteBox = createGameBox("Monopoly Lite",
+        "pictures/boardpictures/MonopolyLite.png", event ->
+            new MonopolyApp().start(primaryStage)
+    );
+
+    VBox jsonBoardBox = createGameBox("Use your own JSON Board",
+        "pictures/boardpictures/ownJsonBoard.jpg", event ->
+            loadCustomBoard(primaryStage));
+
+    gamesGrid.add(classicLadderGameBox, 0, 0);
+    gamesGrid.add(specialLadderGameBox, 1, 0);
+
+    gamesGrid.add(monopolyLiteBox, 0, 1);
+    gamesGrid.add(jsonBoardBox, 1, 1);
+
+    return gamesGrid;
+  }
+
+  /**
+   * Creates a game box with a title and a button to start the game.
+   *
+   * @param title the title of the game
+   * @return the VBox containing the game information
+   * @AI_Assisted javafx.event.EventHandler, new Insets
+   */
+  private VBox createGameBox(String title, String imagePath, EventHandler<ActionEvent> action) {
+    VBox gameBox = new VBox(10);
+    StyleUtils.stylePanel(gameBox);
+    gameBox.setAlignment(Pos.CENTER);
+    gameBox.setPrefSize(300, 300);
+    gameBox.setPadding(new Insets(5));
+
+    Label gameLabel = new Label(title);
+    gameLabel.setStyle("-fx-font-size: 20px; -fx-text-fill: #ffffff; -fx-font-weight: bold;");
+
+    ImageView gameImage = new ImageView(imagePath);
+    gameImage.setFitWidth(200);
+    gameImage.setFitHeight(200);
+
+    Button playbutton = new Button("Play");
+    StyleUtils.styleNormalButton(playbutton);
+    playbutton.setOnAction(action);
+
+    gameBox.getChildren().addAll(gameLabel, gameImage, playbutton);
+    return gameBox;
   }
 
   /**
@@ -174,9 +248,7 @@ public class DashboardGui extends Application {
     saveLoadBox.getChildren().addAll(savePlayersButton, loadPlayersButton);
 
     playerMenu.getChildren().addAll(playerLabel, buttonBox, playerList, saveLoadBox);
-
     updatePlayerList();
-
     return playerMenu;
   }
 
@@ -193,6 +265,39 @@ public class DashboardGui extends Application {
       HBox playerBox = createPlayerBox(player, i);
       playerList.getChildren().add(playerBox);
     }
+  }
+
+  /**
+   * Creates a player box with an icon, name field, and change image button.
+   *
+   * @param player    the player to display
+   * @param iconIndex the index of the player
+   * @return the HBox containing the player information
+   * @AI_Assisted nameField.textProperty().addListener(...)
+   */
+  private HBox createPlayerBox(Player player, int iconIndex) {
+    HBox playerBox = new HBox(10);
+    playerBox.setAlignment(Pos.CENTER_LEFT);
+    playerBox.setPadding(new Insets(5));
+    playerBox.setStyle("-fx-background-color: #FFFFFF33; -fx-background-radius: 5;");
+
+    ImageView playerIcon = new ImageView(player.getPlayerPiece().getImage());
+    playerIcon.setFitWidth(60);
+    playerIcon.setFitHeight(60);
+
+    TextField nameField = new TextField(player.getName());
+    nameField.textProperty().addListener((observable, oldValue,
+        newValue) -> player.setName(newValue));
+
+    Button changeIconButton = new Button("⟳");
+    StyleUtils.styleNormalButton(changeIconButton);
+    changeIconButton.setOnAction(e -> {
+      ladderGameController.cyclePlayerIcon(iconIndex);
+      updatePlayerList();
+    });
+
+    playerBox.getChildren().addAll(playerIcon, nameField, changeIconButton);
+    return playerBox;
   }
 
   /**
@@ -226,116 +331,6 @@ public class DashboardGui extends Application {
   }
 
   /**
-   * Creates a player box with an icon, name field, and change image button.
-   *
-   * @param player    the player to display
-   * @param iconIndex the index of the player
-   * @return the HBox containing the player information
-   * @AI_Assisted nameField.textProperty().addListener(...)
-   */
-  private HBox createPlayerBox(Player player, int iconIndex) {
-    HBox playerBox = new HBox(10);
-    playerBox.setAlignment(Pos.CENTER_LEFT);
-    playerBox.setPadding(new Insets(5));
-    playerBox.setStyle("-fx-background-color: #FFFFFF33; -fx-background-radius: 5;");
-
-    ImageView playerIcon = new ImageView(player.getPlayerPiece().getImage());
-    playerIcon.setFitWidth(60);
-    playerIcon.setFitHeight(60);
-
-    TextField nameField = new TextField(player.getName());
-    nameField.textProperty().addListener((observable, oldValue,
-        newValue) -> player.setName(newValue));
-
-    Button changeIconButton = new Button("⟳");
-    StyleUtils.styleNormalButton(changeIconButton);
-    changeIconButton.setOnAction(e -> {
-      ladderGameController.cyclePlayerIcon(iconIndex);
-      updatePlayerList();
-    });
-
-    playerBox.getChildren().addAll(playerIcon, nameField, changeIconButton);
-
-    return playerBox;
-  }
-
-  /**
-   * Creates the start meny grids for the four options.
-   *
-   * @param primaryStage primary stage.
-   * @return the games grids.
-   */
-  private GridPane createGamesGrid(Stage primaryStage) {
-    GridPane gamesGrid = new GridPane();
-    gamesGrid.setAlignment(Pos.CENTER);
-    gamesGrid.setVgap(20);
-    gamesGrid.setHgap(20);
-
-    VBox classicLadderGameBox = createGameBox("Classic Laddergame",
-        "pictures/boardpictures/classicBoard.jpg", event -> {
-          new LadderGameApp(ladderGameController.getPlayerList(), BoardType.CLASSIC).start(primaryStage);
-
-          GameSubject.gameSubjectInstance().notifyListener(EventType.GAME_STARTED, ladderGameController.getPlayerList());
-        });
-
-    VBox specialLadderGameBox = createGameBox("Special Laddergame",
-        "pictures/boardpictures/specialBoard.jpg", event -> {
-          new LadderGameApp(ladderGameController.getPlayerList(), BoardType.SPECIAL).start(primaryStage);
-
-          GameSubject.gameSubjectInstance().notifyListener(EventType.GAME_STARTED, ladderGameController.getPlayerList());
-        });
-
-    VBox monopolyLiteBox = createGameBox("Monopoly Lite",
-        "pictures/boardpictures/MonopolyLite.png", event ->
-            new MonopolyApp().start(primaryStage)
-    );
-
-    VBox jsonBoardBox = createGameBox("Use your own JSON Board",
-        "pictures/boardpictures/ownJsonBoard.jpg", event ->
-            loadCustomBoard(primaryStage));
-
-    gamesGrid.add(classicLadderGameBox, 0, 0);
-    gamesGrid.add(specialLadderGameBox, 1, 0);
-
-    gamesGrid.add(monopolyLiteBox, 0, 1);
-    gamesGrid.add(jsonBoardBox, 1, 1);
-
-    return gamesGrid;
-  }
-
-  /**
-   * Creates a game box with a title and a button to start the game.
-   *
-   * @param title the title of the game
-   * @return the VBox containing the game information
-   * @AI_Assisted javafx.event.EventHandler, new Insets
-   */
-  private VBox createGameBox(String title, String imagePath,
-      javafx.event.EventHandler<javafx.event.ActionEvent> action) {
-
-    VBox gameBox = new VBox(10);
-    gameBox.setAlignment(Pos.CENTER);
-    StyleUtils.stylePanel(gameBox);
-    gameBox.setPrefSize(300, 300);
-    gameBox.setPadding(new Insets(5));
-
-    Label gameLabel = new Label(title);
-    gameLabel.setStyle("-fx-font-size: 20px; -fx-text-fill: #ffffff; -fx-font-weight: bold;");
-
-    ImageView gameImage = new ImageView(imagePath);
-
-    gameImage.setFitWidth(200);
-    gameImage.setFitHeight(200);
-
-    Button playbutton = new Button("Play");
-    StyleUtils.styleNormalButton(playbutton);
-    playbutton.setOnAction(action);
-
-    gameBox.getChildren().addAll(gameLabel, gameImage, playbutton);
-    return gameBox;
-  }
-
-  /**
    * Displays an alert with the given message.
    *
    * @param message The message to be displayed in the alert.
@@ -354,6 +349,7 @@ public class DashboardGui extends Application {
    * @param primaryStage the primary stage.
    */
   private void loadCustomBoard(Stage primaryStage) {
+    JsonBoardReader jsonBoardReader = new JsonBoardReader();
     Board customBoard = jsonBoardReader.loadCustomBoard(primaryStage);
     if (customBoard != null) {
       startLadderGameWithCustomBoard(primaryStage, customBoard);

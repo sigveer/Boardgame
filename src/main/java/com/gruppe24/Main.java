@@ -7,7 +7,7 @@ import java.util.logging.Level;
 /**
  * Main class to start the application.
  * This class is the entry point of the application.
- * It launches the MenuGui and logs when the application is closed.
+ * It launches the DashBoardGUI and logs when the application is closed.
  */
 public class Main {
 
