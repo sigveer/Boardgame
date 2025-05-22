@@ -428,7 +428,6 @@ public class View {
       }
     }
 
-    // Place all players on the board
     for (Player player : controller.getPlayers()) {
       placePlayerPieceOnBoard(player);
     }

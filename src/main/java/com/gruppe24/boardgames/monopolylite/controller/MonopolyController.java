@@ -37,21 +37,18 @@ public class MonopolyController {
    * @param player the player to bankrupt
    */
   public void bankruptPlayer(Player player) {
-    // Remove player from active players
     if (players.contains(player)) {
       bankruptPlayers.add(player);
       players.remove(player);
 
-      // Release all properties owned by this player
       for (Property property : properties) {
         if (property.getOwner() == player) {
           property.setOwner(null);
         }
       }
 
-      // Adjust current player index if needed
       if (players.isEmpty()) {
-        return; // Game is over
+        return;
       } else if (currentPlayerIndex >= players.size()) {
         currentPlayerIndex = 0;
       }
