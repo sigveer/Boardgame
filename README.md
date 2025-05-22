@@ -1,40 +1,83 @@
-[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/fcBMQdAa)
-# idatx1005 ToDo'it
+# Boardgame
 
-## Description and features
-This project is a Java application that uses Maven for build automation. 
-The application is a simple and fun game hub where you can play ladder game and a elementary monopoly game. 
-It is possible for the player to upload their own ladder game board from a JSON-file. 
-The application is built using the MVC design pattern. 
-The graphic user interface allows smooth and simple use of the application.
+## Beskrivelse
+Dette er et brettspill-prosjekt utviklet i Java. Prosjektet gir brukere muligheten til å spille forskjellige brettspill gjennom et programmatisk grensesnitt.
 
-## Technologies Used
-- Java 
+## Innholdsfortegnelse
+- [Installasjon](#installasjon)
+- [Bruk](#bruk)
+- [Funksjoner](#funksjoner)
+- [Teknologier](#teknologier)
+- [Prosjektstruktur](#prosjektstruktur)
+- [Bidrag](#bidrag)
+- [Lisens](#lisens)
+- [Kontakt](#kontakt)
+
+## Installasjon
+For å installere og kjøre dette prosjektet lokalt, følg disse trinnene:
+
+1. Klone prosjektet
+   ```bash
+   git clone https://github.com/sigveer/Boardgame.git
+   ```
+
+2. Naviger til prosjektmappen
+   ```bash
+   cd Boardgame
+   ```
+
+3. Kompiler prosjektet (avhengig av din byggprosess)
+   ```bash
+   mvn clean install
+   ```
+
+4. Kjør applikasjonen
+   ```bash
+   mvn javafx:run 
+
+   eller
+   
+   java -jar target/boardgame.jar
+   ```
+
+## Bruk
+Beskrivelse av hvordan man bruker applikasjonen:
+
+1. Start programmet ved å følge installasjonsanvisningene.
+
+2. Velg spillere og ønsket brettspill fra hovedmenyen.
+
+![image](https://github.com/user-attachments/assets/d1aa05e0-bee1-4dee-9d05-d0d3924866e1)
+
+   
+3.Kast terning og spill i vei!
+
+![image](https://github.com/user-attachments/assets/e13e0c81-e5b3-47a4-a1dc-6653c1a917b6)
+
+
+## Funksjoner
+- Støtte for flere forskjellige brettspill
+- Laste opp/ned egne CSV filer for spillere
+- Laste opp egendefinert JSON brett til stige spill
+- Enkelt brukergrensesnitt for spillinteraksjon
+- Muligheter for både enkeltspiller og flerspiller
+
+## Teknologier
+- Java og JavaFX
 - Maven
-- JavaFX
 
-## Prerequisites
-- IntelliJ IDEA (recommended)
-- Latest maven version
-- Java 21
+## Prosjektstruktur
 
-## Setup
-1. Clone the repository: ```git clone https://github.com/sigveer/BoardGame.git```
-2. Navigate to the project directory: ```cd Boardgame```
-3. Open the project in IntelliJ IDEA.
-
-4. Build the project using Maven: ```mvn clean install``` 
+![Skjermbilde 2025-05-22 183602](https://github.com/user-attachments/assets/780660da-dcf3-4ce6-ba7a-813bfb2e5cad)
+![Skjermbilde 2025-05-22 183611](https://github.com/user-attachments/assets/c1a0ff65-d77d-4d69-b4ec-ed912c212b7c)
 
 
+## Bidrag
+Hvis du ønsker å bidra til prosjektet, følg disse trinnene:
 
-## Running the Application
-Either run the ```MainApplication.java``` by clicking the run button, 
-or use the terminal with this command: ```mvn javafx:run```
-If this does not work try: ```mvn clean javafx:run```
-
-
-## Authors
-- Sigve Eiriksen
-- Ingve Værnes
-
-
+1. Fork repositoriet
+2. Opprett en ny branch (`git checkout -b feature/featurename`)
+3. Gjør dine endringer
+4. Commit endringene (`git commit -m 'Legg til en ny funksjon'`)
+5. Push til branchen (`git push origin feature/featurename`)
+6. Åpne en Pull Request
