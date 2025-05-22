@@ -1,6 +1,6 @@
 package com.gruppe24.boardgames;
 
-import com.gruppe24.boardgames.laddergame.controller.PlayerController;
+import com.gruppe24.boardgames.laddergame.controller.LadderGameController;
 import com.gruppe24.boardgames.laddergame.models.Player;
 import com.gruppe24.boardgames.laddergame.models.board.Board;
 import com.gruppe24.boardgames.laddergame.models.board.BoardType;
@@ -39,7 +39,7 @@ public class DashboardGui extends Application {
 
   private List<Player> players;
   private VBox playerList;
-  private PlayerController playerController;
+  private LadderGameController ladderGameController;
   private Stage stage;
   private JsonBoardReader jsonBoardReader;
   private final GameLogger gameLogger = new GameLogger();
@@ -58,11 +58,11 @@ public class DashboardGui extends Application {
 
     this.jsonBoardReader = new JsonBoardReader();
     this.stage = primaryStage;
-    this.playerController = new PlayerController();
+    this.ladderGameController = new LadderGameController();
 
     GameSubject.gameSubjectInstance().registerListener(gameLogger);
 
-    this.players = playerController.getPlayerList();
+    this.players = ladderGameController.getPlayerList();
 
     BorderPane mainLayout = new BorderPane();
     mainLayout.setStyle("-fx-background-color: #3a5ad7;");
@@ -109,7 +109,7 @@ public class DashboardGui extends Application {
     StyleUtils.styleNormalButton(addPlayerButton);
     addPlayerButton.setOnAction(e -> {
       try {
-        playerController.addPlayer();
+        ladderGameController.addPlayer();
       } catch (InvalidPlayerException ex) {
         GameLogger.getLogger().log(Level.WARNING, "Error adding player, {0}", ex.getMessage());
         return;
@@ -121,7 +121,7 @@ public class DashboardGui extends Application {
     StyleUtils.styleNormalButton(removePlayerButton);
     removePlayerButton.setOnAction(e -> {
       try {
-        playerController.removePlayer();
+        ladderGameController.removePlayer();
       } catch (InvalidPlayerException ex) {
         GameLogger.getLogger().log(Level.WARNING, "Error removing player, {0}", ex.getMessage());
         return;
@@ -184,7 +184,7 @@ public class DashboardGui extends Application {
    * Updates the list of players in GUI.
    */
   private void updatePlayerList() {
-    this.players = playerController.getPlayerList();
+    this.players = ladderGameController.getPlayerList();
 
     playerList.getChildren().clear();
 
@@ -218,9 +218,9 @@ public class DashboardGui extends Application {
    * @param loadedPlayers The list of players to populate the fields with.
    */
   private void populateFieldsWithPlayers(List<Player> loadedPlayers) {
-    playerController.setPlayersList(loadedPlayers);
+    ladderGameController.setPlayersList(loadedPlayers);
 
-    this.players = playerController.getPlayerList();
+    this.players = ladderGameController.getPlayerList();
 
     updatePlayerList();
   }
@@ -250,7 +250,7 @@ public class DashboardGui extends Application {
     Button changeIconButton = new Button("⟳");
     StyleUtils.styleNormalButton(changeIconButton);
     changeIconButton.setOnAction(e -> {
-      playerController.cyclePlayerIcon(iconIndex);
+      ladderGameController.cyclePlayerIcon(iconIndex);
       updatePlayerList();
     });
 
@@ -273,16 +273,16 @@ public class DashboardGui extends Application {
 
     VBox classicLadderGameBox = createGameBox("Classic Laddergame",
         "pictures/boardpictures/classicBoard.jpg", event -> {
-          new LadderGameApp(playerController.getPlayerList(), BoardType.CLASSIC).start(primaryStage);
+          new LadderGameApp(ladderGameController.getPlayerList(), BoardType.CLASSIC).start(primaryStage);
 
-          GameSubject.gameSubjectInstance().notifyListener(EventType.GAME_STARTED, playerController.getPlayerList());
+          GameSubject.gameSubjectInstance().notifyListener(EventType.GAME_STARTED, ladderGameController.getPlayerList());
         });
 
     VBox specialLadderGameBox = createGameBox("Special Laddergame",
         "pictures/boardpictures/specialBoard.jpg", event -> {
-          new LadderGameApp(playerController.getPlayerList(), BoardType.SPECIAL).start(primaryStage);
+          new LadderGameApp(ladderGameController.getPlayerList(), BoardType.SPECIAL).start(primaryStage);
 
-          GameSubject.gameSubjectInstance().notifyListener(EventType.GAME_STARTED, playerController.getPlayerList());
+          GameSubject.gameSubjectInstance().notifyListener(EventType.GAME_STARTED, ladderGameController.getPlayerList());
         });
 
     VBox monopolyLiteBox = createGameBox("Monopoly Lite",

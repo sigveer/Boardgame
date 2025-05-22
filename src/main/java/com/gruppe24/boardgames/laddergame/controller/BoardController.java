@@ -6,11 +6,7 @@ import com.gruppe24.boardgames.laddergame.models.board.BoardType;
 import com.gruppe24.exeptions.InvalidBoardException;
 
 /**
- * Controller class that manages the game board interactions in ladderGame. It handles:
- * <li>game logic</li>
- * <li>player movment</li>
- * <li>tile actions</li>
- * <li>win conditions</li>
+ * Controller class that manages the game board in ladderGame by deciding which board to use.
  */
 public class BoardController {
 

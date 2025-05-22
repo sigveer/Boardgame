@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.mock;
 
 import com.gruppe24.boardgames.laddergame.controller.BoardController;
-import com.gruppe24.boardgames.laddergame.controller.PlayerController;
+import com.gruppe24.boardgames.laddergame.controller.LadderGameController;
 import com.gruppe24.boardgames.laddergame.models.Player;
 import com.gruppe24.boardgames.laddergame.models.board.Board;
 import com.gruppe24.exeptions.InvalidPlayerException;
@@ -20,12 +20,12 @@ class CommonGameControllerTest {
   GameSubject mockGameSubject;
   BoardController mockBoardController;
   CommonGameController commonGameController;
-  PlayerController playerController;
+  LadderGameController ladderGameController;
 
   @BeforeEach
   void setUp() {
     mockGameSubject = mock(GameSubject.class);
-    playerController = new PlayerController();
+    ladderGameController = new LadderGameController();
     mockBoardController = new BoardController(new Board());
     commonGameController = new CommonGameController() {
       @Override
@@ -33,17 +33,13 @@ class CommonGameControllerTest {
         return mock(CommonPlayer.class);
       }
 
-      @Override
-      protected int getMaxPlayers() {
-        return 5;
-      }
     };
   }
 
   @Test
   void testAddPlayer() {
-    playerController.addPlayer();
-    List<Player> players = playerController.getPlayerList();
+    ladderGameController.addPlayer();
+    List<Player> players = ladderGameController.getPlayerList();
 
     assertEquals(2, players.size());
     assertEquals("Player 2", players.get(1).getName());
@@ -71,7 +67,7 @@ class CommonGameControllerTest {
 
   @Test
   void testGetPlayerList() {
-    List<Player> players = playerController.getPlayerList();
+    List<Player> players = ladderGameController.getPlayerList();
     assertNotNull(players);
     assertEquals(1, players.size());
   }

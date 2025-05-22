@@ -34,11 +34,4 @@ class BoardControllerTest {
   void testGetBoard() {
     assertNotNull(boardController.getBoard());
   }
-
-  @Test
-  void testIsWinningPosition() {
-    assertTrue(boardController.isWinningPosition(90));
-    assertFalse(boardController.isWinningPosition(89));
-    assertFalse(boardController.isWinningPosition(91));
-  }
 }

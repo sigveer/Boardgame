@@ -24,6 +24,7 @@ public abstract class CommonGameController {
 
   protected List<CommonPlayer> players;
   private int winCondition;
+  private int maxPlayers;
   private Board currentBoard;
   private int checkTileType = 0;
   private int specialTilePosition;
@@ -44,14 +45,6 @@ public abstract class CommonGameController {
    * @return the created player
    */
   protected abstract CommonPlayer createPlayer(String name, int iconIndex);
-
-  /**
-   * Abstract method for getting the maximum number of players allowed in the game. This method must
-   * be implemented by subclasses to specify the maximum number of players.
-   *
-   * @return the maximum number of players
-   */
-  protected abstract int getMaxPlayers();
 
   /**
    * Initializes the game with the board controller. This must be called before starting the game.
@@ -142,16 +135,13 @@ public abstract class CommonGameController {
     if (index >= 0 && index < players.size()) {
       CommonPlayer player = players.get(index);
 
-      // Extract logic from cycleToNextIcon
       String[] paths = CommonPlayer.getIconPaths();
       int newIconIndex = (player.getIconIndex() + 1) % paths.length;
       String nextPath = paths[newIconIndex];
 
-      // Create new image
       Image newIcon = new Image(
           Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(nextPath)));
 
-      // Update player properties
       player.setCurrentIconIndex(newIconIndex);
       player.setIconPath(nextPath);
       player.setIcon(newIcon);
@@ -225,5 +215,23 @@ public abstract class CommonGameController {
    */
   public void setWinCondition(int winCondition) {
     this.winCondition = winCondition;
+  }
+
+  /**
+   * Getter method for maxPlayers.
+   *
+   * @return maxPlayers.
+   */
+  public int getMaxPlayers() {
+    return this.maxPlayers;
+  }
+
+  /**
+   * Setter method for maxPlayers.
+   *
+   * @param maxPlayers the maximum number of players.
+   */
+  public void setMaxPlayers(int maxPlayers) {
+    this.maxPlayers = maxPlayers;
   }
 }

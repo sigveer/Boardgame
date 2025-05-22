@@ -3,7 +3,7 @@ package com.gruppe24.boardgames.laddergame.view;
 import com.gruppe24.boardgames.DashboardGui;
 import com.gruppe24.boardgames.commonclasses.CommonDice;
 import com.gruppe24.boardgames.laddergame.controller.BoardController;
-import com.gruppe24.boardgames.laddergame.controller.PlayerController;
+import com.gruppe24.boardgames.laddergame.controller.LadderGameController;
 import com.gruppe24.boardgames.laddergame.models.Player;
 import com.gruppe24.boardgames.laddergame.models.board.Board;
 import com.gruppe24.boardgames.laddergame.models.board.BoardType;
@@ -45,7 +45,7 @@ public class LadderGameApp extends Application {
 
   private final Board board;
   BoardController boardController;
-  PlayerController playerController;
+  LadderGameController ladderGameController;
   private final List<Player> players;
   private static final int tileSize = 75;
   private int currentPlayerIndex = 0;
@@ -71,7 +71,7 @@ public class LadderGameApp extends Application {
       throw new IllegalArgumentException("Parameter boardType cannot be empty");
     }
     this.boardController = new BoardController(boardType);
-    this.playerController = new PlayerController();
+    this.ladderGameController = new LadderGameController();
     this.board = boardController.getBoard();
     this.players = players;
 
@@ -92,7 +92,7 @@ public class LadderGameApp extends Application {
       throw new IllegalArgumentException("Parameter customBoard cannot be empty");
     }
     this.boardController = new BoardController(customBoard);
-    this.playerController = new PlayerController();
+    this.ladderGameController = new LadderGameController();
     this.board = customBoard;
     this.players = players;
     GameSubject.gameSubjectInstance().registerListener(gameLogger);
@@ -110,7 +110,7 @@ public class LadderGameApp extends Application {
     }
 
     BoardController boardController = new BoardController(BoardType.CLASSIC);
-    this.playerController.initializeGame(boardController);
+    this.ladderGameController.initializeGame(boardController);
 
     players.forEach(player -> player.setIcon(player.getIcon()));
 
@@ -430,7 +430,7 @@ public class LadderGameApp extends Application {
 
     // Special handling for teleport tiles
     if (board.getTileType(targetPositionBeforeSpecial) == 3) {
-      playerController.handlePlayerTurn(currentPlayer, diceValue);
+      ladderGameController.handlePlayerTurn(currentPlayer, diceValue);
 
       int positionBeforeTeleport = currentPlayer.getPosition();
 
@@ -438,7 +438,7 @@ public class LadderGameApp extends Application {
 
       return currentPlayer.getPosition();
     } else {
-      playerController.handlePlayerTurn(currentPlayer, diceValue);
+      ladderGameController.handlePlayerTurn(currentPlayer, diceValue);
       return currentPlayer.getPosition();
     }
   }
@@ -580,7 +580,7 @@ public class LadderGameApp extends Application {
    * PART OF handleSpecialTileEffects(). Checks and logs if player has won.
    */
   private void checkWinner(Player player, int position, Stage primaryStage) {
-    if (position == playerController.getWinCondition()) {
+    if (position == ladderGameController.getWinCondition()) {
       Alert alert = new Alert(AlertType.INFORMATION);
       alert.setTitle("Game Over");
       alert.setHeaderText(null);
