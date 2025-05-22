@@ -38,7 +38,6 @@ public class View {
   private Label playerInfoLabel;
   private Label currentPlayerLabel;
   private GridPane boardGridPane;
-  private VBox playerListBox;
 
   /**
    * Constructor for View class.
@@ -70,8 +69,6 @@ public class View {
     boardGridPane.setAlignment(Pos.CENTER);
 
     boardContainer.getChildren().addAll(boardGridPane);
-
-    // Control panel (right section)
     VBox controlPanel = createControlPanel();
 
     mainLayout.setCenter(boardContainer);
@@ -153,187 +150,6 @@ public class View {
   }
 
   /**
-   * Displays dice roll.
-   */
-  private void displayDiceRoll(int diceValue, Pane dicePane) {
-    diceResultLabel.setText("Rolled: " + diceValue);
-
-    int diceValue1 = controller.getDice().getDie(0);
-    ImageView dice1Iv = new ImageView(new Image(controller.getDice().dicePath(diceValue1)));
-    dice1Iv.setX(80);
-    dice1Iv.setY(0);
-    dice1Iv.setFitHeight(75);
-    dice1Iv.setFitWidth(75);
-
-    dicePane.getChildren().clear();
-    dicePane.getChildren().addAll(dice1Iv);
-  }
-
-  /**
-   * Updates player info in UI.
-   */
-  private void updatePlayerInfo() {
-    Player current = controller.getCurrentPlayer();
-    if (current != null) {
-      currentPlayerLabel.setText("Current Player: " + current.getName());
-      playerInfoLabel.setText(current.getName() + " - kr " + current.getMoney());
-    }
-  }
-
-  /**
-   * Draws the monopoly board.
-   */
-  public void drawBoard() {
-    boardGridPane.getChildren().clear();
-
-    List<Property> properties = controller.getProperties();
-
-    for (int i = 0; i < 7; i++) {
-      for (int j = 0; j < 7; j++) {
-        StackPane tile = new StackPane();
-
-        // Outer tiles larger than inner tiles
-        if (i == 0 || i == 6 || j == 0 || j == 6) {
-          tile.setPrefSize(120, 120);
-        } else {
-          tile.setPrefSize(80, 80);
-        }
-
-        // Only add tiles around the border to create the board path
-        if (i == 0 || i == 6 || j == 0 || j == 6) {
-          int position = calculatePosition(i, j);
-          if (position >= 0 && position < properties.size()) {
-            Property property = properties.get(position);
-            tile = createPropertyTile(property);
-          } else {
-            tile.setStyle(
-                "-fx-background-color: #f0f0f0; -fx-border-color: #cccccc; "
-                    + "-fx-border-width: 2px;");
-          }
-        } else {
-          tile.setStyle("-fx-background-color: #c6efd1; -fx-border-color: transparent; "
-              + "-fx-border-width: 2px;");
-        }
-        boardGridPane.add(tile, j, i);
-      }
-    }
-
-    // Place all players on the board
-    for (Player player : controller.getPlayers()) {
-      placePlayerPieceOnBoard(player);
-    }
-  }
-
-  /**
-   * Creates a property tile UI.
-   */
-  private StackPane createPropertyTile(Property property) {
-    StackPane tile = new StackPane();
-    tile.setPrefSize(120, 120);
-    tile.setStyle("-fx-background-color: white; -fx-border-color: black; -fx-border-width: 2px;");
-
-    VBox content = new VBox(5);
-    content.setAlignment(Pos.TOP_CENTER);
-
-    Rectangle colorRect = new Rectangle(120, 30);
-    colorRect.setFill(javafx.scene.paint.Color.web(property.getColor()));
-
-    Label nameLabel = new Label(property.getName());
-    nameLabel.setStyle("-fx-font-size: 14px; -fx-font-weight: bold;");
-    nameLabel.setWrapText(true);
-    nameLabel.setMaxWidth(115);
-    nameLabel.setAlignment(Pos.CENTER);
-
-    Label priceLabel = new Label("kr " + property.getPrice());
-    priceLabel.setStyle("-fx-font-size: 14px;");
-
-    content.getChildren().addAll(colorRect, nameLabel, priceLabel);
-    tile.getChildren().add(content);
-
-    // If property is owned, add owner indicator
-    if (property.isPurchased()) {
-      updatePropertyTileOwnership(tile, property);
-    }
-
-    return tile;
-  }
-
-  /**
-   * Adds ownership indicator to property tile.
-   */
-  private void updatePropertyTileOwnership(StackPane tile, Property property) {
-    Circle ownerIndicator = new Circle(5);
-    ownerIndicator.setFill(Color.RED); // Player indicator color
-    ownerIndicator.setStroke(Color.BLACK);
-    ownerIndicator.setTranslateX(45);
-    ownerIndicator.setTranslateY(45);
-
-    tile.getChildren().add(ownerIndicator);
-  }
-
-  /**
-   * Calculates position based on grid coordinates.
-   */
-  private int calculatePosition(int i, int j) {
-    if (i == 6) {
-      return 6 - j;
-    } else if (j == 0) {
-      return 7 + (5 - i);
-    } else if (i == 0) {
-      return j == 6 ? 18 : 13 + (j - 1);
-    } else if (j == 6) {
-      return 19 + (i - 1);
-    } else {
-      return -1; // Center of the board
-    }
-  }
-
-  /**
-   * Places player piece on board specifically designed for a monopoly board.
-   */
-  public void placePlayerPieceOnBoard(Player player) {
-    int position = player.getPosition();
-
-    int row;
-    int col;
-
-    if (position <= 6) {
-      row = 6;
-      col = 6 - position;
-    } else if (position <= 12) {
-      row = 6 - (position - 6);
-      col = 0;
-    } else if (position <= 18) {
-      row = 0;
-      col = position - 12;
-    } else {
-      row = position - 18;
-      col = 6;
-    }
-    addPlayerPieceToGrid(player, col, row);
-  }
-
-  /**
-   * Adds player piece to grid.
-   */
-  private void addPlayerPieceToGrid(Player player, int col, int row) {
-    if (player.getPlayerPiece() == null) {
-      Image image = new Image("pictures/pieces/piece" + player.getIconIndex() + ".png");
-      player.setIcon(image);
-    }
-
-    // Find the cell at the specified position
-    for (Node node : boardGridPane.getChildren()) {
-      if (node instanceof StackPane
-          && GridPane.getRowIndex(node) == row
-          && GridPane.getColumnIndex(node) == col) {
-        ((StackPane) node).getChildren().add(player.getPlayerPiece());
-        return;
-      }
-    }
-  }
-
-  /**
    * Handles property landing logic.
    */
   private void handlePropertyLanding(Property property) {
@@ -374,6 +190,33 @@ public class View {
     updatePlayerInfo();
   }
 
+  /**
+   * Displays dice roll.
+   */
+  private void displayDiceRoll(int diceValue, Pane dicePane) {
+    diceResultLabel.setText("Rolled: " + diceValue);
+
+    int diceValue1 = controller.getDice().getDie(0);
+    ImageView dice1Iv = new ImageView(new Image(controller.getDice().dicePath(diceValue1)));
+    dice1Iv.setX(80);
+    dice1Iv.setY(0);
+    dice1Iv.setFitHeight(75);
+    dice1Iv.setFitWidth(75);
+
+    dicePane.getChildren().clear();
+    dicePane.getChildren().addAll(dice1Iv);
+  }
+
+  /**
+   * Updates player info in UI.
+   */
+  private void updatePlayerInfo() {
+    Player current = controller.getCurrentPlayer();
+    if (current != null) {
+      currentPlayerLabel.setText("Current Player: " + current.getName());
+      playerInfoLabel.setText(current.getName() + " - kr " + current.getMoney());
+    }
+  }
 
   /**
    * Displays the card viewer.
@@ -547,5 +390,155 @@ public class View {
     Scene scene = new Scene(content, 400, 250);
     purchaseStage.setScene(scene);
     purchaseStage.show();
+  }
+
+  /**
+   * Draws the monopoly board.
+   */
+  public void drawBoard() {
+    boardGridPane.getChildren().clear();
+
+    List<Property> properties = controller.getProperties();
+
+    for (int i = 0; i < 7; i++) {
+      for (int j = 0; j < 7; j++) {
+        StackPane tile = new StackPane();
+
+        if (i == 0 || i == 6 || j == 0 || j == 6) {
+          tile.setPrefSize(120, 120);
+        } else {
+          tile.setPrefSize(80, 80);
+        }
+
+        if (i == 0 || i == 6 || j == 0 || j == 6) {
+          int position = calculatePosition(i, j);
+          if (position >= 0 && position < properties.size()) {
+            Property property = properties.get(position);
+            tile = createPropertyTile(property);
+          } else {
+            tile.setStyle(
+                "-fx-background-color: #f0f0f0; -fx-border-color: #cccccc; "
+                    + "-fx-border-width: 2px;");
+          }
+        } else {
+          tile.setStyle("-fx-background-color: #c6efd1; -fx-border-color: transparent; "
+              + "-fx-border-width: 2px;");
+        }
+        boardGridPane.add(tile, j, i);
+      }
+    }
+
+    // Place all players on the board
+    for (Player player : controller.getPlayers()) {
+      placePlayerPieceOnBoard(player);
+    }
+  }
+
+  /**
+   * Calculates position based on grid coordinates.
+   */
+  private int calculatePosition(int i, int j) {
+    if (i == 6) {
+      return 6 - j;
+    } else if (j == 0) {
+      return 7 + (5 - i);
+    } else if (i == 0) {
+      return j == 6 ? 18 : 13 + (j - 1);
+    } else if (j == 6) {
+      return 19 + (i - 1);
+    } else {
+      return -1; // Center of the board
+    }
+  }
+
+  /**
+   * Creates a property tile UI.
+   */
+  private StackPane createPropertyTile(Property property) {
+    StackPane tile = new StackPane();
+    tile.setPrefSize(120, 120);
+    tile.setStyle("-fx-background-color: white; -fx-border-color: black; -fx-border-width: 2px;");
+
+    VBox content = new VBox(5);
+    content.setAlignment(Pos.TOP_CENTER);
+
+    Rectangle colorRect = new Rectangle(120, 30);
+    colorRect.setFill(javafx.scene.paint.Color.web(property.getColor()));
+
+    Label nameLabel = new Label(property.getName());
+    nameLabel.setStyle("-fx-font-size: 14px; -fx-font-weight: bold;");
+    nameLabel.setWrapText(true);
+    nameLabel.setMaxWidth(115);
+    nameLabel.setAlignment(Pos.CENTER);
+
+    Label priceLabel = new Label("kr " + property.getPrice());
+    priceLabel.setStyle("-fx-font-size: 14px;");
+
+    content.getChildren().addAll(colorRect, nameLabel, priceLabel);
+    tile.getChildren().add(content);
+
+    // If property is owned, add owner indicator
+    if (property.isPurchased()) {
+      updatePropertyTileOwnership(tile, property);
+    }
+
+    return tile;
+  }
+
+  /**
+   * Adds ownership indicator to property tile.
+   */
+  private void updatePropertyTileOwnership(StackPane tile, Property property) {
+    Circle ownerIndicator = new Circle(5);
+    ownerIndicator.setFill(Color.RED); // Player indicator color
+    ownerIndicator.setStroke(Color.BLACK);
+    ownerIndicator.setTranslateX(45);
+    ownerIndicator.setTranslateY(45);
+
+    tile.getChildren().add(ownerIndicator);
+  }
+
+  /**
+   * Places player piece on board with spesific algorytm for monopoly board.
+   */
+  public void placePlayerPieceOnBoard(Player player) {
+    int position = player.getPosition();
+
+    int row;
+    int col;
+
+    if (position <= 6) {
+      row = 6;
+      col = 6 - position;
+    } else if (position <= 12) {
+      row = 6 - (position - 6);
+      col = 0;
+    } else if (position <= 18) {
+      row = 0;
+      col = position - 12;
+    } else {
+      row = position - 18;
+      col = 6;
+    }
+    addPlayerPieceToGrid(player, col, row);
+  }
+
+  /**
+   * Adds player piece to grid.
+   */
+  private void addPlayerPieceToGrid(Player player, int col, int row) {
+    if (player.getPlayerPiece() == null) {
+      Image image = new Image("pictures/pieces/piece" + player.getIconIndex() + ".png");
+      player.setIcon(image);
+    }
+
+    for (Node node : boardGridPane.getChildren()) {
+      if (node instanceof StackPane
+          && GridPane.getRowIndex(node) == row
+          && GridPane.getColumnIndex(node) == col) {
+        ((StackPane) node).getChildren().add(player.getPlayerPiece());
+        return;
+      }
+    }
   }
 }

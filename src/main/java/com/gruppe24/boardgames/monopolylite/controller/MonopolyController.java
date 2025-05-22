@@ -58,6 +58,13 @@ public class MonopolyController {
     }
   }
 
+  /**
+   * Pay rent for a property.
+   *
+   * @param property the property in question.
+   * @param player the player on the property
+   * @return true or false if the player can afford to rent.
+   */
   public boolean payRent(Property property, Player player) {
     if (property.getOwner() == player || !property.isPurchased()) {
       return true; // No rent to pay
@@ -252,8 +259,6 @@ public class MonopolyController {
     property.setOwner(currentPlayer);
     return true;
   }
-
-
 
   /**
    * Advances to the next player.
