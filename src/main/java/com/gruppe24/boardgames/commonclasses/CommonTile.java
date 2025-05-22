@@ -1,22 +1,15 @@
 package com.gruppe24.boardgames.commonclasses;
 
-import com.google.gson.JsonObject;
 import com.gruppe24.boardgames.laddergame.models.Player;
 import com.gruppe24.exeptions.InvalidPlayerException;
-import com.gruppe24.filehandling.TileJsonSerializer;
 
 /**
  * Abstract model class representing a tile on the board.
  */
-public abstract class CommonTile implements TileJsonSerializer {
+public abstract class CommonTile {
 
   protected int position;
   public int tileTypeNumber = 0;
-
-
-  @Override
-  public void addActionToJson(JsonObject tileJson, int tileId) {
-  }
 
   /**
    * Constructor that initializes the normal tile.

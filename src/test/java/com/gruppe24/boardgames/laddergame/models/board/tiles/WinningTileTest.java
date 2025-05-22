@@ -20,15 +20,4 @@ class WinningTileTest {
   void getTileType() {
     assertEquals(-3, winningTile.getTileType());
   }
-
-  @Test
-  void addActionToJson() {
-    JsonObject tileJson = new JsonObject();
-    winningTile.addActionToJson(tileJson, 90);
-
-    JsonObject actionJson = tileJson.getAsJsonObject("action");
-    assertNotNull(actionJson);
-    assertEquals("WinningAction", actionJson.get("type").getAsString());
-    assertEquals("Player wins the game on tile 90", actionJson.get("description").getAsString());
-  }
 }

@@ -1,6 +1,5 @@
 package com.gruppe24.boardgames.laddergame.models.board.tiles;
 
-import com.google.gson.JsonObject;
 import com.gruppe24.boardgames.laddergame.models.Player;
 
 /**
@@ -16,16 +15,6 @@ public class LadderUpTile extends SpecialTile {
   @Override
   public int getTileType() {
     return 1;
-  }
-
-  @Override
-  public void addActionToJson(JsonObject tileJson, int tileId) {
-    JsonObject actionJson = new JsonObject();
-    actionJson.addProperty("type", "LadderUpAction");
-    actionJson.addProperty("destinationTileId", getDestination());
-    actionJson.addProperty("description",
-        "Ladder from " + tileId + " to " + getDestination());
-    tileJson.add("action", actionJson);
   }
 
   /**

@@ -1,6 +1,5 @@
 package com.gruppe24.boardgames.laddergame.models.board.tiles;
 
-import com.google.gson.JsonObject;
 import com.gruppe24.boardgames.laddergame.models.Player;
 
 /**
@@ -16,15 +15,6 @@ public class FrozenTile extends SpecialTile {
   @Override
   public int getTileType() {
     return 4;
-  }
-
-  @Override
-  public void addActionToJson(JsonObject tileJson, int tileId) {
-    JsonObject actionJson = new JsonObject();
-    actionJson.addProperty("type", "FrozenAction");
-    actionJson.addProperty("description",
-        "Player gets frozen on tile " + tileId + " for 1 turn");
-    tileJson.add("action", actionJson);
   }
 
   /**

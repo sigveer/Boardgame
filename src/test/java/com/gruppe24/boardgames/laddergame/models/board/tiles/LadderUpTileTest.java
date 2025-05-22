@@ -30,16 +30,4 @@ class LadderUpTileTest {
   void testGetTileType() {
     assertEquals(1, ladderUpTile.getTileType());
   }
-
-  @Test
-  void testAddActionToJson() {
-    JsonObject tileJson = new JsonObject();
-    ladderUpTile.addActionToJson(tileJson, 5);
-
-    JsonObject actionJson = tileJson.getAsJsonObject("action");
-    assertNotNull(actionJson);
-    assertEquals("LadderUpAction", actionJson.get("type").getAsString());
-    assertEquals(10, actionJson.get("destinationTileId").getAsInt());
-    assertEquals("Ladder from 5 to 10", actionJson.get("description").getAsString());
-  }
 }
