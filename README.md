@@ -10,8 +10,6 @@ Dette er et brettspill-prosjekt utviklet i Java. Prosjektet gir brukere mulighet
 - [Teknologier](#teknologier)
 - [Prosjektstruktur](#prosjektstruktur)
 - [Bidrag](#bidrag)
-- [Lisens](#lisens)
-- [Kontakt](#kontakt)
 
 ## Installasjon
 For å installere og kjøre dette prosjektet lokalt, følg disse trinnene:
@@ -33,10 +31,12 @@ For å installere og kjøre dette prosjektet lokalt, følg disse trinnene:
 
 4. Kjør applikasjonen
    ```bash
-   mvn javafx:run 
+   mvn javafx:run
+   ```
 
    eller
-   
+
+   ```bash
    java -jar target/boardgame.jar
    ```
 
