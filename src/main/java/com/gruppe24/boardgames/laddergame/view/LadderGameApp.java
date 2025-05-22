@@ -116,7 +116,6 @@ public class LadderGameApp extends Application {
 
     primaryStage.setTitle("Laddergame Classic");
 
-    // main layout container using BorderPane
     BorderPane mainLayout = new BorderPane();
     mainLayout.setStyle("-fx-background-color: #3a5ad7;");
 
@@ -448,8 +447,8 @@ public class LadderGameApp extends Application {
    * Animates player movement and handles special tile effects.
    *
    * @AI_Based Next 8 methods has been based on recommendations from AI. This method is the mother
-   *      if many sub-methods; createMovementAnimationFrames, calculateInitialLandingPosition,
-   *      handleSpecialTileEffects.
+   * if many sub-methods; createMovementAnimationFrames, calculateInitialLandingPosition,
+   * handleSpecialTileEffects.
    */
   private void animateAndMove(GridPane gridPane, Player player, int fromPosition, int toPosition,
       int diceSum, Stage primaryStage) {
@@ -475,8 +474,8 @@ public class LadderGameApp extends Application {
    * Method that creates frames for TimeFrame.
    *
    * @AI_Based Method that returns KeyFrames, calculated by an algorythm for finding the row and
-   *      column. If overshoot is true, another algorythm is used to calculate its frames moving
-   *      backwards
+   * column. If overshoot is true, another algorythm is used to calculate its frames moving
+   * backwards
    */
   private List<KeyFrame> createMovementAnimationFrames(Player player, int fromPosition,
       int diceSum, GridPane gridPane) {
@@ -529,7 +528,7 @@ public class LadderGameApp extends Application {
    * Method that creates final frame before any special tile.
    *
    * @AI_Based Returns landing position before any ladder/special tile. Or calculates the overshoot
-   *      value.
+   * value.
    */
   private int calculateInitialLandingPosition(int fromPosition, int diceSum) {
     int boardSize = 90;
@@ -542,7 +541,7 @@ public class LadderGameApp extends Application {
    * Post-animation handler for special tile effects, not including ladders.
    *
    * @AI_Based Uses if-statements to check what special tile it is, and gives the apporopriate
-   *      response.
+   * response.
    */
   private void handleSpecialTileEffects(GridPane gridPane, Player player,
       int targetPositionBeforeSpecial, int toPosition, Stage primaryStage) {

@@ -30,23 +30,17 @@ public class View {
 
   private final Stage primaryStage;
   private final List<Player> players;
-  private Label currentPlayerLabel;
   private Label diceResultLabel;
-  private final int currentPlayerIndex = 0;
   private final CommonDice dice = new CommonDice(1);
-  private Button diceRollButton;
   private Cards cards;
   private int currentCardIndex = 0;
 
   private List<Property> properties;
-  private Button checkPropertyButton;
-  private Map<Integer, Property> propertyMap = new HashMap<>();
 
   public View(Stage primaryStage) {
     this.primaryStage = primaryStage;
     this.players = new ArrayList<>();
 
-    // Testplayer
     Player tempPlayer = new Player("Player 1", 0);
     players.add(tempPlayer);
   }
@@ -71,7 +65,7 @@ public class View {
     controlPanel.setMinWidth(200);
     StyleUtils.stylePanel(controlPanel);
 
-    currentPlayerLabel = new Label("Current Player: " + players.get(currentPlayerIndex).getName());
+    Label currentPlayerLabel = new Label("Current Player: " + players.getFirst().getName());
     currentPlayerLabel.setStyle("-fx-font-size: 16px; -fx-text-fill: white;");
     currentPlayerLabel.setWrapText(true);
     currentPlayerLabel.setMaxWidth(230);
@@ -79,13 +73,10 @@ public class View {
     diceResultLabel = new Label("Roll the dice!");
     diceResultLabel.setStyle("-fx-font-size: 16px; -fx-text-fill: white;");
 
-    // Dice display area
     Pane dicePane = new Pane();
     dicePane.setPrefHeight(70);
 
-    // Buttons
     Button diceRoll = new Button("Roll Dice");
-    diceRollButton = diceRoll;
     diceRoll.setOnAction(event -> rollDiceAndMove(gridPane, primaryStage, dicePane));
     StyleUtils.styleNormalButton(diceRoll);
 
@@ -93,7 +84,7 @@ public class View {
     backToMenu.setOnAction(event -> new DashboardGui().start(primaryStage));
     StyleUtils.styleNormalButton(backToMenu);
 
-    checkPropertyButton = new Button("Check Property");
+    Button checkPropertyButton = new Button("Check Property");
     StyleUtils.styleNormalButton(checkPropertyButton);
     checkPropertyButton.setOnAction(event -> {
     });
@@ -185,10 +176,8 @@ public class View {
     int diceValue = rollAndDisplayDice(dicePane);
     diceResultLabel.setText("Rolled: " + diceValue);
 
-    // Get current player
-    Player currentPlayer = players.get(currentPlayerIndex);
+    Player currentPlayer = players.getFirst();
 
-    // Move player based on dice roll
     movePlayer(gridPane, currentPlayer, diceValue);
   }
 
@@ -241,6 +230,14 @@ public class View {
     return properties;
   }
 
+  /**
+   * Calculates the position on the board based on the row and column.
+   *
+   * @param i Row index
+   * @param j Column index
+   * @return Position on the board
+   * @AI_Based Logic and math calculation is based on AI logic.
+   */
   private int calculatePosition(int i, int j) {
     // 7x7 board
     if (i == 6) {
@@ -270,7 +267,6 @@ public class View {
 
     List<Property> properties = createProperties();
 
-    // 7x7 grid
     for (int i = 0; i < 7; i++) {
       for (int j = 0; j < 7; j++) {
         StackPane tile = new StackPane();
@@ -290,25 +286,22 @@ public class View {
             tile = createPropertyTile(property);
           } else {
             tile.setStyle(
-                "-fx-background-color: #f0f0f0; -fx-border-color: #cccccc; -fx-border-width: 2px;");
+                "-fx-background-color: #f0f0f0; -fx-border-color: #cccccc; "
+                    + "-fx-border-width: 2px;");
           }
         } else {
-          tile.setStyle(
-              "-fx-background-color: #c6efd1; -fx-border-color: transparent; -fx-border-width: 2px;");
+          tile.setStyle("-fx-background-color: #c6efd1; -fx-border-color: transparent; "
+              + "-fx-border-width: 2px;");
         }
         gridPane.add(tile, j, i);
       }
     }
     this.cards = new Cards(properties);
 
-    // Initialize properties
     this.properties = createProperties();
 
-    // Rest of your board drawing code...
-
-    // Initialize player at START position once board is drawn
     if (!players.isEmpty()) {
-      Player player = players.get(0);
+      Player player = players.getFirst();
       player.setPosition(0);  // Start position
       placePlayerPieceOnBoard(gridPane, player);
     }
@@ -343,43 +336,36 @@ public class View {
   }
 
 
-
   /**
    * Moves the player piece directly to the specified position.
    *
-   * @param gridPane the grid containing the board
-   * @param player the player to move
+   * @param gridPane  the grid containing the board
+   * @param player    the player to move
    * @param diceValue the dice roll value
    */
   private void movePlayer(GridPane gridPane, Player player, int diceValue) {
-    // Disable dice button during turn
-    diceRollButton.setDisable(true);
-
-    // Calculate new position (wrap around the board - total of 24 positions)
     int fromPosition = player.getPosition();
     int toPosition = (fromPosition + diceValue) % 24;
 
-    // Update player's position
     player.setPosition(toPosition);
 
-    // Move player piece to new position
     placePlayerPieceOnBoard(gridPane, player);
 
-    // Handle any property effects
     handlePropertyLanding(player, toPosition);
-
-    // Re-enable dice button
-    diceRollButton.setDisable(false);
   }
 
   /**
    * Places the player piece on the board at their current position.
+   *
+   * @param gridPane the grid containing the board
+   * @param player   the player to place
+   * @AI_Based Logic and math calculation is based on AI logic.
    */
   private void placePlayerPieceOnBoard(GridPane gridPane, Player player) {
     int position = player.getPosition();
 
-    // Calculate grid coordinates based on position
-    int row, col;
+    int row;
+    int col;
 
     if (position <= 6) {
       // Bottom row (positions 0-6)
@@ -398,8 +384,6 @@ public class View {
       row = position - 18;
       col = 6;
     }
-
-    // Place player piece at calculated position
     addPlayerPieceToGrid(gridPane, player, col, row);
   }
 
@@ -407,29 +391,21 @@ public class View {
    * Adds the player piece to the specified grid position.
    */
   private void addPlayerPieceToGrid(GridPane gridPane, Player player, int col, int row) {
-    // First remove player piece from current location if present
-    gridPane.getChildren().removeIf(node ->
-        node instanceof StackPane &&
-            "playerPiece".equals(node.getId()));
-
-    // Initialize player piece if needed
     if (player.getPlayerPiece() == null) {
       Image image = new Image("pictures/pieces/piece" + player.getIconIndex() + ".png");
       player.setIcon(image);
     }
 
-    // Create container for player piece with ID for identification
     StackPane pieceContainer = new StackPane();
     pieceContainer.setId("playerPiece");
     pieceContainer.getChildren().add(player.getPlayerPiece());
 
     // Find the cell at the specified position
     for (Node node : gridPane.getChildren()) {
-      if (node instanceof StackPane &&
-          GridPane.getRowIndex(node) == row &&
-          GridPane.getColumnIndex(node) == col) {
+      if (node instanceof StackPane
+          && GridPane.getRowIndex(node) == row
+          && GridPane.getColumnIndex(node) == col) {
 
-        // If this is a property tile, add player on top
         ((StackPane) node).getChildren().add(player.getPlayerPiece());
         return;
       }
@@ -449,19 +425,16 @@ public class View {
     }
 
     if (property != null) {
-      // Special positions
       if (position == 0) {
         diceResultLabel.setText("Landed on START");
       } else if (position == 6) {
         diceResultLabel.setText("Landed on JAIL");
       } else if (position == 9 || position == 20) {
         diceResultLabel.setText("Landed on CHANCE");
-        //showRandomCard();
       } else if (position == 12) {
         diceResultLabel.setText("Landed on FREE PARKING");
       } else if (position == 18) {
         diceResultLabel.setText("GO TO JAIL!");
-        //goToJail(player);
       } else {
         diceResultLabel.setText("Landed on " + property.getName());
       }
