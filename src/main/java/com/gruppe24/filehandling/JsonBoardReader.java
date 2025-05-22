@@ -6,34 +6,39 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
 import com.gruppe24.boardgames.laddergame.models.board.Board;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 
 /**
  * JsonBoardReader is a class that implements the FileReader interface to read a board configuration
  * from a JSON file. It parses the JSON data and constructs a Board object based on the information
  * provided in the file.
  */
-public class JsonBoardReader implements com.gruppe24.filehandling.FileReader {
+public class JsonBoardReader {
 
+  private Board currentBoard;
 
-  @Override
+  /**
+   * Method that reads a board configuration from a JSON file.
+   *
+   * @param filePath the path for JSON-file
+   * @return the board object created from the JSON data.
+   */
   public Object readFromFile(String filePath) {
+    if (filePath.isEmpty()) {
+      throw new IllegalArgumentException("Filepath is empty in JsonBoardReader");
+    }
     try (FileReader reader = new FileReader(filePath)) {
       JsonObject boardJson = JsonParser.parseReader(reader).getAsJsonObject();
 
-      if (!boardJson.has("name") || !boardJson.has("description")) {
-        System.err.println("Error: Missing required fields (name or description)");
-        return null;
-      }
-
-      String name = boardJson.get("name").getAsString();
-      String description = boardJson.get("description").getAsString();
-
       HashMap<Integer, Integer> ladderUp = new HashMap<>();
       HashMap<Integer, Integer> ladderDown = new HashMap<>();
+      HashMap<Integer, Boolean> winningTile = new HashMap<>();
       HashMap<Integer, Boolean> frozenTiles = new HashMap<>();
       HashMap<Integer, Boolean> randomTeleportTiles = new HashMap<>();
 
@@ -77,6 +82,9 @@ public class JsonBoardReader implements com.gruppe24.filehandling.FileReader {
                 ladderDown.put(tileId, destinationTileId);
               }
               break;
+            case "WinningAction":
+              winningTile.put(tileId, true);
+              break;
             case "FrozenAction":
               frozenTiles.put(tileId, true);
               break;
@@ -89,7 +97,19 @@ public class JsonBoardReader implements com.gruppe24.filehandling.FileReader {
         }
       }
 
-      return new Board(ladderUp, ladderDown, frozenTiles, randomTeleportTiles, name, description);
+      if (frozenTiles.isEmpty()) {
+        frozenTiles.put(0, false);
+      }
+
+      if (randomTeleportTiles.isEmpty()) {
+        randomTeleportTiles.put(0, false);
+      }
+
+      String name = boardJson.get("name").getAsString();
+      String description = boardJson.get("description").getAsString();
+
+      return new Board(ladderUp, ladderDown, winningTile, frozenTiles, randomTeleportTiles, name,
+          description);
 
     } catch (FileNotFoundException e) {
       System.err.println("Error: File not found: " + e.getMessage());
@@ -104,5 +124,37 @@ public class JsonBoardReader implements com.gruppe24.filehandling.FileReader {
       System.err.println("Unexpected error: " + e.getMessage());
       return null;
     }
+  }
+
+  /**
+   * Method that loads a custom board from a JSON file.
+   *
+   * @param stage the stage to use for the file chooser
+   * @return the loaded custom board
+   * @AI_Based
+   */
+  public Board loadCustomBoard(Stage stage) {
+    FileChooser fileChooser = new FileChooser();
+    fileChooser.setTitle("Open JSON Board File");
+    fileChooser.getExtensionFilters().add(
+        new FileChooser.ExtensionFilter("JSON Files", "*.json"));
+    File boardsDirectory = new File("src/main/resources/boards");
+    if (boardsDirectory.exists()) {
+      fileChooser.setInitialDirectory(boardsDirectory);
+    }
+    File selectedFile = fileChooser.showOpenDialog(stage);
+    if (selectedFile != null) {
+      try {
+        JsonBoardReader reader = new JsonBoardReader();
+        Board customBoard = (Board) reader.readFromFile(selectedFile.getPath());
+        if (customBoard != null) {
+          this.currentBoard = customBoard;
+          return customBoard;
+        }
+      } catch (Exception e) {
+        System.err.println("Error loading custom board: " + e.getMessage());
+      }
+    }
+    return null;
   }
 }

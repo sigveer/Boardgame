@@ -1,107 +1,39 @@
 package com.gruppe24.boardgames.laddergame.models;
 
-import com.gruppe24.utils.StyleUtils;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
+import com.gruppe24.boardgames.commonclasses.CommonPlayer;
 
 /**
  * Class that represents players.
  */
-public class Player {
+public class Player extends CommonPlayer {
 
-  private final String name;
-  public int position;
-  private final Circle playerPiece;
-  private final Color color;
-  private boolean frozen;
+  private boolean frozen = false;
 
   /**
    * Constructor for Player.
    *
-   * @param name  name of the player
-   * @param color color of the player
+   * @param name      the name of the player
+   * @param iconIndex the index of the player's icon
    */
-  public Player(String name, Color color) {
-    if (name == null || name.trim().isEmpty()) {
-      throw new IllegalArgumentException("Parameter name cannot be empty");
-    }
-    if (color == null) {
-      throw new IllegalArgumentException("Parameter colour cannot be empty");
-    }
-    this.name = name;
-    this.position = 0;
-    this.color = color;
-    this.playerPiece = new Circle(25);
-    this.playerPiece.setFill(color);
-    this.frozen = false;
+  public Player(String name, int iconIndex) {
+    super(name, iconIndex);
   }
 
   /**
-   * Check if the player is currently frozen.
+   * If the player is frozen, they cannot move.
    *
-   * @return true if player is frozen, false otherwise
+   * @return true if the player is frozen, false otherwise.
    */
   public boolean isFrozen() {
     return frozen;
   }
 
   /**
-   * Set the frozen status of the player.
+   * Sets the frozen state of the player.
    *
-   * @param frozen true to freeze the player, false to unfreeze
+   * @param frozen true if the player should be frozen, false otherwise.
    */
   public void setFrozen(boolean frozen) {
     this.frozen = frozen;
-  }
-
-  /**
-   * Getter-method for the color of the player.
-   *
-   * @return color-variable
-   */
-  public Circle getPlayerPiece() {
-    return playerPiece;
-  }
-
-  /**
-   * Getter-method for the coloured version of name.
-   *
-   * @return name-variable
-   */
-  public String getColoredName() {
-    if (color == Color.RED) {
-      return StyleUtils.textRed() + name + StyleUtils.textReset();
-    } else if (color == Color.BLUE) {
-      return StyleUtils.textBlue() + name + StyleUtils.textReset();
-    } else {
-      return StyleUtils.textGreen() + name + StyleUtils.textReset();
-    }
-  }
-
-  /**
-   * Accessor-method for name.
-   *
-   * @return name as string.
-   */
-  public String getName() {
-    return name;
-  }
-
-  /**
-   * Getter-method for Position.
-   *
-   * @return position-variable
-   */
-  public int getPosition() {
-    return this.position;
-  }
-
-  /**
-   * Setter-method for Position.
-   *
-   * @param position new position
-   */
-  public void setPosition(int position) {
-    this.position = position;
   }
 }

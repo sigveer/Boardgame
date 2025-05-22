@@ -1,13 +1,13 @@
 package com.gruppe24;
 
-import com.gruppe24.boardgames.MenuGui;
-import com.gruppe24.utils.Validators;
+import com.gruppe24.boardgames.DashboardGui;
+import com.gruppe24.observerpattern.GameLogger;
 import java.util.logging.Level;
 
 /**
  * Main class to start the application.
  * This class is the entry point of the application.
- * It launches the MenuGui and logs when the application is closed.
+ * It launches the DashBoardGUI and logs when the application is closed.
  */
 public class Main {
 
@@ -17,8 +17,8 @@ public class Main {
    * @param args command line arguments
    */
   public static void main(String[] args) {
-    MenuGui.launch(MenuGui.class, args);
-    Validators.getLogger().log(Level.INFO, "Application closed");
+    DashboardGui.launch(DashboardGui.class, args);
+    GameLogger.getLogger().log(Level.INFO, "Application closed");
   }
 }
 

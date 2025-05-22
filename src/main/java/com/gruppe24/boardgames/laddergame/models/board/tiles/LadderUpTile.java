@@ -7,25 +7,23 @@ import com.gruppe24.boardgames.laddergame.models.Player;
  */
 public class LadderUpTile extends SpecialTile {
 
+  @Override
+  public void perform(Player player) {
+    player.setPosition(getDestination());
+  }
+
+  @Override
+  public int getTileType() {
+    return 1;
+  }
+
   /**
    * Constructor that initializes the ladder tile.
    *
    * @param position The position of the tile.
-   * @param climbUp The position to climb up to.
+   * @param climbUp  The position to climb up to.
    */
   public LadderUpTile(int position, int climbUp) {
     super(position, climbUp);
   }
-
-  /**
-   * Method that performs the action of the tile.
-   *
-   * @param player The player that lands on the tile.
-   */
-  @Override
-  public void perform(Player player) {
-    player.setPosition(getDestination());
-    checkTileType = 1;
-  }
-
 }

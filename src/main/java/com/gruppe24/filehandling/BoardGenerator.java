@@ -1,14 +1,11 @@
 package com.gruppe24.filehandling;
 
-import static com.gruppe24.boardgames.laddergame.models.board.Board.initializeStandardLadders;
-import static com.gruppe24.boardgames.laddergame.models.board.Board.initializeStandardSpecialTiles;
-
 import com.gruppe24.boardgames.laddergame.models.board.Board;
 import java.util.HashMap;
 
 /**
- * This class generates different types of boards for the Ladder game.
- * It creates a classic board and a special board with additional features.
+ * This class generates different types of boards for the Ladder game. It creates a classic board
+ * and a special board with additional features.
  */
 public class BoardGenerator {
 
@@ -20,29 +17,6 @@ public class BoardGenerator {
   public static void main(String[] args) {
     createClassicBoard();
     createSpecialBoard();
-  }
-
-  /**
-   * Creates a board with the specified parameters.
-   *
-   * @param includeSpecialTiles whether to include special tiles
-   * @param name               the name of the board
-   * @param description        the description of the board
-   * @return a new Board object
-   */
-  private static Board createBoard(boolean includeSpecialTiles, String name, String description) {
-    HashMap<Integer, Integer> ladderUp = new HashMap<>();
-    HashMap<Integer, Integer> ladderDown = new HashMap<>();
-    HashMap<Integer, Boolean> frozenTiles = new HashMap<>();
-    HashMap<Integer, Boolean> randomTeleportTiles = new HashMap<>();
-
-    initializeStandardLadders(ladderUp, ladderDown);
-
-    if (includeSpecialTiles) {
-      initializeStandardSpecialTiles(frozenTiles, randomTeleportTiles);
-    }
-
-    return new Board(ladderUp, ladderDown, frozenTiles, randomTeleportTiles, name, description);
   }
 
   /**
@@ -61,6 +35,35 @@ public class BoardGenerator {
     Board specialBoard = createBoard(true,
         "Special Board", "Board with special tiles like frozen and random teleport");
     saveBoard(specialBoard, "special_board");
+  }
+
+  /**
+   * Creates a board with the specified parameters.
+   *
+   * @param includeSpecialTiles whether to include special tiles
+   * @param name                the name of the board
+   * @param description         the description of the board
+   * @return a new Board object
+   */
+  private static Board createBoard(boolean includeSpecialTiles, String name, String description) {
+    HashMap<Integer, Integer> ladderUp = new HashMap<>();
+    HashMap<Integer, Integer> ladderDown = new HashMap<>();
+    HashMap<Integer, Boolean> winningTile = new HashMap<>();
+    HashMap<Integer, Boolean> frozenTiles = new HashMap<>();
+    HashMap<Integer, Boolean> randomTeleportTiles = new HashMap<>();
+
+    Board.initializeStandardLadders(ladderUp, ladderDown);
+    Board.initializeWinningTile(winningTile);
+
+    if (includeSpecialTiles) {
+      Board.initializeStandardSpecialTiles(frozenTiles, randomTeleportTiles);
+    } else {
+      frozenTiles.put(0, false);
+      randomTeleportTiles.put(0, false);
+    }
+
+    return new Board(ladderUp, ladderDown, winningTile, frozenTiles, randomTeleportTiles, name,
+            description);
   }
 
   /**

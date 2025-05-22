@@ -4,9 +4,18 @@ import com.gruppe24.boardgames.laddergame.models.Player;
 
 /**
  * Represents a frozen tile on the board.
- *
  */
 public class FrozenTile extends SpecialTile {
+
+  @Override
+  public void perform(Player player) {
+    player.setFrozen(true);
+  }
+
+  @Override
+  public int getTileType() {
+    return 4;
+  }
 
   /**
    * Constructor that initializes the normal tile.
@@ -15,16 +24,5 @@ public class FrozenTile extends SpecialTile {
    */
   public FrozenTile(int position) {
     super(position);
-  }
-
-  /**
-   * Method that performs the action of the tile.
-   *
-   * @param player The player that lands on the tile.
-   */
-  @Override
-  public void perform(Player player) {
-    player.setFrozen(true);
-    checkTileType = 4;
   }
 }
