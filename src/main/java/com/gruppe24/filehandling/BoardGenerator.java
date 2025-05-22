@@ -53,13 +53,17 @@ public class BoardGenerator {
     HashMap<Integer, Boolean> randomTeleportTiles = new HashMap<>();
 
     Board.initializeStandardLadders(ladderUp, ladderDown);
+    Board.initializeWinningTile(winningTile);
 
     if (includeSpecialTiles) {
       Board.initializeStandardSpecialTiles(frozenTiles, randomTeleportTiles);
+    } else {
+      frozenTiles.put(0, false);
+      randomTeleportTiles.put(0, false);
     }
 
     return new Board(ladderUp, ladderDown, winningTile, frozenTiles, randomTeleportTiles, name,
-        description);
+            description);
   }
 
   /**
