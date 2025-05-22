@@ -9,6 +9,11 @@ public class SpecialTile extends CommonTile {
 
   private int destination;
 
+  @Override
+  public int getTileType() {
+    return -1;
+  }
+
   /**
    * Constructor that initializes the special tile.
    *
@@ -16,11 +21,6 @@ public class SpecialTile extends CommonTile {
    */
   public SpecialTile(int position) {
     super(position);
-  }
-
-  @Override
-  public int getTileType() {
-    return -1;
   }
 
   /**

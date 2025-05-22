@@ -2,7 +2,10 @@ package com.gruppe24.boardgames.commonclasses;
 
 import com.gruppe24.exeptions.InvalidDiceValueException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 /**
  * Concrete model class representing a set of dice. This class provides methods to roll the dice and
@@ -35,11 +38,9 @@ public class CommonDice {
    * @return The sum of the values of all dice after rolling.
    */
   public int rollSum() {
-    sum = 0;
-    for (CommonDie die : dice) {
-      sum += die.roll();
-    }
-    return sum;
+    return dice.stream()
+        .mapToInt(CommonDie::roll)
+        .sum();
   }
 
   /**

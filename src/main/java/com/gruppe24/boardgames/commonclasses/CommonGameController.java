@@ -10,6 +10,8 @@ import com.gruppe24.observerpattern.GameSubject;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import javafx.scene.image.Image;
 
 /**
@@ -77,13 +79,10 @@ public abstract class CommonGameController {
    * @return the next icon.
    */
   private int getNextIconIndex() {
-    int iconIndex = 0;
-    for (CommonPlayer player : players) {
-      if (player.getIconIndex() == iconIndex) {
-        iconIndex++;
-      }
-    }
-    return iconIndex;
+    return IntStream.range(0, Integer.MAX_VALUE)
+        .filter(index -> players.stream().noneMatch(player -> player.getIconIndex() == index))
+        .findFirst()
+        .orElse(0);
   }
 
   /**
@@ -104,13 +103,10 @@ public abstract class CommonGameController {
    * @return the players
    */
   public List<Player> getPlayerList() {
-    List<Player> playerList = new ArrayList<>();
-    for (CommonPlayer commonPlayer : players) {
-      if (commonPlayer instanceof Player) {
-        playerList.add((Player) commonPlayer);
-      }
-    }
-    return playerList;
+    return players.stream()
+        .filter(commonPlayer -> commonPlayer instanceof  Player)
+        .map(commonPlayer -> (Player) commonPlayer)
+        .collect(Collectors.toList());
   }
 
   /**
