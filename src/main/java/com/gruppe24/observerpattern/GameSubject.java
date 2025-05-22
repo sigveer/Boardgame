@@ -11,15 +11,6 @@ public class GameSubject implements GameObservable {
 
   private final List<GameObserver> observers;
 
-  /**
-   * Constructor for the GameSubject class.
-   * Initializes the list of observers.
-   */
-  public GameSubject() {
-    observers = new ArrayList<>();
-  }
-
-
   @Override
   public void registerListener(GameObserver observer) {
     if (observer == null) {
@@ -42,4 +33,11 @@ public class GameSubject implements GameObservable {
     }
   }
 
+  /**
+   * Constructor for the GameSubject class.
+   * Initializes the list of observers.
+   */
+  public GameSubject() {
+    observers = new ArrayList<>();
+  }
 }

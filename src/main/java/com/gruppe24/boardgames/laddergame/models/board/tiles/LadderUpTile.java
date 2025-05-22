@@ -8,16 +8,6 @@ import com.gruppe24.boardgames.laddergame.models.Player;
  */
 public class LadderUpTile extends SpecialTile {
 
-  /**
-   * Constructor that initializes the ladder tile.
-   *
-   * @param position The position of the tile.
-   * @param climbUp  The position to climb up to.
-   */
-  public LadderUpTile(int position, int climbUp) {
-    super(position, climbUp);
-  }
-
   @Override
   public void perform(Player player) {
     player.setPosition(getDestination());
@@ -36,5 +26,15 @@ public class LadderUpTile extends SpecialTile {
     actionJson.addProperty("description",
         "Ladder from " + tileId + " to " + getDestination());
     tileJson.add("action", actionJson);
+  }
+
+  /**
+   * Constructor that initializes the ladder tile.
+   *
+   * @param position The position of the tile.
+   * @param climbUp  The position to climb up to.
+   */
+  public LadderUpTile(int position, int climbUp) {
+    super(position, climbUp);
   }
 }

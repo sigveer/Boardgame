@@ -7,8 +7,8 @@ import com.gruppe24.boardgames.laddergame.controller.PlayerController;
 import com.gruppe24.boardgames.laddergame.models.Player;
 import com.gruppe24.boardgames.laddergame.models.board.Board;
 import com.gruppe24.boardgames.laddergame.models.board.BoardType;
+import com.gruppe24.observerpattern.GameLogger;
 import com.gruppe24.observerpattern.GameSubject;
-import com.gruppe24.utils.GameLogger;
 import com.gruppe24.utils.StyleUtils;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -112,9 +112,7 @@ public class LadderGameApp extends Application {
     BoardController boardController = new BoardController(BoardType.CLASSIC);
     this.playerController.initializeGame(boardController);
 
-    players.forEach(player -> {
-      player.setIcon(player.getIcon());
-    });
+    players.forEach(player -> player.setIcon(player.getIcon()));
 
     primaryStage.setTitle("Laddergame Classic");
 
@@ -330,7 +328,6 @@ public class LadderGameApp extends Application {
     ladderPane.getChildren().add(ladderView);
   }
 
-
   /**
    * Rolls the dice, updates dice display, calculates the move using the controller, and initiates
    * the animation.
@@ -373,6 +370,9 @@ public class LadderGameApp extends Application {
     return false;
   }
 
+  /**
+   * Moves turn to the next player.
+   */
   private void advanceToNextPlayer() {
     currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
     currentPlayerLabel.setText("Current Player: " + players.get(currentPlayerIndex).getName());
@@ -398,7 +398,6 @@ public class LadderGameApp extends Application {
 
     int diceValue1 = dice.getDie(0);
 
-    // Create and display first die
     ImageView dice1Iv = new ImageView(new Image(dice.dicePath(diceValue1)));
     dice1Iv.setX(40);
     dice1Iv.setY(0);
@@ -407,7 +406,6 @@ public class LadderGameApp extends Application {
 
     int diceValue2 = dice.getDie(1);
 
-    // Create and display second die
     ImageView dice2Iv = new ImageView(new Image(dice.dicePath(diceValue2)));
     dice2Iv.setX(125);
     dice2Iv.setY(0);
@@ -446,13 +444,12 @@ public class LadderGameApp extends Application {
     }
   }
 
-
   /**
    * Animates player movement and handles special tile effects.
    *
    * @AI_Based Next 8 methods has been based on recommendations from AI. This method is the mother
-   * if many sub-methods; createMovementAnimationFrames, calculateInitialLandingPosition,
-   * handleSpecialTileEffects.
+   *      if many sub-methods; createMovementAnimationFrames, calculateInitialLandingPosition,
+   *      handleSpecialTileEffects.
    */
   private void animateAndMove(GridPane gridPane, Player player, int fromPosition, int toPosition,
       int diceSum, Stage primaryStage) {
@@ -478,8 +475,8 @@ public class LadderGameApp extends Application {
    * Method that creates frames for TimeFrame.
    *
    * @AI_Based Method that returns KeyFrames, calculated by an algorythm for finding the row and
-   * column. If overshoot is true, another algorythm is used to calculate its frames moving
-   * backwards.
+   *      column. If overshoot is true, another algorythm is used to calculate its frames moving
+   *      backwards
    */
   private List<KeyFrame> createMovementAnimationFrames(Player player, int fromPosition,
       int diceSum, GridPane gridPane) {
@@ -532,7 +529,7 @@ public class LadderGameApp extends Application {
    * Method that creates final frame before any special tile.
    *
    * @AI_Based Returns landing position before any ladder/special tile. Or calculates the overshoot
-   * value.
+   *      value.
    */
   private int calculateInitialLandingPosition(int fromPosition, int diceSum) {
     int boardSize = 90;
@@ -545,16 +542,14 @@ public class LadderGameApp extends Application {
    * Post-animation handler for special tile effects, not including ladders.
    *
    * @AI_Based Uses if-statements to check what special tile it is, and gives the apporopriate
-   * response.
+   *      response.
    */
   private void handleSpecialTileEffects(GridPane gridPane, Player player,
       int targetPositionBeforeSpecial, int toPosition, Stage primaryStage) {
 
     int tileType = board.getTileType(targetPositionBeforeSpecial);
 
-    // Create a runnable for actions to take after tile effects
     Runnable finishTurnAction = () -> {
-      // Check for frozen tile and set player state
       if (tileType == 4) {
         board.getTile(targetPositionBeforeSpecial).perform(player);
         isFrozenLabel.setText(player.getName() + " landed on a frozen tile! Will skip next turn.");
@@ -567,7 +562,6 @@ public class LadderGameApp extends Application {
       diceRollButton.setDisable(false);
     };
 
-    // Handle special tiles (ladders, slides, teleports)
     if (toPosition != targetPositionBeforeSpecial || tileType == 3) {
 
       // Pause before showing special tile effect
@@ -607,13 +601,15 @@ public class LadderGameApp extends Application {
   private void displaySpecialTileEffectMessage(int tileType, int toPosition) {
     String finalMessage = "";
     if (tileType == 1) {
-      finalMessage = "Climbing up to " + toPosition + "!";
+      finalMessage = "Climbed up to " + toPosition + "!";
     } else if (tileType == 2) {
-      finalMessage = "Sliding down to " + toPosition + "!";
+      finalMessage = "Slided down to " + toPosition + "!";
     } else if (tileType == 3) {
-      finalMessage = "Teleporting to " + toPosition + "!";
+      finalMessage = "Teleported to " + toPosition + "!";
     }
-    ladderUpOrDownCheck.setText(finalMessage);
+
+    final String message = finalMessage;
+    Platform.runLater(() -> ladderUpOrDownCheck.setText(message));
   }
 
   /**

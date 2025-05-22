@@ -8,15 +8,6 @@ import com.gruppe24.boardgames.laddergame.models.Player;
  */
 public class FrozenTile extends SpecialTile {
 
-  /**
-   * Constructor that initializes the normal tile.
-   *
-   * @param position The position of the tile on the board.
-   */
-  public FrozenTile(int position) {
-    super(position);
-  }
-
   @Override
   public void perform(Player player) {
     player.setFrozen(true);
@@ -34,5 +25,14 @@ public class FrozenTile extends SpecialTile {
     actionJson.addProperty("description",
         "Player gets frozen on tile " + tileId + " for 1 turn");
     tileJson.add("action", actionJson);
+  }
+
+  /**
+   * Constructor that initializes the normal tile.
+   *
+   * @param position The position of the tile on the board.
+   */
+  public FrozenTile(int position) {
+    super(position);
   }
 }

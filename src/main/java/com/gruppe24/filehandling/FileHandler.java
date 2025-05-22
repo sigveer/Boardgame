@@ -2,6 +2,7 @@ package com.gruppe24.filehandling;
 
 import com.gruppe24.boardgames.laddergame.models.Player;
 import com.gruppe24.boardgames.laddergame.models.board.Board;
+import com.gruppe24.exeptions.FileHandlingException;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -13,9 +14,9 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 /**
- * FileHandler is a utility class for handling file operations related to the game board.
- * It provides methods to save the board to a JSON file and create a file chooser for
- * loading/saving files.
+ * FileHandler is a utility class for handling file operations related to the game board. It
+ * provides methods to save the board to a JSON file and create a file chooser for loading/saving
+ * files.
  */
 public class FileHandler {
 
@@ -45,8 +46,11 @@ public class FileHandler {
    * @param players The list of players to save
    * @param stage   The stage to display the file chooser
    * @return true if saving was successful, false otherwise
+   * @throws FileHandlingException if there's an issue writing to the file
    */
-  public static boolean savePlayers(List<Player> players, Stage stage) {
+  public static boolean savePlayers(List<Player> players, Stage stage)
+      throws FileHandlingException {
+
     FileChooser fileChooser = FileHandler.createFileChooser("Save Players", true);
     File file = fileChooser.showSaveDialog(stage);
 
@@ -55,7 +59,6 @@ public class FileHandler {
     }
 
     try (FileWriter writer = new FileWriter(file)) {
-
       writer.write("Name,IconPath\n");
 
       for (Player player : players) {
@@ -65,9 +68,7 @@ public class FileHandler {
 
       return true;
     } catch (IOException e) {
-      e.printStackTrace();
-      //implementer seinere
-      return false;
+      throw new FileHandlingException("Error saving players: " + e.getMessage(), e);
     }
   }
 
@@ -78,7 +79,7 @@ public class FileHandler {
    * @return A list of players loaded from the CSV file, or null if an error occurs.
    * @AI_Based "While" loop is based on AI logic and structure.
    */
-  public static List<Player> loadPlayers(Stage stage) {
+  public static List<Player> loadPlayers(Stage stage) throws FileHandlingException {
     FileChooser fileChooser = FileHandler.createFileChooser("Load Players", false);
     File file = fileChooser.showOpenDialog(stage);
 
@@ -106,9 +107,7 @@ public class FileHandler {
 
       return players;
     } catch (IOException e) {
-      e.printStackTrace();
-      //implementer seinere
-      return null;
+      throw new FileHandlingException("Error loading players: " + e.getMessage(), e);
     }
   }
 
@@ -133,5 +132,4 @@ public class FileHandler {
     fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
     return fileChooser;
   }
-
 }

@@ -56,7 +56,7 @@ public class JsonBoardWriter {
       }
 
       CommonTile commonTile = board.getTile(i);
-      // addActionToJson is a method in the Tile class that adds the action to the JSON object
+
       commonTile.addActionToJson(tileJson, i);
 
       tilesJsonArray.add(tileJson);

@@ -3,6 +3,7 @@ package com.gruppe24.boardgames.laddergame.controller;
 import com.gruppe24.boardgames.laddergame.models.board.Board;
 import com.gruppe24.boardgames.laddergame.models.board.BoardFactory;
 import com.gruppe24.boardgames.laddergame.models.board.BoardType;
+import com.gruppe24.exeptions.InvalidBoardException;
 
 /**
  * BoardController is a class that manages the game board interactions. It handles the game logic,
@@ -12,7 +13,6 @@ public class BoardController {
 
   private final Board board;
 
-
   /**
    * Constructor that initializes the game controller with a board type.
    *
@@ -20,7 +20,7 @@ public class BoardController {
    */
   public BoardController(BoardType boardType) {
     if (boardType == null) {
-      throw new IllegalArgumentException("Board type cannot be null");
+      throw new InvalidBoardException();
     }
     this.board = BoardFactory.createBoard(boardType);
   }
@@ -32,7 +32,7 @@ public class BoardController {
    */
   public BoardController(Board customBoard) {
     if (customBoard == null) {
-      throw new IllegalArgumentException("Board cannot be null");
+      throw new InvalidBoardException();
     }
     this.board = customBoard;
   }
@@ -55,5 +55,4 @@ public class BoardController {
   public boolean isWinningPosition(int position) {
     return position == 90;
   }
-
 }

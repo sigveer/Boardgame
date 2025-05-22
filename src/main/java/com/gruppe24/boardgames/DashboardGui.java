@@ -7,11 +7,13 @@ import com.gruppe24.boardgames.laddergame.models.board.Board;
 import com.gruppe24.boardgames.laddergame.models.board.BoardType;
 import com.gruppe24.boardgames.laddergame.view.LadderGameApp;
 import com.gruppe24.boardgames.monopolylite.MonopolyApp;
+import com.gruppe24.exeptions.FileHandlingException;
+import com.gruppe24.exeptions.InvalidPlayerException;
 import com.gruppe24.filehandling.FileHandler;
 import com.gruppe24.filehandling.JsonBoardReader;
 import com.gruppe24.observerpattern.EventType;
 import com.gruppe24.observerpattern.GameSubject;
-import com.gruppe24.utils.GameLogger;
+import com.gruppe24.observerpattern.GameLogger;
 import com.gruppe24.utils.StyleUtils;
 import java.util.ArrayList;
 import java.util.List;
@@ -89,7 +91,7 @@ public class DashboardGui extends Application {
   /**
    * Creates the player menu on the left side of the screen.
    *
-   * @AI_Assisted
+   * @AI_Assisted Try-catch for loading and saving players
    */
   private VBox createPlayerMenu() {
     VBox playerMenu = new VBox(20);
@@ -109,14 +111,24 @@ public class DashboardGui extends Application {
     Button addPlayerButton = new Button("+");
     StyleUtils.styleNormalButton(addPlayerButton);
     addPlayerButton.setOnAction(e -> {
-      playerController.addPlayer();
+      try {
+        playerController.addPlayer();
+      } catch (InvalidPlayerException ex) {
+        GameLogger.getLogger().log(Level.WARNING, "Error adding player, {0}", ex.getMessage());
+        return;
+      }
       updatePlayerList();
     });
 
     Button removePlayerButton = new Button("-");
     StyleUtils.styleNormalButton(removePlayerButton);
     removePlayerButton.setOnAction(e -> {
-      playerController.removePlayer();
+      try {
+        playerController.removePlayer();
+      } catch (InvalidPlayerException ex) {
+        GameLogger.getLogger().log(Level.WARNING, "Error removing player, {0}", ex.getMessage());
+        return;
+      }
       updatePlayerList();
     });
 
@@ -128,23 +140,33 @@ public class DashboardGui extends Application {
         showAlert("No players to save");
         return;
       }
-      boolean success = FileHandler.savePlayers(playersToSave, stage);
-      if (success) {
-        showAlert("Players saved successfully");
-      } else {
-        showAlert("Failed to save players");
+      try {
+        boolean success = FileHandler.savePlayers(playersToSave, stage);
+        if (success) {
+          showAlert("Players saved successfully");
+        } else {
+          showAlert("Failed to save players");
+        }
+      } catch (FileHandlingException ex) {
+        showAlert("Error saving players: " + ex.getMessage());
+        GameLogger.getLogger().log(Level.WARNING, "Error saving players: {0}", ex.getMessage());
       }
     });
 
     Button loadPlayersButton = new Button("Load Players");
     StyleUtils.styleNormalButton(loadPlayersButton);
     loadPlayersButton.setOnAction(e -> {
-      List<Player> loadedPlayers = FileHandler.loadPlayers(stage);
-      if (loadedPlayers != null && !loadedPlayers.isEmpty()) {
-        populateFieldsWithPlayers(loadedPlayers);
-        showAlert("Players loaded successfully");
-      } else {
-        showAlert("No players loaded");
+      try {
+        List<Player> loadedPlayers = FileHandler.loadPlayers(stage);
+        if (loadedPlayers != null && !loadedPlayers.isEmpty()) {
+          populateFieldsWithPlayers(loadedPlayers);
+          showAlert("Players loaded successfully");
+        } else {
+          showAlert("No players loaded");
+        }
+      } catch (FileHandlingException ex) {
+        showAlert("Error loading players: " + ex.getMessage());
+        GameLogger.getLogger().log(Level.WARNING, "Error loading players: {0}", ex.getMessage());
       }
     });
 
@@ -161,6 +183,9 @@ public class DashboardGui extends Application {
     return playerMenu;
   }
 
+  /**
+   * Updates the list of players in GUI.
+   */
   private void updatePlayerList() {
     this.players = playerController.getPlayers();
 
@@ -209,7 +234,7 @@ public class DashboardGui extends Application {
    * @param player    the player to display
    * @param iconIndex the index of the player
    * @return the HBox containing the player information
-   * @AI_Assisted nameField.setOnAction([x]).....
+   * @AI_Assisted nameField.textProperty().addListener(...)
    */
   private HBox createPlayerBox(Player player, int iconIndex) {
     HBox playerBox = new HBox(10);
@@ -237,6 +262,12 @@ public class DashboardGui extends Application {
     return playerBox;
   }
 
+  /**
+   * Creates the start meny grids for the four options.
+   *
+   * @param primaryStage primary stage.
+   * @return the games grids.
+   */
   private GridPane createGamesGrid(Stage primaryStage) {
     GridPane gamesGrid = new GridPane();
     gamesGrid.setAlignment(Pos.CENTER);
@@ -257,10 +288,9 @@ public class DashboardGui extends Application {
           gameSubject.notifyListener(EventType.GAME_STARTED, playerController.getPlayers());
         });
 
-    VBox ticTacToeGameBox = createGameBox("Comng soon...",
-        "pictures/boardpictures/ownJsonBoard.jpg", event -> {
-          new MonopolyApp().start(primaryStage);
-        }
+    VBox monopolyLiteBox = createGameBox("Monopoly Lite",
+        "pictures/boardpictures/MonopolyLite.png", event ->
+            new MonopolyApp().start(primaryStage)
     );
 
     VBox jsonBoardBox = createGameBox("Use your own JSON Board",
@@ -270,7 +300,7 @@ public class DashboardGui extends Application {
     gamesGrid.add(classicLadderGameBox, 0, 0);
     gamesGrid.add(specialLadderGameBox, 1, 0);
 
-    gamesGrid.add(ticTacToeGameBox, 0, 1);
+    gamesGrid.add(monopolyLiteBox, 0, 1);
     gamesGrid.add(jsonBoardBox, 1, 1);
 
     return gamesGrid;
@@ -281,7 +311,7 @@ public class DashboardGui extends Application {
    *
    * @param title the title of the game
    * @return the VBox containing the game information
-   * @AI_Assisted javafx.event.EventHandler, new Insets,
+   * @AI_Assisted javafx.event.EventHandler, new Insets
    */
   private VBox createGameBox(String title, String imagePath,
       javafx.event.EventHandler<javafx.event.ActionEvent> action) {
@@ -321,6 +351,11 @@ public class DashboardGui extends Application {
     alert.showAndWait();
   }
 
+  /**
+   * Loads a custom board from JSON.
+   *
+   * @param primaryStage the primary stage.
+   */
   private void loadCustomBoard(Stage primaryStage) {
     Board customBoard = jsonBoardReader.loadCustomBoard(primaryStage);
     if (customBoard != null) {

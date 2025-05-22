@@ -1,8 +1,6 @@
-package com.gruppe24.utils;
+package com.gruppe24.observerpattern;
 
 import com.gruppe24.boardgames.laddergame.models.Player;
-import com.gruppe24.observerpattern.EventType;
-import com.gruppe24.observerpattern.GameObserver;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -56,9 +54,7 @@ public class GameLogger implements GameObserver {
         Player winner = (Player) args[0];
         LOGGER.log(Level.INFO, "Game ended. Winner: {0}", winner.getName());
       }
-      default -> {
-        LOGGER.log(Level.WARNING, "Unknown event: {0}", eventType);
-      }
+      default -> LOGGER.log(Level.WARNING, "Unknown event: {0}", eventType);
     }
   }
 

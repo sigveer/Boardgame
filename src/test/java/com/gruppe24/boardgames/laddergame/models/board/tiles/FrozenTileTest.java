@@ -2,16 +2,14 @@ package com.gruppe24.boardgames.laddergame.models.board.tiles;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.google.gson.JsonObject;
 import com.gruppe24.boardgames.laddergame.models.Player;
-import javafx.scene.paint.Color;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-/**
- * {@code frozenTileTest} is a test class for the {@code frozenTile} class.
- */
 class FrozenTileTest {
 
   private FrozenTile frozenTile;
@@ -30,5 +28,22 @@ class FrozenTileTest {
     frozenTile.perform(player);
     assertTrue(player.isFrozen());
     assertEquals(10, player.getPosition());
+  }
+
+  @Test
+  void testGetTileType() {
+    assertEquals(4, frozenTile.getTileType());
+  }
+
+  @Test
+  void testAddActionToJson() {
+    JsonObject tileJson = new JsonObject();
+    frozenTile.addActionToJson(tileJson, 10);
+
+    JsonObject actionJson = tileJson.getAsJsonObject("action");
+    assertNotNull(actionJson);
+    assertEquals("FrozenAction", actionJson.get("type").getAsString());
+    assertEquals("Player gets frozen on tile 10 for 1 turn",
+        actionJson.get("description").getAsString());
   }
 }

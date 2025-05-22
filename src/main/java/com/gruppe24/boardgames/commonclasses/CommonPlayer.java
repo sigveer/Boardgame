@@ -1,5 +1,6 @@
 package com.gruppe24.boardgames.commonclasses;
 
+import com.gruppe24.exeptions.InvalidPlayerException;
 import java.util.Objects;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -21,8 +22,12 @@ public abstract class CommonPlayer {
    *
    * @param name      name of the player
    * @param iconIndex index of the icon
+   * @throws InvalidPlayerException if name is null or empty
    */
   protected CommonPlayer(String name, int iconIndex) {
+    if (name == null || name.trim().isEmpty()) {
+      throw new InvalidPlayerException();
+    }
 
     this.name = name;
     this.position = 0;
@@ -33,8 +38,10 @@ public abstract class CommonPlayer {
 
   /**
    * Getter-method for the color of the player.
+   *
+   * @param iconIndex the index of the icon to use
    */
-  protected void initializePlayerIcon(int iconIndex) {
+  public void initializePlayerIcon(int iconIndex) {
     String[] iconPaths = getIconPaths();
     if (iconIndex >= iconPaths.length) {
       iconIndex = 0; // Default image index
@@ -104,13 +111,23 @@ public abstract class CommonPlayer {
   }
 
   /**
+   * Method to get the current icon path.
+   *
+   * @return the path of the current icon as a String
+   */
+  public String getIconPath() {
+    return this.iconPath;
+  }
+
+  /**
    * Setter-method for Image.
    *
    * @param image new image
+   * @throws InvalidPlayerException if image is null
    */
   public void setIcon(Image image) {
     if (image == null) {
-      throw new IllegalArgumentException("Parameter image cannot be empty");
+      throw new InvalidPlayerException();
     }
     this.icon = image;
   }
@@ -153,5 +170,4 @@ public abstract class CommonPlayer {
   public int getIconIndex() {
     return currentIconIndex;
   }
-
 }

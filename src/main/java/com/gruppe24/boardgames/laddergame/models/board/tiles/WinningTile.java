@@ -7,15 +7,6 @@ import com.google.gson.JsonObject;
  */
 public class WinningTile extends SpecialTile {
 
-  /**
-   * Constructor for WinningTile.
-   *
-   * @param position the position of the tile
-   */
-  public WinningTile(int position) {
-    super(position);
-  }
-
   @Override
   public int getTileType() {
     return -3;
@@ -28,4 +19,14 @@ public class WinningTile extends SpecialTile {
     actionJson.addProperty("description", "Player wins the game on tile " + tileId);
     tileJson.add("action", actionJson);
   }
+
+  /**
+   * Constructor for WinningTile.
+   *
+   * @param position the position of the tile
+   */
+  public WinningTile(int position) {
+    super(position);
+  }
+
 }

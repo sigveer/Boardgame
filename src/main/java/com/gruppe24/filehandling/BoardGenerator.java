@@ -1,15 +1,11 @@
-package com.gruppe24.utils;
-
-import static com.gruppe24.boardgames.laddergame.models.board.Board.initializeStandardLadders;
-import static com.gruppe24.boardgames.laddergame.models.board.Board.initializeStandardSpecialTiles;
+package com.gruppe24.filehandling;
 
 import com.gruppe24.boardgames.laddergame.models.board.Board;
-import com.gruppe24.filehandling.FileHandler;
 import java.util.HashMap;
 
 /**
- * This class generates different types of boards for the Ladder game.
- * It creates a classic board and a special board with additional features.
+ * This class generates different types of boards for the Ladder game. It creates a classic board
+ * and a special board with additional features.
  */
 public class BoardGenerator {
 
@@ -22,7 +18,6 @@ public class BoardGenerator {
     createClassicBoard();
     createSpecialBoard();
   }
-
 
   /**
    * Creates a classic board and saves it to a JSON file.
@@ -42,14 +37,12 @@ public class BoardGenerator {
     saveBoard(specialBoard, "special_board");
   }
 
-
-
   /**
    * Creates a board with the specified parameters.
    *
    * @param includeSpecialTiles whether to include special tiles
-   * @param name               the name of the board
-   * @param description        the description of the board
+   * @param name                the name of the board
+   * @param description         the description of the board
    * @return a new Board object
    */
   private static Board createBoard(boolean includeSpecialTiles, String name, String description) {
@@ -59,13 +52,14 @@ public class BoardGenerator {
     HashMap<Integer, Boolean> frozenTiles = new HashMap<>();
     HashMap<Integer, Boolean> randomTeleportTiles = new HashMap<>();
 
-    initializeStandardLadders(ladderUp, ladderDown);
+    Board.initializeStandardLadders(ladderUp, ladderDown);
 
     if (includeSpecialTiles) {
-      initializeStandardSpecialTiles(frozenTiles, randomTeleportTiles);
+      Board.initializeStandardSpecialTiles(frozenTiles, randomTeleportTiles);
     }
 
-    return new Board(ladderUp, ladderDown, winningTile, frozenTiles, randomTeleportTiles, name, description);
+    return new Board(ladderUp, ladderDown, winningTile, frozenTiles, randomTeleportTiles, name,
+        description);
   }
 
   /**

@@ -1,16 +1,22 @@
 package com.gruppe24.boardgames.laddergame.models.board;
 
 import static com.gruppe24.boardgames.laddergame.models.board.BoardFactory.createBoard;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import com.gruppe24.boardgames.laddergame.models.board.tiles.*;
+import com.gruppe24.boardgames.commonclasses.CommonTile;
+import com.gruppe24.boardgames.laddergame.models.board.tiles.FrozenTile;
+import com.gruppe24.boardgames.laddergame.models.board.tiles.LadderDownTile;
+import com.gruppe24.boardgames.laddergame.models.board.tiles.LadderUpTile;
+import com.gruppe24.boardgames.laddergame.models.board.tiles.NormalTile;
+import com.gruppe24.boardgames.laddergame.models.board.tiles.RandomTeleportTile;
+import com.gruppe24.boardgames.laddergame.models.board.tiles.WinningTile;
 import java.util.HashMap;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-/**
- * {@code BoardTest} is a test class for the {@code Board} class.
- */
 class BoardTest {
 
   private Board board;
@@ -22,21 +28,21 @@ class BoardTest {
 
   @Test
   void testBoardInitialization() {
-    assertEquals(91, board.tiles.length); // Includes tile 0
+    assertEquals(91, board.getTiles().length); // Includes tile 0
     assertEquals("Classic LadderGame", board.getName());
     assertEquals("A classic game of Ladders with 90 tiles.", board.getDescription());
   }
 
   @Test
   void testGetNormalTile() {
-    Tile tile = board.getTile(1);
+    CommonTile tile = board.getTile(1);
     assertInstanceOf(NormalTile.class, tile);
     assertEquals(1, tile.getPosition());
   }
 
   @Test
   void testGetLadderUpTile() {
-    Tile tile = board.getTile(2);
+    CommonTile tile = board.getTile(2);
     assertInstanceOf(LadderUpTile.class, tile);
     LadderUpTile ladderTile = (LadderUpTile) tile;
     assertEquals(40, ladderTile.getDestination());
@@ -45,7 +51,7 @@ class BoardTest {
 
   @Test
   void testGetLadderDownTile() {
-    Tile tile = board.getTile(24);
+    CommonTile tile = board.getTile(24);
     assertInstanceOf(LadderDownTile.class, tile);
     LadderDownTile ladderTile = (LadderDownTile) tile;
     assertEquals(5, ladderTile.getDestination());
@@ -54,23 +60,44 @@ class BoardTest {
 
   @Test
   void testGetWinningTile() {
-    Tile tile = board.getTile(90);
+    CommonTile tile = board.getTile(90);
     assertInstanceOf(WinningTile.class, tile);
     assertEquals(90, tile.getPosition());
   }
 
   @Test
   void testGetFrozenTile() {
-    Tile tile = board.getTile(34);
+    CommonTile tile = board.getTile(34);
     assertInstanceOf(FrozenTile.class, tile);
     assertEquals(34, tile.getPosition());
   }
 
   @Test
   void testGetRandomTeleportTile() {
-    Tile tile = board.getTile(11);
+    CommonTile tile = board.getTile(11);
     assertInstanceOf(RandomTeleportTile.class, tile);
     assertEquals(11, tile.getPosition());
+  }
+
+  @Test
+  void testGetTileTypeForDifferentTiles() {
+    //LadderUpTile
+    assertEquals(1, board.getTileType(2));
+
+    //LadderDownTile
+    assertEquals(2, board.getTileType(24));
+
+    //NormalTile
+    assertEquals(0, board.getTileType(1));
+
+    //FrozenTile
+    assertEquals(4, board.getTileType(34));
+
+    //RandomTeleportTile
+    assertEquals(3, board.getTileType(11));
+
+    //WinningTile
+    assertEquals(-3, board.getTileType(90));
   }
 
   @Test
@@ -98,16 +125,17 @@ class BoardTest {
     HashMap<Integer, Integer> ladderUp = new HashMap<>();
     HashMap<Integer, Integer> ladderDown = new HashMap<>();
     HashMap<Integer, Boolean> frozenTiles = new HashMap<>();
-    HashMap<Integer, Boolean> randomTeleportTiles = new HashMap<>();
-    HashMap<Integer, Boolean> winningTile = new HashMap<>();
-
     ladderUp.put(1, 10);
     ladderDown.put(20, 5);
     frozenTiles.put(15, true);
+
+    HashMap<Integer, Boolean> randomTeleportTiles = new HashMap<>();
+    HashMap<Integer, Boolean> winningTile = new HashMap<>();
     randomTeleportTiles.put(25, true);
     winningTile.put(30, true);
 
-    Board customBoard = new Board(ladderUp, ladderDown, winningTile, frozenTiles, randomTeleportTiles, "Custom Board", "Custom Description");
+    Board customBoard = new Board(ladderUp, ladderDown, winningTile, frozenTiles,
+        randomTeleportTiles, "Custom Board", "Custom Description");
 
     assertEquals("Custom Board", customBoard.getName());
     assertEquals("Custom Description", customBoard.getDescription());
@@ -120,12 +148,20 @@ class BoardTest {
 
   @Test
   void testInvalidCustomBoardInitialization() {
-    assertThrows(IllegalArgumentException.class, () -> new Board(null, new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>(), "Name", "Description"));
-    assertThrows(IllegalArgumentException.class, () -> new Board(new HashMap<>(), null, new HashMap<>(), new HashMap<>(), new HashMap<>(), "Name", "Description"));
-    assertThrows(IllegalArgumentException.class, () -> new Board(new HashMap<>(), new HashMap<>(), null, new HashMap<>(), new HashMap<>(), "Name", "Description"));
-    assertThrows(IllegalArgumentException.class, () -> new Board(new HashMap<>(), new HashMap<>(), new HashMap<>(), null, new HashMap<>(), "Name", "Description"));
-    assertThrows(IllegalArgumentException.class, () -> new Board(new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>(), null, "Name", "Description"));
-    assertThrows(IllegalArgumentException.class, () -> new Board(new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>(), "", "Description"));
-    assertThrows(IllegalArgumentException.class, () -> new Board(new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>(), "Name", ""));
+    assertThrows(IllegalArgumentException.class, () -> new Board(null, new HashMap<>(),
+        new HashMap<>(), new HashMap<>(), new HashMap<>(), "Name", "Description"));
+    assertThrows(IllegalArgumentException.class, () -> new Board(new HashMap<>(), null,
+        new HashMap<>(), new HashMap<>(), new HashMap<>(), "Name", "Description"));
+    assertThrows(IllegalArgumentException.class, () -> new Board(new HashMap<>(), new HashMap<>(),
+        null, new HashMap<>(), new HashMap<>(), "Name", "Description"));
+    assertThrows(IllegalArgumentException.class, () -> new Board(new HashMap<>(), new HashMap<>(),
+        new HashMap<>(), null, new HashMap<>(), "Name", "Description"));
+    assertThrows(IllegalArgumentException.class, () -> new Board(new HashMap<>(), new HashMap<>(),
+        new HashMap<>(), new HashMap<>(), null, "Name",
+        "Description"));
+    assertThrows(IllegalArgumentException.class, () -> new Board(new HashMap<>(), new HashMap<>(),
+        new HashMap<>(), new HashMap<>(), new HashMap<>(), "", "Description"));
+    assertThrows(IllegalArgumentException.class, () -> new Board(new HashMap<>(), new HashMap<>(),
+        new HashMap<>(), new HashMap<>(), new HashMap<>(), "Name", ""));
   }
 }

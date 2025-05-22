@@ -52,23 +52,6 @@ public class StyleUtils {
     normalButton.setOnMouseReleased(e -> normalButton.setStyle(hoverStyle));
   }
 
-
-  /**
-   * Method to style the Tic Tac Toe button.
-   *
-   * @param tttButton is the button to be styled
-   */
-  public static void styletttButton(Button tttButton) {
-    String normalStyle =
-        "-fx-background-color: white; "
-            + "-fx-border-color: #cccccc; "
-            + "-fx-border-width: 1px; "
-            + "-fx-font-size: 75px; "
-            + "-fx-text-fill: black;";
-
-    tttButton.setStyle(normalStyle);
-  }
-
   /**
    * Predefined style for the panel.
    */

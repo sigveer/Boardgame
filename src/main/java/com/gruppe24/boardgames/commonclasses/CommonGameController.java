@@ -3,6 +3,7 @@ package com.gruppe24.boardgames.commonclasses;
 import com.gruppe24.boardgames.laddergame.controller.BoardController;
 import com.gruppe24.boardgames.laddergame.models.Player;
 import com.gruppe24.boardgames.laddergame.models.board.Board;
+import com.gruppe24.exeptions.InvalidPlayerException;
 import com.gruppe24.observerpattern.EventType;
 import com.gruppe24.observerpattern.GameSubject;
 import java.util.ArrayList;
@@ -71,7 +72,7 @@ public abstract class CommonGameController {
    */
   public void addPlayer() {
     if (players.size() >= getMaxPlayers()) {
-      return;
+      throw new InvalidPlayerException("Too many players");
     }
     CommonPlayer newPlayer = createPlayer("Player " + (players.size() + 1), getNextIconIndex());
     players.add(newPlayer);
@@ -83,11 +84,12 @@ public abstract class CommonGameController {
    * Method that removes the last player in the playermenu.
    */
   public void removePlayer() {
-    if (players.size() > 1) {
-      CommonPlayer removedPlayer = players.removeLast();
-
-      gameSubject.notifyListener(EventType.PLAYER_REMOVED, removedPlayer);
+    if (players.size() <= 1) {
+      throw new InvalidPlayerException("Cannot remove last player");
     }
+
+    CommonPlayer removedPlayer = players.removeLast();
+    gameSubject.notifyListener(EventType.PLAYER_REMOVED, removedPlayer);
   }
 
   /**
@@ -96,7 +98,6 @@ public abstract class CommonGameController {
    * @return the players
    */
   public List<Player> getPlayers() {
-    // Create a new list with the correct type
     List<Player> playerList = new ArrayList<>();
     for (CommonPlayer commonPlayer : players) {
       if (commonPlayer instanceof Player) {

@@ -189,6 +189,10 @@ public class Board {
     return new NormalTile(position);
   }
 
+  public CommonTile[] getTiles() {
+    return commonTiles;
+  }
+
   /**
    * Method that gets the tile type.
    *
