@@ -6,7 +6,7 @@ import com.gruppe24.exeptions.InvalidPlayerException;
 import com.gruppe24.filehandling.TileJsonSerializer;
 
 /**
- * Abstract class representing a tile on the board.
+ * Abstract model class representing a tile on the board.
  */
 public abstract class CommonTile implements TileJsonSerializer {
 
@@ -35,6 +35,13 @@ public abstract class CommonTile implements TileJsonSerializer {
   }
 
   /**
+   * Abstract getter for the tile type number.
+   *
+   * @return The tile type number.
+   */
+  public abstract int getTileType();
+
+  /**
    * Performs the action associated with this tile for the given player.
    *
    * @param player The player who is currently on this tile.
@@ -55,11 +62,4 @@ public abstract class CommonTile implements TileJsonSerializer {
   public int getPosition() {
     return position;
   }
-
-  /**
-   * Getter for the tile type number.
-   *
-   * @return The tile type number.
-   */
-  public abstract int getTileType();
 }

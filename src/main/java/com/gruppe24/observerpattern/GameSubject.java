@@ -10,6 +10,7 @@ import java.util.List;
 public class GameSubject implements GameObservable {
 
   private final List<GameObserver> observers;
+  private static final GameSubject instance = new GameSubject();
 
   @Override
   public void registerListener(GameObserver observer) {
@@ -37,7 +38,17 @@ public class GameSubject implements GameObservable {
    * Constructor for the GameSubject class.
    * Initializes the list of observers.
    */
-  public GameSubject() {
+  private GameSubject() {
     observers = new ArrayList<>();
+  }
+
+  /**
+   * Return singelton instance of GameSubject, to avoid having to make instance
+   * of the observer.
+   *
+   * @return singelton instnace.
+   */
+  public static GameSubject gameSubjectInstance() {
+    return instance;
   }
 }

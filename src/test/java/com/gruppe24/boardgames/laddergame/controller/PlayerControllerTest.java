@@ -18,8 +18,7 @@ class PlayerControllerTest {
 
   @BeforeEach
   void setUp() {
-    gameSubject = new GameSubject();
-    playerController = new PlayerController(gameSubject);
+    playerController = new PlayerController();
   }
 
   @Test
@@ -42,7 +41,7 @@ class PlayerControllerTest {
 
   @Test
   void testAddDefaultPlayer() {
-    List<Player> playerList = playerController.getPlayers();
+    List<Player> playerList = playerController.getPlayerList();
 
     // Upon making an instance of playerController, a player should have been added
     assertEquals(1, playerList.size());

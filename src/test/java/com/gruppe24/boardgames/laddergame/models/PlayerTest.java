@@ -56,14 +56,6 @@ class PlayerTest {
   }
 
   @Test
-  void testCycleToNextIcon() {
-    player.cycleToNextIcon();
-    assertEquals("pictures/pngIcons/wario.png", player.getIconPath());
-    player.cycleToNextIcon();
-    assertEquals("pictures/pngIcons/waluigi.png", player.getIconPath());
-  }
-
-  @Test
   void testFrozenState() {
     assertFalse(player.isFrozen());
     player.setFrozen(true);

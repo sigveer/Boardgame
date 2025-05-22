@@ -6,7 +6,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 /**
- * Abstract class that represents players.
+ * Abstract model class that represents players.
  */
 public abstract class CommonPlayer {
 
@@ -18,7 +18,7 @@ public abstract class CommonPlayer {
   protected int currentIconIndex;
 
   /**
-   * Constructor for the player.
+   * Constructor for the common player.
    *
    * @param name      name of the player
    * @param iconIndex index of the icon
@@ -28,7 +28,6 @@ public abstract class CommonPlayer {
     if (name == null || name.trim().isEmpty()) {
       throw new InvalidPlayerException();
     }
-
     this.name = name;
     this.position = 0;
     this.currentIconIndex = iconIndex;
@@ -37,7 +36,7 @@ public abstract class CommonPlayer {
   }
 
   /**
-   * Getter-method for the color of the player.
+   * Initializes players image by putting an icon on the players piece.
    *
    * @param iconIndex the index of the icon to use
    */
@@ -57,7 +56,22 @@ public abstract class CommonPlayer {
   }
 
   /**
-   * Accessor-method for name.
+   * Method to get the icon paths.
+   *
+   * @return array of icon paths
+   */
+  public static String[] getIconPaths() {
+    return new String[]{
+        "pictures/pngIcons/mario.png",
+        "pictures/pngIcons/luigi.png",
+        "pictures/pngIcons/wario.png",
+        "pictures/pngIcons/waluigi.png",
+        "pictures/pngIcons/donkeykong.png"
+    };
+  }
+
+  /**
+   * Getter-method for name.
    *
    * @return name as string.
    */
@@ -89,6 +103,9 @@ public abstract class CommonPlayer {
    * @param position new position
    */
   public void setPosition(int position) {
+    if (position < 0) {
+      throw new InvalidPlayerException("Position can not be sub zero");
+    }
     this.position = position;
   }
 
@@ -99,6 +116,19 @@ public abstract class CommonPlayer {
    */
   public Image getIcon() {
     return this.icon;
+  }
+
+  /**
+   * Setter-method for Image.
+   *
+   * @param image new image
+   * @throws InvalidPlayerException if image is null
+   */
+  public void setIcon(Image image) {
+    if (image == null) {
+      throw new InvalidPlayerException();
+    }
+    this.icon = image;
   }
 
   /**
@@ -120,46 +150,12 @@ public abstract class CommonPlayer {
   }
 
   /**
-   * Setter-method for Image.
+   * Setter-method for iconPath.
    *
-   * @param image new image
-   * @throws InvalidPlayerException if image is null
+   * @param iconPath icon path.
    */
-  public void setIcon(Image image) {
-    if (image == null) {
-      throw new InvalidPlayerException();
-    }
-    this.icon = image;
-  }
-
-  /**
-   * Method to get the icon paths.
-   *
-   * @return array of icon paths
-   */
-  public static String[] getIconPaths() {
-    return new String[]{
-        "pictures/pngIcons/mario.png",
-        "pictures/pngIcons/luigi.png",
-        "pictures/pngIcons/wario.png",
-        "pictures/pngIcons/waluigi.png",
-        "pictures/pngIcons/donkeykong.png"
-    };
-  }
-
-  /**
-   * Method to cycle to the next icon.
-   */
-  public void cycleToNextIcon() {
-    String[] paths = getIconPaths();
-    currentIconIndex = (currentIconIndex + 1) % paths.length;
-    String nextPath = paths[currentIconIndex];
-    this.iconPath = nextPath;
-
-    Image newIcon = new Image(
-        Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(nextPath)));
-    this.setIcon(newIcon);
-    this.playerPiece.setImage(newIcon);
+  public void setIconPath(String iconPath) {
+    this.iconPath = iconPath;
   }
 
   /**
@@ -169,5 +165,14 @@ public abstract class CommonPlayer {
    */
   public int getIconIndex() {
     return currentIconIndex;
+  }
+
+  /**
+   * Setter-method for current icon index.
+   *
+   * @param iconIndex icon index.
+   */
+  public void setCurrentIconIndex(int iconIndex) {
+    this.currentIconIndex = iconIndex;
   }
 }

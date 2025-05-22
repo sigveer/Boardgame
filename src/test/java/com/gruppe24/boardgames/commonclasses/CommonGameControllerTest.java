@@ -25,9 +25,9 @@ class CommonGameControllerTest {
   @BeforeEach
   void setUp() {
     mockGameSubject = mock(GameSubject.class);
-    playerController = new PlayerController(mockGameSubject);
+    playerController = new PlayerController();
     mockBoardController = new BoardController(new Board());
-    commonGameController = new CommonGameController(1, mockGameSubject) {
+    commonGameController = new CommonGameController() {
       @Override
       protected CommonPlayer createPlayer(String name, int iconIndex) {
         return mock(CommonPlayer.class);
@@ -43,7 +43,7 @@ class CommonGameControllerTest {
   @Test
   void testAddPlayer() {
     playerController.addPlayer();
-    List<Player> players = playerController.getPlayers();
+    List<Player> players = playerController.getPlayerList();
 
     assertEquals(2, players.size());
     assertEquals("Player 2", players.get(1).getName());
@@ -70,8 +70,8 @@ class CommonGameControllerTest {
   }
 
   @Test
-  void testGetPlayers() {
-    List<Player> players = playerController.getPlayers();
+  void testGetPlayerList() {
+    List<Player> players = playerController.getPlayerList();
     assertNotNull(players);
     assertEquals(1, players.size());
   }
@@ -80,7 +80,7 @@ class CommonGameControllerTest {
   @Test
   void testHandleOvershootBeyondLimit() {
     int position = 95;
-    commonGameController.winCondition = 90;
+    commonGameController.setWinCondition(90);
 
     assertEquals(85, commonGameController.handleOvershoot(position));
   }

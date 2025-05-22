@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Abstract class representing a set of dice. This class provides methods to roll the dice and get
- * the sum of their values.
+ * Concrete model class representing a set of dice. This class provides methods to roll the dice and
+ * get the sum of their values.
  */
 public class CommonDice {
 

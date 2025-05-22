@@ -55,7 +55,6 @@ public class LadderGameApp extends Application {
   private Label isFrozenLabel;
   private final CommonDice dice = new CommonDice(2);
   private Button diceRollButton;
-  private final GameSubject gameSubject = new GameSubject();
   private final GameLogger gameLogger = new GameLogger();
 
   /**
@@ -72,10 +71,11 @@ public class LadderGameApp extends Application {
       throw new IllegalArgumentException("Parameter boardType cannot be empty");
     }
     this.boardController = new BoardController(boardType);
-    this.playerController = new PlayerController(gameSubject);
+    this.playerController = new PlayerController();
     this.board = boardController.getBoard();
     this.players = players;
-    gameSubject.registerListener(gameLogger);
+
+    GameSubject.gameSubjectInstance().registerListener(gameLogger);
   }
 
   /**
@@ -92,10 +92,10 @@ public class LadderGameApp extends Application {
       throw new IllegalArgumentException("Parameter customBoard cannot be empty");
     }
     this.boardController = new BoardController(customBoard);
-    this.playerController = new PlayerController(gameSubject);
+    this.playerController = new PlayerController();
     this.board = customBoard;
     this.players = players;
-    gameSubject.registerListener(gameLogger);
+    GameSubject.gameSubjectInstance().registerListener(gameLogger);
   }
 
   /**
@@ -580,14 +580,14 @@ public class LadderGameApp extends Application {
    * PART OF handleSpecialTileEffects(). Checks and logs if player has won.
    */
   private void checkWinner(Player player, int position, Stage primaryStage) {
-    if (boardController.isWinningPosition(position)) {
+    if (position == playerController.getWinCondition()) {
       Alert alert = new Alert(AlertType.INFORMATION);
       alert.setTitle("Game Over");
       alert.setHeaderText(null);
       alert.setContentText(player.getName() + " has won the game!");
 
       Platform.runLater(() -> {
-        gameSubject.removeListener(this.gameLogger);
+        GameSubject.gameSubjectInstance().removeListener(this.gameLogger);
         alert.showAndWait();
         new DashboardGui().start(primaryStage);
       });

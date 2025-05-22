@@ -6,8 +6,12 @@ import com.gruppe24.boardgames.laddergame.models.Player;
 import com.gruppe24.observerpattern.GameSubject;
 
 /**
- * PlayerController is a class that manages the players in the game. It handles player creation,
- * removal, icon cycling, and player movement.
+ * Controller class that manages the players in the game "ladderGame". It uses these
+ * functionalities:
+ * <li>player creation</li>
+ * <li>player removal</li>
+ * <li>icon cycling</li>,
+ * <li>player movement</li>
  */
 public class PlayerController extends CommonGameController {
 
@@ -23,12 +27,9 @@ public class PlayerController extends CommonGameController {
 
   /**
    * Constructor for PlayerController.
-   *
-   * @param gameSubject the game subject for observer pattern
    */
-  public PlayerController(GameSubject gameSubject) {
-    super(2, gameSubject);
-    this.winCondition = 90;
+  public PlayerController() {
+    setWinCondition(90);
 
     addDefaultPlayer();
   }
