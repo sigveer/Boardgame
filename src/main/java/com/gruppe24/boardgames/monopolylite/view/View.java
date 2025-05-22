@@ -2,8 +2,9 @@ package com.gruppe24.boardgames.monopolylite.view;
 
 import com.gruppe24.boardgames.DashboardGui;
 import com.gruppe24.boardgames.commonclasses.CommonDice;
-import com.gruppe24.boardgames.laddergame.models.Player;
+import com.gruppe24.boardgames.monopolylite.model.Player;
 import com.gruppe24.boardgames.monopolylite.model.Property;
+import com.gruppe24.boardgames.monopolylite.view.Cards.ChanceCard;
 import com.gruppe24.utils.StyleUtils;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,9 +18,12 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -31,11 +35,13 @@ public class View {
 
   private final Stage primaryStage;
   private final List<Player> players;
-  private Label diceResultLabel;
   private final CommonDice dice = new CommonDice(1);
   private Cards cards;
   private int currentCardIndex = 0;
   private List<Property> properties;
+  private Label diceResultLabel;
+  private Label playerInfoLabel;
+  private Label currentPlayerLabel;
 
   /**
    * Constructor for View class.
@@ -73,10 +79,16 @@ public class View {
     controlPanel.setMinWidth(200);
     StyleUtils.stylePanel(controlPanel);
 
-    Label currentPlayerLabel = new Label("Current Player: " + players.getFirst().getName());
+    currentPlayerLabel = new Label("Current Player: " + players.getFirst().getName());
     currentPlayerLabel.setStyle("-fx-font-size: 16px; -fx-text-fill: white;");
     currentPlayerLabel.setWrapText(true);
     currentPlayerLabel.setMaxWidth(230);
+
+    playerInfoLabel = new Label(
+        players.getFirst().getName() + " - kr " + players.getFirst().getMoney());
+    playerInfoLabel.setStyle("-fx-font-size: 16px; -fx-text-fill: white;");
+    playerInfoLabel.setWrapText(true);
+    playerInfoLabel.setMaxWidth(230);
 
     diceResultLabel = new Label("Roll the dice!");
     diceResultLabel.setStyle("-fx-font-size: 16px; -fx-text-fill: white;");
@@ -97,14 +109,14 @@ public class View {
     checkPropertyButton.setOnAction(event -> {
     });
 
-    //midlertidig løsning
-    Button viewCardsButton = new Button("View Cards");
+    Button viewCardsButton = new Button("Show A Chance Cards");
     StyleUtils.styleNormalButton(viewCardsButton);
     viewCardsButton.setOnAction(event -> showCardViewer());
 
     controlPanel.getChildren().addAll(
         backToMenu,
         currentPlayerLabel,
+        playerInfoLabel,
         dicePane,
         diceResultLabel,
         diceRoll,
@@ -138,29 +150,29 @@ public class View {
     BorderPane layout = new BorderPane();
     layout.setStyle("-fx-background-color: #efefef; -fx-padding: 20;");
 
-    List<Node> allCards = cards.getAllCards();
-    if (allCards.isEmpty()) {
+    List<ChanceCard> chanceCardsList = cards.getChanceCards();
+    if (chanceCardsList.isEmpty()) {
       return;  // No cards to display
     }
 
     StackPane cardContainer = new StackPane();
-    cardContainer.getChildren().add(allCards.get(currentCardIndex));
+    cardContainer.getChildren().add(createChanceCardNode(chanceCardsList.get(currentCardIndex)));
     layout.setCenter(cardContainer);
 
     Button prevButton = new Button("◀");
     StyleUtils.styleNormalButton(prevButton);
     prevButton.setOnAction(e -> {
-      currentCardIndex = (currentCardIndex - 1 + allCards.size()) % allCards.size();
+      currentCardIndex = (currentCardIndex - 1 + chanceCardsList.size()) % chanceCardsList.size();
       cardContainer.getChildren().clear();
-      cardContainer.getChildren().add(allCards.get(currentCardIndex));
+      cardContainer.getChildren().add(createChanceCardNode(chanceCardsList.get(currentCardIndex)));
     });
 
     Button nextButton = new Button("▶");
     StyleUtils.styleNormalButton(nextButton);
     nextButton.setOnAction(e -> {
-      currentCardIndex = (currentCardIndex + 1) % allCards.size();
+      currentCardIndex = (currentCardIndex + 1) % chanceCardsList.size();
       cardContainer.getChildren().clear();
-      cardContainer.getChildren().add(allCards.get(currentCardIndex));
+      cardContainer.getChildren().add(createChanceCardNode(chanceCardsList.get(currentCardIndex)));
     });
 
     Button closeButton = new Button("Close");
@@ -182,6 +194,91 @@ public class View {
     cardViewerStage.show();
   }
 
+  // Add these methods to the View class
+
+  /**
+   * Creates a visual representation of a property card.
+   *
+   * @param property the property to visualize
+   * @return the JavaFX Node representing the property card
+   */
+  private Node createPropertyCardNode(Property property) {
+    StackPane cardPane = new StackPane();
+    cardPane.setMaxWidth(325);
+    cardPane.setMaxHeight(600);
+    cardPane.setStyle(
+        "-fx-background-color: white; -fx-border-color: black; -fx-border-width: 2px;");
+
+    VBox content = new VBox(15);
+    content.setAlignment(Pos.TOP_CENTER);
+    content.setPadding(new Insets(20));
+
+    Rectangle colorBar = new Rectangle(260, 70);
+    colorBar.setFill(Color.web(property.getColor()));
+    colorBar.setStroke(Color.BLACK);
+
+    VBox headerText = new VBox(5);
+    headerText.setAlignment(Pos.CENTER);
+
+    Label titleLabel = new Label("TITLE DEED");
+    titleLabel.setStyle("-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: black;");
+
+    Label nameLabel = new Label(property.getName());
+    nameLabel.setStyle("-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: black;");
+
+    // Create color header with stacked text
+    StackPane colorHeader = new StackPane();
+    headerText.getChildren().addAll(titleLabel, nameLabel);
+    colorHeader.getChildren().addAll(colorBar, headerText);
+
+    Label priceLabel = new Label("PRICE kr " + property.getPrice());
+    priceLabel.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
+
+    Label rentLabel = new Label("RENT kr " + property.getRent());
+    rentLabel.setStyle("-fx-font-size: 16px;");
+
+    content.getChildren().addAll(colorHeader, priceLabel, rentLabel);
+    cardPane.getChildren().add(content);
+
+    return cardPane;
+  }
+
+  /**
+   * Creates a visual representation of a chance card.
+   *
+   * @param chanceCard the chance card to visualize
+   * @return the JavaFX Node representing the chance card
+   */
+  private Node createChanceCardNode(Cards.ChanceCard chanceCard) {
+    StackPane cardPane = new StackPane();
+    cardPane.setMaxWidth(600);
+    cardPane.setMaxHeight(325);
+    cardPane.setStyle(
+        "-fx-background-color: #ffffff; -fx-border-color: black; -fx-border-width: 2px;");
+
+    VBox content = new VBox(20);
+    content.setAlignment(Pos.CENTER);
+    content.setPadding(new Insets(20));
+
+    Label titleLabel = new Label("CHANCE");
+    titleLabel.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
+
+    Label actionLabel = new Label(chanceCard.getTitle());
+    actionLabel.setStyle("-fx-font-size: 20px; -fx-font-weight: bold;");
+    actionLabel.setWrapText(true);
+    actionLabel.setAlignment(Pos.CENTER);
+
+    Label descriptionLabel = new Label(chanceCard.getDescription());
+    descriptionLabel.setStyle("-fx-font-size: 16px;");
+    descriptionLabel.setWrapText(true);
+    descriptionLabel.setAlignment(Pos.CENTER);
+
+    content.getChildren().addAll(titleLabel, actionLabel, descriptionLabel);
+    cardPane.getChildren().add(content);
+
+    return cardPane;
+  }
+
   private void rollDiceAndMove(GridPane gridPane, Pane dicePane) {
     int diceValue = rollAndDisplayDice(dicePane);
     diceResultLabel.setText("Rolled: " + diceValue);
@@ -189,6 +286,8 @@ public class View {
     Player currentPlayer = players.getFirst();
 
     movePlayer(gridPane, currentPlayer, diceValue);
+
+    advanceToNextPlayer();
   }
 
   private int rollAndDisplayDice(Pane dicePane) {
@@ -376,7 +475,7 @@ public class View {
    * @param player   the player to place
    * @AI_Based Logic and math calculation is based on AI logic.
    */
-  private void placePlayerPieceOnBoard(GridPane gridPane, Player player) {
+  public void placePlayerPieceOnBoard(GridPane gridPane, Player player) {
     int position = player.getPosition();
 
     int row;
@@ -439,20 +538,193 @@ public class View {
       }
     }
 
-    if (property != null) {
-      if (position == 0) {
-        diceResultLabel.setText("Landed on START");
-      } else if (position == 6) {
-        diceResultLabel.setText("Landed on JAIL");
-      } else if (position == 9 || position == 20) {
-        diceResultLabel.setText("Landed on CHANCE");
-      } else if (position == 12) {
-        diceResultLabel.setText("Landed on FREE PARKING");
-      } else if (position == 18) {
-        diceResultLabel.setText("GO TO JAIL!");
+    if (property == null) {
+      return;
+    }
+    Player currentPlayer = players.getFirst();
+
+    if (position == 0) {
+      diceResultLabel.setText("Landed on START");
+      currentPlayer.addMoney(200);
+    } else if (position == 6) {
+      diceResultLabel.setText("Landed on JAIL");
+    } else if (position == 9 || position == 20) {
+      diceResultLabel.setText("Landed on CHANCE");
+      showCardViewer();
+    } else if (position == 12) {
+      diceResultLabel.setText("Landed on FREE PARKING");
+    } else if (position == 18) {
+      diceResultLabel.setText("GO TO JAIL!");
+      sendPlayerToJail(currentPlayer);
+    } else if (property.getPrice() > 0) {
+      if (!property.isPurchased()) {
+        offerPropertyPurchase(property, currentPlayer);
+      } else if (property.getOwner() != currentPlayer) {
+        payRent(property, currentPlayer);
       } else {
-        diceResultLabel.setText("Landed on " + property.getName());
+        diceResultLabel.setText("You already own " + property.getName());
       }
     }
+
+    updatePlayerInfoDisplay(currentPlayer);
+  }
+
+  /**
+   * Sends the player to jail.
+   *
+   * @param player the player to send to jail
+   */
+  private void sendPlayerToJail(Player player) {
+    // Position 6 is Jail
+    GridPane gridPane = new GridPane();
+
+    player.setPosition(6);
+    placePlayerPieceOnBoard(gridPane, player);
+
+    // Show jail notification
+    Stage jailStage = new Stage();
+    jailStage.initOwner(primaryStage);
+    jailStage.setTitle("Sent to Jail!");
+    jailStage.initModality(Modality.APPLICATION_MODAL);
+
+    VBox content = new VBox(15);
+    content.setPadding(new Insets(20));
+    content.setAlignment(Pos.CENTER);
+
+    Label jailLabel = new Label(player.getName() + " has been sent to Jail!");
+    jailLabel.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
+
+    Button okButton = new Button("OK");
+    StyleUtils.styleNormalButton(okButton);
+    okButton.setOnAction(e -> jailStage.close());
+
+    content.getChildren().addAll(jailLabel, okButton);
+
+    Scene scene = new Scene(content, 300, 150);
+    jailStage.setScene(scene);
+    jailStage.show();
+
+    // Update UI
+    diceResultLabel.setText(player.getName() + " was sent to Jail!");
+  }
+
+  private void offerPropertyPurchase(Property property, Player currentPlayer) {
+    Stage purchaseStage = new Stage();
+    purchaseStage.initOwner(primaryStage);
+    purchaseStage.setTitle("Buy Property");
+    purchaseStage.initModality(Modality.APPLICATION_MODAL);
+
+    VBox content = new VBox(15);
+    content.setPadding(new Insets(20));
+    content.setAlignment(Pos.CENTER);
+
+    Label infoLabel = new Label("Do you want to buy " + property.getName()
+        + " for kr " + property.getPrice() + "?");
+    infoLabel.setStyle("-fx-font-size: 16px");
+
+    Rectangle colorSample = new Rectangle(50, 20);
+    colorSample.setFill(javafx.scene.paint.Color.web(property.getColor()));
+
+    Label moneyLabel = new Label("Your money: kr " + currentPlayer.getMoney());
+
+    HBox buttons = new HBox(20);
+    buttons.setAlignment(Pos.CENTER);
+
+    Button buyButton = new Button("Buy");
+    StyleUtils.styleNormalButton(buyButton);
+
+    Button declineButton = new Button("Decline");
+    StyleUtils.styleNormalButton(declineButton);
+
+    buyButton.setDisable(currentPlayer.getMoney() < property.getPrice());
+
+    buyButton.setOnAction(e -> {
+      if (currentPlayer.subtractMoney(property.getPrice())) {
+        property.setOwner(currentPlayer);
+        diceResultLabel.setText("You bought " + property.getName());
+        updatePropertyTileAppearance(property);
+        updatePlayerInfoDisplay(currentPlayer);
+        purchaseStage.close();
+      }
+    });
+
+    declineButton.setOnAction(e -> {
+      diceResultLabel.setText("You declined to buy " + property.getName());
+      purchaseStage.close();
+    });
+
+    buttons.getChildren().addAll(buyButton, declineButton);
+    content.getChildren().addAll(infoLabel, colorSample, moneyLabel, buttons);
+
+    Scene scene = new Scene(content, 400, 250);
+    purchaseStage.setScene(scene);
+    purchaseStage.show();
+  }
+
+  private void payRent(Property property, Player currentPlayer) {
+    int rentAmount = property.getRent();
+    boolean canPay = currentPlayer.subtractMoney(rentAmount);
+
+    if (canPay) {
+      property.getOwner().addMoney(rentAmount);
+      diceResultLabel.setText("Paid kr " + rentAmount + " rent to "
+          + property.getOwner().getName());
+    } else {
+      diceResultLabel.setText("You can't afford the rent! Game Over!");
+      // Handle bankruptcy
+    }
+
+    updatePlayerInfoDisplay(currentPlayer);
+  }
+
+  private void updatePropertyTileAppearance(Property property) {
+    GridPane gridPane = new GridPane();
+
+    for (Node node : gridPane.getChildren()) {
+      int row = GridPane.getRowIndex(node);
+      int col = GridPane.getColumnIndex(node);
+      int pos = calculatePositionFromGrid(row, col);
+
+      if (pos == property.getPosition()) {
+        StackPane tile = (StackPane) node;
+        // Add a small indicator of ownership
+        Circle ownerIndicator = new Circle(5);
+        ownerIndicator.setFill(Color.web(property.getColor()));
+        ownerIndicator.setStroke(Color.BLACK);
+        ownerIndicator.setTranslateX(45);
+        ownerIndicator.setTranslateY(45);
+
+        tile.getChildren().add(ownerIndicator);
+        break;
+      }
+    }
+  }
+
+  private void updatePlayerInfoDisplay(Player player) {
+    playerInfoLabel.setText(player.getName() + " - kr " + player.getMoney());
+  }
+
+  private int calculatePositionFromGrid(int row, int col) {
+    // Inverse of calculatePosition
+    if (row == 6) {
+      return 6 - col;
+    } else if (col == 0) {
+      return 7 + (5 - row);
+    } else if (row == 0) {
+      return col == 6 ? 18 : 13 + (col - 1);
+    } else if (col == 6) {
+      return 19 + (row - 1);
+    }
+    return -1;
+  }
+
+  private void advanceToNextPlayer() {
+    // Rotate the player list
+    Player currentPlayer = players.removeFirst();
+    players.add(currentPlayer);
+
+    // Update current player display
+    currentPlayerLabel.setText("Current Player: " + players.getFirst().getName());
+    updatePlayerInfoDisplay(players.getFirst());
   }
 }

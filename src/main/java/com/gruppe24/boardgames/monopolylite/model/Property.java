@@ -10,6 +10,8 @@ public class Property {
   private final int price;
   private final int rent;
   private final int position;
+  private Player owner;
+  private boolean purchased;
 
   /**
    * Constructor for property.
@@ -26,6 +28,17 @@ public class Property {
     this.price = price;
     this.rent = rent;
     this.position = position;
+    this.owner = null;
+    this.purchased = false;
+  }
+
+  /**
+   * Boolean method to check if the instance of property is purchased.
+   *
+   * @return true if purchased, false if not.
+   */
+  public boolean isPurchased() {
+    return purchased;
   }
 
   /**
@@ -71,5 +84,24 @@ public class Property {
    */
   public int getPosition() {
     return position;
+  }
+
+  /**
+   * Getter method for owner of property.
+   *
+   * @return the owner of the property.
+   */
+  public Player getOwner() {
+    return owner;
+  }
+
+  /**
+   * Setter method for owner of property.
+   *
+   * @param owner the owner of the property.
+   */
+  public void setOwner(Player owner) {
+    this.owner = owner;
+    this.purchased = true;
   }
 }
