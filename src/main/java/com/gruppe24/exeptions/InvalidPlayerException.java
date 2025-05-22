@@ -11,13 +11,4 @@ public class InvalidPlayerException extends NullPointerException {
   public InvalidPlayerException() {
     super("Player cannot be null or invalid");
   }
-
-  /**
-   * Exception with custom message.
-   *
-   * @param message the error message.
-   */
-  public InvalidPlayerException(String message) {
-    super(message);
-  }
 }

@@ -63,7 +63,7 @@ public abstract class CommonGameController {
    */
   public void addPlayer() {
     if (players.size() >= getMaxPlayers()) {
-      throw new InvalidPlayerException("Too many players");
+      throw new IllegalArgumentException("Too many players");
     }
     CommonPlayer newPlayer = createPlayer("Player " + (players.size() + 1), getNextIconIndex());
     players.add(newPlayer);
@@ -91,7 +91,7 @@ public abstract class CommonGameController {
    */
   public void removePlayer() {
     if (players.size() <= 1) {
-      throw new InvalidPlayerException("Cannot remove last player");
+      throw new IllegalArgumentException("Cannot remove last player");
     }
 
     CommonPlayer removedPlayer = players.removeLast();

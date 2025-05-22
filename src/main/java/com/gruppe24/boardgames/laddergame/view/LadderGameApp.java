@@ -7,6 +7,8 @@ import com.gruppe24.boardgames.laddergame.controller.LadderGameController;
 import com.gruppe24.boardgames.laddergame.models.Player;
 import com.gruppe24.boardgames.laddergame.models.board.Board;
 import com.gruppe24.boardgames.laddergame.models.board.BoardType;
+import com.gruppe24.exeptions.InvalidBoardException;
+import com.gruppe24.exeptions.InvalidPlayerException;
 import com.gruppe24.observerpattern.GameLogger;
 import com.gruppe24.observerpattern.GameSubject;
 import com.gruppe24.utils.StyleUtils;
@@ -65,10 +67,10 @@ public class LadderGameApp extends Application {
    */
   public LadderGameApp(List<Player> players, BoardType boardType) {
     if (players == null || players.isEmpty()) {
-      throw new IllegalArgumentException("Parameter list of players cannot be empty");
+      throw new InvalidPlayerException();
     }
     if (boardType == null) {
-      throw new IllegalArgumentException("Parameter boardType cannot be empty");
+      throw new InvalidBoardException();
     }
     this.boardController = new BoardController(boardType);
     this.ladderGameController = new LadderGameController();
@@ -86,10 +88,10 @@ public class LadderGameApp extends Application {
    */
   public LadderGameApp(List<Player> players, Board customBoard) {
     if (players == null || players.isEmpty()) {
-      throw new IllegalArgumentException("Parameter list of players cannot be empty");
+      throw new InvalidPlayerException();
     }
     if (customBoard == null) {
-      throw new IllegalArgumentException("Parameter customBoard cannot be empty");
+      throw new InvalidBoardException();
     }
     this.boardController = new BoardController(customBoard);
     this.ladderGameController = new LadderGameController();

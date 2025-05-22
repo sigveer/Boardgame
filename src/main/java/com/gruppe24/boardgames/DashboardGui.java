@@ -110,7 +110,7 @@ public class DashboardGui extends Application {
     addPlayerButton.setOnAction(e -> {
       try {
         ladderGameController.addPlayer();
-      } catch (InvalidPlayerException ex) {
+      } catch (IllegalArgumentException ex) {
         GameLogger.getLogger().log(Level.WARNING, "Error adding player, {0}", ex.getMessage());
         return;
       }
@@ -122,7 +122,7 @@ public class DashboardGui extends Application {
     removePlayerButton.setOnAction(e -> {
       try {
         ladderGameController.removePlayer();
-      } catch (InvalidPlayerException ex) {
+      } catch (IllegalArgumentException ex) {
         GameLogger.getLogger().log(Level.WARNING, "Error removing player, {0}", ex.getMessage());
         return;
       }

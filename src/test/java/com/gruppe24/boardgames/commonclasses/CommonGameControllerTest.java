@@ -32,8 +32,8 @@ class CommonGameControllerTest {
       protected CommonPlayer createPlayer(String name, int iconIndex) {
         return mock(CommonPlayer.class);
       }
-
     };
+    commonGameController.setMaxPlayers(5);
   }
 
   @Test
@@ -47,6 +47,8 @@ class CommonGameControllerTest {
 
   @Test
   void testRemovePlayer() {
+    commonGameController.setMaxPlayers(2);
+
     commonGameController.addPlayer();
     commonGameController.addPlayer();
     List<CommonPlayer> players = commonGameController.players;
@@ -58,8 +60,8 @@ class CommonGameControllerTest {
 
     try {
       commonGameController.removePlayer();
-      fail("Should have thrown InvalidPlayerException");
-    } catch (InvalidPlayerException e) {
+      fail("Should have thrown IllegalArgumentException");
+    } catch (IllegalArgumentException e) {
       assertEquals("Cannot remove last player", e.getMessage());
     }
     assertEquals(1, players.size());

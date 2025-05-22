@@ -104,7 +104,7 @@ public abstract class CommonPlayer {
    */
   public void setPosition(int position) {
     if (position < 0) {
-      throw new InvalidPlayerException("Position can not be sub zero");
+      throw new IllegalArgumentException("Position can not be sub zero");
     }
     this.position = position;
   }
