@@ -2,9 +2,10 @@ package com.gruppe24.boardgames.monopolylite.view;
 
 import com.gruppe24.boardgames.DashboardGui;
 import com.gruppe24.boardgames.commonclasses.CommonDice;
+import com.gruppe24.boardgames.monopolylite.model.Cards;
+import com.gruppe24.boardgames.monopolylite.model.Cards.ChanceCard;
 import com.gruppe24.boardgames.monopolylite.model.Player;
 import com.gruppe24.boardgames.monopolylite.model.Property;
-import com.gruppe24.boardgames.monopolylite.view.Cards.ChanceCard;
 import com.gruppe24.utils.StyleUtils;
 import java.util.ArrayList;
 import java.util.List;
@@ -194,7 +195,6 @@ public class View {
     cardViewerStage.show();
   }
 
-  // Add these methods to the View class
 
   /**
    * Creates a visual representation of a property card.
@@ -575,7 +575,6 @@ public class View {
    * @param player the player to send to jail
    */
   private void sendPlayerToJail(Player player) {
-    // Position 6 is Jail
     GridPane gridPane = new GridPane();
 
     player.setPosition(6);

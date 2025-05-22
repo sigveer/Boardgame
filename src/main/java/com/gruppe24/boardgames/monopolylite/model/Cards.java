@@ -1,6 +1,5 @@
-package com.gruppe24.boardgames.monopolylite.view;
+package com.gruppe24.boardgames.monopolylite.model;
 
-import com.gruppe24.boardgames.monopolylite.model.Property;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.scene.Node;
