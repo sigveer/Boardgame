@@ -34,16 +34,4 @@ class FrozenTileTest {
   void testGetTileType() {
     assertEquals(4, frozenTile.getTileType());
   }
-
-  @Test
-  void testAddActionToJson() {
-    JsonObject tileJson = new JsonObject();
-    frozenTile.addActionToJson(tileJson, 10);
-
-    JsonObject actionJson = tileJson.getAsJsonObject("action");
-    assertNotNull(actionJson);
-    assertEquals("FrozenAction", actionJson.get("type").getAsString());
-    assertEquals("Player gets frozen on tile 10 for 1 turn",
-        actionJson.get("description").getAsString());
-  }
 }

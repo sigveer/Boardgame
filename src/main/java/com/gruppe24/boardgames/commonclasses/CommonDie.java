@@ -4,7 +4,7 @@ import com.gruppe24.exeptions.InvalidDiceValueException;
 import java.util.Random;
 
 /**
- * CommonDie is a class that represents a die. It provides methods to roll the die and get the last
+ * Concrete model class that represents a die. It provides methods to roll the die and get the last
  * rolled value.
  */
 public class CommonDie {
@@ -31,9 +31,7 @@ public class CommonDie {
    */
   public int roll() {
     lastRolledValue = random.nextInt(6) + 1;
-    if (lastRolledValue < minValue || lastRolledValue > maxValue) {
-      throw new InvalidDiceValueException("Invalid dice roll value: " + lastRolledValue);
-    }
+
     return lastRolledValue;
   }
 

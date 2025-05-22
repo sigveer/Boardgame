@@ -1,24 +1,25 @@
 package com.gruppe24.boardgames;
 
-import com.gruppe24.boardgames.laddergame.controller.BoardController;
-import com.gruppe24.boardgames.laddergame.controller.PlayerController;
+import com.gruppe24.boardgames.laddergame.controller.LadderGameController;
 import com.gruppe24.boardgames.laddergame.models.Player;
 import com.gruppe24.boardgames.laddergame.models.board.Board;
 import com.gruppe24.boardgames.laddergame.models.board.BoardType;
 import com.gruppe24.boardgames.laddergame.view.LadderGameApp;
-import com.gruppe24.boardgames.monopolylite.MonopolyApp;
+import com.gruppe24.boardgames.monopolylite.view.MonopolyApp;
 import com.gruppe24.exeptions.FileHandlingException;
 import com.gruppe24.exeptions.InvalidPlayerException;
 import com.gruppe24.filehandling.FileHandler;
 import com.gruppe24.filehandling.JsonBoardReader;
 import com.gruppe24.observerpattern.EventType;
-import com.gruppe24.observerpattern.GameSubject;
 import com.gruppe24.observerpattern.GameLogger;
+import com.gruppe24.observerpattern.GameSubject;
 import com.gruppe24.utils.StyleUtils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -40,11 +41,8 @@ public class DashboardGui extends Application {
 
   private List<Player> players;
   private VBox playerList;
-  private PlayerController playerController;
+  private LadderGameController ladderGameController;
   private Stage stage;
-  private JsonBoardReader jsonBoardReader;
-  private final BoardController boardController = new BoardController(BoardType.CLASSIC);
-  private final GameSubject gameSubject = new GameSubject();
   private final GameLogger gameLogger = new GameLogger();
 
   /**
@@ -58,14 +56,11 @@ public class DashboardGui extends Application {
       throw new IllegalArgumentException("Parameter Stage cannot be empty");
     }
     GameLogger.getLogger().log(Level.INFO, "Dashboard started");
+    GameSubject.gameSubjectInstance().registerListener(gameLogger);
 
-    this.jsonBoardReader = new JsonBoardReader();
     this.stage = primaryStage;
-    this.playerController = new PlayerController(gameSubject);
-
-    gameSubject.registerListener(gameLogger);
-
-    this.players = playerController.getPlayers();
+    this.ladderGameController = new LadderGameController();
+    this.players = ladderGameController.getPlayerList();
 
     BorderPane mainLayout = new BorderPane();
     mainLayout.setStyle("-fx-background-color: #3a5ad7;");
@@ -83,9 +78,85 @@ public class DashboardGui extends Application {
     mainLayout.setLeft(playerMenu);
 
     Scene mainScene = new Scene(mainLayout, 1000, 850);
-
     primaryStage.setScene(mainScene);
     primaryStage.show();
+  }
+
+  /**
+   * Creates the start meny grids for the four options.
+   *
+   * @param primaryStage primary stage.
+   * @return the games grids.
+   */
+  private GridPane createGamesGrid(Stage primaryStage) {
+    GridPane gamesGrid = new GridPane();
+    gamesGrid.setAlignment(Pos.CENTER);
+    gamesGrid.setVgap(20);
+    gamesGrid.setHgap(20);
+
+    VBox classicLadderGameBox = createGameBox("Classic Laddergame",
+        "pictures/boardpictures/classicBoard.jpg", event -> {
+          new LadderGameApp(ladderGameController
+              .getPlayerList(), BoardType.CLASSIC).start(primaryStage);
+
+          GameSubject.gameSubjectInstance()
+              .notifyListener(EventType.GAME_STARTED, ladderGameController.getPlayerList());
+        });
+
+    VBox specialLadderGameBox = createGameBox("Special Laddergame",
+        "pictures/boardpictures/specialBoard.jpg", event -> {
+          new LadderGameApp(ladderGameController
+              .getPlayerList(), BoardType.SPECIAL).start(primaryStage);
+
+          GameSubject.gameSubjectInstance()
+              .notifyListener(EventType.GAME_STARTED, ladderGameController.getPlayerList());
+        });
+
+    VBox monopolyLiteBox = createGameBox("Monopoly Lite",
+        "pictures/boardpictures/MonopolyLite.png", event ->
+            new MonopolyApp().start(primaryStage)
+    );
+
+    VBox jsonBoardBox = createGameBox("Use your own JSON Board",
+        "pictures/boardpictures/ownJsonBoard.jpg", event ->
+            loadCustomBoard(primaryStage));
+
+    gamesGrid.add(classicLadderGameBox, 0, 0);
+    gamesGrid.add(specialLadderGameBox, 1, 0);
+
+    gamesGrid.add(monopolyLiteBox, 0, 1);
+    gamesGrid.add(jsonBoardBox, 1, 1);
+
+    return gamesGrid;
+  }
+
+  /**
+   * Creates a game box with a title and a button to start the game.
+   *
+   * @param title the title of the game
+   * @return the VBox containing the game information
+   * @AI_Assisted javafx.event.EventHandler, new Insets
+   */
+  private VBox createGameBox(String title, String imagePath, EventHandler<ActionEvent> action) {
+    VBox gameBox = new VBox(10);
+    StyleUtils.stylePanel(gameBox);
+    gameBox.setAlignment(Pos.CENTER);
+    gameBox.setPrefSize(300, 300);
+    gameBox.setPadding(new Insets(5));
+
+    Label gameLabel = new Label(title);
+    gameLabel.setStyle("-fx-font-size: 20px; -fx-text-fill: #ffffff; -fx-font-weight: bold;");
+
+    ImageView gameImage = new ImageView(imagePath);
+    gameImage.setFitWidth(200);
+    gameImage.setFitHeight(200);
+
+    Button playbutton = new Button("Play");
+    StyleUtils.styleNormalButton(playbutton);
+    playbutton.setOnAction(action);
+
+    gameBox.getChildren().addAll(gameLabel, gameImage, playbutton);
+    return gameBox;
   }
 
   /**
@@ -112,8 +183,8 @@ public class DashboardGui extends Application {
     StyleUtils.styleNormalButton(addPlayerButton);
     addPlayerButton.setOnAction(e -> {
       try {
-        playerController.addPlayer();
-      } catch (InvalidPlayerException ex) {
+        ladderGameController.addPlayer();
+      } catch (IllegalArgumentException ex) {
         GameLogger.getLogger().log(Level.WARNING, "Error adding player, {0}", ex.getMessage());
         return;
       }
@@ -124,8 +195,8 @@ public class DashboardGui extends Application {
     StyleUtils.styleNormalButton(removePlayerButton);
     removePlayerButton.setOnAction(e -> {
       try {
-        playerController.removePlayer();
-      } catch (InvalidPlayerException ex) {
+        ladderGameController.removePlayer();
+      } catch (IllegalArgumentException ex) {
         GameLogger.getLogger().log(Level.WARNING, "Error removing player, {0}", ex.getMessage());
         return;
       }
@@ -177,9 +248,7 @@ public class DashboardGui extends Application {
     saveLoadBox.getChildren().addAll(savePlayersButton, loadPlayersButton);
 
     playerMenu.getChildren().addAll(playerLabel, buttonBox, playerList, saveLoadBox);
-
     updatePlayerList();
-
     return playerMenu;
   }
 
@@ -187,7 +256,7 @@ public class DashboardGui extends Application {
    * Updates the list of players in GUI.
    */
   private void updatePlayerList() {
-    this.players = playerController.getPlayers();
+    this.players = ladderGameController.getPlayerList();
 
     playerList.getChildren().clear();
 
@@ -196,36 +265,6 @@ public class DashboardGui extends Application {
       HBox playerBox = createPlayerBox(player, i);
       playerList.getChildren().add(playerBox);
     }
-  }
-
-  /**
-   * Collects players from the current player list.
-   *
-   * @return A list of players with their current names and icons.
-   */
-  private List<Player> collectPlayersFromFields() {
-    List<Player> collectedPlayers = new ArrayList<>();
-
-    for (Player player : players) {
-      if (player != null && !player.getName().isEmpty()) {
-        collectedPlayers.add(player);
-      }
-    }
-
-    return collectedPlayers;
-  }
-
-  /**
-   * Updates the player list with loaded players.
-   *
-   * @param loadedPlayers The list of players to populate the fields with.
-   */
-  private void populateFieldsWithPlayers(List<Player> loadedPlayers) {
-    playerController.setPlayers(loadedPlayers);
-
-    this.players = playerController.getPlayers();
-
-    updatePlayerList();
   }
 
   /**
@@ -253,89 +292,42 @@ public class DashboardGui extends Application {
     Button changeIconButton = new Button("⟳");
     StyleUtils.styleNormalButton(changeIconButton);
     changeIconButton.setOnAction(e -> {
-      playerController.cyclePlayerIcon(iconIndex);
+      ladderGameController.cyclePlayerIcon(iconIndex);
       updatePlayerList();
     });
 
     playerBox.getChildren().addAll(playerIcon, nameField, changeIconButton);
-
     return playerBox;
   }
 
   /**
-   * Creates the start meny grids for the four options.
+   * Collects players from the current player list.
    *
-   * @param primaryStage primary stage.
-   * @return the games grids.
+   * @return A list of players with their current names and icons.
    */
-  private GridPane createGamesGrid(Stage primaryStage) {
-    GridPane gamesGrid = new GridPane();
-    gamesGrid.setAlignment(Pos.CENTER);
-    gamesGrid.setVgap(20);
-    gamesGrid.setHgap(20);
+  private List<Player> collectPlayersFromFields() {
+    List<Player> collectedPlayers = new ArrayList<>();
 
-    VBox classicLadderGameBox = createGameBox("Classic Laddergame",
-        "pictures/boardpictures/classicBoard.jpg", event -> {
-          new LadderGameApp(playerController.getPlayers(), BoardType.CLASSIC).start(primaryStage);
+    for (Player player : players) {
+      if (player != null && !player.getName().isEmpty()) {
+        collectedPlayers.add(player);
+      }
+    }
 
-          gameSubject.notifyListener(EventType.GAME_STARTED, playerController.getPlayers());
-        });
-
-    VBox specialLadderGameBox = createGameBox("Special Laddergame",
-        "pictures/boardpictures/specialBoard.jpg", event -> {
-          new LadderGameApp(playerController.getPlayers(), BoardType.SPECIAL).start(primaryStage);
-
-          gameSubject.notifyListener(EventType.GAME_STARTED, playerController.getPlayers());
-        });
-
-    VBox monopolyLiteBox = createGameBox("Monopoly Lite",
-        "pictures/boardpictures/MonopolyLite.png", event ->
-            new MonopolyApp().start(primaryStage)
-    );
-
-    VBox jsonBoardBox = createGameBox("Use your own JSON Board",
-        "pictures/boardpictures/ownJsonBoard.jpg", event ->
-            loadCustomBoard(primaryStage));
-
-    gamesGrid.add(classicLadderGameBox, 0, 0);
-    gamesGrid.add(specialLadderGameBox, 1, 0);
-
-    gamesGrid.add(monopolyLiteBox, 0, 1);
-    gamesGrid.add(jsonBoardBox, 1, 1);
-
-    return gamesGrid;
+    return collectedPlayers;
   }
 
   /**
-   * Creates a game box with a title and a button to start the game.
+   * Updates the player list with loaded players.
    *
-   * @param title the title of the game
-   * @return the VBox containing the game information
-   * @AI_Assisted javafx.event.EventHandler, new Insets
+   * @param loadedPlayers The list of players to populate the fields with.
    */
-  private VBox createGameBox(String title, String imagePath,
-      javafx.event.EventHandler<javafx.event.ActionEvent> action) {
+  private void populateFieldsWithPlayers(List<Player> loadedPlayers) {
+    ladderGameController.setPlayersList(loadedPlayers);
 
-    VBox gameBox = new VBox(10);
-    gameBox.setAlignment(Pos.CENTER);
-    StyleUtils.stylePanel(gameBox);
-    gameBox.setPrefSize(300, 300);
-    gameBox.setPadding(new Insets(5));
+    this.players = ladderGameController.getPlayerList();
 
-    Label gameLabel = new Label(title);
-    gameLabel.setStyle("-fx-font-size: 20px; -fx-text-fill: #ffffff; -fx-font-weight: bold;");
-
-    ImageView gameImage = new ImageView(imagePath);
-
-    gameImage.setFitWidth(200);
-    gameImage.setFitHeight(200);
-
-    Button playbutton = new Button("Play");
-    StyleUtils.styleNormalButton(playbutton);
-    playbutton.setOnAction(action);
-
-    gameBox.getChildren().addAll(gameLabel, gameImage, playbutton);
-    return gameBox;
+    updatePlayerList();
   }
 
   /**
@@ -357,6 +349,7 @@ public class DashboardGui extends Application {
    * @param primaryStage the primary stage.
    */
   private void loadCustomBoard(Stage primaryStage) {
+    JsonBoardReader jsonBoardReader = new JsonBoardReader();
     Board customBoard = jsonBoardReader.loadCustomBoard(primaryStage);
     if (customBoard != null) {
       startLadderGameWithCustomBoard(primaryStage, customBoard);

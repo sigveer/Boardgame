@@ -6,6 +6,11 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.gruppe24.boardgames.commonclasses.CommonTile;
 import com.gruppe24.boardgames.laddergame.models.board.Board;
+import com.gruppe24.boardgames.laddergame.models.board.tiles.FrozenTile;
+import com.gruppe24.boardgames.laddergame.models.board.tiles.LadderDownTile;
+import com.gruppe24.boardgames.laddergame.models.board.tiles.LadderUpTile;
+import com.gruppe24.boardgames.laddergame.models.board.tiles.RandomTeleportTile;
+import com.gruppe24.boardgames.laddergame.models.board.tiles.WinningTile;
 import java.io.IOException;
 
 /**
@@ -56,13 +61,54 @@ public class JsonBoardWriter {
       }
 
       CommonTile commonTile = board.getTile(i);
-
-      commonTile.addActionToJson(tileJson, i);
+      addTileActionToJson(tileJson, commonTile, i);
 
       tilesJsonArray.add(tileJson);
     }
 
     boardJson.add("tiles", tilesJsonArray);
     return boardJson;
+  }
+
+  /**
+   * Adds action information to a tile's JSON object based on its type.
+   *
+   * @param tileJson   the JSON object representing the tile
+   * @param commonTile the tile to serialize
+   * @param tileId     the ID of the tile
+   */
+  private void addTileActionToJson(JsonObject tileJson, CommonTile commonTile, int tileId) {
+    if (commonTile instanceof LadderDownTile ladderDownTile) {
+      JsonObject actionJson = new JsonObject();
+      actionJson.addProperty("type", "LadderDownAction");
+      actionJson.addProperty("destinationTileId", ladderDownTile.getDestination());
+      actionJson.addProperty("description",
+          "Ladder from " + tileId + " to " + ladderDownTile.getDestination());
+      tileJson.add("action", actionJson);
+    } else if (commonTile instanceof LadderUpTile ladderUpTile) {
+      JsonObject actionJson = new JsonObject();
+      actionJson.addProperty("type", "LadderUpAction");
+      actionJson.addProperty("destinationTileId", ladderUpTile.getDestination());
+      actionJson.addProperty("description",
+          "Ladder from " + tileId + " to " + ladderUpTile.getDestination());
+      tileJson.add("action", actionJson);
+    } else if (commonTile instanceof FrozenTile) {
+      JsonObject actionJson = new JsonObject();
+      actionJson.addProperty("type", "FrozenAction");
+      actionJson.addProperty("description",
+          "Player gets frozen on tile " + tileId + " for 1 turn");
+      tileJson.add("action", actionJson);
+    } else if (commonTile instanceof RandomTeleportTile) {
+      JsonObject actionJson = new JsonObject();
+      actionJson.addProperty("type", "RandomTeleportAction");
+      actionJson.addProperty("description",
+          "Player gets teleported to a random tile from " + tileId);
+      tileJson.add("action", actionJson);
+    } else if (commonTile instanceof WinningTile) {
+      JsonObject actionJson = new JsonObject();
+      actionJson.addProperty("type", "WinningAction");
+      actionJson.addProperty("description", "Player wins the game on tile " + tileId);
+      tileJson.add("action", actionJson);
+    }
   }
 }

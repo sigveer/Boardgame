@@ -11,22 +11,21 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class PlayerControllerTest {
+class LadderGameControllerTest {
 
-  public PlayerController playerController;
+  public LadderGameController ladderGameController;
   public GameSubject gameSubject;
 
   @BeforeEach
   void setUp() {
-    gameSubject = new GameSubject();
-    playerController = new PlayerController(gameSubject);
+    ladderGameController = new LadderGameController();
   }
 
   @Test
   void testCreatePlayer() {
-    CommonPlayer abstractPlayer = playerController.createPlayer("Mann", 3);
+    CommonPlayer abstractPlayer = ladderGameController.createPlayer("Mann", 3);
 
-    assertNotNull(playerController);
+    assertNotNull(ladderGameController);
     assertInstanceOf(Player.class, abstractPlayer);
 
     Player concretePlayer = (Player) abstractPlayer;
@@ -37,12 +36,12 @@ class PlayerControllerTest {
 
   @Test
   void testGetMaxPlayers() {
-    assertEquals(5, playerController.getMaxPlayers());
+    assertEquals(5, ladderGameController.getMaxPlayers());
   }
 
   @Test
   void testAddDefaultPlayer() {
-    List<Player> playerList = playerController.getPlayers();
+    List<Player> playerList = ladderGameController.getPlayerList();
 
     // Upon making an instance of playerController, a player should have been added
     assertEquals(1, playerList.size());

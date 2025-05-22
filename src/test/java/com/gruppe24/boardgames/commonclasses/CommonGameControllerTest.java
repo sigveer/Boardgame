@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.mock;
 
 import com.gruppe24.boardgames.laddergame.controller.BoardController;
-import com.gruppe24.boardgames.laddergame.controller.PlayerController;
+import com.gruppe24.boardgames.laddergame.controller.LadderGameController;
 import com.gruppe24.boardgames.laddergame.models.Player;
 import com.gruppe24.boardgames.laddergame.models.board.Board;
 import com.gruppe24.exeptions.InvalidPlayerException;
@@ -20,30 +20,26 @@ class CommonGameControllerTest {
   GameSubject mockGameSubject;
   BoardController mockBoardController;
   CommonGameController commonGameController;
-  PlayerController playerController;
+  LadderGameController ladderGameController;
 
   @BeforeEach
   void setUp() {
     mockGameSubject = mock(GameSubject.class);
-    playerController = new PlayerController(mockGameSubject);
+    ladderGameController = new LadderGameController();
     mockBoardController = new BoardController(new Board());
-    commonGameController = new CommonGameController(1, mockGameSubject) {
+    commonGameController = new CommonGameController() {
       @Override
       protected CommonPlayer createPlayer(String name, int iconIndex) {
         return mock(CommonPlayer.class);
       }
-
-      @Override
-      protected int getMaxPlayers() {
-        return 5;
-      }
     };
+    commonGameController.setMaxPlayers(5);
   }
 
   @Test
   void testAddPlayer() {
-    playerController.addPlayer();
-    List<Player> players = playerController.getPlayers();
+    ladderGameController.addPlayer();
+    List<Player> players = ladderGameController.getPlayerList();
 
     assertEquals(2, players.size());
     assertEquals("Player 2", players.get(1).getName());
@@ -51,6 +47,8 @@ class CommonGameControllerTest {
 
   @Test
   void testRemovePlayer() {
+    commonGameController.setMaxPlayers(2);
+
     commonGameController.addPlayer();
     commonGameController.addPlayer();
     List<CommonPlayer> players = commonGameController.players;
@@ -62,16 +60,16 @@ class CommonGameControllerTest {
 
     try {
       commonGameController.removePlayer();
-      fail("Should have thrown InvalidPlayerException");
-    } catch (InvalidPlayerException e) {
+      fail("Should have thrown IllegalArgumentException");
+    } catch (IllegalArgumentException e) {
       assertEquals("Cannot remove last player", e.getMessage());
     }
     assertEquals(1, players.size());
   }
 
   @Test
-  void testGetPlayers() {
-    List<Player> players = playerController.getPlayers();
+  void testGetPlayerList() {
+    List<Player> players = ladderGameController.getPlayerList();
     assertNotNull(players);
     assertEquals(1, players.size());
   }
@@ -80,7 +78,7 @@ class CommonGameControllerTest {
   @Test
   void testHandleOvershootBeyondLimit() {
     int position = 95;
-    commonGameController.winCondition = 90;
+    commonGameController.setWinCondition(90);
 
     assertEquals(85, commonGameController.handleOvershoot(position));
   }

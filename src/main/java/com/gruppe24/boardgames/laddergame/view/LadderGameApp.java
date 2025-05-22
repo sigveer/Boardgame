@@ -3,10 +3,12 @@ package com.gruppe24.boardgames.laddergame.view;
 import com.gruppe24.boardgames.DashboardGui;
 import com.gruppe24.boardgames.commonclasses.CommonDice;
 import com.gruppe24.boardgames.laddergame.controller.BoardController;
-import com.gruppe24.boardgames.laddergame.controller.PlayerController;
+import com.gruppe24.boardgames.laddergame.controller.LadderGameController;
 import com.gruppe24.boardgames.laddergame.models.Player;
 import com.gruppe24.boardgames.laddergame.models.board.Board;
 import com.gruppe24.boardgames.laddergame.models.board.BoardType;
+import com.gruppe24.exeptions.InvalidBoardException;
+import com.gruppe24.exeptions.InvalidPlayerException;
 import com.gruppe24.observerpattern.GameLogger;
 import com.gruppe24.observerpattern.GameSubject;
 import com.gruppe24.utils.StyleUtils;
@@ -39,13 +41,13 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 /**
- * Class that represents the LadderGame.
+ * View class that represents the ladder game.
  */
 public class LadderGameApp extends Application {
 
   private final Board board;
   BoardController boardController;
-  PlayerController playerController;
+  LadderGameController ladderGameController;
   private final List<Player> players;
   private static final int tileSize = 75;
   private int currentPlayerIndex = 0;
@@ -55,7 +57,7 @@ public class LadderGameApp extends Application {
   private Label isFrozenLabel;
   private final CommonDice dice = new CommonDice(2);
   private Button diceRollButton;
-  private final GameSubject gameSubject = new GameSubject();
+
   private final GameLogger gameLogger = new GameLogger();
 
   /**
@@ -66,16 +68,17 @@ public class LadderGameApp extends Application {
    */
   public LadderGameApp(List<Player> players, BoardType boardType) {
     if (players == null || players.isEmpty()) {
-      throw new IllegalArgumentException("Parameter list of players cannot be empty");
+      throw new InvalidPlayerException();
     }
     if (boardType == null) {
-      throw new IllegalArgumentException("Parameter boardType cannot be empty");
+      throw new InvalidBoardException();
     }
     this.boardController = new BoardController(boardType);
-    this.playerController = new PlayerController(gameSubject);
+    this.ladderGameController = new LadderGameController();
     this.board = boardController.getBoard();
     this.players = players;
-    gameSubject.registerListener(gameLogger);
+
+    GameSubject.gameSubjectInstance().registerListener(gameLogger);
   }
 
   /**
@@ -86,20 +89,21 @@ public class LadderGameApp extends Application {
    */
   public LadderGameApp(List<Player> players, Board customBoard) {
     if (players == null || players.isEmpty()) {
-      throw new IllegalArgumentException("Parameter list of players cannot be empty");
+      throw new InvalidPlayerException();
     }
     if (customBoard == null) {
-      throw new IllegalArgumentException("Parameter customBoard cannot be empty");
+      throw new InvalidBoardException();
     }
     this.boardController = new BoardController(customBoard);
-    this.playerController = new PlayerController(gameSubject);
+    this.ladderGameController = new LadderGameController();
     this.board = customBoard;
     this.players = players;
-    gameSubject.registerListener(gameLogger);
+
+    GameSubject.gameSubjectInstance().registerListener(gameLogger);
   }
 
   /**
-   * Main method to start the application.
+   * Start method to launch the ladder game.
    *
    * @param primaryStage the primary stage.
    */
@@ -110,13 +114,12 @@ public class LadderGameApp extends Application {
     }
 
     BoardController boardController = new BoardController(BoardType.CLASSIC);
-    this.playerController.initializeGame(boardController);
+    this.ladderGameController.initializeGame(boardController);
 
     players.forEach(player -> player.setIcon(player.getIcon()));
 
     primaryStage.setTitle("Laddergame Classic");
 
-    // main layout container using BorderPane
     BorderPane mainLayout = new BorderPane();
     mainLayout.setStyle("-fx-background-color: #3a5ad7;");
 
@@ -224,7 +227,6 @@ public class LadderGameApp extends Application {
               + "-fx-border-width: 1.5; -fx-border-color: black;"); // Ladder Up
           case 2 -> stackPane.setStyle("-fx-background-color: #E02929; "
               + "-fx-border-width: 1.5; -fx-border-color: black;"); // Ladder Down
-
           case 3 -> {
             stackPane.setStyle("-fx-background-color: #9D41FF; "
                 + "-fx-border-width: 1.5; -fx-border-color: black;"); // Random Teleport
@@ -296,6 +298,8 @@ public class LadderGameApp extends Application {
    * @param image      the image of the ladder.
    * @param startTile  the starting tile.
    * @param endTile    the ending tile.
+   *
+   * @AI_Assisted Formula for bounds and angle of ladders.
    */
   public void drawLadder(Pane ladderPane, Image image, Node startTile, Node endTile) {
     Bounds startBounds = startTile.localToScene(startTile.getBoundsInLocal());
@@ -337,7 +341,6 @@ public class LadderGameApp extends Application {
     diceRollButton.setDisable(true);
 
     Player currentPlayer = players.get(currentPlayerIndex);
-
     if (handleFrozenPlayer(currentPlayer, dicePane)) {
       diceRollButton.setDisable(false); // Re-enable if player was frozen
       return; // Player was frozen, skip turn
@@ -393,11 +396,9 @@ public class LadderGameApp extends Application {
    */
   private int rollAndDisplayDice(Pane dicePane) {
     int diceValue = dice.rollSum();
-
     diceResultLabel.setText("Rolled: " + diceValue);
 
     int diceValue1 = dice.getDie(0);
-
     ImageView dice1Iv = new ImageView(new Image(dice.dicePath(diceValue1)));
     dice1Iv.setX(40);
     dice1Iv.setY(0);
@@ -405,7 +406,6 @@ public class LadderGameApp extends Application {
     dice1Iv.setFitWidth(75);
 
     int diceValue2 = dice.getDie(1);
-
     ImageView dice2Iv = new ImageView(new Image(dice.dicePath(diceValue2)));
     dice2Iv.setX(125);
     dice2Iv.setY(0);
@@ -414,7 +414,6 @@ public class LadderGameApp extends Application {
 
     dicePane.getChildren().clear();
     dicePane.getChildren().addAll(dice1Iv, dice2Iv);
-
     return diceValue;
   }
 
@@ -431,15 +430,14 @@ public class LadderGameApp extends Application {
 
     // Special handling for teleport tiles
     if (board.getTileType(targetPositionBeforeSpecial) == 3) {
-      playerController.handlePlayerTurn(currentPlayer, diceValue);
+      ladderGameController.handlePlayerTurn(currentPlayer, diceValue);
 
       int positionBeforeTeleport = currentPlayer.getPosition();
-
       board.getTile(positionBeforeTeleport).perform(currentPlayer);
 
       return currentPlayer.getPosition();
     } else {
-      playerController.handlePlayerTurn(currentPlayer, diceValue);
+      ladderGameController.handlePlayerTurn(currentPlayer, diceValue);
       return currentPlayer.getPosition();
     }
   }
@@ -535,6 +533,7 @@ public class LadderGameApp extends Application {
     int boardSize = 90;
     int initialLandingPos = fromPosition + diceSum;
     boolean overshoot = initialLandingPos > boardSize;
+
     return overshoot ? boardSize - (initialLandingPos - boardSize) : initialLandingPos;
   }
 
@@ -581,14 +580,14 @@ public class LadderGameApp extends Application {
    * PART OF handleSpecialTileEffects(). Checks and logs if player has won.
    */
   private void checkWinner(Player player, int position, Stage primaryStage) {
-    if (boardController.isWinningPosition(position)) {
+    if (position == ladderGameController.getWinCondition()) {
       Alert alert = new Alert(AlertType.INFORMATION);
       alert.setTitle("Game Over");
       alert.setHeaderText(null);
       alert.setContentText(player.getName() + " has won the game!");
 
       Platform.runLater(() -> {
-        gameSubject.removeListener(this.gameLogger);
+        GameSubject.gameSubjectInstance().removeListener(this.gameLogger);
         alert.showAndWait();
         new DashboardGui().start(primaryStage);
       });

@@ -6,8 +6,7 @@ import com.gruppe24.boardgames.laddergame.models.board.BoardType;
 import com.gruppe24.exeptions.InvalidBoardException;
 
 /**
- * BoardController is a class that manages the game board interactions. It handles the game logic,
- * including player movement, tile actions, and win conditions.
+ * Controller class that manages the game board in ladderGame by deciding which board to use.
  */
 public class BoardController {
 
@@ -44,15 +43,5 @@ public class BoardController {
    */
   public Board getBoard() {
     return board;
-  }
-
-  /**
-   * Checks if a position is a winning position.
-   *
-   * @param position the position to check
-   * @return true if the position is winning, false otherwise
-   */
-  public boolean isWinningPosition(int position) {
-    return position == 90;
   }
 }

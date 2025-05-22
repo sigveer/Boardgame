@@ -89,27 +89,6 @@ public class Board {
   }
 
   /**
-   * Method that puts ladders at certain indexes in ladders-hashMap.
-   */
-  public void initializeLadders() {
-    initializeStandardLadders(ladderUp, ladderDown);
-  }
-
-  /**
-   * Method that puts the winning tile at a certain index in the winningTile-hashMap.
-   */
-  public void initializeWinningTile() {
-    winningTile.put(90, true);
-  }
-
-  /**
-   * Method that puts special tiles at certain indexes in specialTiles-hashMap.
-   */
-  public void initializeSpecialTiles() {
-    initializeStandardSpecialTiles(frozenTiles, randomTeleportTiles);
-  }
-
-  /**
    * Method that initializes the tiles.
    *
    * @AI_Based Logic as to how to initialize the tiles is helped with AI.
@@ -131,6 +110,30 @@ public class Board {
         commonTiles[i] = new NormalTile(i);
       }
     }
+  }
+
+
+  /**
+   * Method that puts the winning tile at a certain index in the winningTile-hashMap.
+   */
+  public void initializeWinningTile() {
+    initializeWinningTile(winningTile);
+  }
+
+  /**
+   * Method that initializes the winning tile.
+   *
+   * @param winningTile HashMap of winning tiles.
+   */
+  public static void initializeWinningTile(HashMap<Integer, Boolean> winningTile) {
+    winningTile.put(90, true);
+  }
+
+  /**
+   * Method that puts ladders at certain indexes in ladders-hashMap.
+   */
+  public void initializeLadders() {
+    initializeStandardLadders(ladderUp, ladderDown);
   }
 
   /**
@@ -156,6 +159,13 @@ public class Board {
     ladderDown.put(64, 27);
     ladderDown.put(74, 12);
     ladderDown.put(87, 70);
+  }
+
+  /**
+   * Method that puts special tiles at certain indexes in specialTiles-hashMap.
+   */
+  public void initializeSpecialTiles() {
+    initializeStandardSpecialTiles(frozenTiles, randomTeleportTiles);
   }
 
   /**

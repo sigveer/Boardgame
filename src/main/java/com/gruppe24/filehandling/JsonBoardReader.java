@@ -25,6 +25,7 @@ public class JsonBoardReader {
 
   /**
    * Method that reads a board configuration from a JSON file.
+   *
    * @param filePath the path for JSON-file
    * @return the board object created from the JSON data.
    */
@@ -34,9 +35,6 @@ public class JsonBoardReader {
     }
     try (FileReader reader = new FileReader(filePath)) {
       JsonObject boardJson = JsonParser.parseReader(reader).getAsJsonObject();
-
-      String name = boardJson.get("name").getAsString();
-      String description = boardJson.get("description").getAsString();
 
       HashMap<Integer, Integer> ladderUp = new HashMap<>();
       HashMap<Integer, Integer> ladderDown = new HashMap<>();
@@ -98,6 +96,17 @@ public class JsonBoardReader {
           }
         }
       }
+
+      if (frozenTiles.isEmpty()) {
+        frozenTiles.put(0, false);
+      }
+
+      if (randomTeleportTiles.isEmpty()) {
+        randomTeleportTiles.put(0, false);
+      }
+
+      String name = boardJson.get("name").getAsString();
+      String description = boardJson.get("description").getAsString();
 
       return new Board(ladderUp, ladderDown, winningTile, frozenTiles, randomTeleportTiles, name,
           description);
