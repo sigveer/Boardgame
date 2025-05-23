@@ -50,7 +50,7 @@ public class View {
   }
 
   /**
-   * Initializes the view.
+   * Initializes the view on UI.
    */
   public void initializeView() {
     primaryStage.setTitle("Monopoly Lite");
@@ -83,7 +83,7 @@ public class View {
   }
 
   /**
-   * Creates the control panel.
+   * Creates the interactable control panel for player.
    */
   private VBox createControlPanel() {
     VBox controlPanel = new VBox(15);
@@ -132,8 +132,11 @@ public class View {
     return controlPanel;
   }
 
+
   /**
-   * Rolls dice and moves player.
+   * Method handling roll dice and movement.
+   *
+   * @param dicePane the pane where dice is displayed.
    */
   private void rollDiceAndMove(Pane dicePane) {
     int diceValue = controller.rollDiceAndMovePlayer();
@@ -143,16 +146,19 @@ public class View {
     placePlayerPieceOnBoard(currentPlayer);
 
     Property landedProperty = controller.getPropertyAtPosition(currentPlayer.getPosition());
-    handlePropertyLanding(landedProperty);
+    handleTileLanding(landedProperty);
 
     controller.advanceToNextPlayer();
     updatePlayerInfo();
   }
 
   /**
-   * Handles property landing logic.
+   * Method that handles case upon landing on a tile. Checks if player is on any of the special
+   * tiles.
+   *
+   * @param property eventual property on tile.
    */
-  private void handlePropertyLanding(Property property) {
+  private void handleTileLanding(Property property) {
     if (property == null) {
       return;
     }
@@ -174,7 +180,9 @@ public class View {
       controller.sendPlayerToJail(currentPlayer);
       placePlayerPieceOnBoard(currentPlayer);
       showJailNotification(currentPlayer);
-    } else if (property.getPrice() > 0) {
+    }
+
+    if (property.getPrice() > 0) {
       if (!property.isPurchased()) {
         offerPropertyPurchase(property, currentPlayer);
       } else if (property.getOwner() != currentPlayer) {
@@ -191,7 +199,10 @@ public class View {
   }
 
   /**
-   * Displays dice roll.
+   * Displays the dice on UI.
+   *
+   * @param diceValue the value of the dice.
+   * @param dicePane the pane to see the dice.
    */
   private void displayDiceRoll(int diceValue, Pane dicePane) {
     diceResultLabel.setText("Rolled: " + diceValue);
@@ -208,7 +219,7 @@ public class View {
   }
 
   /**
-   * Updates player info in UI.
+   * Updates player info on UI.
    */
   private void updatePlayerInfo() {
     Player current = controller.getCurrentPlayer();
@@ -219,7 +230,7 @@ public class View {
   }
 
   /**
-   * Displays the card viewer.
+   * Displays the card viewer on UI.
    */
   private void showCardViewer() {
     Stage cardViewerStage = new Stage();
@@ -278,7 +289,10 @@ public class View {
   }
 
   /**
-   * Creates a visual representation of a chance card.
+   * Helper method that creates a Node for chance card.
+   *
+   * @param chanceCard the chance card to be converted.
+   * @return a node representing the chance card.
    */
   private Node createChanceCardNode(ChanceCard chanceCard) {
     StackPane cardPane = new StackPane();
@@ -311,7 +325,9 @@ public class View {
   }
 
   /**
-   * Shows jail notification.
+   * Method that show a notification when a player has been sent to jail.
+   *
+   * @param player the player in question.
    */
   private void showJailNotification(Player player) {
     Stage jailStage = new Stage();
@@ -338,7 +354,10 @@ public class View {
   }
 
   /**
-   * Offers property purchase UI.
+   * Method that makes a pop-up window to offer player the relevant property.
+   *
+   * @param property the property player has landed on.
+   * @param currentPlayer the current player.
    */
   private void offerPropertyPurchase(Property property, Player currentPlayer) {
     Stage purchaseStage = new Stage();
@@ -394,6 +413,8 @@ public class View {
 
   /**
    * Draws the monopoly board.
+   *
+   * @AI_Based algorythm and calculation used to draw board.
    */
   public void drawBoard() {
     boardGridPane.getChildren().clear();
@@ -434,7 +455,7 @@ public class View {
   }
 
   /**
-   * Calculates position based on grid coordinates.
+   * HELPER METHOD IN drawBoard()..
    */
   private int calculatePosition(int i, int j) {
     if (i == 6) {
@@ -451,7 +472,10 @@ public class View {
   }
 
   /**
-   * Creates a property tile UI.
+   * Method that creates tile for properties.
+   *
+   * @param property the property to be displayed.
+   * @return the stack pane with property tile.
    */
   private StackPane createPropertyTile(Property property) {
     StackPane tile = new StackPane();
@@ -478,16 +502,18 @@ public class View {
 
     // If property is owned, add owner indicator
     if (property.isPurchased()) {
-      updatePropertyTileOwnership(tile, property);
+      updatePropertyTileOwnership(tile);
     }
 
     return tile;
   }
 
   /**
-   * Adds ownership indicator to property tile.
+   * Method that updates the property ownership by using colour.
+   *
+   * @param tile the property tile.
    */
-  private void updatePropertyTileOwnership(StackPane tile, Property property) {
+  private void updatePropertyTileOwnership(StackPane tile) {
     Circle ownerIndicator = new Circle(5);
     ownerIndicator.setFill(Color.RED); // Player indicator color
     ownerIndicator.setStroke(Color.BLACK);
@@ -498,7 +524,10 @@ public class View {
   }
 
   /**
-   * Places player piece on board with spesific algorytm for monopoly board.
+   * Method that calculates and places the player piece on board.
+   *
+   * @param player relevant player.
+   * @AI_Based algorytm used to calculate the position of the player piece.
    */
   public void placePlayerPieceOnBoard(Player player) {
     int position = player.getPosition();
@@ -523,7 +552,7 @@ public class View {
   }
 
   /**
-   * Adds player piece to grid.
+   * HELPER METHO used in placePlayerPieceOnBoard().
    */
   private void addPlayerPieceToGrid(Player player, int col, int row) {
     if (player.getPlayerPiece() == null) {
