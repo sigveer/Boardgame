@@ -431,7 +431,6 @@ public class LadderGameApp extends Application {
     // Special handling for teleport tiles
     if (board.getTileType(targetPositionBeforeSpecial) == 3) {
       ladderGameController.handlePlayerTurn(currentPlayer, diceValue);
-
       int positionBeforeTeleport = currentPlayer.getPosition();
       board.getTile(positionBeforeTeleport).perform(currentPlayer);
 

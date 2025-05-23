@@ -67,6 +67,8 @@ public class Cards {
 
   /**
    * Inner class to represent a chance card.
+   *
+   * @AI_Based idea and implementation of using inner class.
    */
   public static class ChanceCard extends Node {
     private final String title;
